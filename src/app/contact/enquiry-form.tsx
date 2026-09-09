@@ -30,13 +30,12 @@ export default function EnquiryForm() {
     }
   }
   return (
-    <form className="enquiry-form" onSubmit={submit}>
-      <h3>
-        <Icon name="mail" /> Send Us an Enquiry
-      </h3>
+    <form className="enquiry-form" id="enquiry-form" onSubmit={submit}>
+      <h3>Send Us a Message</h3>
+      <p className="enquiry-intro">Fill out the form below and our team will get back to you shortly.</p>
       <div className="form-grid">
         <label>
-          Your Name *
+          Full Name *
           <input
             name="name"
             autoComplete="name"
@@ -47,7 +46,7 @@ export default function EnquiryForm() {
           />
         </label>
         <label>
-          Work Email *
+          Email Address *
           <input
             name="email"
             type="email"
@@ -58,23 +57,27 @@ export default function EnquiryForm() {
           />
         </label>
         <label>
-          Company / Organisation *
-          <input
-            name="company"
-            autoComplete="organization"
-            required
-            maxLength={160}
-            placeholder="Your company or organisation"
-          />
-        </label>
-        <label>
           Phone Number
           <input
             name="phone"
             type="tel"
             autoComplete="tel"
             maxLength={30}
-            placeholder="Include country code"
+            placeholder="Enter your phone number"
+          />
+        </label>
+        <label>
+          Subject *
+          <input name="subject" required maxLength={160} placeholder="Enter the subject" />
+        </label>
+        <label>
+          Company / Organisation
+          <input
+            name="company"
+            autoComplete="organization"
+            required
+            maxLength={160}
+            placeholder="Your company or organisation"
           />
         </label>
         <label>
@@ -99,14 +102,14 @@ export default function EnquiryForm() {
           />
         </label>
         <label className="full">
-          Briefly describe your requirement *
+          Message *
           <textarea
             name="message"
             required
             minLength={10}
             maxLength={5000}
             rows={5}
-            placeholder="Tell us how we can help your business…"
+            placeholder="Type your message here..."
           />
         </label>
         <label className="honey" aria-hidden="true">

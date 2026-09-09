@@ -1,10 +1,10 @@
-import { Banner } from "../_components/ui";
 export default function Hero() {
   return (
-    <Banner
-      title="Let’s Start the Conversation"
-      text="Have a question, need expert advice, or want to explore how we can support your business?"
-      image="/Part-11 .png"
-    />
+    <section className="contact-hero">
+      <span className="contact-part">Part XVIII</span>
+      <h1>Contact</h1>
+      <p>We&apos;re here to help and look forward to connecting with you.</p>
+      <span className="heading-line" />
+    </section>
   );
 }
