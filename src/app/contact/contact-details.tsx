@@ -1,0 +1,57 @@
+import Icon from "../_components/icon";
+export default function ContactDetails() {
+  return (
+    <aside className="contact-details">
+      <h3>Connect with Astronis Global</h3>
+      <span className="heading-line" />
+      <div>
+        <Icon name="pin" />
+        <section>
+          <h4>Registered Office</h4>
+          <p>
+            E-111-B, Nawada Housing Complex, Dwarka Mor, New Delhi – 110059,
+            India
+          </p>
+        </section>
+      </div>
+      <div>
+        <Icon name="building" />
+        <section>
+          <h4>Branch Office</h4>
+          <p>
+            C-10/1, First Floor, Bhagwati Garden Extension, Dwarka Mor, New
+            Delhi – 110059, India
+          </p>
+        </section>
+      </div>
+      <div>
+        <Icon name="phone" />
+        <section>
+          <h4>Call Us</h4>
+          <a href="tel:+919311664455">+91 9311664455</a>
+          <a href="tel:01146574455">01146574455</a>
+        </section>
+      </div>
+      <div>
+        <Icon name="mail" />
+        <section>
+          <h4>Email Us</h4>
+          <a href="mailto:advisory@astronisglobal.com">
+            advisory@astronisglobal.com
+          </a>
+        </section>
+      </div>
+      <div>
+        <Icon name="calendar" />
+        <section>
+          <h4>Business Hours</h4>
+          <p>
+            Monday – Saturday
+            <br />
+            10:00 AM – 6:30 PM
+          </p>
+        </section>
+      </div>
+    </aside>
+  );
+}
