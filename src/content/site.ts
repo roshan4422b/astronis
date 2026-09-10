@@ -214,6 +214,34 @@ export const stories = [
     "FinTech & Digital Finance .png",
     "foreign-investment",
   ],
+  [
+    "Corporate Restructuring for a Growing Enterprise",
+    "Advised on entity restructuring, governance and commercial documentation to support the next stage of business growth.",
+    "Corporate & Commercial",
+    "Professional & Business Services .png",
+    "corporate-advisory",
+  ],
+  [
+    "Licensing Roadmap for a New Market Entry",
+    "Coordinated licensing, registrations and statutory approvals for a business entering a regulated market.",
+    "Licensing & Registrations",
+    "Retail & E-Commerce .png",
+    "licensing-and-registrations",
+  ],
+  [
+    "IP Strategy for a Digital Product Portfolio",
+    "Built a practical trademark, copyright and design protection strategy for a technology-led product portfolio.",
+    "Intellectual Property",
+    "Technology, IT & ITES .png",
+    "intellectual-property",
+  ],
+  [
+    "Compliance Framework for a Multi-State Business",
+    "Designed a coordinated compliance framework covering registrations, tax obligations and recurring regulatory requirements.",
+    "Taxation & Compliance",
+    "Manufacturing & Industrial .png",
+    "taxation-and-compliance",
+  ],
 ].map(([title, description, category, image, service]) => ({
   title,
   description,
@@ -228,6 +256,10 @@ export const insightCategories = [
   "Regulatory Update",
   "Business Insight",
   "Tax / Compliance Update",
+  "Corporate & Commercial Insight",
+  "Licensing & Registrations Update",
+  "Intellectual Property Insight",
+  "FEMA & Cross-Border Insight",
 ];
 export const countries = [
   "India",

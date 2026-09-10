@@ -21,6 +21,10 @@ export default function Insights() {
                       "Part-18 .png",
                       "Part-16 .png",
                       "Part-14 .png",
+                      "Part-10 .png",
+                      "Professional & Business Services .png",
+                      "Technology, IT & ITES .png",
+                      "FinTech & Digital Finance .png",
                     ][i]
                   }
                   alt=""
@@ -37,6 +41,10 @@ export default function Insights() {
                       "Navigate a changing regulatory landscape",
                       "Practical thinking for growing businesses",
                       "Stay informed. Plan with confidence.",
+                      "Build stronger foundations for growth",
+                      "Plan approvals with greater clarity",
+                      "Protect value in a digital economy",
+                      "Manage cross-border obligations confidently",
                     ][i]
                   }
                 </h3>
