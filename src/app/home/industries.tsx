@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "../_components/icon";
@@ -20,11 +20,21 @@ const featuredIndustries = [
 export default function Industries() {
   const [active, setActive] = useState(0);
   const dragStart = useRef<number | null>(null);
+  const isPaused = useRef(false);
   const total = featuredIndustries.length;
 
   function move(direction: number) {
     setActive((current) => (current + direction + total) % total);
   }
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (!isPaused.current && !document.hidden) {
+        setActive((current) => (current + 1) % total);
+      }
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, [total]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "ArrowRight") move(1);
@@ -70,6 +80,14 @@ export default function Industries() {
           aria-roledescription="carousel"
           tabIndex={0}
           onKeyDown={handleKeyDown}
+          onPointerEnter={() => { isPaused.current = true; }}
+          onPointerLeave={() => { isPaused.current = false; }}
+          onFocus={() => { isPaused.current = true; }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+              isPaused.current = false;
+            }
+          }}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}

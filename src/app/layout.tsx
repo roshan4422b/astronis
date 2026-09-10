@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Header from "./_components/header";
 import Footer from "./_components/footer";
 import "./globals.css";
@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   },
   description:
     "Strategic legal, regulatory and business advisory solutions. Pan-India presence and global perspective to navigate complexity, mitigate risk and accelerate growth.",
+};
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 export default function RootLayout({
   children,

@@ -1,8 +1,7 @@
 import Image from "@/app/_components/asset-image";
-import Link from "next/link";
 import { practices } from "@/content/site";
-import Icon from "../_components/icon";
-import { Heading } from "../_components/ui";
+import { Button, Heading } from "../_components/ui";
+import ServiceCard from "./service-card";
 export default function QuickServices() {
   return (
     <section className="quick-services section">
@@ -20,18 +19,15 @@ export default function QuickServices() {
           light
         />
         <div className="quick-grid">
-          {practices.map((p) => (
-            <Link href={"/services/" + p.slug} key={p.slug}>
-              <Icon name={p.icon} />
-              <h3>{p.title}</h3>
-              <span className="heading-line" />
-              <Icon name="arrow" />
-            </Link>
+          {practices.map((service, index) => (
+            <ServiceCard service={service} index={index} key={service.slug} />
           ))}
         </div>
         <div className="quick-extra">
-          <Link href="/insights">Insights & Resources →</Link>
-          <Link href="/contact">Get in Touch →</Link>
+          <Button href="/insights" secondary>
+            Insights & Resources
+          </Button>
+          <Button href="/contact">Get in Touch</Button>
         </div>
       </div>
     </section>
