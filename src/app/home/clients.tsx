@@ -9,7 +9,7 @@ export default function Clients() {
           title="Our Esteemed Clients"
           text="Trusted by Businesses & Professionals."
         />
-        <ClientLogoGrid limit={5} />
+        <ClientLogoGrid limit={8} />
         <div className="clients-preview-action">
           <Button href="/clients" secondary>
             View all clients

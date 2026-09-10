@@ -1274,11 +1274,11 @@ textarea:focus {
 }
 .client-logo-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 .client-logo {
-  min-height: 104px;
+  min-height: 112px;
   padding: 18px 12px;
   display: flex;
   flex-direction: column;
@@ -1291,6 +1291,11 @@ textarea:focus {
   color: #183d83;
   text-align: center;
   box-shadow: 0 4px 14px #071c4f08;
+}
+.client-logo img {
+  width: min(100%, 190px);
+  height: 70px;
+  object-fit: contain;
 }
 .client-logo-name {
   font-size: 22px;
@@ -2283,7 +2288,15 @@ textarea::placeholder {
   }
   .nav-cta {
     margin-top: 15px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     text-align: center;
+    white-space: nowrap;
   }
   .mega-menu {
     position: static;
@@ -3267,11 +3280,7 @@ textarea::placeholder {
   background: var(--pale);
 }
 .industry-card-image::after {
-  content: "";
-  position: absolute;
-  inset: 45% 0 0;
-  background: linear-gradient(transparent, #071c4f30);
-  pointer-events: none;
+  display: none;
 }
 .industry-card-image img {
   object-fit: cover;

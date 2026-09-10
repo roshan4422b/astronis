@@ -92,7 +92,7 @@ export default function Industries() {
                     "--card-position": position,
                     "--card-depth": distance,
                     "--card-scale": position === 0 ? 1.08 : distance === 1 ? 0.92 : 0.84,
-                    "--card-opacity": position === 0 ? 1 : distance === 1 ? 0.82 : 0.54,
+                    "--card-opacity": position === 0 ? 1 : distance === 1 ? 0.94 : 0.78,
                     zIndex: 10 - distance,
                   } as CSSProperties}
                 >
