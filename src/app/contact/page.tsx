@@ -1,7 +1,6 @@
 import Hero from "./hero";
 import ContactDetails from "./contact-details";
 import EnquiryForm from "./enquiry-form";
-import OfficeCard from "./office-card";
 import QuickConnect from "./quick-connect";
 import ContactValues from "./contact-values";
 export const metadata = { title: "Contact Us" };
@@ -11,8 +10,7 @@ export default function ContactPage() {
       <Hero />
       <section className="contact-main section">
         <div className="container contact-grid">
-          <ContactDetails />
-          <OfficeCard />
+          <ContactDetails showMap />
           <EnquiryForm />
         </div>
       </section>

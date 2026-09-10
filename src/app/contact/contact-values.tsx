@@ -10,7 +10,7 @@ const values = [
 
 export default function ContactValues() {
   return (
-    <section className="contact-values container" aria-label="Astronis Global commitments">
+    <section className="contact-values" aria-label="Astronis Global commitments">
       {values.map(([icon, title, text]) => (
         <div key={title}>
           <Icon name={icon} />

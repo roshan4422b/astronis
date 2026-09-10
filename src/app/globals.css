@@ -1486,6 +1486,13 @@ textarea:focus {
   gap: 14px;
   align-items: stretch;
 }
+.contact-main .contact-grid {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+.contact-main .contact-details {
+  display: flex;
+  flex-direction: column;
+}
 .contact-main {
   padding-top: 10px;
   background: #f7faff;
@@ -1538,6 +1545,20 @@ textarea:focus {
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.3px;
+}
+.contact-details-map {
+  height: 250px;
+  margin: auto -27px -24px;
+  overflow: hidden;
+  border-top: 1px solid #ffffff2b;
+  border-radius: 0 0 10px 10px;
+  background: #dfeaf7;
+}
+.contact-details-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 .contact-hero {
   padding: 14px 20px 8px;
@@ -1773,8 +1794,9 @@ textarea::placeholder {
   overflow-wrap: anywhere;
 }
 .contact-quick-connect {
+  width: 100%;
   margin-top: 0;
-  padding: 11px 25px 0;
+  padding: 11px clamp(20px, 5vw, 100px) 0;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: white;
@@ -1812,6 +1834,7 @@ textarea::placeholder {
 }
 .quick-connect-icon .icon { width: 22px; height: 22px; }
 .whatsapp-icon { background: #23bf68; font-size: 30px; transform: rotate(-35deg); }
+.whatsapp-icon svg { width: 24px; height: 24px; transform: rotate(35deg); }
 .contact-quick-grid strong,
 .contact-quick-grid small,
 .contact-quick-grid em { display: block; line-height: 1.35; }
@@ -1821,9 +1844,10 @@ textarea::placeholder {
 .contact-values {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: 100%;
   margin-top: 10px;
-  padding: 13px 18px;
-  border-radius: 9px 9px 0 0;
+  padding: 13px clamp(20px, 5vw, 100px);
+  border-radius: 0;
   background: linear-gradient(105deg, #031541, #062b78);
   color: white;
 }
@@ -3122,6 +3146,9 @@ textarea::placeholder {
   }
 }
 @media (max-width: 1050px) {
+  .contact-main .contact-grid {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
   .contact-grid {
     grid-template-columns: 280px minmax(0, 1fr);
   }
@@ -3151,6 +3178,12 @@ textarea::placeholder {
   }
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+  .contact-main .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-details-map {
+    height: 220px;
   }
   .contact-office-card {
     grid-column: auto;

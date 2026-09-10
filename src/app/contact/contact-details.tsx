@@ -1,5 +1,5 @@
 import Icon from "../_components/icon";
-export default function ContactDetails() {
+export default function ContactDetails({ showMap = false }: { showMap?: boolean }) {
   return (
     <aside className="contact-details">
       <h3>Get in Touch</h3>
@@ -43,6 +43,16 @@ export default function ContactDetails() {
           </p>
         </section>
       </div>
+      {showMap && (
+        <div className="contact-details-map">
+          <iframe
+            title="Astronis Global office location"
+            src="https://www.google.com/maps?q=C-10%2F1%2C%20Dwarka%20Mor%2C%20New%20Delhi&output=embed"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      )}
     </aside>
   );
 }
