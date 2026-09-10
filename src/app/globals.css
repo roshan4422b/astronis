@@ -1451,6 +1451,14 @@ textarea:focus {
 .testimonials-section > .relative {
   z-index: 1;
 }
+.testimonials-section > .relative > .center .text-link {
+  color: white;
+  border-bottom-color: #ffffff99;
+}
+.testimonials-section > .relative > .center .text-link:hover {
+  color: #d9ecff;
+  border-bottom-color: white;
+}
 .testimonials-backdrop {
   object-fit: cover;
   z-index: 0;
