@@ -22,7 +22,7 @@ export default function ContactDetails({ showMap = false }: { showMap?: boolean 
         <Icon name="phone" />
         <section>
           <h4>Head Office</h4>
-          <p>C-10/1, FF, Dwarka Mor,<br />New Delhi-110059.</p>
+          <p>C-10/1, First Floor, Bhagwati Garden Extension,<br />Dwarka Mor, New Delhi – 110059, India</p>
         </section>
       </div>
       <div>
@@ -47,7 +47,7 @@ export default function ContactDetails({ showMap = false }: { showMap?: boolean 
         <div className="contact-details-map">
           <iframe
             title="Astronis Global office location"
-            src="https://www.google.com/maps?q=C-10%2F1%2C%20Dwarka%20Mor%2C%20New%20Delhi&output=embed"
+            src="https://www.google.com/maps?q=C-10%2F1%2C%20First%20Floor%2C%20Bhagwati%20Garden%20Extension%2C%20Dwarka%20Mor%2C%20New%20Delhi%20%E2%80%93%20110059%2C%20India&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />

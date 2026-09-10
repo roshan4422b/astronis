@@ -15,7 +15,7 @@ export default function Contact() {
             <div className="home-contact-map">
               <iframe
                 title="Astronis Global office location"
-                src="https://www.google.com/maps?q=C-10%2F1%2C%20Dwarka%20Mor%2C%20New%20Delhi&output=embed"
+                src="https://www.google.com/maps?q=C-10%2F1%2C%20First%20Floor%2C%20Bhagwati%20Garden%20Extension%2C%20Dwarka%20Mor%2C%20New%20Delhi%20%E2%80%93%20110059%2C%20India&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />

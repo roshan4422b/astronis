@@ -8,9 +8,9 @@ export default function OfficeCard() {
       <h3>Astronis Global Pvt Ltd</h3>
       <p className="office-address">
         <Icon name="pin" />
-        C-10/1, FF, Dwarka Mor,
+        C-10/1, First Floor, Bhagwati Garden Extension,
         <br />
-        New Delhi-110059.
+        Dwarka Mor, New Delhi – 110059, India
       </p>
       <div className="office-map" aria-label="Map showing Astronis Global office">
         <span className="map-road map-road-one" />
@@ -22,7 +22,7 @@ export default function OfficeCard() {
         <span className="map-marker"><Icon name="pin" /></span>
         <span className="map-label">Astronis Global Pvt Ltd</span>
       </div>
-      <a className="button office-directions" href="https://www.google.com/maps/search/?api=1&query=C-10%2F1%2C%20Dwarka%20Mor%2C%20New%20Delhi" target="_blank" rel="noreferrer">
+      <a className="button office-directions" href="https://www.google.com/maps/search/?api=1&query=C-10%2F1%2C%20First%20Floor%2C%20Bhagwati%20Garden%20Extension%2C%20Dwarka%20Mor%2C%20New%20Delhi%20%E2%80%93%20110059%2C%20India" target="_blank" rel="noreferrer">
         Get Directions <span aria-hidden="true">→</span>
       </a>
     </article>
