@@ -1427,11 +1427,34 @@ textarea:focus {
   font-size: 16px;
 }
 .testimonial-invite {
+  position: relative;
+  z-index: 1;
   text-align: center;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border: 1px solid #d7e2f1;
+  border-radius: 18px;
   background: white;
   padding: 38px 24px;
+  box-shadow: 0 14px 34px #071c4f1c;
+}
+.testimonials-section {
+  position: relative;
+  overflow: hidden;
+  background: #eaf2fc;
+}
+.testimonials-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(90deg, #03183fd9, #03183f85 50%, #03183f9c);
+}
+.testimonials-section > .relative {
+  z-index: 1;
+}
+.testimonials-backdrop {
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.78;
 }
 .testimonial-invite > .icon {
   color: var(--blue);

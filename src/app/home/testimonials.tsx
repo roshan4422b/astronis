@@ -1,12 +1,21 @@
 import { Heading, Button, TextLink } from "../_components/ui";
 import Icon from "../_components/icon";
+import Image from "@/app/_components/asset-image";
 export default function Testimonials() {
   return (
-    <section className="section pale">
-      <div className="container">
+    <section className="section testimonials-section">
+      <Image
+        src="/Part-12 .png"
+        alt=""
+        fill
+        sizes="100vw"
+        className="testimonials-backdrop"
+      />
+      <div className="container relative">
         <Heading
           title="Client Testimonials"
           text="Hear directly from the businesses, professionals and organisations we have supported."
+          light
         />
         <div className="testimonial-invite">
           <Icon name="people" />
