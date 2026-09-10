@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import { practices } from "@/content/site";
 import Icon from "./icon";
+import SocialLinks from "./social-links";
 const groups = [
   {
     title: "About Us",
@@ -64,6 +65,7 @@ export default function Footer() {
               <br />
               Lasting business impact.
             </p>
+            <SocialLinks compact />
           </div>
           {groups.map((g) => (
             <div key={g.title}>
@@ -126,22 +128,20 @@ export default function Footer() {
       </a>
       <a
         className="floating-contact whatsapp"
-        href="https://wa.me/919311664455"
+        href="https://wa.me/918009898104?text=Hello%20Astronis%20Global%2C%20I%20would%20like%20to%20know%20more."
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Astronis Global on WhatsApp"
       >
         <svg
           viewBox="0 0 24 24"
-          width="27"
-          height="27"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
+          width="28"
+          height="28"
+          fill="white"
+          stroke="none"
           aria-hidden="true"
         >
-          <path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.1-4.4A8.5 8.5 0 1 1 20 11.5Z" />
-          <path d="m8 7 2 3-1 1 3 3 1-1 3 2c-2 4-11-5-8-8Z" />
+          <path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.1 1.6 5.9L0 24l6.3-1.6A12 12 0 0 0 24 12c0-3.2-1.2-6.2-3.5-8.5Zm-8.5 18.4c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-3.7 1 1-3.6-.2-.4A10 10 0 1 1 12 21.9Zm5.5-7.5c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.8-2.8-1.4-3.9-3.3-.3-.5.3-.4.8-1.3.1-.2.1-.4 0-.6l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.3 3.6 5.6 5 .8.3 1.5.5 2 .6.8.2 1.6.2 2.2.1.7-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4l-.5-.2Z" />
         </svg>
       </a>
     </>

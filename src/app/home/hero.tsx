@@ -41,7 +41,7 @@ export default function Hero() {
         </div>
         <div className="hero-statistics">
           {statistics.map(([value, label], i) => (
-            <div className="stat" key={value}>
+            <div className={`stat${value === "Multi-sector" ? " stat-multisector" : ""}`} key={value}>
               <Icon
                 name={
                   ["calendar", "people", "pin", "globe", "file", "building"][i]

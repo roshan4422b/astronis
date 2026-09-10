@@ -21,7 +21,7 @@ export default function Professionals() {
         </div>
       </div>
       <div className="container">
-        <Leadership limit={2} />
+        <Leadership limit={3} />
         <div className="center">
           <TextLink href="/professionals">View All Professionals</TextLink>
         </div>

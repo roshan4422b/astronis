@@ -15,7 +15,9 @@ export default function Clients() {
             View all clients
           </Button>
         </div>
-        <div className="trust-grid">
+      </div>
+      <div className="clients-trust-section">
+        <div className="container trust-grid">
           {[
             ["building", "Across Industries"],
             ["globe", "Pan India & Global Perspective"],

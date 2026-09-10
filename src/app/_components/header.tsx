@@ -15,10 +15,13 @@ const navigation = [
   {
     label: "About Us",
     href: "/about",
-    items: siteMenu.about.map((title) => ({
-      title,
-      href: "/about/" + slugify(title),
-    })),
+    items: [
+      ...siteMenu.about.map((title) => ({
+        title,
+        href: "/about/" + slugify(title),
+      })),
+      { title: "Our Clients", href: "/clients" },
+    ],
   },
   {
     label: "Services",
@@ -189,22 +192,13 @@ export default function Header() {
                         href={item.href}
                         onClick={close}
                       >
+                        <span aria-hidden="true">→</span>
                         {item.title}
-                        <span>→</span>
                       </Link>
                     ))}
                   </div>
               </div>
               </div>
-              {n.label === "Industries" && (
-                <Link
-                  href="/clients"
-                  className={path.startsWith("/clients") ? "active" : ""}
-                  onClick={close}
-                >
-                  Clients
-                </Link>
-              )}
             </Fragment>
           ))}
           <Link href="/contact" onClick={close}>
