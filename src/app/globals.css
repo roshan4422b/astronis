@@ -1162,6 +1162,12 @@ textarea:focus {
 .home-contact-section .enquiry-form {
   min-width: 0;
 }
+.home-contact-section .enquiry-form h3 {
+  font-size: 36px;
+}
+.contact-main .enquiry-form h3 {
+  font-size: 36px;
+}
 .home-contact-side {
   display: flex;
   min-height: 0;
