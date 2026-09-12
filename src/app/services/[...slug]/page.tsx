@@ -7,6 +7,7 @@ import {
 } from "@/content/site";
 import { Banner } from "../../_components/ui";
 import Overview from "./overview";
+import CorporateCommercial from "../corporate-commercial";
 function resolve(slugs: string[]) {
   const group = serviceGroups.find((g) => g.slug === slugs[0]);
   const practice = practices.find((p) => p.slug === slugs[0]);
@@ -46,7 +47,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string[] }>;
 }) {
   const data = resolve((await params).slug);
-  return { title: data?.title || "Service", description: data?.description };
+  return { title: data?.group === "corporate-advisory" && (await params).slug.length === 1 ? "Corporate & Commercial" : data?.title || "Service", description: data?.description };
 }
 export default async function ServicePage({
   params,
@@ -55,6 +56,9 @@ export default async function ServicePage({
 }) {
   const data = resolve((await params).slug);
   if (!data) notFound();
+  if (data.group === "corporate-advisory" && (await params).slug.length === 1) {
+    return <CorporateCommercial />;
+  }
   return (
     <>
       <Banner title={data.title} text={data.description} eyebrow="Services" />

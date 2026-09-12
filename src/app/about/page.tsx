@@ -1,21 +1,23 @@
-import Hero from "./hero";
-import Story from "./story";
-import Values from "./values";
-import Approach from "../home/approach";
-import Leadership from "../professionals/leadership";
-import Consultation from "../home/consultation";
-export const metadata = { title: "About Us" };
+﻿import Link from "next/link";
+import Image from "../_components/asset-image";
+import Icon from "../_components/icon";
+import { statistics } from "@/content/site";
+import styles from "./about.module.css";
+
+export const metadata = { title: "About Us", description: "Discover Astronis Global: our journey since 2015, our people and our integrated approach to legal, regulatory and business advisory." };
+const navigation = [["Our Story", "#our-story"], ["Vision & Mission", "/about/vision-and-mission"], ["Core Values", "/about/core-values"], ["Leadership Team", "/professionals"], ["Our Methodology", "#methodology"], ["Global Presence", "/global-presence"], ["Careers", "/about/careers"], ["Why Choose Us", "/about/why-choose-us"]];
+const journey = [["2015", "Our foundation", "A commitment to legal insight and practical client service."], ["Our expertise", "Integrated thinking", "Corporate, regulatory and business perspectives brought together."], ["Our reach", "Across India", "Supporting businesses across sectors and jurisdictions."], ["Our outlook", "Global perspective", "Collaboration for domestic and cross-border business needs."], ["Today", "A bigger tomorrow", "Growing with our clients, our people and our purpose."]];
+const clients = [["bulb", "Startups & Entrepreneurs"], ["people", "MSMEs & Family Businesses"], ["building", "Corporates & MNCs"], ["shield", "Financial Institutions"], ["scale", "Government & Regulatory Bodies"], ["globe", "NGOs & Social Enterprises"]];
+function Action({ href = "/contact", children, outline = false }: { href?: string; children: React.ReactNode; outline?: boolean }) { return <Link href={href} className={`${styles.button} ${outline ? styles.outline : ""}`}>{children}<Icon name="arrow" /></Link>; }
 export default function AboutPage() {
-  return (
-    <>
-      <Hero />
-      <Story />
-      <Values />
-      <Approach />
-      <section className="container">
-        <Leadership />
-      </section>
-      <Consultation />
-    </>
-  );
+  return <div className={styles.page}>
+    <section className={styles.hero} id="our-story"><Image src="/Real Estate & Construction .png" alt="" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}><div><nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/">Home</Link><span>›</span><span aria-current="page">About Us</span></nav><span className={styles.goldLine} /><h1>A Journey of Trust, Growth<br className={styles.desktopBreak} /> and Global Impact</h1><p>Legal insight. Business perspective. A shared ambition.<br className={styles.desktopBreak} /> Our journey is shaped by clients, people and purpose.</p></div><aside className={styles.heroNote}><span className={styles.goldLine} />Rooted<br />in values.<br />Built for<br />what’s next.<span className={styles.whiteLine} /></aside></div></section>
+    <nav aria-label="Explore About Us" className={styles.subnav}><div className="container">{navigation.map(([title, href], i) => <Link href={href} className={i === 0 ? styles.selected : undefined} key={title}>{title}</Link>)}</div></nav>
+    <section className={styles.journey} aria-labelledby="journey-title"><div className={`container ${styles.journeyInner}`}><div><span className={styles.eyebrow}>OUR EVOLUTION</span><h2 id="journey-title">A Journey with Purpose</h2><p>A decade of progress, powered by trust, expertise and enduring client relationships.</p></div><ol className={styles.timeline}>{journey.map(([label, title, text]) => <li key={label}><span className={styles.milestone}>{label}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>
+    <section className={styles.highlights} aria-label="Our story in perspective"><div className={`container ${styles.highlightGrid}`}><div className={styles.numbers}><span className={styles.eyebrow}>OUR JOURNEY IN NUMBERS</span><dl>{[statistics[1], statistics[4], statistics[2], statistics[3], statistics[5], ["Long-term", "Client Relationships"]].map(([value, label]) => <div key={label}><dt>{value}</dt><dd>{label}</dd></div>)}</dl></div><div className={styles.perspectives}><Image src="/Part-11 .png" alt="A modern office with city views and a world map" fill sizes="(max-width: 800px) 100vw, 33vw" /><h2>Different<br />Perspectives.<br />Stronger<br />Solutions.</h2><span className={styles.whiteLine} /></div><div className={styles.purpose}><span className={styles.eyebrow}>OUR PURPOSE</span><h2>Creating Meaningful Impact</h2><p>We exist to help businesses, entrepreneurs, institutions and individuals navigate complexity with clarity, integrity and confidence — and create long-term value for a better tomorrow.</p><Action href="/about/vision-and-mission">Our Vision & Mission</Action></div></div></section>
+    <section className={styles.community}><div className={`container ${styles.communityGrid}`}><div className={styles.clients}><span className={styles.eyebrow}>WHO WE SERVE</span><h2>Clients Across Sectors</h2><p>We work with a diverse range of clients, from startups and growing businesses to established corporates, institutions and global organisations.</p><ul>{clients.map(([icon, title]) => <li key={title}><span><Icon name={icon} /></span>{title}</li>)}</ul></div><div className={styles.statement}><Image src="/Part-9 .png" alt="" fill sizes="(max-width: 800px) 100vw, 30vw" /><span className={styles.statementMark} aria-hidden="true">“</span><p>Our clients’ success<br />continues to inspire<br />our journey.</p><span className={styles.whiteLine} /><span className={styles.statementFoot}>SHARED AMBITION.<br />LASTING PARTNERSHIPS.</span></div><div className={styles.people}><span className={styles.eyebrow}>OUR PEOPLE</span><h2>A Multidisciplinary Team</h2><p>Our strength lies in our people — a team bringing legal, regulatory and business advisory perspectives together to deliver practical solutions with a client-first approach.</p><Action href="/professionals">Meet Our Team</Action><div className={styles.peopleImage}><Image src="/Part-10 .png" alt="Professionals in conversation in a contemporary office" fill sizes="(max-width: 800px) 100vw, 33vw" /></div></div></div></section>
+    <section className={styles.methodology} id="methodology"><div className="container"><div className={styles.methodHeading}><div><span className={styles.eyebrow}>HOW WE WORK</span><h2>Clarity at Every Step</h2></div><p>Listen carefully. Think broadly. Deliver practical advice.</p></div><ol>{[["search", "Understand", "Your goals and business context."], ["chart", "Assess", "The risks, requirements and opportunities."], ["bulb", "Strategise", "A practical plan shaped around you."], ["people", "Deliver", "Coordinated support and clear communication."]].map(([icon, title, text], i) => <li key={title}><span className={styles.methodIcon}><Icon name={icon} /></span><div><span className={styles.step}>0{i + 1}</span><h3>{title}</h3><p>{text}</p></div></li>)}</ol></div></section>
+    <section className={styles.tomorrow}><Image src="/Part-11 .png" alt="" fill sizes="100vw" /><div className={`container ${styles.tomorrowInner}`}><div><h2>Committed to a<br />Better Tomorrow</h2><p>Guided by our values, we continue to build stronger businesses, lasting relationships and a more inclusive future.</p></div><div className={styles.tomorrowNote}>People<br />Opportunities<br />Progress<br />A stronger tomorrow<span className={styles.whiteLine} /></div></div></section>
+    <section className={styles.contact}><div className={`container ${styles.contactInner}`}><div><h2>Let’s Create What’s Next <span>—</span> Together.</h2><p>Speak with our team to explore how Astronis Global can support your goals.</p></div><div className={styles.actions}><Action>Contact Us</Action><Action outline>Request a Consultation</Action></div></div></section>
+  </div>;
 }

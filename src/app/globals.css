@@ -1754,6 +1754,118 @@ textarea:focus {
 .enquiry-form h3 .icon {
   color: var(--blue);
 }
+.service-consultation {
+  background: #edf3fb;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.service-consultation-title {
+  margin: 0 0 28px;
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.08;
+  color: #082b69;
+  font-family: Georgia, serif;
+  letter-spacing: -0.04em;
+}
+.service-consultation-shell {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+.service-consultation-side {
+  background: linear-gradient(180deg, #062a66, #041f47);
+  color: white;
+  border-radius: 14px 0 0 14px;
+  padding: 30px 26px 40px;
+  position: relative;
+  min-height: 520px;
+}
+.service-consultation-side h3 {
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.1;
+  font-family: Georgia, serif;
+  margin: 0 0 18px;
+  max-width: 300px;
+}
+.service-consultation-side p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(225, 234, 255, 0.95);
+  margin: 0 0 18px;
+}
+.service-consultation-points {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+.service-consultation-points p {
+  font-size: 18px;
+  line-height: 1.45;
+  color: white;
+  font-family: Georgia, serif;
+  margin: 0;
+}
+.service-call-button {
+  position: absolute;
+  left: 26px;
+  bottom: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #0a7be8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 10px 22px rgba(18, 112, 245, 0.35);
+}
+.service-call-button .icon {
+  width: 26px;
+  height: 26px;
+}
+.service-consultation-form-wrap {
+  background: #f5f7fb;
+  border-radius: 0 14px 14px 0;
+  border: 1px solid rgba(11, 38, 90, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 18px 14px;
+}
+.service-consultation-form-wrap .enquiry-form {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 20px 18px;
+}
+.service-consultation-form-wrap .enquiry-form h3 {
+  font-size: clamp(28px, 2vw, 36px);
+  margin-bottom: 14px;
+}
+.service-consultation-form-wrap .enquiry-intro {
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.service-consultation-form-wrap .form-grid {
+  gap: 18px 18px;
+}
+.service-consultation-form-wrap .form-grid label {
+  font-size: 12px;
+  font-weight: 700;
+}
+.service-consultation-form-wrap input,
+.service-consultation-form-wrap select,
+.service-consultation-form-wrap textarea {
+  border: 1px solid #c9d5eb;
+  border-radius: 6px;
+  background: #f7f9ff;
+  padding: 12px 13px;
+}
+.service-consultation-form-wrap .button {
+  margin-top: 20px;
+}
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
