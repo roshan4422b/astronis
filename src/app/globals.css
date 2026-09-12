@@ -1957,16 +1957,44 @@ textarea::placeholder {
 }
 .footer-grid a {
   display: flex;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 9px;
   font-size: 11px;
   line-height: 1.7;
   padding: 5px 0;
   color: #d2e1f7;
   overflow-wrap: anywhere;
+  text-align: left;
 }
 .footer-grid a:hover {
   color: white;
+}
+.footer-grid a > span[aria-hidden="true"] {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-contact-list .contact-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+}
+.footer-contact-list .contact-row .icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+}
+.footer-contact-list .contact-row span {
+  flex: 1;
 }
 .footer-grid p {
   font-size: 11px;

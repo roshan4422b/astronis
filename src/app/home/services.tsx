@@ -17,7 +17,7 @@ export default function Services() {
     <section className="section pale practice-section">
       <div className="container">
         <Heading
-          title="Our Practice Areas"
+          title="Our Capabilities"
           text="Integrated legal, regulatory and business advisory capabilities for evolving enterprises."
         />
         <div className="practice-grid">

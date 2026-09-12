@@ -1,5 +1,10 @@
 import { notFound } from "next/navigation";
-import { practices, serviceGroups, slugify } from "@/content/site";
+import {
+  practices,
+  serviceFaqs,
+  serviceGroups,
+  slugify,
+} from "@/content/site";
 import { Banner } from "../../_components/ui";
 import Overview from "./overview";
 function resolve(slugs: string[]) {
@@ -12,6 +17,7 @@ function resolve(slugs: string[]) {
       : undefined;
   if (slugs.length === 2 && !item) return null;
   const title = item || group?.title || practice!.title;
+  const faqKey = item ? slugify(item) : group?.slug || practice!.slug;
   return {
     title,
     description: item
@@ -20,6 +26,7 @@ function resolve(slugs: string[]) {
         `Business-focused support across ${title.toLowerCase()}, with legal, regulatory and commercial perspective.`,
     group: slugs[0],
     items: item ? [] : group?.items || [],
+    faqs: serviceFaqs[faqKey] || serviceFaqs[group?.slug || practice!.slug] || [],
   };
 }
 export function generateStaticParams() {

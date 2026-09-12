@@ -2,6 +2,19 @@ import Image from "@/app/_components/asset-image";
 import { reasons } from "@/content/site";
 import Icon from "../_components/icon";
 export default function WhyChooseUs() {
+  const icons = [
+    "bulb",
+    "chart",
+    "shield",
+    "globe",
+    "mail",
+    "people",
+    "pin",
+    "document",
+    "building",
+    "phone",
+  ];
+
   return (
     <section className="why-section">
       <div className="why-intro">
@@ -30,10 +43,8 @@ export default function WhyChooseUs() {
       <div className="reasons-grid">
         {reasons.map(([title, text], i) => (
           <article key={title}>
-            <span className="number-badge">0{i + 1}</span>
-            <Icon
-              name={["bulb", "people", "chart", "shield", "globe", "people"][i]}
-            />
+            <span className="number-badge">{i + 1}</span>
+            <Icon name={icons[i] ?? "globe"} />
             <div>
               <h3>{title}</h3>
               <p>{text}</p>

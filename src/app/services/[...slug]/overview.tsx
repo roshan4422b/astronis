@@ -6,11 +6,13 @@ export default function Overview({
   description,
   group,
   items,
+  faqs,
 }: {
   title: string;
   description: string;
   group: string;
   items: string[];
+  faqs?: [string, string][];
 }) {
   return (
     <section className="section">
@@ -45,6 +47,22 @@ export default function Overview({
                     </li>
                   ))}
                 </ul>
+              </div>
+            </>
+          )}
+          {faqs && faqs.length > 0 && (
+            <>
+              <h2>Frequently asked questions</h2>
+              <div className="faq-list">
+                {faqs.map(([question, answer]) => (
+                  <details key={question}>
+                    <summary>
+                      {question}
+                      <span aria-hidden="true">+</span>
+                    </summary>
+                    <p>{answer}</p>
+                  </details>
+                ))}
               </div>
             </>
           )}

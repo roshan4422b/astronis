@@ -1,43 +1,65 @@
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
-import { practices } from "@/content/site";
 import Icon from "./icon";
 import SocialLinks from "./social-links";
 const groups = [
   {
-    title: "About Us",
+    title: "Quick Links",
     links: [
-      ["Our Story", "/about/our-story"],
-      ["Our People", "/professionals"],
-      ["Our Values", "/about/core-values"],
-      ["Careers", "/about/careers"],
-    ],
-  },
-  {
-    title: "Services",
-    links: practices.map((s) => [s.title, "/services/" + s.slug]),
-  },
-  {
-    title: "Explore",
-    links: [
-      ["All Industries", "/industries"],
-      ["Insights & Resources", "/insights"],
+      ["About Us", "/about"],
+      ["Services", "/services"],
+      ["Industries", "/industries"],
+      ["Professionals", "/professionals"],
       ["Knowledge Centre", "/knowledge-centre"],
-      ["Success Stories", "/success-stories"],
-      ["Testimonials", "/testimonials"],
-      ["FAQs", "/faqs"],
-      ["Media & Events", "/media"],
+      ["Insights & Events", "/insights"],
+      ["Technology & Digital Solutions", "/services"],
+      ["Careers", "/about/careers"],
+      ["Contact Us", "/contact"],
     ],
   },
   {
-    title: "Global Presence",
+    title: "Our Services",
     links: [
-      ["Our Global Network", "/global-presence"],
-      ["Country / Jurisdiction", "/global-presence#countries"],
-      ["Local Insight", "/global-presence/local-insight"],
-      ["Partner With Us", "/professionals/partner-with-us"],
-      ["Resources", "/resources"],
-      ["Client Portal", "/client-portal"],
+      ["Corporate & Commercial", "/services/corporate-advisory"],
+      ["Regulatory Services", "/services/regulatory-and-compliance"],
+      ["Litigation & Dispute Resolution", "/services/litigation-and-dispute-resolution"],
+      ["Business Advisory", "/services/business-advisory"],
+      ["Licensing & Registrations", "/services/licensing-and-registrations"],
+      ["IPR & Other Registrations", "/services/intellectual-property"],
+      ["FEMA / Foreign Exchange", "/services/foreign-investment"],
+      ["Compliance & Risk Advisory", "/services/regulatory-and-compliance"],
+      ["Employment & HR Advisory", "/services"],
+      ["Tax Advisory & Support", "/services/taxation-and-compliance"],
+    ],
+  },
+  {
+    title: "Industries",
+    links: [
+      ["Banking & Financial Services", "/industries"],
+      ["Fintech", "/industries"],
+      ["Real Estate & Construction", "/industries"],
+      ["Manufacturing", "/industries"],
+      ["Technology, Media & Telecom", "/industries"],
+      ["Healthcare & Pharmaceuticals", "/industries"],
+      ["Education", "/industries"],
+      ["Startups & Innovation", "/industries"],
+      ["Retail & E-Commerce", "/industries"],
+      ["NGOs & Not-for-Profit", "/industries"],
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      ["Knowledge Centre", "/knowledge-centre"],
+      ["Articles", "/insights"],
+      ["Whitepapers", "/resources"],
+      ["Case Studies", "/success-stories"],
+      ["Guides & Checklists", "/resources"],
+      ["FAQs", "/faqs"],
+      ["Newsroom", "/media"],
+      ["Events", "/media"],
+      ["Videos", "/media"],
+      ["Legal Updates", "/insights"],
     ],
   },
 ];
@@ -72,24 +94,36 @@ export default function Footer() {
               <h3>{g.title}</h3>
               {g.links.map(([title, href]) => (
                 <Link key={title} href={href}>
+                  <span aria-hidden="true">›</span>
                   {title}
-                  <span>›</span>
                 </Link>
               ))}
             </div>
           ))}
           <div>
             <h3>Contact Us</h3>
-            <a href="tel:+919311664455">+91 9311664455</a>
-            <a href="tel:01146574455">01146574455</a>
-            <a href="mailto:advisory@astronisglobal.com">
-              advisory@astronisglobal.com
-            </a>
-            <p>
-              C-10/1, First Floor, Bhagwati Garden Extension, Dwarka Mor, New
-              Delhi – 110059, India
-            </p>
-            <Link href="/contact">Get in Touch →</Link>
+            <div className="footer-contact-list">
+              <Link href="/contact" className="contact-row">
+                <Icon name="pin" />
+                <span>
+                  Astronis Global Pvt Ltd
+                  <br />
+                  C-10/1, FF, Dwarka Mor, New Delhi-110059.
+                </span>
+              </Link>
+              <a href="tel:+919311664455" className="contact-row">
+                <Icon name="phone" />
+                <span>+91 9311664455 / 01146574455</span>
+              </a>
+              <a href="mailto:advisory@astronisglobal.com" className="contact-row">
+                <Icon name="mail" />
+                <span>advisory@astronisglobal.com</span>
+              </a>
+              <a href="https://www.astronisglobal.com" className="contact-row" target="_blank" rel="noreferrer">
+                <Icon name="globe" />
+                <span>www.astronisglobal.com</span>
+              </a>
+            </div>
           </div>
         </div>
         <div className="container footer-bottom">

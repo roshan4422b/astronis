@@ -148,13 +148,6 @@ export default function Header() {
           aria-label="Main navigation"
           className={mobile ? "navigation is-open" : "navigation"}
         >
-          <Link
-            href="/"
-            className={path === "/" ? "active" : ""}
-            onClick={close}
-          >
-            Home
-          </Link>
           {navigation.map((n) => (
             <Fragment key={n.href}>
               <div
