@@ -7,6 +7,7 @@ import Manufacturing from "../manufacturing";
 import RealEstate from "../real-estate";
 import Education from "../education";
 import Hospitality from "../hospitality";
+import Infrastructure from "../infrastructure";
 export function generateStaticParams() {
   return industries.map((i) => ({ slug: i.slug }));
 }
@@ -30,6 +31,7 @@ export default async function IndustryPage({
   if (slug === "real-estate-and-construction") return <RealEstate />;
   if (slug === "education") return <Education />;
   if (slug === "hospitality") return <Hospitality />;
+  if (slug === "infrastructure") return <Infrastructure />;
   return (
     <>
       <Banner
