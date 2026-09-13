@@ -3,6 +3,7 @@ import { industries } from "@/content/site";
 import { Banner } from "../../_components/ui";
 import Overview from "./overview";
 import Consultation from "../../home/consultation";
+import Manufacturing from "../manufacturing";
 export function generateStaticParams() {
   return industries.map((i) => ({ slug: i.slug }));
 }
@@ -22,6 +23,7 @@ export default async function IndustryPage({
   const { slug } = await params;
   const item = industries.find((i) => i.slug === slug);
   if (!item) notFound();
+  if (slug === "manufacturing") return <Manufacturing />;
   return (
     <>
       <Banner

@@ -2606,6 +2606,66 @@ textarea::placeholder {
 .search-toolbar select {
   width: 250px;
 }
+.industry-results-count {
+  margin: -8px 0 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.industry-directory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+.industry-directory-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 5px 16px #071c4f0a;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.industry-directory-card:hover {
+  transform: translateY(-5px);
+  border-color: #9cb9dd;
+  box-shadow: 0 16px 28px #071c4f18;
+}
+.industry-directory-image {
+  position: relative;
+  aspect-ratio: 1.6;
+  overflow: hidden;
+  background: var(--pale);
+}
+.industry-directory-image img {
+  object-fit: cover;
+  transition: transform .4s;
+}
+.industry-directory-card:hover .industry-directory-image img {
+  transform: scale(1.05);
+}
+.industry-directory-body {
+  position: relative;
+  min-height: 132px;
+  padding: 19px 18px 16px;
+}
+.industry-directory-number {
+  display: block;
+  margin-bottom: 9px;
+  color: #b38628;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.industry-directory-body h3 {
+  min-height: 52px;
+  margin-bottom: 12px;
+  font-family: Georgia, serif;
+  font-size: 19px;
+  line-height: 1.25;
+}
+.industry-directory-body .text-link {
+  font-size: 12px;
+}
 .filter-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -4177,4 +4237,18 @@ textarea::placeholder {
   .quick-grid .service-card:focus-visible .service-card-icon,
   .quick-grid .service-card:hover .service-card-cta .icon,
   .quick-grid .service-card:focus-visible .service-card-cta .icon { transform: none; }
+}
+@media (max-width: 1050px) {
+  .industry-directory-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .industry-directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .industry-directory-body { min-height: 124px; padding: 16px 14px 14px; }
+  .industry-directory-body h3 { min-height: 48px; font-size: 17px; }
+}
+@media (max-width: 480px) {
+  .industry-directory-grid { grid-template-columns: 1fr; gap: 18px; }
+  .industry-directory-image { aspect-ratio: 1.8; }
+  .industry-directory-body { min-height: 0; padding: 18px; }
+  .industry-directory-body h3 { min-height: 0; font-size: 21px; }
 }

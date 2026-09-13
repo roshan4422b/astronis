@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "@/app/_components/asset-image";
 import { industries } from "@/content/site";
-import { TextLink } from "../_components/ui";
+import { Heading, TextLink } from "../_components/ui";
 export default function IndustryDirectory() {
   const [search, setSearch] = useState("");
   const results = industries.filter((i) =>
@@ -11,6 +11,10 @@ export default function IndustryDirectory() {
   return (
     <section className="section">
       <div className="container">
+        <Heading
+          title="Explore 24 Industries"
+          text="Sector-focused legal, regulatory and business advisory for the markets and environments in which your organisation operates."
+        />
         <div className="search-toolbar">
           <input
             type="search"
@@ -20,24 +24,27 @@ export default function IndustryDirectory() {
             aria-label="Search industries"
           />
         </div>
-        <p role="status" style={{ marginBottom: 22 }}>
-          {results.length} industries
+        <p className="industry-results-count" role="status">
+          Showing {results.length} of {industries.length} industries
         </p>
-        <div className="directory-grid">
+        <div className="industry-directory-grid">
           {results.map((i) => (
-            <article className="insight-card" key={i.slug}>
-              <div className="card-image">
+            <article className="industry-directory-card" key={i.slug}>
+              <div className="industry-directory-image">
                 <Image
                   src={i.image}
                   alt={i.title}
                   fill
-                  sizes="(max-width: 760px) 100vw, 33vw"
+                  sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 25vw"
                 />
               </div>
-              <div className="card-body">
+              <div className="industry-directory-body">
+                <span className="industry-directory-number">
+                  {String(industries.indexOf(i) + 1).padStart(2, "0")}
+                </span>
                 <h3>{i.title}</h3>
                 <TextLink href={"/industries/" + i.slug}>
-                  Explore Industry
+                  Explore industry
                 </TextLink>
               </div>
             </article>
