@@ -1,7 +1,7 @@
 ﻿import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
-import { industries, practices, serviceGroups } from "@/content/site";
+import { industries, practices, serviceBanners } from "@/content/site";
 import FAQ from "../home/faq";
 import Insights from "../home/insights";
 import SuccessStories from "../home/success-stories";
@@ -10,15 +10,7 @@ import ServiceDirectory from "./service-directory";
 import styles from "./services.module.css";
 
 export const metadata = { title: "Services", description: "Explore Astronis Global’s corporate, legal, regulatory and business advisory services. Integrated expertise for every stage of your business." };
-const banners: Record<string, string> = {
-  "corporate-advisory": "Part-10 .png", "regulatory-and-compliance": "overnment, Public Sector & Institutions .png",
-  "litigation-and-dispute-resolution": "Part-6 .png", "business-advisory": "Professional & Business Services .png",
-  "licensing-and-registrations": "Part-18 .png", "intellectual-property": "Technology, IT & ITES .png",
-  "foreign-investment": "Part-9 .png", "taxation-and-compliance": "Banking & Financial Services .png",
-  "business-formation": "Part-11 .png", "startup-advisory": "Startups & Emerging Businesses .png",
-  "banking-rbi-nbfc": "Banking & Financial Services1 .png", contracts: "Part-14 .png", "corporate-transactions": "Part-16 .png",
-};
-const categories = [...practices, ...serviceGroups.filter(g => !practices.some(p => p.slug === g.slug)).map(g => ({ slug: g.slug, title: g.slug === "banking-rbi-nbfc" ? "Banking, RBI & NBFC" : g.title, description: `Specialist support for ${g.items.slice(0, 3).join(", ").toLowerCase()} and more.` }))];
+const categories = practices;
 const featured = [
   { title: "Mergers & Acquisitions", description: "Strategic guidance for transformational transactions.", slug: "corporate-transactions/manda", image: "Part-16 .png" },
   { title: "Corporate Restructuring", description: "Reshape your business for efficiency and growth.", slug: "corporate-advisory/corporate-restructuring", image: "Part-10 .png" },
@@ -35,7 +27,7 @@ export default function ServicesPage() {
       <Image src="/Part-6 .png" alt="" fill preload sizes="100vw" className={styles.heroImage} />
       <div className={`container ${styles.heroContent}`}><nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/">Home</Link><span>/</span><span aria-current="page">Services</span></nav><span className={styles.eyebrow}>EXPERTISE THAT MOVES YOU FORWARD</span><h1>Our Services</h1><p className={styles.tagline}>Comprehensive. Integrated. Future-focused.</p><p className={styles.intro}>Legal clarity. Regulatory confidence. Business progress. We bring the right expertise together to help you navigate complexity and unlock your next opportunity.</p><Action>Speak to an Advisor</Action></div>
     </section>
-    <section className={styles.section} aria-labelledby="categories-title"><div className="container"><div className={styles.sectionTop}><div><span className={styles.eyebrow}>OUR EXPERTISE</span><h2 id="categories-title">Explore Our Service Categories</h2></div><Link href="#all-services" className={styles.textLink}>Browse all services <Icon name="arrow" /></Link></div><div className={styles.categoryGrid}>{categories.map(s => <Card key={s.slug} {...s} image={banners[s.slug] || "Part-10 .png"} />)}</div></div></section>
+    <section className={styles.section} aria-labelledby="categories-title"><div className="container"><div className={styles.sectionTop}><div><span className={styles.eyebrow}>OUR EXPERTISE</span><h2 id="categories-title">Explore Our Service Categories</h2></div><Link href="#all-services" className={styles.textLink}>Browse all services <Icon name="arrow" /></Link></div><div className={styles.categoryGrid}>{categories.map(s => <Card key={s.slug} {...s} image={serviceBanners[s.slug]} />)}</div></div></section>
     <section className={styles.solution}><Image src="/Real Estate & Construction .png" alt="" fill sizes="100vw" /><div className={`container ${styles.solutionContent}`}><span className={styles.eyebrow}>ONE PARTNER. A BROADER PERSPECTIVE.</span><h2>Integrated Solutions for<br />a Complex World</h2><p>We connect legal, regulatory and commercial expertise to deliver practical advice that works for your business.</p><Action>Discuss Your Requirements</Action></div></section>
     <section className={styles.approach} aria-labelledby="approach-title"><div className={`container ${styles.approachInner}`}><div><span className={styles.eyebrow}>OUR SERVICE APPROACH</span><h2 id="approach-title">From Insight<br />to Impact</h2><p>A clear path from understanding your challenge to putting the right solution into action.</p></div><ol className={styles.steps}>{steps.map(([icon, title, text], i) => <li key={title}><Icon name={icon} /><span className={styles.stepNumber}>0{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>
     <section className={`${styles.section} ${styles.featured}`} aria-labelledby="featured-title"><div className="container"><div className={styles.sectionTop}><div><span className={styles.eyebrow}>SUPPORT AT EVERY MILESTONE</span><h2 id="featured-title">Featured Services</h2></div><Link href="#all-services" className={styles.textLink}>View all services <Icon name="arrow" /></Link></div><div className={styles.featuredGrid}>{featured.map(s => <Card key={s.slug} {...s} />)}</div></div></section>

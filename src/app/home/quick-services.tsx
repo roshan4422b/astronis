@@ -19,15 +19,12 @@ export default function QuickServices() {
           light
         />
         <div className="quick-grid">
-          {practices.map((service, index) => (
+          {practices.slice(0, 8).map((service, index) => (
             <ServiceCard service={service} index={index} key={service.slug} />
           ))}
         </div>
         <div className="quick-extra">
-          <Button href="/insights" secondary>
-            Insights & Resources
-          </Button>
-          <Button href="/contact">Get in Touch</Button>
+          <Button href="/services">View All Services</Button>
         </div>
       </div>
     </section>

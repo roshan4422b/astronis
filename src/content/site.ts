@@ -18,14 +18,14 @@ export const serviceGroups = menu.map((group) => ({
 }));
 export const practices = [
   {
-    title: "Corporate & Commercial",
+    title: "Corporate & Commercial Advisory",
     description:
-      "Entity structuring, contracts, joint ventures, M&A and corporate governance.",
-    slug: "corporate-advisory",
+      "Entity structuring, contracts, transactions, governance and commercial advice.",
+    slug: "corporate-and-commercial-advisory",
     icon: "building",
   },
   {
-    title: "Regulatory Services",
+    title: "Regulatory & Compliance Services",
     description:
       "Regulatory compliance, licensing, approvals, advisory and representation.",
     slug: "regulatory-and-compliance",
@@ -39,10 +39,10 @@ export const practices = [
     icon: "scale",
   },
   {
-    title: "Business Advisory",
+    title: "Business Advisory & Consulting",
     description:
       "Strategic business advisory, risk management, transactions and transformation.",
-    slug: "business-advisory",
+    slug: "business-advisory-and-consulting",
     icon: "chart",
   },
   {
@@ -52,27 +52,121 @@ export const practices = [
     icon: "file",
   },
   {
-    title: "IPR & Other Registrations",
+    title: "Intellectual Property Rights",
     description:
       "Trademark, copyright, patent, design and intellectual-property protection.",
-    slug: "intellectual-property",
+    slug: "intellectual-property-rights",
     icon: "bulb",
   },
   {
-    title: "FEMA / Foreign Exchange",
+    title: "FEMA, FDI & Foreign Exchange Advisory",
     description:
       "FEMA, RBI, FDI, ODI, ECB and cross-border transaction advisory.",
-    slug: "foreign-investment",
+    slug: "fema-fdi-and-foreign-exchange-advisory",
     icon: "globe",
   },
   {
-    title: "Taxation & Compliance",
+    title: "NCLT & NCLAT Advisory",
+    description: "Advisory and representation for corporate insolvency and tribunal matters.",
+    slug: "nclt-and-nclat-advisory",
+    icon: "scale",
+  },
+  {
+    title: "Banking, NBFC & Financial Services Advisory",
+    description: "Strategic legal and regulatory support for banking and financial services businesses.",
+    slug: "banking-nbfc-and-financial-services-advisory",
+    icon: "building",
+  },
+  {
+    title: "Startup & Investment Advisory",
+    description: "Advisory for founders, investors, fundraising, investments and growth transactions.",
+    slug: "startup-and-investment-advisory",
+    icon: "chart",
+  },
+  {
+    title: "HR & Employment Advisory",
+    description: "Employment contracts, workplace policies and practical people advisory.",
+    slug: "hr-and-employment-advisory",
+    icon: "people",
+  },
+  {
+    title: "MSME Advisory & Disputes",
+    description: "Business, compliance and dispute support tailored to MSMEs.",
+    slug: "msme-advisory-and-disputes",
+    icon: "building",
+  },
+  {
+    title: "Arbitration & Conciliation",
+    description: "Strategic support for arbitration, conciliation and negotiated resolution.",
+    slug: "arbitration-and-conciliation",
+    icon: "scale",
+  },
+  {
+    title: "DRT & DRAT Matters",
+    description: "Representation and advisory support for debt recovery tribunal matters.",
+    slug: "drt-and-drat-matters",
+    icon: "scale",
+  },
+  {
+    title: "NCLT & NCLAT Matters",
+    description: "Representation and support for proceedings before NCLT and NCLAT.",
+    slug: "nclt-and-nclat-matters",
+    icon: "scale",
+  },
+  {
+    title: "RERA & Real Estate Advisory",
+    description: "Real estate regulatory, project, transaction and dispute advisory.",
+    slug: "rera-and-real-estate-advisory",
+    icon: "building",
+  },
+  {
+    title: "GST & Indirect Tax Regulatory Support",
     description:
-      "Tax advisory, registrations, compliance and regulatory support.",
-    slug: "taxation-and-compliance",
+      "GST registrations, compliance, notices and indirect tax regulatory support.",
+    slug: "gst-and-indirect-tax-regulatory-support",
     icon: "document",
   },
+  {
+    title: "Risk, Governance & Forensic Advisory",
+    description: "Risk assessments, governance frameworks, investigations and forensic reviews.",
+    slug: "risk-governance-and-forensic-advisory",
+    icon: "search",
+  },
+  {
+    title: "ESG & Sustainability Advisory",
+    description: "Practical ESG, sustainability, reporting and governance advisory.",
+    slug: "esg-and-sustainability-advisory",
+    icon: "globe",
+  },
+  {
+    title: "Cross-Border & International Business Support",
+    description: "Support for international expansion, India entry and cross-border transactions.",
+    slug: "cross-border-and-international-business-support",
+    icon: "globe",
+  },
 ];
+export const serviceBanners: Record<string, string> = {
+  "corporate-and-commercial-advisory": "Part-10 .png",
+  "regulatory-and-compliance": "Part-8 .png",
+  "litigation-and-dispute-resolution": "Part-6 .png",
+  "business-advisory-and-consulting": "Part-16 .png",
+  "licensing-and-registrations": "Part-7 .png",
+  "intellectual-property-rights": "Part-14 .png",
+  "fema-fdi-and-foreign-exchange-advisory": "Part-9 .png",
+  "nclt-and-nclat-advisory": "Part-18 .png",
+  "banking-nbfc-and-financial-services-advisory": "Banking & Financial Services1 .png",
+  "startup-and-investment-advisory": "Startups & Emerging Businesses .png",
+  "hr-and-employment-advisory": "Part-11 .png",
+  "msme-advisory-and-disputes": "Professional & Business Services .png",
+  "arbitration-and-conciliation": "Part-14 .png",
+  "drt-and-drat-matters": "Part-18 .png",
+  "nclt-and-nclat-matters": "Part-6 .png",
+  "rera-and-real-estate-advisory": "Real Estate & Construction .png",
+  "gst-and-indirect-tax-regulatory-support": "Banking & Financial Services1 .png",
+  "risk-governance-and-forensic-advisory": "Part-8 .png",
+  "esg-and-sustainability-advisory": "Part-5 .png",
+  "cross-border-and-international-business-support": "Part-9 .png",
+};
 export const reasons = [
   [
     "Deep Domain Expertise",

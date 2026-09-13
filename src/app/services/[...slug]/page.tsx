@@ -47,7 +47,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string[] }>;
 }) {
   const data = resolve((await params).slug);
-  return { title: data?.group === "corporate-advisory" && (await params).slug.length === 1 ? "Corporate & Commercial" : data?.title || "Service", description: data?.description };
+  return { title: ["corporate-advisory", "corporate-and-commercial-advisory"].includes(data?.group ?? "") && (await params).slug.length === 1 ? "Corporate & Commercial" : data?.title || "Service", description: data?.description };
 }
 export default async function ServicePage({
   params,
@@ -56,7 +56,7 @@ export default async function ServicePage({
 }) {
   const data = resolve((await params).slug);
   if (!data) notFound();
-  if (data.group === "corporate-advisory" && (await params).slug.length === 1) {
+  if (["corporate-advisory", "corporate-and-commercial-advisory"].includes(data.group) && (await params).slug.length === 1) {
     return <CorporateCommercial />;
   }
   return (

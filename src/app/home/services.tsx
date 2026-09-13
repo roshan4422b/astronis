@@ -1,17 +1,7 @@
 import Image from "@/app/_components/asset-image";
-import { practices } from "@/content/site";
+import { practices, serviceBanners } from "@/content/site";
 import { Heading, TextLink } from "../_components/ui";
 import Icon from "../_components/icon";
-const images = [
-  "Part-10 .png",
-  "overnment, Public Sector & Institutions .png",
-  "Part-6 .png",
-  "Part-16 .png",
-  "Part-18 .png",
-  "Part-4 .png",
-  "Part-9 .png",
-  "Part-14 .png",
-];
 export default function Services() {
   return (
     <section className="section pale practice-section">
@@ -21,11 +11,11 @@ export default function Services() {
           text="Integrated legal, regulatory and business advisory capabilities for evolving enterprises."
         />
         <div className="practice-grid">
-          {practices.map((p, i) => (
+          {practices.slice(0, 8).map((p) => (
             <article className="practice-card" key={p.slug}>
               <div className="card-image">
                 <Image
-                  src={"/" + images[i]}
+                  src={"/" + serviceBanners[p.slug]}
                   alt={p.title}
                   fill
                   sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 25vw"

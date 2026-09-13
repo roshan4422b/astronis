@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   countries,
   industries,
-  serviceGroups,
+  practices,
   siteMenu,
   slugify,
 } from "@/content/site";
@@ -26,9 +26,9 @@ const navigation = [
   {
     label: "Services",
     href: "/services",
-    items: serviceGroups.map((s) => ({
-      title: s.title,
-      href: "/services/" + s.slug,
+    items: practices.map((service) => ({
+      title: service.title,
+      href: "/services/" + service.slug,
     })),
   },
   {
