@@ -10,6 +10,7 @@ import Hospitality from "../hospitality";
 import Infrastructure from "../infrastructure";
 import Automotive from "../automotive";
 import Mining from "../mining";
+import Telecommunications from "../telecommunications";
 export function generateStaticParams() {
   return industries.map((i) => ({ slug: i.slug }));
 }
@@ -36,6 +37,7 @@ export default async function IndustryPage({
   if (slug === "infrastructure") return <Infrastructure />;
   if (slug === "automotive-and-mobility") return <Automotive />;
   if (slug === "mining-metals-and-natural-resources") return <Mining />;
+  if (slug === "telecommunications") return <Telecommunications />;
   return (
     <>
       <Banner
