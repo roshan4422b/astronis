@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
+import HeroPriorities from "./hero-priorities";
 import EnquiryForm from "../contact/enquiry-form";
 import { industries } from "@/content/site";
 import { professionals } from "../professionals/leadership";
@@ -47,12 +48,14 @@ export default function Automotive() {
       <div className={`container ${styles.heroInner}`}>
         <nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/">Home</Link><span>/</span><Link href="/industries">Industries</Link><span>/</span><span aria-current="page">Automotive & Mobility</span></nav>
         <div className={styles.heroCopy}><span className={styles.eyebrow}>Industry Focus</span><h1 id="automotive-title">Automotive<br />& Mobility</h1><p className={styles.tagline}>Driving Compliance. Enabling Growth.</p><p className={styles.heroDescription}>We support manufacturers, suppliers, dealers, EV players and mobility businesses with end-to-end legal, regulatory and business advisory solutions, helping them navigate change and seize opportunities in a dynamic and global industry.</p><Link className={styles.button} href="#enquire">Speak to Our Experts<Icon name="arrow" /></Link></div>
-        <div className={styles.heroAside}><span>Driving progress</span><p>Mobility<br />Innovation<br />Regulation<br />Sustainable growth</p></div>
+        <HeroPriorities title="Driving progress" items={[["building","Mobility"],["bulb","Innovation"],["scale","Regulation"],["globe","Sustainable growth"]]} />
       </div>
     </section>
     <nav className={styles.sectionNav} aria-label="Automotive page sections"><div className={`container ${styles.navInner}`}>{navigation.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}<a className={styles.navEnquire} href="#enquire">Enquire Now<Icon name="arrow" /></a></div></nav>
 
-    <section id="overview" className={styles.section} aria-labelledby="overview-title"><div className="container"><div className={styles.overviewGrid}><div><Heading eyebrow="Industry Overview" title="Powering a Connected Future" id="overview-title" /><p className={styles.lead}>The automobile and automotive industry is undergoing a transformative shift driven by electric mobility, advanced technologies, sustainability goals and evolving regulations.</p><p>We work closely with industry participants to address complex legal, regulatory and commercial challenges and help them build resilient, future-ready businesses.</p></div><aside className={styles.sectors}><span className={styles.eyebrow}>Who We Work With</span><h3>Across the automotive value chain.</h3><ul>{audiences.map(([icon, title]) => <li key={title}><Icon name={icon} />{title}</li>)}</ul></aside></div></div></section>
+    <section id="overview" className={styles.section} aria-labelledby="overview-title"><div className="container"><div className={styles.overviewGrid}><div><Heading eyebrow="Industry Overview" title="Powering a Connected Future" id="overview-title" /><p className={styles.lead}>The automobile and automotive industry is undergoing a transformative shift driven by electric mobility, advanced technologies, sustainability goals and evolving regulations.</p><p>We work closely with industry participants to address complex legal, regulatory and commercial challenges and help them build resilient, future-ready businesses.</p></div><figure className={styles.overviewImage}><Image src="/Automotive & Mobility .png" alt="Automotive production and modern mobility" fill sizes="(max-width: 900px) 100vw, 50vw" /></figure></div></div></section>
+
+    <section className={styles.audienceSection} aria-labelledby="audiences-title"><div className="container"><div className={styles.sectors}><span className={styles.eyebrow}>Who We Work With</span><h2 id="audiences-title">Across the automotive value chain.</h2><ul>{audiences.map(([icon, title]) => <li key={title}><Icon name={icon} />{title}</li>)}</ul></div></div></section>
 
     <section id="challenges" className={styles.section} aria-labelledby="challenges-title"><div className="container"><div className={styles.sectionHeading}><Heading eyebrow="Our Perspective" title="Key Opportunities & Challenges" id="challenges-title" /></div><div className={auto.challenges}>{challenges.map(([icon, title, text]) => <article key={title}><Icon name={icon} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 

@@ -125,3 +125,174 @@
 @media (max-width: 900px) { .overviewGrid, .faqLayout, .contactGrid { grid-template-columns: 1fr; } .sectors { border-left: 0; border-top: 1px solid var(--border); padding: 28px 0 0; } .sectors ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); } .benefits article:nth-child(3) { border-left: 0; } .benefits article:nth-child(n+3) { border-top: 1px solid var(--border); } .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sectionHeading { align-items: flex-start; flex-direction: column; gap: 15px; } .sectionHeading > p { max-width: 600px; } .expertGrid { grid-template-columns: 1fr; } .expertCard { grid-template-columns: 220px 1fr; } .insightGrid { gap: 15px; } .insightBody { padding: 18px; } .insightBody h3 { font-size: 22px; } .contactImage { max-width: 550px; } .contactCopy > p { max-width: 620px; } }
 @media (max-width: 600px) { .page :global(.container) { width: calc(100% - 36px); } .section { padding-block: 42px; } .heroInner { padding-block: 20px 38px; } .breadcrumb { font-size: 11px; margin-bottom: 32px; } .hero::after { background: linear-gradient(90deg, #031d3bf0, #031d3baf); } .hero > img { object-position: 65% center; } .hero h1 { font-size: clamp(39px, 10.5vw, 60px); letter-spacing: -1px; } .hero .tagline { font-size: 20px; } .hero .heroDescription { font-size: 14px; } .hero .button { width: 100%; } .navInner { gap: 23px; } .navInner a { min-height: 52px; } .overviewGrid .lead { font-size: 18px; } .sectors ul { grid-template-columns: 1fr; } .benefits { margin-top: 30px; } .benefits article { padding: 20px 15px; } .benefits h3 { font-size: 20px; } .benefits p { font-size: 12px; } .challengeGrid, .solutionGrid, .insightGrid { grid-template-columns: 1fr; } .challengeImage { aspect-ratio: 2.3; } .challengeCard summary { min-height: 75px; padding: 18px; } .challengeCard h3 { font-size: 23px; } .challengeDetail { padding-inline: 18px; } .challengeDetail p { font-size: 14px; } .solutionCard { padding: 22px; gap: 18px; } .solutionCard p { font-size: 13px; } .approach { padding-block: 42px 28px; } .steps { gap: 25px 20px; margin-block: 30px; } .steps h3 { font-size: 22px; } .trust { justify-content: flex-start; gap: 18px; } .insightBody { padding: 23px; } .insightBody h3 { font-size: 26px; } .expertCard { grid-template-columns: 38% 1fr; } .portrait { min-height: 235px; } .expertCard > div:last-child { padding: 17px; } .expertCard h3 { font-size: 23px; } .related { padding-block: 35px; } .relatedGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; } .relatedImage { aspect-ratio: 1.6; } .relatedGrid h3 { font-size: 18px; } .formWrap :global(.enquiry-form) { padding: 23px 18px; } .formWrap :global(.form-grid) { grid-template-columns: 1fr; } .formWrap :global(.enquiry-form > .button) { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .page a, .plus { transition: none; } .button:hover, .solutionCard:hover, .insightCard:hover, .expertCard:hover { transform: none; } }
+
+/* Industry refresh: distinct layouts for priorities, audiences and editorial cards. */
+.heroInner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); gap: 0 64px; align-items: center; padding-bottom: 54px; }
+.breadcrumb { grid-column: 1 / -1; }
+.heroCopy { max-width: 720px; min-width: 0; }
+.heroAside { display: block; position: static; padding: 24px 0 24px 28px; border-left: 1px solid #e8bd7680; min-width: 0; }
+.heroAside > span { display: block; color: #f3ca84; font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
+.heroAside ul { list-style: none; display: grid; gap: 15px; padding: 0; margin: 0; }
+.heroAside li { display: flex; align-items: center; gap: 16px; }
+.heroAside strong { font-size: clamp(17px, 1.35vw, 21px); font-weight: 500; line-height: 1.35; color: #fff; }
+.priorityIcon { display: grid; place-items: center; flex: 0 0 43px; height: 43px; border: 1px solid #b8d7ef66; border-radius: 12px; background: #082d5370; color: #f1c982; transition: background-color .25s, color .25s, transform .25s; }
+.priorityIcon svg { width: 25px; height: 25px; }
+.overviewGrid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+.overviewGrid > div { padding: 25px 0; }
+.sectors { border: 1px solid #e0e9f3; border-radius: 22px; padding: 30px; background: linear-gradient(135deg, #f0f6fc, #fafcfe); box-shadow: 0 12px 30px #082d5708; }
+.sectors h3 { max-width: none; font-size: 27px; line-height: 1.25; }
+.sectors ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.sectors li { flex-direction: column; align-items: flex-start; gap: 12px; padding: 18px; min-width: 0; font-size: 14px; line-height: 1.5; background: white; border: 1px solid #dce7f2; border-radius: 12px; transition: background-color .25s, color .25s, border-color .25s, transform .25s, box-shadow .25s; }
+.sectors li svg { width: 29px; height: 29px; color: #1b5e9b; transition: color .25s; }
+/* Benefits are compact horizontal icon panels. */
+.benefits { border: 0; gap: 16px; border-radius: 0; }
+.benefits article { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 8px 13px; padding: 24px 18px; border: 1px solid #dce7f2; border-radius: 14px; background: #f6f9fd; transition: background-color .25s, box-shadow .25s, transform .25s; }
+.benefits article + article { border-left: 1px solid #dce7f2; }
+.benefits article > svg { grid-row: 1 / 3; margin: 0; }
+.benefits article h3 { font-size: 20px; margin: 0; }
+.benefits article p { grid-column: 2; }
+/* Challenges use a three-over-two editorial grid with numbered image headers. */
+.challengeGrid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 22px; }
+.challengeCard { grid-column: span 2; border-radius: 18px; background: white; transition: border-color .25s, box-shadow .25s, transform .3s; }
+.challengeCard:nth-last-child(-n+2) { grid-column: span 3; }
+.challengeImage { aspect-ratio: 2.5; overflow: hidden; }
+.challengeImage img { transition: transform .45s; }
+.challengeImage > span { bottom: 14px; left: 18px; border-radius: 50%; width: 37px; height: 37px; display: grid; place-items: center; font-size: 14px; background: #082d57; color: white; }
+.challengeCard summary { min-height: 95px; padding: 20px; }
+.challengeCard h3 { font-size: 23px; }
+.challengeDetail { padding: 0 20px 22px; }
+/* Solutions are generous icon-led rows, switching from pale blue to navy. */
+.solutionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.solutionCard { display: grid; grid-template-columns: 52px minmax(0, 1fr) 20px; align-items: start; gap: 20px; padding: 28px; border-radius: 14px; border-left: 4px solid #2e70b0; background: #f4f8fd; transition: background-color .3s, color .3s, border-color .3s, box-shadow .3s, transform .3s; }
+.solutionCard:nth-child(even) { border-left-color: #b98736; background: #fdfaf4; }
+.solutionCard > svg:first-child { width: 42px; height: 42px; color: #236298; }
+.solutionCard > svg:last-child { position: static; width: 20px; height: 20px; margin-top: 8px; }
+.solutionCard h3 { font-size: 25px; }
+.solutionCard p { font-size: 14px; }
+.solutionCard :is(h3, p, svg) { transition: color .3s; }
+/* Insights mix a featured story with shorter supporting stories. */
+.insightGrid { grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: stretch; }
+.insightCard { border-radius: 16px; background: white; transition: border-color .25s, box-shadow .25s, transform .25s; }
+.insightCard:first-child { grid-row: span 2; }
+.insightCard:not(:first-child) { display: grid; grid-template-columns: 35% minmax(0, 1fr); }
+.insightCard:not(:first-child) .insightImage { aspect-ratio: auto; min-height: 180px; }
+.insightCard:not(:first-child) h3 { font-size: 23px; }
+.insightImage { overflow: hidden; }
+.insightImage img { transition: transform .5s; }
+.insightBody { padding: 25px; }
+.insightBody h3 { line-height: 1.25; }
+/* Expert profiles keep a portrait layout and a gold accent. */
+.expertCard { border-radius: 18px; border-bottom: 4px solid #d7b16e; background: #f8fafc; transition: background-color .25s, border-color .25s, box-shadow .25s, transform .3s; }
+.expertCard .portrait { overflow: hidden; }
+.expertCard .portrait img { transition: transform .45s; }
+.relatedGrid > a { padding: 10px 10px 15px; border-radius: 12px; background: white; border: 1px solid #dce7f2; transition: background-color .25s, box-shadow .25s, transform .25s; }
+.relatedGrid h3 { font-size: 19px; }
+.steps li { padding: 24px; border: 1px solid #ffffff33; border-radius: 16px 16px 4px 4px; background: #ffffff06; transition: background-color .25s, border-color .25s; }
+.faqList details { border: 1px solid #dce5ee; border-radius: 10px; margin-bottom: 12px; padding-inline: 20px; transition: background-color .25s, border-color .25s; }
+.faqList details[open] { background: #f1f6fc; border-color: #9cbad9; }
+
+.solutionCard:focus-within { background: #082d57; color: white; border-color: #c3a268; box-shadow: 0 12px 25px #082d5720; }
+.solutionCard:focus-within :is(h3, svg) { color: white; }
+.solutionCard:focus-within p { color: #e2ecf8; }
+:is(.challengeCard, .insightCard, .expertCard):focus-within { border-color: #a77b37; box-shadow: 0 12px 30px #082d571c; }
+@media (hover: hover) and (pointer: fine) {
+  .heroAside li:hover .priorityIcon { background: #efc477; color: #082d57; transform: translateX(3px); }
+  .sectors li:hover { background: #0c3c6a; color: white; border-color: #0c3c6a; transform: translateY(-3px); box-shadow: 0 9px 20px #082d571a; }
+  .sectors li:hover svg { color: #f1cb89; }
+  .benefits article:hover { background: #e8f2fc; transform: translateY(-3px); box-shadow: 0 8px 20px #082d5710; }
+  .challengeCard:hover { border-color: #b58945; box-shadow: 0 15px 30px #082d5718; transform: translateY(-4px); }
+  .challengeCard:hover img { transform: scale(1.04); }
+  .solutionCard:hover { background: #082d57; color: white; border-color: #c3a268; box-shadow: 0 12px 25px #082d5720; transform: translateY(-3px); }
+  .solutionCard:hover :is(h3, svg) { color: white; }
+  .solutionCard:hover p { color: #e2ecf8; }
+  .insightCard:hover { border-color: #779dc4; box-shadow: 0 12px 28px #082d571a; transform: translateY(-3px); }
+  .insightCard:hover img { transform: scale(1.035); }
+  .expertCard:hover { border-color: #ad7d2f; background: #fff9ef; transform: translateY(-3px); box-shadow: 0 12px 25px #082d5718; }
+  .expertCard:hover img { transform: scale(1.025); }
+  .relatedGrid > a:hover { background: #eaf3fc; transform: translateY(-3px); box-shadow: 0 8px 20px #082d5712; }
+  .steps li:hover { background: #ffffff12; border-color: #e7bf78; }
+  .faqList details:hover { border-color: #8daccc; }
+}
+@media (max-width: 1200px) {
+  .heroInner { grid-template-columns: minmax(0, 1fr) 290px; gap: 0 35px; }
+  .heroAside { padding-left: 22px; }
+  .heroAside strong { font-size: 17px; }
+  .overviewGrid { gap: 32px; }
+  .sectors { padding: 24px; }
+  .sectors li { padding: 15px; }
+  .benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .heroInner { grid-template-columns: 1fr; }
+  .heroCopy { max-width: 720px; }
+  .heroAside { display: block; margin-top: 30px; padding: 24px 0 0; border-left: 0; border-top: 1px solid #e8bd7655; }
+  .heroAside ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+  .overviewGrid { grid-template-columns: 1fr; gap: 24px; }
+  .overviewGrid > div { padding: 0; }
+  .challengeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .challengeCard, .challengeCard:nth-last-child(-n+2) { grid-column: auto; }
+  .challengeCard:last-child { grid-column: 1 / -1; }
+  .solutionCard { padding: 24px 18px; gap: 13px; grid-template-columns: 36px minmax(0, 1fr) 16px; }
+  .solutionCard > svg:first-child { width: 32px; height: 32px; }
+  .solutionCard h3 { font-size: 22px; }
+  .insightGrid { grid-template-columns: 1fr; }
+  .insightCard:first-child { grid-row: auto; }
+  .insightCard:first-child .insightImage { aspect-ratio: 2.4; }
+}
+@media (max-width: 600px) {
+  .heroInner { padding-bottom: 32px; }
+  .heroAside { margin-top: 26px; }
+  .heroAside > span { font-size: 11px; }
+  .heroAside strong { font-size: 15px; }
+  .heroAside li { gap: 10px; }
+  .heroAside ul { gap: 16px 12px; }
+  .priorityIcon { flex-basis: 34px; height: 34px; border-radius: 9px; }
+  .priorityIcon svg { width: 21px; height: 21px; }
+  .sectors { padding: 23px 18px; border-radius: 16px; }
+  .sectors h3 { font-size: 25px; }
+  .sectors ul { grid-template-columns: 1fr; gap: 10px; }
+  .sectors li { flex-direction: row; align-items: center; padding: 17px; font-size: 14px; }
+  .benefits, .challengeGrid, .solutionGrid { grid-template-columns: 1fr; }
+  .challengeCard:last-child { grid-column: auto; }
+  .challengeImage { aspect-ratio: 2.3; }
+  .solutionCard { padding: 24px 20px; }
+  .insightCard:not(:first-child) { display: flex; }
+  .insightCard:not(:first-child) .insightImage { aspect-ratio: 2.2; min-height: 0; }
+  .insightBody { padding: 22px; }
+  .expertCard { grid-template-columns: 36% minmax(0, 1fr); }
+  .expertCard h3 { font-size: 22px; }
+  .expertCard .portrait { min-height: 260px; }
+  .steps li { padding: 20px 16px; }
+  .relatedGrid h3 { font-size: 17px; }
+}
+@media (max-width: 380px) {
+  .heroAside ul { grid-template-columns: 1fr; }
+  .expertCard { grid-template-columns: 1fr; }
+  .expertCard .portrait { height: 280px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page :is(a, article, li, details, img, svg, .priorityIcon) { transition: none !important; }
+  .page :is(a, article, li):hover, .page :is(a, article):focus-within,
+  .page :is(a, article, li):hover :is(img, svg, .priorityIcon) { transform: none !important; }
+}
+
+/* Overview imagery and the audience directory are independent sections. */
+.overviewGrid { align-items: center; }
+.overviewImage { position: relative; align-self: stretch; min-height: 360px; margin: 0; border-radius: 22px; overflow: hidden; background: #eaf1f8; box-shadow: 0 16px 36px #082d5714; }
+.overviewImage img { object-fit: cover; object-position: center; }
+.audienceSection { padding: 50px 0 60px; background: #f3f7fc; border-block: 1px solid #e2eaf3; }
+.audienceSection .sectors { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.audienceSection .sectors > h2 { max-width: 850px; font-size: clamp(28px, 2.8vw, 40px); }
+.audienceSection .sectors ul { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 30px; }
+.audienceSection .sectors li { flex-direction: row; align-items: center; gap: 18px; min-height: 110px; padding: 24px; font-size: 15px; border-radius: 14px; }
+.audienceSection .sectors li svg { width: 32px; height: 32px; }
+@media (max-width: 900px) {
+  .overviewImage { min-height: 0; aspect-ratio: 16 / 10; }
+  .audienceSection .sectors ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .overviewImage { border-radius: 16px; aspect-ratio: 4 / 3; }
+  .audienceSection { padding: 36px 0 40px; }
+  .audienceSection .sectors ul { grid-template-columns: 1fr; gap: 12px; margin-top: 24px; }
+  .audienceSection .sectors li { min-height: 86px; padding: 20px; }
+}
