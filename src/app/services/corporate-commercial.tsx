@@ -29,7 +29,7 @@ const benefits = [
 const approach = [["Understand", "Your objectives"], ["Assess", "Opportunities & risks"], ["Strategise", "Tailored solutions"], ["Implement", "End-to-end support"], ["Monitor", "Ongoing compliance"], ["Deliver Value", "Long-term success"]];
 const related = [
   ["Regulatory Advisory", "regulatory-and-compliance"],
-  ["Litigation & Dispute Resolution", "litigation-and-dispute-resolution"],
+  ["Custom & Excise Advisory Services", "litigation-and-dispute-resolution"],
   ["Taxation & Compliance", "gst-and-indirect-tax-regulatory-support"],
   ["MSME Advisory & Disputes", "msme-advisory-and-disputes"],
   ["FEMA & Foreign Investment", "fema-fdi-and-foreign-exchange-advisory"],

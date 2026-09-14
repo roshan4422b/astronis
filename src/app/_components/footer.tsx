@@ -22,7 +22,7 @@ const groups = [
     links: [
       ["Corporate & Commercial", "/services/corporate-advisory"],
       ["Regulatory Services", "/services/regulatory-and-compliance"],
-      ["Litigation & Dispute Resolution", "/services/litigation-and-dispute-resolution"],
+      ["Custom & Excise Advisory Services", "/services/litigation-and-dispute-resolution"],
       ["Business Advisory", "/services/business-advisory"],
       ["Licensing & Registrations", "/services/licensing-and-registrations"],
       ["IPR & Other Registrations", "/services/intellectual-property"],

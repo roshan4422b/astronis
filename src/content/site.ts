@@ -32,9 +32,9 @@ export const practices = [
     icon: "shield",
   },
   {
-    title: "Litigation & Dispute Resolution",
+    title: "Custom & Excise Advisory Services",
     description:
-      "Civil, criminal, commercial litigation and alternative dispute resolution.",
+      "Customs, excise and trade advisory support with a practical compliance lens.",
     slug: "litigation-and-dispute-resolution",
     icon: "scale",
   },
@@ -108,9 +108,15 @@ export const practices = [
     icon: "scale",
   },
   {
-    title: "NCLT & NCLAT Matters",
-    description: "Representation and support for proceedings before NCLT and NCLAT.",
+    title: "Telecom Disputes Settlement and Appellate Tribunal (TDSAT)",
+    description: "Representation and support for proceedings before the Telecom Disputes Settlement and Appellate Tribunal.",
     slug: "nclt-and-nclat-matters",
+    icon: "scale",
+  },
+  {
+    title: "AFT & CAT Advisory Matters",
+    description: "Advisory and representation for AFT and CAT matters.",
+    slug: "aft-and-cat-advisory-matters",
     icon: "scale",
   },
   {
