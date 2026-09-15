@@ -1159,11 +1159,26 @@ textarea:focus {
   gap: 30px;
   align-items: stretch;
 }
+.home-contact-section {
+  background: #042446;
+  color: white;
+}
+.home-contact-section > .container > .section-heading p {
+  color: #d0ddea;
+}
 .home-contact-section .enquiry-form {
   min-width: 0;
+  color: var(--ink);
 }
 .home-contact-section .enquiry-form h3 {
   font-size: 36px;
+  justify-content: center;
+  text-align: center;
+}
+.home-contact-section .enquiry-form > .button {
+  display: flex;
+  width: max-content;
+  margin-inline: auto;
 }
 .contact-main .enquiry-form h3 {
   font-size: 36px;
