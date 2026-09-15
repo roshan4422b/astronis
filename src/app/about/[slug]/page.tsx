@@ -7,6 +7,7 @@ import Leadership from "../../professionals/leadership";
 import GlobalPresence from "../../home/global-presence";
 import AboutAstronisGlobal from "../about-astronis-global";
 import OurStory from "../our-story";
+import VisionMission from "../vision-mission";
 export function generateStaticParams() {
   return siteMenu.about.map((t) => ({ slug: slugify(t) }));
 }
@@ -18,6 +19,10 @@ export async function generateMetadata({
   const { slug } = await params;
   return {
     title: siteMenu.about.find((t) => slugify(t) === slug),
+    ...(["mission", "vision-and-mission"].includes(slug) ? {
+      description: "Discover Astronis Global’s purpose, vision and mission, and the principles that guide our commitment to clients, people and a better tomorrow.",
+      alternates: { canonical: "/about/vision-and-mission" },
+    } : {}),
     ...(slug === "our-story" ? {
       description: "Discover the Astronis Global story: a journey from a focused legal practice to integrated corporate, regulatory and business advisory, shaped by purpose and lasting partnerships.",
       alternates: { canonical: "/about/our-story" },
@@ -38,6 +43,7 @@ export default async function AboutDetail({
   if (!title) notFound();
   if (slug === "about-astronis-global") return <AboutAstronisGlobal />;
   if (slug === "our-story") return <OurStory />;
+  if (slug === "mission" || slug === "vision-and-mission") return <VisionMission />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
@@ -61,19 +67,6 @@ export default async function AboutDetail({
             <Button href="mailto:advisory@astronisglobal.com?subject=Career%20enquiry">
               Contact Our Team
             </Button>
-          </div>
-        </section>
-      ) : slug === "mission" || slug === "vision-and-mission" ? (
-        <section className="section">
-          <div className="container narrow">
-            <h2>Our Vision & Mission</h2>
-            <p style={{ marginBlock: 25 }}>
-              To support businesses through legal insight, regulatory
-              understanding and practical commercial perspective. We build
-              long-term relationships through integrity, professional excellence
-              and responsible advisory.
-            </p>
-            <Values />
           </div>
         </section>
       ) : (
