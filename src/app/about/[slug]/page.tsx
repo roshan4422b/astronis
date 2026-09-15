@@ -5,6 +5,7 @@ import Story from "../story";
 import Values from "../values";
 import Leadership from "../../professionals/leadership";
 import GlobalPresence from "../../home/global-presence";
+import AboutAstronisGlobal from "../about-astronis-global";
 export function generateStaticParams() {
   return siteMenu.about.map((t) => ({ slug: slugify(t) }));
 }
@@ -14,7 +15,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return { title: siteMenu.about.find((t) => slugify(t) === slug) };
+  return {
+    title: siteMenu.about.find((t) => slugify(t) === slug),
+    ...(slug === "about-astronis-global" ? {
+      description: "Meet Astronis Global, an integrated corporate, regulatory, legal and business advisory partner. Global insight, practical solutions and lasting value across India and beyond.",
+      alternates: { canonical: "/about/about-astronis-global" },
+    } : {}),
+  };
 }
 export default async function AboutDetail({
   params,
@@ -24,6 +31,7 @@ export default async function AboutDetail({
   const { slug } = await params;
   const title = siteMenu.about.find((t) => slugify(t) === slug);
   if (!title) notFound();
+  if (slug === "about-astronis-global") return <AboutAstronisGlobal />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
