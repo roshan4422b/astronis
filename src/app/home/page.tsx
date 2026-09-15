@@ -11,6 +11,7 @@ import FAQ from "./faq";
 import Clients from "./clients";
 import SuccessStories from "./success-stories";
 import Testimonials from "./testimonials";
+import MediaSpotlight from "./media-spotlight";
 import KnowledgeCentre from "./knowledge-centre";
 import Consultation from "./consultation";
 import Contact from "./contact";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <FAQ />
       <Clients />
       <SuccessStories />
+      <MediaSpotlight />
       <Testimonials />
       <KnowledgeCentre />
       <Consultation />
