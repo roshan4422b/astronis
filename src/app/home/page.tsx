@@ -11,6 +11,7 @@ import FAQ from "./faq";
 import Clients from "./clients";
 import SuccessStories from "./success-stories";
 import Testimonials from "./testimonials";
+import KnowledgeCentre from "./knowledge-centre";
 import Consultation from "./consultation";
 import Contact from "./contact";
 import Connect from "./connect";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <Clients />
       <SuccessStories />
       <Testimonials />
+      <KnowledgeCentre />
       <Consultation />
       <Contact />
       <Connect />
