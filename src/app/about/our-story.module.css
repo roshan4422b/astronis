@@ -31,16 +31,41 @@
 .office > div > span { font-size: 26px; letter-spacing: .05em; font-weight: 600; }
 .office small { font-size: 12px; letter-spacing: .3em; display: block; }
 .office p { color: #d3e6ff; font-size: 11px; text-transform: uppercase; letter-spacing: .09em; margin-top: 16px; }
-.journey { background: linear-gradient(120deg, #eef6fe, #f8fbff); padding-block: 36px 44px; }
+.journey { background: radial-gradient(ellipse at 95% 0, #174367, transparent 55%), radial-gradient(ellipse at 0 100%, #102f52, transparent 60%), #06172d; padding-block: 56px; color: #f4f8ff; }
+.journey .eyebrow { color: #83c4f3; }
+.journey .sectionHeading > p { color: #b9cee3; font-size: 12px; letter-spacing: .02em; text-transform: none; }
+.titleDot { color: #69c5ff; }
 .sectionHeading { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin-bottom: 24px; }
 .sectionHeading > p { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: #1766b4; }
-.timeline { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding: 0; margin: 34px 0 0; list-style: none; }
-.timeline li { position: relative; border-top: 2px solid #b8d8f6; padding: 27px 18px 0 0; }
-.timelineDot { position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border-radius: 50%; background: #0572c8; box-shadow: 0 0 0 5px #e3f0fc; }
-.year { color: #0363b6; font-size: 21px; font-weight: 600; }
-.timeline h3 { font-size: 12px; margin: 12px 0 8px; line-height: 1.45; }
-.timeline p { font-size: 11px; border-left: 1px solid #cbdff3; padding-left: 11px; }
-.timeline li:last-child .timelineDot { background: white; border: 2px solid #0572c8; }
+.timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 24px; padding: 0; margin: 38px 0 0; list-style: none; }
+.timeline li { position: relative; min-width: 0; border: 1px solid #6a9bcc40; padding: 28px; border-radius: 15px; background: linear-gradient(140deg, #163655cc, #0b213be6); box-shadow: 0 10px 24px #00000012; transition: border-color .3s, box-shadow .3s, background .3s; }
+.timeline li::before { content: ""; position: absolute; height: 1px; width: 25px; right: -25px; top: 43px; background: #71bafa55; }
+.timeline li:nth-child(3n)::before, .timeline li:last-child::before { display: none; }
+.timelineDot { position: absolute; top: 38px; left: -5px; width: 9px; height: 9px; border-radius: 50%; background: #71c8ff; box-shadow: 0 0 0 4px #143453, 0 0 18px #42aeff40; }
+.milestoneTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 23px; }
+.milestoneIcon { display: grid; place-items: center; width: 43px; height: 43px; border-radius: 11px; background: #51a9f015; border: 1px solid #8fcfff30; color: #87ccff; }
+.milestoneIcon svg { width: 24px; height: 24px; }
+.chapter { color: #9ab4ce; font-size: 9px; letter-spacing: .18em; }
+.year { display: block; color: #9bd9ff; font: 400 45px/1 Georgia, serif; letter-spacing: -1.5px; }
+.timeline h3 { color: #f2f7ff; font-size: 17px; margin: 17px 0 10px; line-height: 1.4; font-weight: 500; }
+.timeline p { color: #b9cce0; font-size: 12px; line-height: 1.7; max-width: 340px; }
+.timeline li:last-child { grid-column: 1 / -1; border-color: #c5ab7066; background: radial-gradient(ellipse at 100% 0, #86714c2e, transparent 70%), linear-gradient(120deg, #122840, #163347); display: grid; grid-template-columns: 1fr 2.3fr; gap: 35px; align-items: center; }
+.timeline li:last-child .milestoneTop { margin: 0; justify-content: flex-start; }
+.timeline li:last-child .milestoneIcon { color: #ecd5a4; background: #d1b97b12; border-color: #d1b97b44; }
+.timeline li:last-child .milestoneContent { display: grid; grid-template-columns: .8fr 1.5fr; gap: 30px; align-items: center; }
+.timeline li:last-child .year, .timeline li:last-child .chapter { color: #e4cb99; }
+.timeline li:last-child h3 { margin-top: 0; }
+.timeline li:last-child .timelineDot { background: #e4cb99; }
+.journeyFoot { display: flex; align-items: center; gap: 22px; color: #aac5df; margin-top: 26px; font: italic 16px/1.5 Georgia, serif; }
+.journeyLine { flex: 1; height: 1px; background: linear-gradient(90deg, #88b9e455, transparent); }
+.journeyFoot svg { width: 19px; height: 19px; color: #e4cb99; }
+.darkCollection { background: radial-gradient(ellipse at 90% 0, #133a60, transparent 65%), #081d36; color: #f2f7ff; }
+.darkCollection .collection { border: 0; padding-block: 44px; }
+.darkCollection .eyebrow { color: #8ac6f5; }
+.darkCollection .card { background: #102d4a; border-color: #6d9bc038; box-shadow: 0 8px 24px #0002; }
+.darkCollection .cardBody p { color: #bbd0e5; }
+.darkCollection .cardArrow { color: #86cbff; }
+.darkCollection .action { background: #ffffff0a; border-color: #9bcef26b; }
 .purpose { display: grid; grid-template-columns: 1fr 1.4fr; gap: 34px; padding-block: 32px; align-items: stretch; }
 .compass { position: relative; isolation: isolate; overflow: hidden; border-radius: 6px; min-height: 300px; background: #031b34; }
 .compass img { object-fit: cover; object-position: 30% center; z-index: -2; }
@@ -116,13 +141,15 @@
   .card:hover img { transform: scale(1.05); }
   .action:hover { background: #064985; color: white; }
   .action:hover svg { transform: translateX(4px); }
+  .timeline li:hover { border-color: #7dc7ff99; background: linear-gradient(140deg, #1c466bcc, #0b213be6); box-shadow: 0 12px 30px #0003, inset 0 1px 0 #a0d3ff22; }
+  .timeline li:last-child:hover { border-color: #e4cb99; }
 }
 @media (max-width: 1100px) {
   .beginnings { gap: 20px; grid-template-columns: 1.15fr .65fr 1fr; }
   .quote { padding: 20px; }
   .quote p { font-size: 22px; }
-  .timeline li { padding-right: 12px; }
-  .timeline h3 { min-height: 36px; }
+  .timeline li { padding: 24px; }
+  .timeline li:last-child { grid-template-columns: 1fr 2fr; gap: 24px; }
   .purpose { gap: 24px; }
   .purposeGrid article { padding-inline: 15px; }
   .valuesInner { grid-template-columns: 1fr; }
@@ -138,7 +165,9 @@
   .beginnings { grid-template-columns: 1.4fr 1fr; }
   .beginnings > div:first-child { grid-column: 1 / -1; }
   .office { min-height: 260px; }
-  .timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 0; }
+  .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .timeline li::before { display: none; }
+  .timeline li:last-child { grid-template-columns: 1fr; }
   .purpose { grid-template-columns: 1fr; }
   .compass { min-height: 240px; }
   .compass img { object-position: center 45%; }
@@ -161,12 +190,14 @@
   .beginnings { grid-template-columns: 1fr; }
   .quote { padding: 25px; }
   .quote p { max-width: 440px; }
-  .timeline { grid-template-columns: 1fr; gap: 0; margin-left: 7px; }
-  .timeline li { border-top: 0; border-left: 2px solid #b8d8f6; padding: 0 0 28px 28px; }
-  .timelineDot { top: 5px; left: -7px; }
-  .timeline li:last-child { padding-bottom: 0; }
-  .timeline h3 { min-height: 0; margin-top: 8px; }
-  .timeline p { border: 0; padding-left: 0; font-size: 12px; }
+  .journey { padding-block: 38px; }
+  .timeline { grid-template-columns: 1fr; gap: 20px; margin-left: 8px; border-left: 1px solid #6495bc66; padding-left: 21px; }
+  .timeline li { padding: 24px; }
+  .timelineDot { top: 39px; left: -27px; }
+  .timeline li:last-child .milestoneContent { grid-template-columns: 1fr; gap: 15px; }
+  .timeline p { max-width: none; }
+  .year { font-size: 40px; }
+  .journeyFoot { font-size: 14px; gap: 12px; }
   .purposeGrid { grid-template-columns: 1fr; gap: 24px; }
   .purposeGrid article, .purposeGrid article:first-child, .purposeGrid article:last-child { padding: 0 0 22px; border: 0; border-bottom: 1px solid #d6e5f7; }
   .purposeGrid article:last-child { border: 0; padding-bottom: 0; }
