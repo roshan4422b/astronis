@@ -227,3 +227,42 @@
   .page *, .page *::after { transition: none !important; }
   .card:hover, .card:hover img, .action:hover svg { transform: none; }
 }
+
+/* Consistent card finish for the About Us pages. */
+.page .resources { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding-block: 32px; }
+.page .resources article { border: 1px solid #dce7f2; border-radius: 16px; padding: 26px; background: linear-gradient(145deg, #fff, #f3f8fe); box-shadow: 0 12px 28px -22px #123c6e70; }
+.page .resources h2 { font-size: 27px; }
+.page .resources .resourceImage, .page .resources .question { border-radius: 12px; }
+.page .card { border-radius: 15px; border-color: #dbe7f2; box-shadow: 0 12px 26px -18px #163f7260; background: linear-gradient(145deg, #fff, #f3f8fe); }
+.page .cardImage::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, #072b5340); pointer-events: none; }
+@media (max-width: 700px) { .page .resources { grid-template-columns: 1fr; } }
+
+.page .beginnings { padding-block: 42px; }
+.page .quote { position: relative; overflow: hidden; border: 1px solid #315777; border-radius: 16px; background: radial-gradient(ellipse at 100% 0, #265e8e, transparent 70%), #082b50; box-shadow: 0 16px 30px -20px #05264b80; }
+.page .quote p { color: #edf6ff; }
+.page .office, .page .compass, .page .globalImage { border-radius: 17px; box-shadow: 0 14px 30px -20px #12385b80; }
+.page .purpose { padding-block: 42px; }
+.page .purposeGrid { gap: 14px; }
+.page .purposeGrid article { position: relative; padding: 24px 18px; border: 1px solid #dce7f3; border-radius: 15px; background: linear-gradient(145deg, #fff, #edf5fd); box-shadow: 0 10px 24px -20px #17447860; }
+.page .purposeGrid article:nth-child(2) { background: radial-gradient(ellipse at 100% 0, #245c90, transparent 70%), #082b50; border-color: #315777; color: white; }
+.page .purposeGrid article:nth-child(2) p { color: #d6e7f8; }
+.page .purposeGrid svg { width: 51px; height: 51px; padding: 10px; border-radius: 13px; background: #e6f2fe; border: 1px solid #d0e6f9; }
+.page .purposeGrid h2 { font: 400 25px/1.2 Georgia, serif; }
+.page .purposeGrid p { line-height: 1.75; }
+.page .values { padding-block: 36px; }
+.page .valuesInner { grid-template-columns: 1fr; }
+.page .values ul { gap: 12px; }
+.page .values li { border: 1px solid #dce7f3; border-radius: 13px; padding: 20px 10px; background: linear-gradient(145deg, #fff, #edf5fd); box-shadow: 0 8px 20px -17px #16427166; }
+.page .values svg { width: 49px; height: 49px; padding: 10px; background: #e5f1fd; border-radius: 50%; }
+.page .values li span { font-size: 12px; overflow-wrap: normal; }
+.page .impact dl { gap: 14px; }
+.page .impact dl > div { padding: 23px 12px; border: 1px solid #b5d3f333; border-radius: 13px; background: #062d5840; box-shadow: inset 0 1px 0 #ffffff0d; }
+.page .global { padding-block: 42px; }
+.page .cardImage { aspect-ratio: 1.6; }
+.page .cardBody { padding: 23px 46px 23px 20px; }
+.page .card h3 { font-size: 15px; }
+.page .industryBody { padding: 18px 14px; }
+.page .industryBody h3 { font-size: 12px; }
+.page .darkCollection .card { background: linear-gradient(145deg, #173c60, #0b2541); border-color: #6d9bc045; }
+@media (max-width: 1100px) { .page .purpose { grid-template-columns: 1fr; } .page .compass { min-height: 260px; } .page .values ul { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .page .values ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .page .impact dl { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

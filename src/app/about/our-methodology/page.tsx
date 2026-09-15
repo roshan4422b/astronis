@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AboutResources from "../about-resources";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 
@@ -259,6 +260,8 @@ export default function MethodologyPage() {
           </div>
         </div>
       </section>
+
+      <AboutResources />
 
       <section className="section cta-strip">
         <div className="container cta-strip-inner">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AboutResources from "./about-resources";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import styles from "./vision-mission.module.css";
@@ -30,11 +31,7 @@ const impacts = [
   ["For Society", "Support for responsible and inclusive growth.", "/Agriculture & Agri-Business .png"],
   ["For the Future", "Committed to a more sustainable and resilient world.", "/Part-9 .png"],
 ];
-const resources = [
-  { title: "Explore Our Services", image: "/explore_services.png", items: ["Corporate & Commercial", "Regulatory Services", "Litigation & Dispute Resolution", "Business Advisory"], href: "/services", action: "View All Services" },
-  { title: "Industries We Serve", image: "/Real Estate & Construction .png", items: ["Manufacturing", "Financial Services", "Healthcare & Life Sciences", "Real Estate & Infrastructure"], href: "/industries", action: "Explore All Industries" },
-  { title: "Knowledge Centre", image: "/Part-14 .png", items: ["Articles & Publications", "Regulatory Updates", "Events & Webinars", "Research & Insights"], href: "/knowledge-centre", action: "Visit Knowledge Centre" },
-];
+
 
 function PurposeIcon({ name }: { name: string }) {
   const paths: Record<string, React.ReactNode> = {
@@ -70,7 +67,7 @@ export default function VisionMission() {
 
     <section className={`container ${styles.impact}`} aria-labelledby="impact-title"><div><span className={styles.eyebrow}>OUR IMPACT AREAS</span><h2 id="impact-title">Creating Value Beyond Business</h2><div className={styles.impactGrid}>{impacts.map(([title, text, image]) => <article key={title}><div className={styles.impactImage}><Image src={image} alt="" fill sizes="(max-width: 550px) 50vw, 20vw" /></div><div className={styles.impactCopy}><h3>{title}</h3><p>{text}</p></div></article>)}</div></div><blockquote className={styles.quote}><span aria-hidden="true">“</span><p>A better tomorrow<br />is built by the choices<br />we make today.</p><span className={styles.rule} /></blockquote></section>
 
-    <section className={styles.resources} aria-label="Explore Astronis Global"><div className={`container ${styles.resourceGrid}`}>{resources.map(item => <article key={item.title}><h2><Link href={item.href}>{item.title}<Icon name="arrow" /></Link></h2><div className={styles.resourceContent}><div className={styles.resourceImage}><Image src={item.image} alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div><div><ul>{item.items.map(text => <li key={text}>{text}</li>)}</ul><Link className={styles.textLink} href={item.href}>{item.action}<Icon name="arrow" /></Link></div></div></article>)}</div></section>
+    <AboutResources />
 
     <section className={styles.cta} aria-labelledby="mission-cta-title"><div className={`container ${styles.ctaInner}`}><div><span className={styles.eyebrow}>LET’S SHAPE A BRIGHTER TOMORROW</span><h2 id="mission-cta-title">Partner with Astronis Global</h2><p>Discuss your objectives with our team and explore how we can support your growth journey.</p></div><div className={styles.actions}><Action href="/contact">Speak to an Advisor</Action><Action href="/contact#enquiry-form" outline>Submit an Enquiry</Action></div></div></section>
   </div>;

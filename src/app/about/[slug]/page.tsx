@@ -8,6 +8,7 @@ import GlobalPresence from "../../home/global-presence";
 import AboutAstronisGlobal from "../about-astronis-global";
 import OurStory from "../our-story";
 import VisionMission from "../vision-mission";
+import AboutResources from "../about-resources";
 export function generateStaticParams() {
   return siteMenu.about.map((t) => ({ slug: slugify(t) }));
 }
@@ -72,6 +73,7 @@ export default async function AboutDetail({
       ) : (
         <Story />
       )}
+      <AboutResources />
     </>
   );
 }

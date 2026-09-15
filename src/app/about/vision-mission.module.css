@@ -63,7 +63,7 @@
 .impactGrid article { border-radius: 14px; overflow: hidden; box-shadow: 0 12px 25px -17px #163f7270; border: 1px solid #dce7f3; background: linear-gradient(145deg, #fff, #f3f8fe); }
 .impactImage { position: relative; height: 145px; overflow: hidden; }
 .impactImage::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, #062b5460); pointer-events: none; }
-.impactImage img, .resourceImage img { object-fit: cover; }
+.impactImage img { object-fit: cover; }
 .impactCopy { position: relative; padding: 20px 15px; }
 .impactCopy::before { content: ''; position: absolute; top: 0; left: 15px; width: 30px; height: 3px; background: #1c8ddd; }
 .impactCopy h3 { font-size: 15px; margin-bottom: 8px; }
@@ -73,19 +73,6 @@
 .quote > span:first-child { font: 52px/.7 Georgia, serif; color: #8abde8; }
 .quote p { font: italic 25px/1.4 Georgia, serif; color: #f0f6ff; }
 .quote .rule { margin-bottom: 0; }
-.resources { border-top: 1px solid #e0edf9; background: #f4f8fc; }
-.resourceGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding-block: 32px; }
-.resourceGrid article { padding: 24px; border: 1px solid #dce7f2; border-radius: 16px; background: #fff; box-shadow: 0 10px 24px -20px #193c6980; }
-.resourceGrid h2 { font-size: 25px; margin-bottom: 12px; }
-.resourceGrid h2 a { display: inline-flex; align-items: center; gap: 12px; }
-.resourceGrid h2 svg { width: 18px; }
-.resourceContent { display: grid; grid-template-columns: 32% minmax(0, 1fr); gap: 16px; }
-.resourceImage { position: relative; min-height: 110px; overflow: hidden; border-radius: 9px; }
-.resourceContent ul { padding-left: 12px; margin: 0 0 9px; font-size: 12px; list-style-type: '◆  '; }
-.resourceContent li::marker { color: #0064c7; font-size: 8px; }
-.textLink { display: inline-flex; align-items: center; gap: 9px; color: #0064c7; font-size: 12px; font-weight: 600; }
-.textLink svg { width: 15px; height: 15px; }
-.textLink:hover, .resourceGrid h2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .cta { background: linear-gradient(90deg, #003367eb, #005aaed9, #003367ee), url('/images/our-story/mountain-journey.jpg') center 50% / cover; color: white; }
 .ctaInner { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 25px; }
 .cta p { color: #dcecff; margin-top: 8px; }
@@ -93,13 +80,12 @@
 .outline { background: transparent; color: #fff; }
 .outline:hover { background: #ffffff20; }
 @media (min-width: 1500px) { .heroInner { min-height: 400px; } }
-.statementGrid article, .principleGrid li, .aims li, .impactGrid article, .resourceGrid article { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-.impactImage img, .resourceImage img { transition: transform .5s ease; }
-.resourceGrid article:focus-within { border-color: #73b7ee; box-shadow: 0 14px 28px -17px #174a8066; }
+.statementGrid article, .principleGrid li, .aims li, .impactGrid article { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.impactImage img { transition: transform .5s ease; }
 @media (hover: hover) and (pointer: fine) {
-  .statementGrid article:hover, .principleGrid li:hover, .impactGrid article:hover, .resourceGrid article:hover { transform: translateY(-5px); border-color: #92bee5; box-shadow: 0 20px 35px -20px #153f7866; }
+  .statementGrid article:hover, .principleGrid li:hover, .impactGrid article:hover { transform: translateY(-5px); border-color: #92bee5; box-shadow: 0 20px 35px -20px #153f7866; }
   .aims li:hover { transform: translateX(-3px); border-color: #92bee5; }
-  .impactGrid article:hover img, .resourceGrid article:hover img { transform: scale(1.045); }
+  .impactGrid article:hover img { transform: scale(1.045); }
 }
 @media (max-width: 1100px) {
   .statementGrid { gap: 16px; }
@@ -113,10 +99,6 @@
   .impact { gap: 22px; grid-template-columns: 3fr 1fr; }
   .quote { padding: 22px 18px; }
   .quote p { font-size: 22px; }
-  .resourceGrid article { padding-inline: 18px; }
-  .resourceGrid h2 { font-size: 22px; }
-  .resourceContent { grid-template-columns: 1fr; }
-  .resourceImage { min-height: 105px; }
   .ctaInner { flex-wrap: wrap; }
 }
 @media (max-width: 700px) {
@@ -143,9 +125,6 @@
   .impactImage { height: 120px; }
   .quote { padding: 25px; }
   .quote p br { display: none; }
-  .resourceGrid { grid-template-columns: 1fr; gap: 22px; }
-  .resourceGrid article { padding: 24px; }
-  .resourceContent { grid-template-columns: 32% minmax(0, 1fr); }
   .actions { flex-wrap: wrap; gap: 12px; }
   .ctaInner { padding-block: 28px; gap: 22px; }
 }

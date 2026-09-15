@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AboutResources from "./about-resources";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import { industries } from "@/content/site";
@@ -70,8 +71,10 @@ export default function OurStory() {
 
     <section className={`container ${styles.collection}`} aria-labelledby="story-industries-title"><div className={styles.sectionHeading}><div><Title label="INDUSTRIES WE UNDERSTAND" id="story-industries-title">Diverse Sectors. Focused Solutions.</Title></div><Action href="/industries">Explore All Industries</Action></div><div className={styles.industryGrid}>{sectors.map(item => <Link href={`/industries/${item.slug}`} className={styles.card} key={item.slug}><div className={styles.cardImage}><Image src={item.image} alt="" fill sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, 17vw" /></div><div className={styles.industryBody}><h3>{item.title}</h3><Icon name="arrow" /></div></Link>)}</div></section>
 
+    <AboutResources />
+
     <section className={`container ${styles.resources}`} aria-label="Continue your journey with Astronis">
-      <article><Title label="KNOWLEDGE CENTRE">Ideas for an Informed Tomorrow</Title><div className={styles.resourceContent}><div className={styles.resourceImage}><Image src="/Part-14 .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div><div><ul><li>Articles & publications</li><li>Regulatory updates</li><li>Events & webinars</li><li>Research & insights</li></ul><Action href="/knowledge-centre">Visit Knowledge Centre</Action></div></div></article>
+
       <article><Title label="CAREERS & COLLABORATION">Build a Meaningful Career</Title><div className={styles.resourceContent}><div className={styles.resourceImage}><Image src="/Professional & Business Services .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div><div><ul><li>Work with us</li><li>For professionals</li><li>International collaboration</li><li>Be part of our journey</li></ul><Action href="/about/careers">Explore Careers</Action></div></div></article>
       <article><Title label="FREQUENTLY ASKED QUESTIONS">Quick Answers</Title><div className={styles.resourceContent}><span className={styles.question} aria-hidden="true">?</span><div><ul><li>What does Astronis Global do?</li><li>Who do we work with?</li><li>Do we work internationally?</li><li>How can I engage your team?</li></ul><Action href="/faqs">View FAQs</Action></div></div></article>
     </section>

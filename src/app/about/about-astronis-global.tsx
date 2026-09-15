@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AboutResources from "./about-resources";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import { industries, statistics } from "@/content/site";
@@ -75,7 +76,7 @@ export default function AboutAstronisGlobal() {
     </section>
 
     <section className={`container ${styles.overview}`} aria-labelledby="who-we-are-title">
-      <div className={styles.copy}><Title eyebrow="WHO WE ARE" id="who-we-are-title">An Integrated Advisory<br />Partner for a Complex World</Title><span className={styles.rule} /><p>Astronis Global provides integrated professional services across corporate and commercial advisory, regulatory compliance, legal & litigation, and business advisory. Our approach combines legal understanding, regulatory insight, commercial awareness and strategic thinking to help clients establish, operate, protect, restructure and expand their businesses.</p><Action href="/about#our-story">Our Story</Action></div>
+      <div className={styles.copy}><Title eyebrow="WHO WE ARE" id="who-we-are-title">An Integrated Advisory<br />Partner for a Complex World</Title><span className={styles.rule} /><p>Astronis Global provides integrated professional services across corporate and commercial advisory, regulatory compliance, legal & litigation, and business advisory. Our approach combines legal understanding, regulatory insight, commercial awareness and strategic thinking to help clients establish, operate, protect, restructure and expand their businesses.</p><Action href="/about/our-story">Our Story</Action></div>
       <div className={styles.advisory}>{advisory.map(item => <Link href={item.href} key={item.title}><Icon name={item.icon} /><h3>{item.title}</h3><p>{item.text}</p></Link>)}</div>
     </section>
 
@@ -111,8 +112,10 @@ export default function AboutAstronisGlobal() {
 
     <section className={`container ${styles.collection}`} aria-labelledby="initiatives-title"><div className={styles.collectionIntro}><Title eyebrow="OUR PROJECTS & STRATEGIC INITIATIVES" id="initiatives-title">Building for a<br />Better Tomorrow</Title><Action href="/about/vision-and-mission">Our Vision & Mission</Action></div><Cards items={initiatives} /></section>
 
+    <AboutResources />
+
     <section className={`container ${styles.resources}`} aria-label="Explore more at Astronis">
-      <article><Title eyebrow="KNOWLEDGE CENTRE">Ideas for Informed Decisions</Title><div className={styles.resourceBody}><ul><li>Articles & publications</li><li>Regulatory updates</li><li>Events & webinars</li><li>Research & insights</li></ul><div className={styles.resourceImage}><Image src="/Part-14 .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div></div><Action href="/knowledge-centre">Visit Knowledge Centre</Action></article>
+
       <article><Title eyebrow="CAREERS & COLLABORATION">Let’s Build What’s Next</Title><div className={styles.resourceBody}><ul><li>Join our team</li><li>Work with us</li><li>For professionals</li><li>International collaboration</li></ul><div className={styles.resourceImage}><Image src="/Professional & Business Services .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div></div><Action href="/about/careers">Explore Opportunities</Action></article>
       <article><Title eyebrow="FREQUENTLY ASKED QUESTIONS">Quick Answers</Title><div className={styles.resourceBody}><ul><li>What do we do?</li><li>Who do we work with?</li><li>Do we work internationally?</li><li>How can I engage Astronis?</li></ul><span className={styles.question} aria-hidden="true">?</span></div><Action href="/faqs">View FAQs</Action></article>
     </section>
