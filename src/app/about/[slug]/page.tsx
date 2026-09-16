@@ -10,6 +10,7 @@ import OurStory from "../our-story";
 import VisionMission from "../vision-mission";
 import AboutResources from "../about-resources";
 import CoreValues from "../core-values";
+import AstronisDifference from "../astronis-difference";
 const legacySlugs: Record<string, string> = {
   "vision-and-mission": "mission-vision-and-purpose",
   "core-values": "core-values-and-professionals-principles",
@@ -69,6 +70,7 @@ export default async function AboutDetail({
   if (resolvedSlug === "core-values-and-professionals-principles") return <CoreValues />;
   if (resolvedSlug === "leadership-and-professionals") return <LeadershipPage />;
   if (resolvedSlug === "mission-vision-and-purpose") return <VisionMission />;
+  if (resolvedSlug === "the-astronis-difference") return <AstronisDifference />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
