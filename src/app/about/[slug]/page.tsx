@@ -10,8 +10,18 @@ import OurStory from "../our-story";
 import VisionMission from "../vision-mission";
 import AboutResources from "../about-resources";
 import CoreValues from "../core-values";
+const legacySlugs: Record<string, string> = {
+  "vision-and-mission": "mission-vision-purpose",
+  "core-values": "core-values-professionals-principles",
+  leadership: "leadership-professionals",
+  "why-choose-us": "why-choose-astronis-global",
+};
+const canonicalSlug = (slug: string) => legacySlugs[slug] ?? slug;
 export function generateStaticParams() {
-  return siteMenu.about.map((t) => ({ slug: slugify(t) }));
+  return [
+    ...siteMenu.about.map((t) => ({ slug: slugify(t) })),
+    ...Object.keys(legacySlugs).map((slug) => ({ slug })),
+  ];
 }
 export async function generateMetadata({
   params,
@@ -19,25 +29,26 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const resolvedSlug = canonicalSlug(slug);
   return {
-    title: siteMenu.about.find((t) => slugify(t) === slug),
-    ...(slug === "leadership" ? {
+    title: siteMenu.about.find((t) => slugify(t) === resolvedSlug),
+    ...(resolvedSlug === "leadership-professionals" ? {
       description: "Meet the leadership and professionals at Astronis Global, bringing legal, regulatory and commercial insight together with a shared commitment to client service.",
-      alternates: { canonical: "/about/leadership" },
+      alternates: { canonical: "/about/leadership-professionals" },
     } : {}),
-    ...(slug === "core-values" ? {
+    ...(resolvedSlug === "core-values-professionals-principles" ? {
       description: "Explore the core values and professional principles that guide Astronis Global: integrity, client commitment, excellence and responsible advisory.",
-      alternates: { canonical: "/about/core-values" },
+      alternates: { canonical: "/about/core-values-professionals-principles" },
     } : {}),
-    ...(["mission", "vision-and-mission"].includes(slug) ? {
+    ...(resolvedSlug === "mission-vision-purpose" ? {
       description: "Discover Astronis Global’s purpose, vision and mission, and the principles that guide our commitment to clients, people and a better tomorrow.",
-      alternates: { canonical: "/about/vision-and-mission" },
+      alternates: { canonical: "/about/mission-vision-purpose" },
     } : {}),
-    ...(slug === "our-story" ? {
+    ...(resolvedSlug === "our-story" ? {
       description: "Discover the Astronis Global story: a journey from a focused legal practice to integrated corporate, regulatory and business advisory, shaped by purpose and lasting partnerships.",
       alternates: { canonical: "/about/our-story" },
     } : {}),
-    ...(slug === "about-astronis-global" ? {
+    ...(resolvedSlug === "about-astronis-global" ? {
       description: "Meet Astronis Global, an integrated corporate, regulatory, legal and business advisory partner. Global insight, practical solutions and lasting value across India and beyond.",
       alternates: { canonical: "/about/about-astronis-global" },
     } : {}),
@@ -49,21 +60,22 @@ export default async function AboutDetail({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const title = siteMenu.about.find((t) => slugify(t) === slug);
+  const resolvedSlug = canonicalSlug(slug);
+  const title = siteMenu.about.find((t) => slugify(t) === resolvedSlug);
   if (!title) notFound();
-  if (slug === "about-astronis-global") return <AboutAstronisGlobal />;
-  if (slug === "our-story") return <OurStory />;
-  if (slug === "core-values") return <CoreValues />;
-  if (slug === "leadership") return <LeadershipPage />;
-  if (slug === "mission" || slug === "vision-and-mission") return <VisionMission />;
+  if (resolvedSlug === "about-astronis-global") return <AboutAstronisGlobal />;
+  if (resolvedSlug === "our-story") return <OurStory />;
+  if (resolvedSlug === "core-values-professionals-principles") return <CoreValues />;
+  if (resolvedSlug === "leadership-professionals") return <LeadershipPage />;
+  if (resolvedSlug === "mission-vision-purpose") return <VisionMission />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
-      {slug === "why-choose-us" ? (
+      {resolvedSlug === "why-choose-astronis-global" ? (
         <Values />
-      ) : slug === "global-reach" || slug === "india-presence" ? (
+      ) : resolvedSlug === "global-reach" || resolvedSlug === "india-presence" ? (
         <GlobalPresence />
-      ) : slug === "careers" ? (
+      ) : resolvedSlug === "careers" ? (
         <section className="section">
           <div className="container narrow">
             <h2>Grow with Astronis Global</h2>
