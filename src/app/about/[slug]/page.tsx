@@ -13,6 +13,7 @@ import CoreValues from "../core-values";
 import AstronisDifference from "../astronis-difference";
 import IndiaPresence from "../india-presence";
 import IntegratedAdvisoryModel from "../integrated-advisory-model";
+import InternationalNetwork from "../international-network";
 const legacySlugs: Record<string, string> = {
   "vision-and-mission": "mission-vision-and-purpose",
   "core-values": "core-values-and-professionals-principles",
@@ -36,6 +37,10 @@ export async function generateMetadata({
   const resolvedSlug = canonicalSlug(slug);
   return {
     title: siteMenu.about.find((t) => slugify(t) === resolvedSlug),
+    ...(resolvedSlug === "global-perspective-and-international-network" ? {
+      description: "Explore Astronis Global's international network, cross-border advisory and local insight for businesses pursuing opportunities across markets.",
+      alternates: { canonical: "/about/global-perspective-and-international-network" },
+    } : {}),
     ...(resolvedSlug === "our-integrated-advisory-model" ? {
       description: "Discover how Astronis Global integrates corporate, regulatory, legal and business advisory to support your business at every stage.",
       alternates: { canonical: "/about/our-integrated-advisory-model" },
@@ -82,6 +87,7 @@ export default async function AboutDetail({
   if (resolvedSlug === "mission-vision-and-purpose") return <VisionMission />;
   if (resolvedSlug === "the-astronis-difference") return <AstronisDifference />;
   if (resolvedSlug === "india-presence") return <IndiaPresence />;
+  if (resolvedSlug === "global-perspective-and-international-network") return <InternationalNetwork />;
   if (resolvedSlug === "our-integrated-advisory-model") return <IntegratedAdvisoryModel />;
   return (
     <>
