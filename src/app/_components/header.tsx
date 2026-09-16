@@ -18,7 +18,14 @@ const navigation = [
     items: [
       ...siteMenu.about.map((title) => ({
         title,
-        href: "/about/" + slugify(title),
+        href:
+          title === "Core Values & Professionals Principles"
+            ? "/about/core-values-and-professionals-principles"
+            : title === "Mission, Vision & Purpose"
+              ? "/about/mission-vision-and-purpose"
+            : title === "Leadership & Professionals"
+              ? "/about/leadership-and-professionals"
+              : "/about/" + slugify(title),
       })),
       { title: "Our Clients", href: "/clients" },
     ],

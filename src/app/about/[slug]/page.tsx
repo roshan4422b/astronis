@@ -11,9 +11,10 @@ import VisionMission from "../vision-mission";
 import AboutResources from "../about-resources";
 import CoreValues from "../core-values";
 const legacySlugs: Record<string, string> = {
-  "vision-and-mission": "mission-vision-purpose",
-  "core-values": "core-values-professionals-principles",
-  leadership: "leadership-professionals",
+  "vision-and-mission": "mission-vision-and-purpose",
+  "core-values": "core-values-and-professionals-principles",
+  leadership: "leadership-and-professionals",
+  "leadership-professionals": "leadership-and-professionals",
   "why-choose-us": "why-choose-astronis-global",
 };
 const canonicalSlug = (slug: string) => legacySlugs[slug] ?? slug;
@@ -32,17 +33,17 @@ export async function generateMetadata({
   const resolvedSlug = canonicalSlug(slug);
   return {
     title: siteMenu.about.find((t) => slugify(t) === resolvedSlug),
-    ...(resolvedSlug === "leadership-professionals" ? {
+    ...(resolvedSlug === "leadership-and-professionals" ? {
       description: "Meet the leadership and professionals at Astronis Global, bringing legal, regulatory and commercial insight together with a shared commitment to client service.",
-      alternates: { canonical: "/about/leadership-professionals" },
+      alternates: { canonical: "/about/leadership-and-professionals" },
     } : {}),
-    ...(resolvedSlug === "core-values-professionals-principles" ? {
+    ...(resolvedSlug === "core-values-and-professionals-principles" ? {
       description: "Explore the core values and professional principles that guide Astronis Global: integrity, client commitment, excellence and responsible advisory.",
       alternates: { canonical: "/about/core-values-professionals-principles" },
     } : {}),
-    ...(resolvedSlug === "mission-vision-purpose" ? {
+    ...(resolvedSlug === "mission-vision-and-purpose" ? {
       description: "Discover Astronis Global’s purpose, vision and mission, and the principles that guide our commitment to clients, people and a better tomorrow.",
-      alternates: { canonical: "/about/mission-vision-purpose" },
+      alternates: { canonical: "/about/mission-vision-and-purpose" },
     } : {}),
     ...(resolvedSlug === "our-story" ? {
       description: "Discover the Astronis Global story: a journey from a focused legal practice to integrated corporate, regulatory and business advisory, shaped by purpose and lasting partnerships.",
@@ -65,9 +66,9 @@ export default async function AboutDetail({
   if (!title) notFound();
   if (resolvedSlug === "about-astronis-global") return <AboutAstronisGlobal />;
   if (resolvedSlug === "our-story") return <OurStory />;
-  if (resolvedSlug === "core-values-professionals-principles") return <CoreValues />;
-  if (resolvedSlug === "leadership-professionals") return <LeadershipPage />;
-  if (resolvedSlug === "mission-vision-purpose") return <VisionMission />;
+  if (resolvedSlug === "core-values-and-professionals-principles") return <CoreValues />;
+  if (resolvedSlug === "leadership-and-professionals") return <LeadershipPage />;
+  if (resolvedSlug === "mission-vision-and-purpose") return <VisionMission />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
