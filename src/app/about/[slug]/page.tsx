@@ -3,7 +3,7 @@ import { siteMenu, slugify } from "@/content/site";
 import { Banner, Button } from "../../_components/ui";
 import Story from "../story";
 import Values from "../values";
-import Leadership from "../../professionals/leadership";
+import LeadershipPage from "../leadership-page";
 import GlobalPresence from "../../home/global-presence";
 import AboutAstronisGlobal from "../about-astronis-global";
 import OurStory from "../our-story";
@@ -21,6 +21,10 @@ export async function generateMetadata({
   const { slug } = await params;
   return {
     title: siteMenu.about.find((t) => slugify(t) === slug),
+    ...(slug === "leadership" ? {
+      description: "Meet the leadership and professionals at Astronis Global, bringing legal, regulatory and commercial insight together with a shared commitment to client service.",
+      alternates: { canonical: "/about/leadership" },
+    } : {}),
     ...(slug === "core-values" ? {
       description: "Explore the core values and professional principles that guide Astronis Global: integrity, client commitment, excellence and responsible advisory.",
       alternates: { canonical: "/about/core-values" },
@@ -50,15 +54,12 @@ export default async function AboutDetail({
   if (slug === "about-astronis-global") return <AboutAstronisGlobal />;
   if (slug === "our-story") return <OurStory />;
   if (slug === "core-values") return <CoreValues />;
+  if (slug === "leadership") return <LeadershipPage />;
   if (slug === "mission" || slug === "vision-and-mission") return <VisionMission />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
-      {slug === "leadership" ? (
-        <section className="container">
-          <Leadership />
-        </section>
-      ) : slug === "why-choose-us" ? (
+      {slug === "why-choose-us" ? (
         <Values />
       ) : slug === "global-reach" || slug === "india-presence" ? (
         <GlobalPresence />
