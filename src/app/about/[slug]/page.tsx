@@ -11,6 +11,7 @@ import VisionMission from "../vision-mission";
 import AboutResources from "../about-resources";
 import CoreValues from "../core-values";
 import AstronisDifference from "../astronis-difference";
+import IndiaPresence from "../india-presence";
 const legacySlugs: Record<string, string> = {
   "vision-and-mission": "mission-vision-and-purpose",
   "core-values": "core-values-and-professionals-principles",
@@ -34,6 +35,10 @@ export async function generateMetadata({
   const resolvedSlug = canonicalSlug(slug);
   return {
     title: siteMenu.about.find((t) => slugify(t) === resolvedSlug),
+    ...(resolvedSlug === "india-presence" ? {
+      description: "Explore Astronis Global’s India presence: a New Delhi office and regional advisory support across key business centres in India.",
+      alternates: { canonical: "/about/india-presence" },
+    } : {}),
     ...(resolvedSlug === "leadership-and-professionals" ? {
       description: "Meet the leadership and professionals at Astronis Global, bringing legal, regulatory and commercial insight together with a shared commitment to client service.",
       alternates: { canonical: "/about/leadership-and-professionals" },
@@ -71,12 +76,13 @@ export default async function AboutDetail({
   if (resolvedSlug === "leadership-and-professionals") return <LeadershipPage />;
   if (resolvedSlug === "mission-vision-and-purpose") return <VisionMission />;
   if (resolvedSlug === "the-astronis-difference") return <AstronisDifference />;
+  if (resolvedSlug === "india-presence") return <IndiaPresence />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
       {resolvedSlug === "why-choose-astronis-global" ? (
         <Values />
-      ) : resolvedSlug === "global-reach" || resolvedSlug === "india-presence" ? (
+      ) : resolvedSlug === "global-reach" ? (
         <GlobalPresence />
       ) : resolvedSlug === "careers" ? (
         <section className="section">
