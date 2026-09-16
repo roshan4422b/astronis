@@ -11,12 +11,11 @@
 .heroInner { padding-block: 22px 28px; }
 .breadcrumb { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: #e3efff; margin-bottom: 16px; }
 .breadcrumb a:hover { text-decoration: underline; }
-.heroContent { display: grid; grid-template-columns: 1fr 1.1fr .38fr; gap: 28px; align-items: center; }
-.heroCopy { padding-block: 18px; }
+.heroContent { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 28px; align-items: center; min-height: 340px; }
+.heroCopy { padding-block: 18px; max-width: 470px; }
 .hero .eyebrow, .cta .eyebrow { color: #d8edff; }
 .hero h1 { font-size: clamp(39px, 4.1vw, 60px); line-height: 1.03; }
 .heroCopy p { color: #edf5ff; max-width: 410px; margin: 18px 0 21px; }
-.heroMap { max-width: 390px; width: 100%; justify-self: end; padding: 5px; border: 1px solid #c4e7ff22; border-radius: 25px; background: #06386965; backdrop-filter: blur(3px); }
 .map { display: block; width: 100%; height: auto; }
 .mapPin { cursor: pointer; }
 .mapPin:hover circle:first-of-type, .mapPin:focus circle:first-of-type { opacity: .6; r: 14px; }
@@ -116,7 +115,6 @@
   .heroContent { grid-template-columns: 1fr; gap: 15px; }
   .heroPhoto { left: 0; }
   .hero::after { background: linear-gradient(180deg, #06376bea, #06376b80 50%, #06376bf5); }
-  .heroMap { justify-self: center; max-width: 340px; }
   .heroCopy { padding-block: 15px; }
   .hero h1 { font-size: 46px; }
   .strengths { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
