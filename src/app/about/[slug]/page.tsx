@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { siteMenu, slugify } from "@/content/site";
 import { Banner, Button } from "../../_components/ui";
 import Story from "../story";
-import Values from "../values";
+import WhyChooseAstronis from "../why-choose-astronis";
 import LeadershipPage from "../leadership-page";
 import GlobalPresence from "../../home/global-presence";
 import AboutAstronisGlobal from "../about-astronis-global";
@@ -38,6 +38,10 @@ export async function generateMetadata({
   const resolvedSlug = canonicalSlug(slug);
   return {
     title: siteMenu.about.find((t) => slugify(t) === resolvedSlug),
+    ...(resolvedSlug === "why-choose-astronis-global" ? {
+      description: "Discover the Astronis difference: integrated expertise, practical advice, transparent communication and lasting business partnerships.",
+      alternates: { canonical: "/about/why-choose-astronis-global" },
+    } : {}),
     ...(resolvedSlug === "projects-innovation-and-strategic-initiatives" ? {
       description: "Explore Astronis Global's projects, innovation and strategic initiatives supporting business growth, collaboration and sustainable impact.",
       alternates: { canonical: "/about/projects-innovation-and-strategic-initiatives" },
@@ -92,15 +96,14 @@ export default async function AboutDetail({
   if (resolvedSlug === "mission-vision-and-purpose") return <VisionMission />;
   if (resolvedSlug === "the-astronis-difference") return <AstronisDifference />;
   if (resolvedSlug === "india-presence") return <IndiaPresence />;
+  if (resolvedSlug === "why-choose-astronis-global") return <WhyChooseAstronis />;
   if (resolvedSlug === "projects-innovation-and-strategic-initiatives") return <StrategicInitiatives />;
   if (resolvedSlug === "global-perspective-and-international-network") return <InternationalNetwork />;
   if (resolvedSlug === "our-integrated-advisory-model") return <IntegratedAdvisoryModel />;
   return (
     <>
       <Banner title={title} eyebrow="About Us" />
-      {resolvedSlug === "why-choose-astronis-global" ? (
-        <Values />
-      ) : resolvedSlug === "global-reach" ? (
+      {resolvedSlug === "global-reach" ? (
         <GlobalPresence />
       ) : resolvedSlug === "careers" ? (
         <section className="section">
