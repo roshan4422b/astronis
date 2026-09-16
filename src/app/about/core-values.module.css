@@ -1,0 +1,140 @@
+.page { color: #082e68; background: #fff; }
+.page h1, .page h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.035em; }
+.page h2 { font-size: clamp(28px, 2.65vw, 38px); line-height: 1.13; }
+.page p { font-size: 14px; line-height: 1.7; color: #405674; }
+.eyebrow { display: block; color: #0063be; font-size: 10px; font-weight: 600; letter-spacing: .23em; margin-bottom: 12px; }
+.rule { display: block; width: 42px; height: 2px; background: linear-gradient(90deg, #168cf2, #83d4ff); margin: 16px 0; }
+.hero { position: relative; isolation: isolate; overflow: hidden; background: #073a70; color: white; }
+.heroImage { object-fit: cover; object-position: center 48%; z-index: -2; }
+.hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #003e7bf7 0%, #034782eb 30%, #04386bac 52%, #062f5640 80%, #042a4c80); }
+.heroInner { padding-block: 24px 40px; }
+.breadcrumb { display: flex; gap: 8px; flex-wrap: wrap; color: #e1eeff; font-size: 11px; margin-bottom: 28px; }
+.breadcrumb a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.heroContent { display: flex; align-items: center; gap: 8%; min-height: 280px; }
+.heroCopy { max-width: 520px; width: 48%; }
+.hero .eyebrow, .professional .eyebrow, .cta .eyebrow { color: #c9e7ff; }
+.hero h1 { font-size: clamp(44px, 4.8vw, 68px); line-height: 1.02; }
+.heroCopy p { color: #e6f0ff; max-width: 475px; }
+.heroCopy .heroSubtitle { font-size: 18px; margin: 18px 0 14px; line-height: 1.4; }
+.heroNote { border-left: 1px solid #d6eaff60; padding: 24px 28px; background: linear-gradient(120deg, #07315a85, #07315a15); border-radius: 0 14px 14px 0; backdrop-filter: blur(5px); }
+.heroNote > span:first-child { font: 400 25px/1.4 Georgia, serif; text-transform: uppercase; letter-spacing: .07em; }
+.heroNote small { color: #d4e9ff; font-size: 9px; letter-spacing: .15em; }
+.belief { display: grid; grid-template-columns: 1.2fr .65fr 1.3fr; gap: 26px; padding-block: 38px; align-items: stretch; }
+.belief > div:first-child { align-self: center; }
+.quote { position: relative; margin: 0; padding: 26px 24px; background: linear-gradient(140deg, #f4f9ff, #eaf3fd); border: 1px solid #dce8f6; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 10px 24px -20px #10396560; }
+.quote > span:first-child { color: #77b8ed; font: 54px/.8 Georgia, serif; }
+.quote p { font: italic 22px/1.35 Georgia, serif; color: #123c70; margin-top: 10px; }
+.quote .rule { margin-bottom: 0; }
+.beliefImage { position: relative; min-height: 270px; border-radius: 16px; overflow: hidden; isolation: isolate; }
+.beliefImage img { object-fit: cover; object-position: 85% center; z-index: -2; }
+.beliefImage::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, #031e3ee6, transparent 85%); }
+.beliefImage > div { display: flex; gap: 16px; align-items: center; position: absolute; bottom: 24px; left: 26px; color: white; }
+.beliefImage svg { width: 40px; height: 40px; color: #92d3ff; }
+.beliefImage span { font: 20px/1.4 Georgia, serif; letter-spacing: .03em; }
+.values { padding-block: 42px 48px; background: radial-gradient(ellipse at 100% 0, #e2effb, transparent 60%), #f5f8fc; border-block: 1px solid #e7eff7; }
+.sectionHeading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 28px; }
+.sectionHeading > p { font: italic 18px/1.4 Georgia, serif; color: #5d7794; text-align: right; }
+.valueGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.valueCard { position: relative; overflow: hidden; padding: 26px; border: 1px solid #d9e5f2; border-radius: 17px; background: linear-gradient(145deg, #fff 45%, #eff6fd); box-shadow: 0 12px 28px -22px #16457760; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.valueCard:first-child { color: #fff; background: radial-gradient(ellipse at 100% 0, #285f95, transparent 70%), #092b50; border-color: #315c82; }
+.cardTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 23px; }
+.iconBadge { display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid #cfe4f8; background: linear-gradient(145deg, #f6fbff, #e0effe); border-radius: 14px; color: #0878cd; transition: background .25s, color .25s, transform .25s; }
+.iconBadge svg { width: 29px; height: 29px; }
+.cardNumber { font: 30px/1 Georgia, serif; color: #a8bfd6; }
+.valueCard:first-child .iconBadge { color: #afe0ff; background: #ffffff0b; border-color: #ffffff26; }
+.valueCard:first-child .cardNumber { color: #74a0c5; }
+.valueCard h3 { font: 400 25px/1.2 Georgia, serif; margin-bottom: 11px; }
+.valueCard .tagline { font-size: 13px; font-weight: 600; color: #244f7c; min-height: 44px; line-height: 1.5; }
+.valueCard .valueDescription { font-size: 12px; line-height: 1.7; margin-top: 13px; padding-top: 13px; border-top: 1px solid #dfe9f3; }
+.valueCard:first-child .tagline { color: #e3f3ff; }
+.valueCard:first-child .valueDescription { color: #c3d7ec; border-color: #ffffff20; }
+.cardLine { position: absolute; bottom: 0; left: 26px; right: 26px; height: 3px; background: linear-gradient(90deg, #0d75ce, #65cbff); transform: scaleX(.2); transform-origin: left; transition: transform .3s ease; }
+.professional { color: white; background: radial-gradient(ellipse at 0 0, #105b9b, transparent 60%), #062c54; }
+.professionalGrid { display: grid; grid-template-columns: 1fr 1.05fr 1fr; align-items: stretch; }
+.professionalCopy { padding: 36px 28px 36px 0; align-self: center; }
+.professionalCopy p { color: #d7e7f7; margin: 17px 0 20px; }
+.professionalImage { position: relative; min-height: 330px; overflow: hidden; }
+.professionalImage img { object-fit: cover; object-position: 73% center; }
+.professionalImage::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #08376440, transparent, #062c5460); }
+.principles { display: grid; align-content: center; gap: 12px; list-style: none; padding: 25px 0 25px 24px; margin: 0; }
+.principles li { display: flex; align-items: flex-start; gap: 13px; padding: 15px; border: 1px solid #83b7e32e; border-radius: 12px; background: linear-gradient(135deg, #ffffff09, #ffffff02); transition: border-color .25s, background .25s; }
+.principleIcon { display: grid; place-items: center; width: 37px; height: 37px; flex-shrink: 0; color: #95d6ff; background: #ffffff09; border-radius: 9px; }
+.principles h3 { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.principles p { font-size: 12px; line-height: 1.5; color: #c6dbee; }
+.action { display: inline-flex; align-items: center; justify-content: center; gap: 17px; min-height: 43px; padding: 11px 22px; border: 1px solid #dfedfa; border-radius: 28px; color: #005aaa; background: #fff; font-size: 12px; font-weight: 600; }
+.action svg { width: 17px; height: 17px; transition: transform .25s; }
+.action:focus-visible { outline: 3px solid #65c6ff; outline-offset: 4px; }
+.impact { display: grid; grid-template-columns: 1fr 1.9fr; gap: 35px; padding-block: 42px; align-items: center; }
+.impactGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+.impactCard { border: 1px solid #dce7f3; border-radius: 14px; overflow: hidden; background: linear-gradient(145deg, #fff, #f3f8fe); box-shadow: 0 12px 25px -18px #143a6b70; transition: transform .25s, box-shadow .25s, border-color .25s; }
+.impactImage { position: relative; height: 125px; overflow: hidden; }
+.impactImage img { object-fit: cover; transition: transform .5s; }
+.impactCard:nth-child(2) img { object-position: 75% center; }
+.impactBody { position: relative; padding: 25px 13px 18px; }
+.impactIcon { position: absolute; top: -18px; left: 13px; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #d6e7f7; border-radius: 9px; color: #0071c7; background: #fff; box-shadow: 0 4px 8px #09336010; }
+.impactIcon svg { width: 19px; height: 19px; }
+.impactBody h3 { font-size: 13px; line-height: 1.4; margin-bottom: 7px; }
+.impactBody p { font-size: 12px; line-height: 1.6; }
+.cta { color: #fff; background: linear-gradient(90deg, #003367ee, #00559bd9, #003367ee), url('/images/our-story/mountain-journey.jpg') center 50% / cover; }
+.ctaInner { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 30px; }
+.cta p { color: #dcecff; margin-top: 10px; max-width: 640px; }
+.actions { display: flex; gap: 16px; flex-shrink: 0; }
+.outline { color: #fff; background: #ffffff05; border-color: #b0d2ef; }
+@media (hover: hover) and (pointer: fine) {
+  .valueCard:hover, .impactCard:hover { transform: translateY(-6px); border-color: #7db8e7; box-shadow: 0 23px 35px -20px #113d7160; }
+  .valueCard:hover .iconBadge { color: #fff; background: #096ec0; transform: translateY(-2px); }
+  .valueCard:hover .cardLine { transform: scaleX(1); }
+  .impactCard:hover img { transform: scale(1.055); }
+  .principles li:hover { border-color: #7fc8ff80; background: #ffffff0c; }
+  .action:hover { background: #e6f4ff; }
+  .outline:hover { background: #ffffff15; }
+  .action:hover svg { transform: translateX(3px); }
+}
+@media (max-width: 1100px) {
+  .belief { grid-template-columns: 1.2fr .8fr; }
+  .beliefImage { grid-column: 1 / -1; min-height: 240px; }
+  .valueCard { padding: 22px; }
+  .valueCard h3 { font-size: 22px; }
+  .professionalGrid { grid-template-columns: 1fr 1fr; }
+  .principles { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 24px 0; }
+  .principles li { flex-direction: column; }
+  .impact { grid-template-columns: 1fr; gap: 25px; }
+  .impactIntro { max-width: 620px; }
+  .ctaInner { flex-wrap: wrap; }
+}
+@media (max-width: 800px) {
+  .heroCopy { width: 70%; }
+  .heroNote { display: none; }
+  .valueGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .valueCard .tagline { min-height: 0; }
+}
+@media (max-width: 600px) {
+  .heroCopy { width: 100%; }
+  .hero::after { background: linear-gradient(90deg, #003e7bf2, #034782bc); }
+  .heroInner { padding-block: 20px 32px; }
+  .hero h1 { font-size: 48px; }
+  .heroCopy .heroSubtitle { font-size: 16px; }
+  .belief { grid-template-columns: 1fr; gap: 22px; padding-block: 28px; }
+  .quote { padding: 24px; }
+  .sectionHeading { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .sectionHeading > p { text-align: left; font-size: 16px; }
+  .valueGrid { gap: 13px; }
+  .valueCard { padding: 20px 16px; }
+  .cardNumber { font-size: 24px; }
+  .iconBadge { width: 43px; height: 43px; border-radius: 11px; }
+  .iconBadge svg { width: 24px; height: 24px; }
+  .valueCard h3 { font-size: 21px; overflow-wrap: anywhere; }
+  .valueCard .tagline { min-height: 59px; font-size: 12px; }
+  .professionalGrid { grid-template-columns: 1fr; }
+  .professionalCopy { padding: 30px 0; }
+  .professionalImage { min-height: 260px; }
+  .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .impact { padding-block: 30px; }
+  .impactGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .actions { flex-wrap: wrap; gap: 12px; }
+}
+@media (max-width: 360px) { .valueGrid { grid-template-columns: 1fr; } .valueCard .tagline { min-height: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .page *, .page *::before, .page *::after { transition: none !important; }
+  .valueCard:hover, .impactCard:hover, .valueCard:hover .iconBadge, .impactCard:hover img, .action:hover svg { transform: none; }
+}

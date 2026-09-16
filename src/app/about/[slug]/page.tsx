@@ -9,6 +9,7 @@ import AboutAstronisGlobal from "../about-astronis-global";
 import OurStory from "../our-story";
 import VisionMission from "../vision-mission";
 import AboutResources from "../about-resources";
+import CoreValues from "../core-values";
 export function generateStaticParams() {
   return siteMenu.about.map((t) => ({ slug: slugify(t) }));
 }
@@ -20,6 +21,10 @@ export async function generateMetadata({
   const { slug } = await params;
   return {
     title: siteMenu.about.find((t) => slugify(t) === slug),
+    ...(slug === "core-values" ? {
+      description: "Explore the core values and professional principles that guide Astronis Global: integrity, client commitment, excellence and responsible advisory.",
+      alternates: { canonical: "/about/core-values" },
+    } : {}),
     ...(["mission", "vision-and-mission"].includes(slug) ? {
       description: "Discover Astronis Global’s purpose, vision and mission, and the principles that guide our commitment to clients, people and a better tomorrow.",
       alternates: { canonical: "/about/vision-and-mission" },
@@ -44,6 +49,7 @@ export default async function AboutDetail({
   if (!title) notFound();
   if (slug === "about-astronis-global") return <AboutAstronisGlobal />;
   if (slug === "our-story") return <OurStory />;
+  if (slug === "core-values") return <CoreValues />;
   if (slug === "mission" || slug === "vision-and-mission") return <VisionMission />;
   return (
     <>
@@ -52,7 +58,7 @@ export default async function AboutDetail({
         <section className="container">
           <Leadership />
         </section>
-      ) : slug === "core-values" || slug === "why-choose-us" ? (
+      ) : slug === "why-choose-us" ? (
         <Values />
       ) : slug === "global-reach" || slug === "india-presence" ? (
         <GlobalPresence />
