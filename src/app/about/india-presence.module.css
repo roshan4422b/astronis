@@ -86,10 +86,6 @@
 .ctaInner { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 30px; }
 .cta p { color: #dcecff; margin-top: 10px; }
 .actions { display: flex; gap: 16px; flex-shrink: 0; }
-.credits { padding: 10px max(5%, calc((100% - 1300px) / 2)); background: #f4f8fc; color: #60748b; font-size: 10px; }
-.credits summary { cursor: pointer; }
-.credits p { font-size: 11px; margin-top: 8px; }
-.credits a { text-decoration: underline; }
 @media (hover: hover) and (pointer: fine) {
   .regionCard:hover { transform: translateY(-5px); border-color: #7db8e7; box-shadow: 0 23px 35px -20px #113d7155; }
   .regionCard:hover img { transform: scale(1.05); }
