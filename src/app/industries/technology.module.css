@@ -201,3 +201,18 @@
   .sideCard { padding: 24px 18px; }
   .challengeImage { aspect-ratio: 2.1; }
 }
+
+.heroWords { width: 245px; gap: 10px; font-size: 16px; letter-spacing: .01em; }
+.heroWords span { display: flex; align-items: center; gap: 10px; line-height: 1.25; }
+.heroWords svg { flex: none; width: 26px; height: 26px; padding: 5px; color: #f1c982; border: 1px solid #b8d7ef77; border-radius: 7px; background: #082d537a; }
+.heroWords { width: 395px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
+.heroWords span { min-width: 0; font-size: 15px; }
+@media (max-width: 1000px) { .heroWords { position: static; display: grid; width: 100%; max-width: 680px; margin-top: 28px; padding: 22px 0 0; border-left: 0; border-top: 1px solid #d2a95688; } }
+@media (max-width: 400px) { .heroWords { grid-template-columns: 1fr; } }
+
+/* Technology uses the same focus panel and responsive hero grid. */
+.heroInner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 450px); gap: 0 38px; align-items: center; }
+.breadcrumb { grid-column: 1 / -1; }
+.heroContent { min-width: 0; }
+.heroInner > aside { position: static; min-width: 0; width: auto; }
+@media (max-width: 1050px) { .heroInner { grid-template-columns: 1fr; } .heroInner > aside { max-width: 680px; } }

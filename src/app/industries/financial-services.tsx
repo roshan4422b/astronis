@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import EnquiryForm from "../contact/enquiry-form";
+import HeroFocus from "./hero-focus";
 import styles from "./logistics.module.css";
 import finance from "./financial-services.module.css";
 
@@ -52,7 +53,7 @@ export default function FinancialServices() {
     <section className={styles.hero} aria-labelledby="financial-title"><Image src="/Banners-Banking, Financial Services & Insurance .png" alt="Modern financial district and banking buildings" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Financial Services</span></nav>
       <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="financial-title">Banking, Finance<br />& Insurance</h1><p className={styles.heroTagline}>Trusted advisory for a stronger financial ecosystem.</p><p className={styles.heroText}>Legal, regulatory and strategic support for banks, NBFCs, insurers and fintech businesses navigating change, managing risk and pursuing responsible growth.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
-      <aside className={styles.heroFocus} aria-label="Areas of focus"><span>Where we help</span>{focus.map(item => <p key={item}>{item}</p>)}</aside>
+      <HeroFocus items={focus} />
     </div></section>
     <nav className={styles.sectionNav} aria-label="Financial services page sections"><div className={`container ${styles.navInner}`}>{nav.map(([id,label]) => <a href={`#${id}`} key={id}>{label}</a>)}<a className={styles.navCta} href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>
     <div className={`container ${styles.contentGrid}`}>

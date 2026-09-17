@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import EnquiryForm from "../contact/enquiry-form";
+import HeroFocus from "./hero-focus";
 import styles from "./logistics.module.css";
 import government from "./government.module.css";
 
@@ -49,7 +50,7 @@ export default function Government() {
     <section className={styles.hero} aria-labelledby="government-title"><Image src="/Banner-Government, Public Sector  Institutions .png" alt="Indian government building and national flag" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Government & Public Sector</span></nav>
       <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="government-title">Government, Public<br />Sector & Institutions</h1><p className={styles.heroTagline}>Policy. Partnerships. Public impact.</p><p className={styles.heroText}>Integrated legal, regulatory and strategic advisory for public bodies, PSUs and businesses working with government. We help turn policy and partnership into practical outcomes.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
-      <aside className={styles.heroFocus} aria-label="Areas of focus"><span>Where we help</span>{focus.map(item => <p key={item}>{item}</p>)}</aside>
+      <HeroFocus items={focus} />
     </div></section>
     <nav className={styles.sectionNav} aria-label="Government page sections"><div className={`container ${styles.navInner}`}>{nav.map(([id,label]) => <a href={`#${id}`} key={id}>{label}</a>)}<a className={styles.navCta} href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>
     <div className={`container ${styles.contentGrid}`}>

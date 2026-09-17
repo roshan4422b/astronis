@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import EnquiryForm from "../contact/enquiry-form";
+import HeroFocus from "./hero-focus";
 import styles from "./logistics.module.css";
 import textile from "./textiles.module.css";
 
@@ -49,7 +50,7 @@ export default function Textiles() {
     <section className={styles.hero} aria-labelledby="textiles-title"><Image src="/Banner-Apparel, Textiles & Garments .png" alt="Garment production and apparel design" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Textiles, Apparel & Lifestyle</span></nav>
       <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="textiles-title">Textiles, Apparel<br />& Lifestyle</h1><p className={styles.heroTagline}>From fabric to global markets. Legally yours.</p><p className={styles.heroText}>End-to-end legal, regulatory and business advisory for manufacturers, exporters, brands and retailers navigating the changing world of apparel and textiles.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
-      <aside className={styles.heroFocus} aria-label="Areas of focus"><span>Where we help</span>{focus.map(item => <p key={item}>{item}</p>)}</aside>
+      <HeroFocus items={focus} />
     </div></section>
     <nav className={styles.sectionNav} aria-label="Textiles page sections"><div className={`container ${styles.navInner}`}>{nav.map(([id,label]) => <a href={`#${id}`} key={id}>{label}</a>)}<a className={styles.navCta} href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>
     <div className={`container ${styles.contentGrid}`}>

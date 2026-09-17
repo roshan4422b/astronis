@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import EnquiryForm from "../contact/enquiry-form";
+import HeroFocus from "./hero-focus";
 import styles from "./logistics.module.css";
 import media from "./media-entertainment.module.css";
 
@@ -49,7 +50,7 @@ export default function MediaEntertainment() {
     <section className={styles.hero} aria-labelledby="media-title"><Image src="/Banner-Media, Entertainment & Broadcasting .png" alt="Media production studio with a professional camera" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Media & Entertainment</span></nav>
       <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="media-title">Media, Entertainment<br />& Broadcasting</h1><p className={styles.heroTagline}>Ideas. Content. Creativity. Wider horizons.</p><p className={styles.heroText}>Practical legal, regulatory and strategic advice for production companies, broadcasters, OTT platforms, creators and brands bringing stories to audiences everywhere.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
-      <aside className={styles.heroFocus} aria-label="Areas of focus"><span>Where we help</span>{focus.map(item => <p key={item}>{item}</p>)}</aside>
+      <HeroFocus items={focus} />
     </div></section>
     <nav className={styles.sectionNav} aria-label="Media page sections"><div className={`container ${styles.navInner}`}>{nav.map(([id,label]) => <a href={`#${id}`} key={id}>{label}</a>)}<a className={styles.navCta} href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>
     <div className={`container ${styles.contentGrid}`}>

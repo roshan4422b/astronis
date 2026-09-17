@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import EnquiryForm from "../contact/enquiry-form";
+import HeroFocus from "./hero-focus";
 import styles from "./logistics.module.css";
 import commerce from "./e-commerce.module.css";
 
@@ -49,7 +50,7 @@ export default function Ecommerce() {
     <section className={styles.hero} aria-labelledby="ecommerce-title"><Image src="/Banner-E-Commerce & Digital Platforms .png" alt="Online store on a laptop with a shopping basket" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">E-Commerce & Digital Platforms</span></nav>
       <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="ecommerce-title">E-Commerce &<br />Digital Platforms</h1><p className={styles.heroTagline}>Innovate. Comply. Scale globally.</p><p className={styles.heroText}>End-to-end legal, regulatory and strategic advice for marketplaces, online retailers and digital platforms building trusted commerce in India and beyond.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
-      <aside className={styles.heroFocus} aria-label="Areas of focus"><span>Where we help</span>{focus.map(item => <p key={item}>{item}</p>)}</aside>
+      <HeroFocus items={focus} />
     </div></section>
     <nav className={styles.sectionNav} aria-label="E-commerce page sections"><div className={`container ${styles.navInner}`}>{nav.map(([id,label]) => <a href={`#${id}`} key={id}>{label}</a>)}<a className={styles.navCta} href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>
     <div className={`container ${styles.contentGrid}`}>

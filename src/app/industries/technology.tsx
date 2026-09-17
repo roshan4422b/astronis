@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
+import HeroFocus from "./hero-focus";
 import EnquiryForm from "../contact/enquiry-form";
 import styles from "./technology.module.css";
 
@@ -53,7 +54,7 @@ export default function Technology() {
       <div className={`container ${styles.heroInner}`}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Technology, IT & ITES</span></nav>
         <div className={styles.heroContent}><span className={styles.eyebrow}>Industry focus</span><h1 id="technology-title">Technology,<br />IT & ITES</h1><p className={styles.heroTag}>Innovate. Comply. Scale globally.</p><p>We support technology companies, IT and ITES service providers, SaaS businesses and digital platforms with joined-up legal, regulatory and strategic advice.</p><Link className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></Link></div>
-        <div className={styles.heroWords} aria-hidden="true"><span>Ideas</span><span>Technology</span><span>People</span><span>Compliance</span><span>Data</span><span>Innovation</span><span>Global markets</span><span>A stronger tomorrow</span></div>
+        <HeroFocus items={["Ideas", "Technology", "People", "Compliance", "Data", "Innovation", "Global markets", "A stronger tomorrow"]} />
       </div>
     </section>
     <nav className={styles.sectionNav} aria-label="Page sections"><div className="container">{[["overview","Overview"],["challenges","Key issues"],["solutions","Our solutions"],["regulatory","Regulatory landscape"],["insights","Insights"],["faq","FAQ"]].map(([id,label])=><a key={id} href={`#${id}`}>{label}</a>)}<a href="#enquire">Enquire now <Icon name="arrow" /></a></div></nav>

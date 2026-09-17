@@ -6,7 +6,7 @@ export default function HeroPriorities({ title, items }: {
   items: [string, string][];
 }) {
   return (
-    <aside className={styles.heroAside} aria-label={title}>
+    <aside className={`${styles.heroAside} ${items.length >= 6 ? styles.heroAsideColumns : ""}`} aria-label={title}>
       <span>{title}</span>
       <ul>
         {items.map(([icon, label]) => (
