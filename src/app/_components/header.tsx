@@ -53,6 +53,7 @@ const navigation = [
     href: "/professionals",
     items: [
       { title: "Our Leadership", href: "/professionals" },
+      { title: "Corporate Advisory", href: "/professionals/corporate-advisory" },
       { title: "Partner With Us", href: "/professionals/partner-with-us" },
       { title: "Careers", href: "/about/careers" },
     ],

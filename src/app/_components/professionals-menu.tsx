@@ -21,7 +21,7 @@ const columns = [
     tagline: "Practical. Multidisciplinary.",
     links: [
       ["Across Practice Areas", "Find the advice your matter needs", "/services"],
-      ["Corporate Advisory", "Commercial and governance support", "/services/corporate-advisory"],
+      ["Corporate Advisory", "Meet our corporate and regulatory professionals", "/professionals/corporate-advisory"],
       ["Regulatory Services", "Navigate obligations with clarity", "/services/regulatory-and-compliance"],
       ["Experts by Industry", "Sector-focused perspectives", "/industries"],
     ],
