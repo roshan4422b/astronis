@@ -1,0 +1,9 @@
+.page .hero::after{background:linear-gradient(90deg,#061b38ee 0%,#092641be 42%,#0b2b4960 72%,#061b38cb 100%)}
+.page .hero>img{object-position:center 45%}
+.page .hero h1{max-width:790px}
+.page .heroTagline{color:#f2f5fb}
+.page .capabilities article{background:linear-gradient(145deg,#f8fbff,#edf3fc)}
+.page .capabilities article:hover{background:#e9f3ff}
+.page .regulatory{background:linear-gradient(100deg,#081d40,#195180)}
+.page .challengeGrid article:hover{border-color:#8abbe9}
+@media(max-width:600px){.page .hero>img{object-position:58% center}}

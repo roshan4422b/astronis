@@ -14,6 +14,14 @@ import Telecommunications from "../telecommunications";
 import Technology from "../technology";
 import Healthcare from "../healthcare";
 import Startups from "../startups";
+import Logistics from "../logistics";
+import MediaEntertainment from "../media-entertainment";
+import Government from "../government";
+import Textiles from "../textiles";
+import Ecommerce from "../e-commerce";
+import FinancialServices from "../financial-services";
+import RenewableEnergy from "../renewable-energy";
+import Agriculture from "../agriculture";
 export function generateStaticParams() {
   return industries.map((i) => ({ slug: i.slug }));
 }
@@ -44,6 +52,14 @@ export default async function IndustryPage({
   if (slug === "it-and-ites") return <Technology />;
   if (slug === "healthcare-and-pharma") return <Healthcare />;
   if (slug === "startups") return <Startups />;
+  if (slug === "logistics") return <Logistics />;
+  if (slug === "media-and-entertainment") return <MediaEntertainment />;
+  if (slug === "government-and-public-sector") return <Government />;
+  if (slug === "textiles-apparel-and-lifestyle") return <Textiles />;
+  if (slug === "e-commerce") return <Ecommerce />;
+  if (slug === "financial-services") return <FinancialServices />;
+  if (slug === "renewable-energy") return <RenewableEnergy />;
+  if (slug === "agriculture-and-agri-business") return <Agriculture />;
   return (
     <>
       <Banner

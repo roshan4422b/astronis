@@ -1,0 +1,7 @@
+.page .hero::after{background:linear-gradient(90deg,#061d3fee 0%,#082a4ec0 40%,#0b355451 73%,#071f3bbd 100%)}
+.page .hero>img{object-position:center 50%}
+.page .hero h1{max-width:760px}
+.page .capabilities article{background:linear-gradient(145deg,#f8fbff,#edf5ff)}
+.page .capabilities article:hover{background:#e8f3ff}
+.page .regulatory{background:linear-gradient(100deg,#08274c,#155b8b)}
+@media(max-width:600px){.page .hero>img{object-position:58% center}}
