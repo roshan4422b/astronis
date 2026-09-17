@@ -33,7 +33,7 @@ const columns = [
     links: [
       ["Global Presence", "See where we work", "/global-presence"],
       ["India Presence", "Local understanding across India", "/global-presence/india"],
-      ["International Network", "Connected across borders", "/about/global-perspective-and-international-network"],
+      ["International Network", "Connected across borders", "/professionals/international-network"],
       ["Professional Collaboration", "Build relationships that last", "/professionals/partner-with-us"],
     ],
   },

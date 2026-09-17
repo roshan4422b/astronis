@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { professionals } from "../leadership";
+import ProfessionalCollaboration from "../professional-collaboration";
 import styles from "./profile.module.css";
 
 type Professional = (typeof professionals)[number];
@@ -25,10 +26,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const person = professionals.find((p) => p.slug === slug);
-  return { title: slug === "partner-with-us" ? "Partner With Us" : person?.name, description: person ? `Learn about ${person.name} at Astronis Global.` : "Explore professional collaboration with Astronis Global." };
-}
-function PartnerPage() {
-  return <div className={styles.partnerPage}><div className={styles.wrap}><div className={styles.partnerCard}><span className={styles.kicker}>PROFESSIONAL COLLABORATION</span><h1>Partner With Us</h1><p>We welcome collaboration with Chartered Accountants, Company Secretaries, Cost and Management Accountants, advocates and consultants who share our commitment to professional excellence and responsible advisory.</p><Link className={styles.button} href="/professionals/enquiry">Connect with Our Team <Icon name="arrow" /></Link></div></div></div>;
+  return { title: slug === "partner-with-us" ? "Professional Collaboration" : person?.name, description: person ? `Learn about ${person.name} at Astronis Global.` : "Explore professional collaboration with Astronis Global." };
 }
 function ProfilePage({ person }: { person: Professional }) {
   const enquiry = `/professionals/enquiry?professional=${person.slug}`;
@@ -58,7 +56,7 @@ function ProfilePage({ person }: { person: Professional }) {
 }
 export default async function Profile({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (slug === "partner-with-us") return <PartnerPage />;
+  if (slug === "partner-with-us") return <ProfessionalCollaboration />;
   const person = professionals.find((p) => p.slug === slug);
   if (!person) notFound();
   return <ProfilePage person={person} />;

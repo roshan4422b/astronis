@@ -73,6 +73,7 @@ export default function Icon({
     ),
     arrow: <path d="M4 12h16m-6-6 6 6-6 6" />,
     plane: <path d="M21 3 9 11 3 10l-1 2 6 3 3 7 2-1-1-7 9-11Z" />,
+    handshake: <path d="m2 8 4-4 5 2 2-1 5 1 4 4-4 5-2-2-3 3-2-2-3 2-6-6Zm4-4 5 2-3 4m10-4-5-1-4 4 2 2 3-2 4 4m-8 5 2 2 3-2" />,
     chevron: <path d="m6 9 6 6 6-6" />,
     play: <path d="m8 4 12 8-12 8V4Z" />,
   };
