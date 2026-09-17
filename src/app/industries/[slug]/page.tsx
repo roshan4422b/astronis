@@ -20,6 +20,9 @@ import Government from "../government";
 import Textiles from "../textiles";
 import Ecommerce from "../e-commerce";
 import FinancialServices from "../financial-services";
+import Fintech from "../fintech";
+import ProfessionalServices from "../professional-services";
+import ArtificialIntelligence from "../artificial-intelligence";
 import RenewableEnergy from "../renewable-energy";
 import Agriculture from "../agriculture";
 export function generateStaticParams() {
@@ -58,6 +61,9 @@ export default async function IndustryPage({
   if (slug === "textiles-apparel-and-lifestyle") return <Textiles />;
   if (slug === "e-commerce") return <Ecommerce />;
   if (slug === "financial-services") return <FinancialServices />;
+  if (slug === "fintech-and-digital-finance") return <Fintech />;
+  if (slug === "professional-and-business-services") return <ProfessionalServices />;
+  if (slug === "artificial-intelligence") return <ArtificialIntelligence />;
   if (slug === "renewable-energy") return <RenewableEnergy />;
   if (slug === "agriculture-and-agri-business") return <Agriculture />;
   return (

@@ -253,7 +253,7 @@ export const industries = [
   ["Professional & Business Services", "Professional & Business Services .png"],
   ["Telecommunications", "Telecommunications & Digital Infrastructure .png"],
   ["Textiles, Apparel & Lifestyle", "Textiles, Apparel & Lifestyle .png"],
-  ["Artificial Intelligence", "Technology, IT & ITES .png"],
+  ["Artificial Intelligence", "Banner - Indus - Artificial Intelligence .png"],
 ].map(([title, image]) => ({
   title,
   image: "/" + image,
