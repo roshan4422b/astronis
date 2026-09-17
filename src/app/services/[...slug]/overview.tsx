@@ -76,7 +76,7 @@ export default function Overview({
             Connect with our team for support tailored to your business and
             jurisdiction.
           </p>
-          <Button href="/contact">Talk to Our Experts</Button>
+          <Button href="/professionals/enquiry">Talk to Our Experts</Button>
           <p style={{ marginTop: 20 }}>
             +91 9311664455
             <br />

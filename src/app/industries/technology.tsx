@@ -53,7 +53,7 @@ export default function Technology() {
       <Image src="/Banner-Technology, IT & ITES .png" alt="Technology professionals working in a digital office" fill preload sizes="100vw" />
       <div className={`container ${styles.heroInner}`}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Technology, IT & ITES</span></nav>
-        <div className={styles.heroContent}><span className={styles.eyebrow}>Industry focus</span><h1 id="technology-title">Technology,<br />IT & ITES</h1><p className={styles.heroTag}>Innovate. Comply. Scale globally.</p><p>We support technology companies, IT and ITES service providers, SaaS businesses and digital platforms with joined-up legal, regulatory and strategic advice.</p><Link className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></Link></div>
+        <div className={styles.heroContent}><span className={styles.eyebrow}>Industry focus</span><h1 id="technology-title">Technology,<br />IT & ITES</h1><p className={styles.heroTag}>Innovate. Comply. Scale globally.</p><p>We support technology companies, IT and ITES service providers, SaaS businesses and digital platforms with joined-up legal, regulatory and strategic advice.</p><Link className={styles.primaryButton} href="/professionals/enquiry">Speak to our experts <Icon name="arrow" /></Link></div>
         <HeroFocus items={["Ideas", "Technology", "People", "Compliance", "Data", "Innovation", "Global markets", "A stronger tomorrow"]} />
       </div>
     </section>

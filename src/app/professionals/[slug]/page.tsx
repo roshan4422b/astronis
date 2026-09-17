@@ -58,7 +58,7 @@ export default async function Profile({
               </p>
             </>
           )}
-          <Button href="/contact">Connect with Our Team</Button>
+          <Button href={p ? `/professionals/enquiry?professional=${p.slug}` : "/professionals/enquiry"}>Connect with Our Team</Button>
         </div>
       </section>
     </>

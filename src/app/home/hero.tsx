@@ -34,7 +34,7 @@ export default function Hero() {
           </p>
           <div className="button-row">
             <Button href="/services">Explore Our Services</Button>
-            <Button href="/contact" secondary>
+            <Button href="/professionals/enquiry" secondary>
               Talk to Our Experts
             </Button>
           </div>

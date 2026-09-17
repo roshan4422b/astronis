@@ -45,7 +45,7 @@ const columns = [
       ["Browse Professionals", "Explore our team", "/professionals#leadership"],
       ["By Practice Area", "Start with a service", "/services"],
       ["By Industry", "Explore sector expertise", "/industries"],
-      ["Request an Introduction", "Tell us what you need", "/contact#enquiry-form"],
+      ["Request an Introduction", "Tell us what you need", "/professionals/enquiry"],
     ],
   },
 ] as const;

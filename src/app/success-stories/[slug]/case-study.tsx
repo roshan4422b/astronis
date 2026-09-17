@@ -27,7 +27,7 @@ export default function CaseStudy({
         <aside className="article-aside">
           <h3>Facing a similar challenge?</h3>
           <p>Discuss your requirements with our team.</p>
-          <Button href="/contact">Talk to Our Experts</Button>
+          <Button href="/professionals/enquiry">Talk to Our Experts</Button>
         </aside>
       </div>
     </section>

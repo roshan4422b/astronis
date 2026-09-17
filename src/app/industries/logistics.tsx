@@ -50,7 +50,7 @@ export default function Logistics() {
       <Image src="/Banners-Logistics, Transportation & Warehousing .png" alt="Aircraft, freight truck and port operations" fill preload sizes="100vw" />
       <div className={`container ${styles.heroInner}`}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/industries">Industries</Link><span>›</span><span aria-current="page">Logistics, Transportation & Warehousing</span></nav>
-        <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="logistics-title">Logistics, Transportation<br />& Warehousing</h1><p className={styles.heroTagline}>Connecting markets. Powering growth.</p><p className={styles.heroText}>End-to-end legal, regulatory and strategic advisory for businesses moving goods and building supply chains across India and beyond.</p><a className={styles.primaryButton} href="#enquire">Speak to our experts <Icon name="arrow" /></a></div>
+        <div className={styles.heroMain}><span className={styles.eyebrow}>Industry focus</span><h1 id="logistics-title">Logistics, Transportation<br />& Warehousing</h1><p className={styles.heroTagline}>Connecting markets. Powering growth.</p><p className={styles.heroText}>End-to-end legal, regulatory and strategic advisory for businesses moving goods and building supply chains across India and beyond.</p><a className={styles.primaryButton} href="/professionals/enquiry">Speak to our experts <Icon name="arrow" /></a></div>
         <HeroFocus items={focus} />
       </div>
     </section>
