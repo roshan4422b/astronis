@@ -12,6 +12,7 @@ import {
 } from "@/content/site";
 import Icon from "./icon";
 import ProfessionalsMenu from "./professionals-menu";
+import IndustriesMenu from "./industries-menu";
 const navigation = [
   {
     label: "About Us",
@@ -178,7 +179,7 @@ export default function Header() {
                   <Icon name="chevron" className="nav-chevron" />
                 </button>
               </div>
-              {n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
+              {n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                   <div className="mega-intro">
                     <span className="eyebrow">ASTRONIS GLOBAL</span>
                     <h2>{n.label}</h2>
