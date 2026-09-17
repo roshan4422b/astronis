@@ -10,7 +10,7 @@ const columns = [
     tagline: "Experienced. Diverse. Committed.",
     links: [
       ["Our Professionals", "Meet the people behind our work", "/professionals"],
-      ["Leadership Team", "Get to know our leaders", "/professionals#leadership"],
+      ["Leadership Team", "Get to know our leaders", "/professionals/leadership-team"],
       ["Careers", "Grow with Astronis Global", "/about/careers"],
       ["Partner With Us", "Explore professional collaboration", "/professionals/partner-with-us"],
     ],
