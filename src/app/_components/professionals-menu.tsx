@@ -44,7 +44,7 @@ const columns = [
     links: [
       ["Browse Professionals", "Explore our team", "/professionals#leadership"],
       ["By Practice Area", "Start with a service", "/services"],
-      ["By Industry", "Explore sector expertise", "/industries"],
+      ["By Industry", "Explore sector expertise", "/professionals/by-industry"],
       ["Request an Introduction", "Tell us what you need", "/professionals/enquiry"],
     ],
   },

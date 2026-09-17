@@ -55,6 +55,7 @@ const navigation = [
       { title: "Our Leadership", href: "/professionals" },
       { title: "Corporate Advisory", href: "/professionals/corporate-advisory" },
       { title: "International Network", href: "/professionals/international-network" },
+      { title: "By Industry", href: "/professionals/by-industry" },
       { title: "Partner With Us", href: "/professionals/partner-with-us" },
       { title: "Careers", href: "/about/careers" },
     ],
