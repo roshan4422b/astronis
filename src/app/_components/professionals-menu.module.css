@@ -1,0 +1,35 @@
+.menu{grid-template-columns:minmax(0,1fr) 270px!important;max-height:min(76vh,720px);border-top-color:#1555a7;box-shadow:0 24px 50px #061d3a35}
+.columns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:25px 12px;background:#fff}
+.column{min-width:0;padding:12px 17px 5px;border-right:1px solid #dce8f4}
+.column:last-child{border-right:0}
+.columnIcon{display:grid;place-items:center;width:45px;height:45px;margin-bottom:13px;color:#1251a5}
+.columnIcon svg{width:42px;height:42px;stroke-width:1.55}
+.column h2,.feature h2{font:400 25px/1.1 Georgia,'Times New Roman',serif;color:#0b376f;letter-spacing:-.025em}
+.tagline{min-height:37px;margin-top:7px;color:#456890;font-size:10px;font-weight:700;letter-spacing:.08em;line-height:1.45;text-transform:uppercase}
+.rule{display:block;width:44px;height:2px;background:#1555a7;margin:13px 0 16px}
+.links{display:grid;gap:2px}
+.links a{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;min-height:58px;padding:7px 2px;border-radius:4px;color:#0b376f;transition:background .2s,transform .2s,color .2s}
+.links a>span{display:grid;gap:3px;min-width:0}
+.links strong{font-size:13px;font-weight:600;line-height:1.25}
+.links small{font-size:11px;font-weight:400;line-height:1.35;color:#58718c;white-space:normal}
+.links a>svg{flex:none;width:15px;height:15px;margin-top:2px;color:#1555a7;transition:transform .2s}
+.links a:hover,.links a:focus-visible{color:#0a5cc3;background:#f1f7ff;transform:translateX(2px)}
+.links a:hover>svg,.links a:focus-visible>svg{transform:translateX(3px)}
+.collaborate{display:grid;grid-template-columns:31px 1fr 16px;align-items:center;gap:9px;margin-top:14px;padding:12px 10px;border:1px solid #dce9f8;border-radius:5px;background:#eef6ff;color:#0b376f;transition:background .2s,transform .2s}
+.collaborate:hover{background:#e1f0ff;transform:translateY(-2px)}
+.collaborate>svg:first-child{width:29px;height:29px}.collaborate>svg:last-child{width:15px;height:15px}
+.collaborate span{display:grid;gap:2px}.collaborate strong{font:400 17px/1.1 Georgia,serif}.collaborate small{font-size:10px;font-weight:400;color:#58718c;white-space:normal}
+.feature{display:flex;flex-direction:column;background:#edf6ff;min-width:0}
+.featureImage{position:relative;min-height:175px;overflow:hidden;background:#0a315b}
+.featureImage img{object-fit:cover;object-position:73% center}
+.featureCopy{display:flex;flex:1;flex-direction:column;padding:20px 20px 22px}
+.featureEyebrow{margin-bottom:9px;color:#2463a2;font-size:10px;font-weight:700;letter-spacing:.12em}
+.feature h2{font-size:29px;line-height:1.06}
+.featureCopy .rule{margin:15px 0}
+.featureCopy p{color:#355b83;font-size:12px;font-weight:400;line-height:1.5;white-space:normal}
+.featureCopy a{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:auto;padding:12px 10px;border-radius:3px;background:#0c3978;color:#fff;font-size:12px;font-weight:600;white-space:normal;transition:background .2s,transform .2s}
+.featureCopy a svg{width:16px;height:16px}.featureCopy a:hover{background:#1558ac;transform:translateY(-2px)}
+@media(max-width:1250px) and (min-width:1051px){.menu{grid-template-columns:minmax(0,1fr) 235px!important}.column{padding-inline:11px}.column h2{font-size:22px}.links strong{font-size:12px}.featureImage{min-height:155px}.feature h2{font-size:26px}}
+@media(max-width:1050px){.menu{max-height:none!important;border-top:0}.columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding:8px 0}.column{padding:18px 15px;border-bottom:1px solid #dce8f4}.column:nth-child(even){border-right:0}.columnIcon{width:35px;height:35px;margin-bottom:6px}.columnIcon svg{width:33px;height:33px}.column h2{font-size:24px}.tagline{min-height:0}.links a{min-height:0;padding-block:9px}.feature{display:grid;grid-template-columns:35% 1fr}.featureImage{min-height:190px}.featureCopy{padding:18px}.feature h2{font-size:25px}.featureCopy a{margin-top:15px}}
+@media(max-width:600px){.columns{grid-template-columns:1fr}.column{border-right:0;padding:19px 10px}.column h2{font-size:24px}.tagline{font-size:10px}.links{grid-template-columns:1fr}.feature{grid-template-columns:1fr}.featureImage{min-height:150px}.featureCopy{padding:20px}.feature h2 br{display:none}.featureCopy a{width:100%}}
+@media(prefers-reduced-motion:reduce){.links a,.links a>svg,.collaborate,.featureCopy a{transition:none}.links a:hover,.collaborate:hover,.featureCopy a:hover{transform:none}}

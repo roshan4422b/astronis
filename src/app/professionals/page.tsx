@@ -6,7 +6,7 @@ export default function ProfessionalsPage() {
   return (
     <>
       <Hero />
-      <section className="section">
+      <section className="section" id="leadership">
         <div className="container">
           <Leadership />
         </div>
