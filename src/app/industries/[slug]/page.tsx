@@ -23,6 +23,8 @@ import FinancialServices from "../financial-services";
 import Fintech from "../fintech";
 import ProfessionalServices from "../professional-services";
 import ArtificialIntelligence from "../artificial-intelligence";
+import Aviation from "../aviation";
+import RetailConsumer from "../retail-consumer";
 import RenewableEnergy from "../renewable-energy";
 import Agriculture from "../agriculture";
 export function generateStaticParams() {
@@ -64,6 +66,8 @@ export default async function IndustryPage({
   if (slug === "fintech-and-digital-finance") return <Fintech />;
   if (slug === "professional-and-business-services") return <ProfessionalServices />;
   if (slug === "artificial-intelligence") return <ArtificialIntelligence />;
+  if (slug === "aviation-aerospace-and-defence") return <Aviation />;
+  if (slug === "retail-and-consumer") return <RetailConsumer />;
   if (slug === "renewable-energy") return <RenewableEnergy />;
   if (slug === "agriculture-and-agri-business") return <Agriculture />;
   return (

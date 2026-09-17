@@ -1,0 +1,2 @@
+.hero{min-height:490px}.hero>img{object-position:center;transform:scaleX(-1)}.hero::after{background:linear-gradient(90deg,#061b3cf0 0%,#082744c7 37%,#08274458 70%,#061b37a0 100%)}.heroInner{min-height:490px}.hero h1{max-width:720px}.page :global(.enquiry-form button):hover{transform:translateY(-2px)}
+@media(max-width:600px){.hero,.heroInner{min-height:0}.hero>img{object-position:56% center}.hero::after{background:linear-gradient(90deg,#061b3cf3,#082744d9)}}
