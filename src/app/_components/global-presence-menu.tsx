@@ -31,7 +31,7 @@ const quickLinks = [
 const opportunities = [
   ["globe", "Global Mindset", "Local insight with an international perspective.", "/about/global-perspective-and-international-network"],
   ["message", "Discuss Your Global Requirement", "Talk with our cross-border advisory team.", "/global-presence/discuss-your-global-requirement"],
-  ["bulb", "Ideas Across Borders", "Perspectives for international growth.", "/insights"],
+  ["bulb", "Ideas Across Borders", "Perspectives for international growth.", "/global-presence/ideas-across-borders"],
   ["handshake", "Partner With Us", "Build opportunities together.", "/professionals/partner-with-us"],
   ["chart", "Our Approach", "How we work across jurisdictions.", "/about/our-methodology"],
   ["globe", "Connecting Markets, Creating Opportunities", "Explore our global reach.", "/global-presence"],
