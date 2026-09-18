@@ -26,3 +26,23 @@
 @media(max-width:650px){.intro h2{font-size:28px}.intro p{font-size:14px}.mapCta>span{font-size:17px}.main{display:block}.regions{display:block}.region{grid-template-columns:74px minmax(0,1fr) 12px}.footprint{min-height:380px}.side{display:block}.feature{min-height:275px}.explore{padding-block:20px}.explore a{min-height:40px}.footer{grid-template-columns:1fr;padding:15px}.footer a{border-right:0;border-bottom:1px solid #cbd5e0;padding:10px}.footer a:last-child{border-bottom:0}}
 @media(prefers-reduced-motion:reduce){.region{transition:none}}
 
+/* Fourth column: direct paths into cross-border work and collaboration. */
+.main{grid-template-columns:28% 31% 21% 20%}
+.regions{padding-right:16px;padding-left:26px}
+.region{grid-template-columns:78px minmax(0,1fr) 12px;gap:10px}
+.thumbnail{width:78px;height:51px}
+.regionCopy strong{font-size:17px}.regionCopy small{font-size:12px}
+.footprint{padding-right:20px;padding-left:20px}
+.stats>div{padding-right:10px;padding-left:10px}.stats strong{font-size:32px}.stats span{font-size:12px}
+.feature,.explore{padding-right:16px;padding-left:16px}.feature p{font-size:16px}.feature a{font-size:13px;padding:10px}.explore a{gap:8px;font-size:12px}
+.opportunities{display:flex;flex-direction:column;min-width:0;padding:17px 15px 11px;border-left:1px solid #dce6f0;background:#f9fcff}
+.opportunities>.sectionLabel{margin-bottom:9px;color:#143f77}
+.opportunity{display:grid;grid-template-columns:25px minmax(0,1fr) 13px;align-items:center;gap:8px;flex:1;min-height:68px;padding:8px 0;border-bottom:1px solid #d4e2f0;color:#102c55;transition:color .2s,background .2s}
+.opportunity:last-child{border-bottom:0}.opportunity:hover,.opportunity:focus-visible{color:#07539d;background:#edf6ff}
+.opportunity>svg:first-child{width:23px;height:23px;stroke-width:1.6}.opportunity>svg:last-child{width:13px;height:13px}
+.opportunity span{display:grid;gap:4px;min-width:0}.opportunity strong{font:400 14px/1.15 Georgia,serif}.opportunity small{color:#596b7d;font:11px/1.25 Georgia,serif}
+@media(max-width:1250px){.main{grid-template-columns:27% 30% 21% 22%}.regions{padding-right:10px;padding-left:14px}.region{grid-template-columns:63px minmax(0,1fr) 10px;gap:7px}.thumbnail{width:63px;height:46px}.regionCopy strong{font-size:15px}.regionCopy small{font-size:11px}.footprint{padding-inline:12px}.stats strong{font-size:27px}.stats span{font-size:10px}.feature,.explore{padding-inline:12px}.feature p{font-size:14px}.explore a{font-size:11px}.opportunities{padding-inline:10px}.opportunity{grid-template-columns:21px minmax(0,1fr) 11px;gap:5px}.opportunity>svg:first-child{width:20px;height:20px}.opportunity strong{font-size:12px}.opportunity small{font-size:10px}}
+@media(max-width:1050px){.main{grid-template-columns:1fr 1fr}.regions{padding:8px 14px}.region{grid-template-columns:75px minmax(0,1fr) 12px;gap:10px}.thumbnail{width:75px;height:49px}.regionCopy strong{font-size:17px}.regionCopy small{font-size:12px}.footprint{padding:18px}.stats strong{font-size:31px}.stats span{font-size:12px}.side{border-left:0}.opportunities{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;padding:20px;border-top:1px solid #dce6f0;border-left:0}.opportunities>.sectionLabel{grid-column:1/-1}.opportunity{min-height:75px}.opportunity strong{font-size:15px}.opportunity small{font-size:12px}}
+@media(max-width:650px){.main{display:block}.opportunities{display:block;padding:18px}.opportunity{min-height:72px}}
+@media(prefers-reduced-motion:reduce){.opportunity{transition:none}}
+

@@ -16,6 +16,7 @@ import IndustriesMenu from "./industries-menu";
 import ServicesMenu from "./services-menu";
 import AboutMenu from "./about-menu";
 import GlobalPresenceMenu from "./global-presence-menu";
+import InsightsMenu from "./insights-menu";
 const navigation = [
   {
     label: "About Us",
@@ -185,7 +186,7 @@ export default function Header() {
                   <Icon name="chevron" className="nav-chevron" />
                 </button>
               </div>
-              {n.label === "About Us" ? <AboutMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Global Presence" ? <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
+              {n.label === "About Us" ? <AboutMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Global Presence" ? <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Insights" ? <InsightsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                   <div className="mega-intro">
                     <span className="eyebrow">ASTRONIS GLOBAL</span>
                     <h2>{n.label}</h2>

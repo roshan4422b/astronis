@@ -28,6 +28,16 @@ const quickLinks = [
   ["file", "Insights & Updates", "Global developments. Local impact.", "/insights"],
 ] as const;
 
+const opportunities = [
+  ["globe", "Global Mindset", "Local insight with an international perspective.", "/about/global-perspective-and-international-network"],
+  ["message", "Discuss Your Global Requirement", "Talk with our cross-border advisory team.", "/global-presence/discuss-your-global-requirement"],
+  ["bulb", "Ideas Across Borders", "Perspectives for international growth.", "/insights"],
+  ["handshake", "Partner With Us", "Build opportunities together.", "/professionals/partner-with-us"],
+  ["chart", "Our Approach", "How we work across jurisdictions.", "/about/our-methodology"],
+  ["globe", "Connecting Markets, Creating Opportunities", "Explore our global reach.", "/global-presence"],
+  ["people", "International Professional Network", "Meet our connected professionals.", "/professionals/international-network"],
+] as const;
+
 export default function GlobalPresenceMenu({ id, onNavigate }: { id: string; onNavigate: () => void }) {
   return <div className={`mega-menu ${styles.menu}`} id={id}>
     <div className={styles.intro}>
@@ -45,6 +55,10 @@ export default function GlobalPresenceMenu({ id, onNavigate }: { id: string; onN
         <p>Partnering across jurisdictions to deliver seamless advisory support wherever you do business.</p>
       </section>
       <aside className={styles.side}><div className={styles.feature}><span>Global Perspective.<br />Local Impact.</span><i /><p>Cross-border advisory for a more connected, opportunity-rich world.</p><Link href="/professionals/international-network" onClick={onNavigate}>Our Global Network <Icon name="arrow" /></Link></div><div className={styles.explore}><span className={styles.sectionLabel}>Explore More</span>{explore.map(([icon, title, href]) => <Link href={href} onClick={onNavigate} key={title}><Icon name={icon} /><span>{title}</span><Icon name="arrow" /></Link>)}</div></aside>
+      <section className={styles.opportunities} aria-label="Global opportunities">
+        <span className={styles.sectionLabel}>Connect & Collaborate</span>
+        {opportunities.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={styles.opportunity}><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><Icon name="arrow" /></Link>)}
+      </section>
     </div>
     <div className={styles.footer}>{quickLinks.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title}><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span></Link>)}</div>
   </div>;

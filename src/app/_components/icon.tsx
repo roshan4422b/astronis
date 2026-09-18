@@ -31,6 +31,12 @@ export default function Icon({
       <path d="M3 21h18M5 18v-5h3v5m3 0V9h3v9m3 0V5h3v13M3 9l6-5 4 2 7-4" />
     ),
     file: <path d="M14 2H5v20h14V7l-5-5Zm0 0v6h5M8 12h8M8 16h5" />,
+    pencil: <><path d="m4 20 4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20Z" /><path d="m14.5 7.5 3 3" /></>,
+    folder: <path d="M2 6h8l2 2h10v12H2V6Zm0 0V4h8l2 2" />,
+    percent: <><circle cx="7" cy="7" r="2" /><circle cx="17" cy="17" r="2" /><path d="M19 5 5 19" /></>,
+    rocket: <><path d="M9 15c-2-5 1-10 11-12 1 9-3 13-8 13l-3-1Z" /><path d="m9 15-3 3m8-10 2 2M7 10 3 11l-1 5 5-2m7 3-2 5-5 1 1-5" /></>,
+    download: <><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4" /></>,
+    help: <><circle cx="12" cy="12" r="10" /><path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.8 1.5-1.8 3.3m0 3h.01" /></>,
     document: (
       <>
         <rect x="5" y="3" width="14" height="18" rx="2" />
