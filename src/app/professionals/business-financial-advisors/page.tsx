@@ -3,7 +3,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { professionals } from "../leadership";
 import AdvisorDirectory from "./advisor-directory";
-import styles from "./business-financial-advisors.module.css";
+import styles from "../advisory-professionals.module.css";
 
 export const metadata = {
   title: "Business & Financial Advisors",
