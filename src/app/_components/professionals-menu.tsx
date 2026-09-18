@@ -9,43 +9,47 @@ const columns = [
     title: "Our People",
     tagline: "Experienced. Diverse. Committed.",
     links: [
-      ["Our Professionals", "Meet the people behind our work", "/professionals"],
-      ["Leadership Team", "Get to know our leaders", "/professionals/leadership-team"],
-      ["Careers", "Grow with Astronis Global", "/about/careers"],
-      ["Partner With Us", "Explore professional collaboration", "/professionals/partner-with-us"],
+      ["Our Professionals", "Meet our team", "/professionals"],
+      ["Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
+      ["Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/corporate-advisory"],
+      ["Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
+      ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/services/business-advisory-and-consulting"],
+      ["Governance & Secretarial Professionals", "Corporate governance and compliance", "/services/risk-governance-and-forensic-advisory"],
+      ["Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/by-industry"],
     ],
   },
   {
     icon: "scale",
     title: "Advisory Expertise",
-    tagline: "Practical. Multidisciplinary.",
+    tagline: "Multidisciplinary. Practical. Solutions-focused.",
     links: [
-      ["Across Practice Areas", "Find the advice your matter needs", "/services"],
-      ["Corporate Advisory", "Meet our corporate and regulatory professionals", "/professionals/corporate-advisory"],
-      ["Regulatory Services", "Navigate obligations with clarity", "/services/regulatory-and-compliance"],
-      ["Experts by Industry", "Sector-focused perspectives", "/industries"],
+      ["Expertise Across Practice Areas", "Find the right professional", "/services"],
+      ["Experts by Industry", "Sector-focused professionals", "/professionals/by-industry"],
+      ["Experts by Service", "Match expertise to your needs", "/services"],
+      ["Experts by Jurisdiction", "India and international experience", "/professionals/international-network"],
+      ["Insights by Professional", "Articles, publications and thought leadership", "/insights"],
     ],
   },
   {
     icon: "globe",
-    title: "Global Collaboration",
-    tagline: "Local insight. Wider reach.",
+    title: "Global & Collaboration",
+    tagline: "Borderless expertise. Shared growth.",
     links: [
-      ["Global Presence", "See where we work", "/global-presence"],
-      ["India Presence", "Local understanding across India", "/global-presence/india"],
-      ["International Network", "Connected across borders", "/professionals/international-network"],
-      ["Professional Collaboration", "Build relationships that last", "/professionals/partner-with-us"],
+      ["International Professionals & Network", "Our global relationships", "/professionals/international-network"],
+      ["Professional Collaboration", "Working together for greater impact", "/professionals/partner-with-us"],
+      ["Join Our Professional Network", "Be a part of our growing network", "/professionals/enquiry"],
+      ["Professionals by Location / Jurisdiction", "Find professionals in India and globally", "/global-presence"],
     ],
   },
   {
     icon: "search",
     title: "Find a Professional",
-    tagline: "The right perspective for you.",
+    tagline: "Right expertise. Right solution.",
     links: [
-      ["Browse Professionals", "Explore our team", "/professionals#leadership"],
-      ["By Practice Area", "Start with a service", "/services"],
-      ["By Industry", "Explore sector expertise", "/professionals/by-industry"],
-      ["Request an Introduction", "Tell us what you need", "/professionals/enquiry"],
+      ["Search Professionals", "Find by expertise, service, industry, location and more", "/professionals#leadership"],
+      ["Advanced Search", "Refine your search with multiple filters", "/professionals/corporate-advisory"],
+      ["Professionals by Location", "India and international jurisdictions", "/global-presence"],
+      ["Request an Introduction", "Let us connect you with the right expert", "/professionals/enquiry"],
     ],
   },
 ] as const;
@@ -61,7 +65,7 @@ export default function ProfessionalsMenu({ id, onNavigate }: { id: string; onNa
         <div className={styles.links}>{column.links.map(([title, description, href]) => <Link href={href} onClick={onNavigate} key={title}>
           <span><strong>{title}</strong><small>{description}</small></span><Icon name="arrow" />
         </Link>)}</div>
-        {column.title === "Global Collaboration" && <Link className={styles.collaborate} href="/professionals/partner-with-us" onClick={onNavigate}><Icon name="people" /><span><strong>Collaborate With Us</strong><small>Explore ways to work together</small></span><Icon name="arrow" /></Link>}
+        {column.title === "Global & Collaboration" && <Link className={styles.collaborate} href="/professionals/partner-with-us" onClick={onNavigate}><Icon name="people" /><span><strong>Collaborate With Us</strong><small>Explore opportunities to work together</small></span><Icon name="arrow" /></Link>}
       </section>)}
     </div>
     <aside className={styles.feature} aria-label="Meet our professionals">

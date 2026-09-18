@@ -9,14 +9,14 @@
 .column{padding:0 14px;border-right:1px solid #dce8f4;min-width:0}
 .column:last-child{border-right:0}
 .groupHeading{display:flex;align-items:center;gap:10px;min-height:59px;padding-bottom:12px;border-bottom:1px solid #cedff1}
-.groupHeading>svg{width:30px;height:30px;flex:none;color:#0a3977}
+.groupHeading>svg{width:35px;height:35px;flex:none;color:#0a3977}
 .groupHeading h3{font:400 17px/1.15 Georgia,serif;color:#102d58;white-space:normal}
 .groupHeading p{margin-top:5px;font:10px/1.2 Georgia,serif;text-transform:uppercase;color:#1d5393;white-space:normal}
 .links a{display:flex;align-items:center;justify-content:space-between;gap:5px;min-height:50px;padding:7px 0;border-bottom:1px solid #e0eaf5;color:#092b59}
 .links a:last-child{border-bottom:0}
 .links a>span{min-width:0;display:grid;gap:3px}
-.links strong{font:400 12px/1.2 Georgia,serif;white-space:normal}
-.links small{font:10px/1.25 Arial,sans-serif;color:#59708b;white-space:normal}
+.links strong{font:400 13px/1.2 Georgia,serif;white-space:normal}
+.links small{font:11px/1.25 Arial,sans-serif;color:#59708b;white-space:normal}
 .links a>svg{width:13px;height:13px;flex:none;color:#0751aa}
 .links a:hover,.links a:focus-visible{color:#0964c2;background:#f4f9ff}
 .result{padding:0 28px 12px;color:#476689;font-size:12px}

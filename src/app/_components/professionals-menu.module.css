@@ -2,9 +2,10 @@
 .columns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:25px 12px;background:#fff}
 .column{min-width:0;padding:12px 17px 5px;border-right:1px solid #dce8f4}
 .column:last-child{border-right:0}
-.columnIcon{display:grid;place-items:center;width:45px;height:45px;margin-bottom:13px;color:#1251a5}
-.columnIcon svg{width:42px;height:42px;stroke-width:1.55}
-.column h2,.feature h2{font:400 25px/1.1 Georgia,'Times New Roman',serif;color:#0b376f;letter-spacing:-.025em}
+.columnIcon{display:grid;place-items:center;width:35px;height:35px;margin-bottom:13px;color:#1251a5}
+.columnIcon svg{width:35px;height:35px;stroke-width:1.55}
+.column h2{font:400 17px/1.1 Georgia,'Times New Roman',serif;color:#0b376f;letter-spacing:0}
+.feature h2{font:400 25px/1.1 Georgia,'Times New Roman',serif;color:#0b376f;letter-spacing:-.025em}
 .tagline{min-height:37px;margin-top:7px;color:#456890;font-size:10px;font-weight:700;letter-spacing:.08em;line-height:1.45;text-transform:uppercase}
 .rule{display:block;width:44px;height:2px;background:#1555a7;margin:13px 0 16px}
 .links{display:grid;gap:2px}
@@ -29,7 +30,7 @@
 .featureCopy p{color:#355b83;font-size:12px;font-weight:400;line-height:1.5;white-space:normal}
 .featureCopy a{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:auto;padding:12px 10px;border-radius:3px;background:#0c3978;color:#fff;font-size:12px;font-weight:600;white-space:normal;transition:background .2s,transform .2s}
 .featureCopy a svg{width:16px;height:16px}.featureCopy a:hover{background:#1558ac;transform:translateY(-2px)}
-@media(max-width:1250px) and (min-width:1051px){.menu{grid-template-columns:minmax(0,1fr) 235px!important}.column{padding-inline:11px}.column h2{font-size:22px}.links strong{font-size:12px}.featureImage{min-height:155px}.feature h2{font-size:26px}}
-@media(max-width:1050px){.menu{max-height:none!important;border-top:0}.columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding:8px 0}.column{padding:18px 15px;border-bottom:1px solid #dce8f4}.column:nth-child(even){border-right:0}.columnIcon{width:35px;height:35px;margin-bottom:6px}.columnIcon svg{width:33px;height:33px}.column h2{font-size:24px}.tagline{min-height:0}.links a{min-height:0;padding-block:9px}.feature{display:grid;grid-template-columns:35% 1fr}.featureImage{min-height:190px}.featureCopy{padding:18px}.feature h2{font-size:25px}.featureCopy a{margin-top:15px}}
-@media(max-width:600px){.columns{grid-template-columns:1fr}.column{border-right:0;padding:19px 10px}.column h2{font-size:24px}.tagline{font-size:10px}.links{grid-template-columns:1fr}.feature{grid-template-columns:1fr}.featureImage{min-height:150px}.featureCopy{padding:20px}.feature h2 br{display:none}.featureCopy a{width:100%}}
+@media(max-width:1250px) and (min-width:1051px){.menu{grid-template-columns:minmax(0,1fr) 235px!important}.column{padding-inline:11px}.column h2{font-size:15px}.links strong{font-size:12px}.featureImage{min-height:155px}.feature h2{font-size:26px}}
+@media(max-width:1050px){.menu{max-height:none!important;border-top:0}.columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding:8px 0}.column{padding:18px 15px;border-bottom:1px solid #dce8f4}.column:nth-child(even){border-right:0}.columnIcon{width:35px;height:35px;margin-bottom:6px}.columnIcon svg{width:35px;height:35px}.column h2{font-size:17px}.tagline{min-height:0}.links a{min-height:0;padding-block:9px}.feature{display:grid;grid-template-columns:35% 1fr}.featureImage{min-height:190px}.featureCopy{padding:18px}.feature h2{font-size:25px}.featureCopy a{margin-top:15px}}
+@media(max-width:600px){.columns{grid-template-columns:1fr}.column{border-right:0;padding:19px 10px}.column h2{font-size:17px}.tagline{font-size:10px}.links{grid-template-columns:1fr}.feature{grid-template-columns:1fr}.featureImage{min-height:150px}.featureCopy{padding:20px}.feature h2 br{display:none}.featureCopy a{width:100%}}
 @media(prefers-reduced-motion:reduce){.links a,.links a>svg,.collaborate,.featureCopy a{transition:none}.links a:hover,.collaborate:hover,.featureCopy a:hover{transform:none}}
