@@ -37,7 +37,7 @@ const columns = [
     links: [
       ["International Professionals & Network", "Our global relationships", "/professionals/international-network"],
       ["Professional Collaboration", "Working together for greater impact", "/professionals/partner-with-us"],
-      ["Join Our Professional Network", "Be a part of our growing network", "/professionals/enquiry"],
+      ["Join Our Professional Network", "Be a part of our growing network", "/professionals/join-our-professional-network"],
       ["Professionals by Location / Jurisdiction", "Find professionals in India and globally", "/global-presence"],
     ],
   },
