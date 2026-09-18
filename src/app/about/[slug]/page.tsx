@@ -87,7 +87,7 @@ export default async function AboutDetail({
 }) {
   const { slug } = await params;
   const resolvedSlug = canonicalSlug(slug);
-  const title = siteMenu.about.find((t) => slugify(t) === resolvedSlug);
+  const title = resolvedSlug === "careers" ? "Careers" : siteMenu.about.find((t) => slugify(t) === resolvedSlug);
   if (!title) notFound();
   if (resolvedSlug === "about-astronis-global") return <AboutAstronisGlobal />;
   if (resolvedSlug === "our-story") return <OurStory />;

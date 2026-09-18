@@ -9,6 +9,15 @@ export default function Icon({
     building: (
       <path d="M3 21h18M6 21V9h5V3h7v18M9 12v1m0 3v1m5-11v1m0 3v1m0 3v1m0 3v1m4-9h3v11" />
     ),
+    target: <><circle cx="11" cy="13" r="8" /><circle cx="11" cy="13" r="4" /><path d="m11 13 9-9m-3 0h3v3" /></>,
+    gem: <><path d="M3 8 7 3h10l4 5-9 13L3 8Z" /><path d="M3 8h18M7 3l3 5 2 13 2-13 3-5" /></>,
+    network: <><circle cx="12" cy="4" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="19" r="2" /><path d="m11 6-5 11m7-11 5 11M7 19h10" /></>,
+    gear: <><path d="M10 2h4l.6 2.5 2 .8 2.2-1.3 2.8 2.8-1.3 2.2.8 2L23 12v4l-2.5.6-.8 2 1.3 2.2-2.8 2.8-2.2-1.3-2 .8L14 25h-4l-.6-2.5-2-.8-2.2 1.3-2.8-2.8 1.3-2.2-.8-2L.5 16v-4L3 11.4l.8-2-1.3-2.2 2.8-2.8 2.2 1.3 2-.8L10 2Z" transform="translate(2 1) scale(.78)" /><circle cx="12" cy="12" r="3" /></>,
+    person: <><circle cx="12" cy="7" r="3" /><path d="M4 21v-3a8 8 0 0 1 16 0v3H4Zm8-4 2 2-2 2-2-2 2-2Z" /></>,
+    india: <path d="m8 2 3 2 3-1 1 3 4 1-2 3 3 2-2 2-1 4-3 1-2 4-3-6-2-1-1-4-3-2 3-2-1-3 3-3Z" />,
+    award: <><circle cx="12" cy="9" r="6" /><path d="m8 14-2 8 6-3 6 3-2-8M10 9l1.5 1.5L14 8" /></>,
+    trophy: <><path d="M7 3h10v9a5 5 0 0 1-10 0V3ZM7 5H3v4a4 4 0 0 0 4 4m10-8h4v4a4 4 0 0 1-4 4M12 17v4m-4 0h8" /></>,
+    message: <><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" /><path d="M7 10h10m-10 4h6" /></>,
     shield: (
       <>
         <path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" />

@@ -14,6 +14,7 @@ import Icon from "./icon";
 import ProfessionalsMenu from "./professionals-menu";
 import IndustriesMenu from "./industries-menu";
 import ServicesMenu from "./services-menu";
+import AboutMenu from "./about-menu";
 const navigation = [
   {
     label: "About Us",
@@ -183,7 +184,7 @@ export default function Header() {
                   <Icon name="chevron" className="nav-chevron" />
                 </button>
               </div>
-              {n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
+              {n.label === "About Us" ? <AboutMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                   <div className="mega-intro">
                     <span className="eyebrow">ASTRONIS GLOBAL</span>
                     <h2>{n.label}</h2>
