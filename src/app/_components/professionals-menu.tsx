@@ -15,7 +15,7 @@ const columns = [
       ["Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
       ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
       ["Governance & Secretarial Professionals", "Corporate governance and compliance", "/professionals/governance-secretarial"],
-      ["Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/by-industry"],
+      ["Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/industry-and-subject-matter-experts"],
     ],
   },
   {
@@ -24,7 +24,7 @@ const columns = [
     tagline: "Multidisciplinary. Practical. Solutions-focused.",
     links: [
       ["Expertise Across Practice Areas", "Find the right professional", "/services"],
-      ["Experts by Industry", "Sector-focused professionals", "/professionals/by-industry"],
+      ["Experts by Industry", "Sector-focused professionals", "/professionals/industry-and-subject-matter-experts"],
       ["Experts by Service", "Match expertise to your needs", "/services"],
       ["Experts by Jurisdiction", "India and international experience", "/professionals/international-network"],
       ["Insights by Professional", "Articles, publications and thought leadership", "/insights"],
