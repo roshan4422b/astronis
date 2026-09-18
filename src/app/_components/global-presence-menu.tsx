@@ -17,7 +17,7 @@ const explore = [
   ["globe", "Global Presence Overview", "/global-presence"],
   ["network", "Our International Network", "/professionals/international-network"],
   ["file", "Cross-Border Advisory", "/services/fema-fdi-and-foreign-exchange-advisory"],
-  ["handshake", "Partner With Us", "/professionals/partner-with-us"],
+  ["handshake", "Partner With Us", "/global-presence/partner-with-us"],
   ["pin", "Enquire About a Jurisdiction", "/contact"],
 ] as const;
 
@@ -32,7 +32,7 @@ const opportunities = [
   ["globe", "Global Mindset", "Local insight with an international perspective.", "/about/global-perspective-and-international-network"],
   ["message", "Discuss Your Global Requirement", "Talk with our cross-border advisory team.", "/global-presence/discuss-your-global-requirement"],
   ["bulb", "Ideas Across Borders", "Perspectives for international growth.", "/global-presence/ideas-across-borders"],
-  ["handshake", "Partner With Us", "Build opportunities together.", "/professionals/partner-with-us"],
+  ["handshake", "Partner With Us", "Build opportunities together.", "/global-presence/partner-with-us"],
   ["chart", "Our Approach", "How we work across jurisdictions.", "/about/our-methodology"],
   ["globe", "Connecting Markets, Creating Opportunities", "Explore our global reach.", "/global-presence"],
   ["people", "International Professional Network", "Meet our connected professionals.", "/professionals/international-network"],
