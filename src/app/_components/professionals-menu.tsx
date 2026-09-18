@@ -11,7 +11,7 @@ const columns = [
     links: [
       ["Our Professionals", "Meet our team", "/professionals"],
       ["Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
-      ["Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/corporate-advisory"],
+      ["Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/legal-professionals"],
       ["Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
       ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/services/business-advisory-and-consulting"],
       ["Governance & Secretarial Professionals", "Corporate governance and compliance", "/services/risk-governance-and-forensic-advisory"],
