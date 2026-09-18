@@ -13,7 +13,7 @@ const columns = [
       ["Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
       ["Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/legal-professionals"],
       ["Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
-      ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/services/business-advisory-and-consulting"],
+      ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
       ["Governance & Secretarial Professionals", "Corporate governance and compliance", "/services/risk-governance-and-forensic-advisory"],
       ["Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/by-industry"],
     ],
