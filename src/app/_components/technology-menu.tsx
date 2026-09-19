@@ -5,6 +5,7 @@ import Link from "next/link";
 import Icon from "./icon";
 import styles from "./technology-menu.module.css";
 import { digitalBusinessPath, digitalSolutions } from "@/content/digital-solutions";
+import { regtechPath, regtechSolutions } from "@/content/regtech-solutions";
 
 const columns = [
   { title: "Digital Business Solutions", icon: "laptop", links: ["Digital Transformation", "Business Process Digitisation", "Digital Operating Models", "Workflow Solutions", "Client & Enterprise Portals", "Cloud & Collaboration Solutions", "Cybersecurity Readiness"] },
@@ -68,6 +69,9 @@ const descriptions: Record<string, string> = {
 };
 
 function solutionHref(title: string) {
+  if (title === "RegTech & Compliance Technology") return regtechPath;
+  const regtechSolution = regtechSolutions.find((solution) => solution.title === title);
+  if (regtechSolution) return `${regtechPath}#${regtechSolution.id}`;
   if (title === "Digital Business Solutions") return digitalBusinessPath;
   const digitalSolution = digitalSolutions.find((solution) => solution.title === title);
   if (digitalSolution) return `${digitalBusinessPath}#${digitalSolution.id}`;
