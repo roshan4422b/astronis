@@ -17,6 +17,7 @@ export default function SitemapPage() {
     ["Technology & Digital Solutions", "/technology-and-digital-solutions"],
     ["Digital Business Solutions", "/technology-and-digital-solutions/digital-business-solutions"],
     ["RegTech & Compliance Technology", "/technology-and-digital-solutions/regtech-and-compliance-technology"],
+    ["Legal Technology", "/technology-and-digital-solutions/legal-technology"],
     ["Industries", "/industries"],
     ["Professionals", "/professionals"],
     ["Insights", "/insights"],

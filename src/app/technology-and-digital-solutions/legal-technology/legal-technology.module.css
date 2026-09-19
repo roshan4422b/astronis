@@ -1,0 +1,18 @@
+.hero { min-height: 410px; }
+.hero > img { object-position: center 55%; }
+.heroCopy { max-width: 730px; }
+.heroCopy h1 { font-size: clamp(40px, 4vw, 62px); line-height: 1.04; }
+.heroCopy > span { color: #164c82; }
+.solutions { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.solutions > article { height: 100%; }
+.solutions > article > div:first-child { height: 175px; }
+@media (min-width: 1400px) {
+  .solutions { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; }
+  .solutions > article > div:first-child { height: 145px; }
+}
+@media (max-width: 800px) { .solutions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) {
+  .solutions { grid-template-columns: 1fr; }
+  .solutions > article > div:first-child { height: 210px; }
+  .heroCopy h1 { font-size: 39px; letter-spacing: -1.3px; }
+}
