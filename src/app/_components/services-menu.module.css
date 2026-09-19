@@ -16,3 +16,7 @@
 @media(max-width:1250px){.body{grid-template-columns:minmax(0,1fr) 245px}.column{padding:0 9px}.groupHeading h3{font-size:15px}.links strong{font-size:12px}.intro h2{font-size:26px}.footer small{display:none}}
 @media(max-width:1050px){.menu{max-height:none!important;overflow:visible}.intro{padding:18px;flex-wrap:wrap}.intro h2{font-size:25px}.intro>a{min-width:0;border:0;padding:0}.body{grid-template-columns:1fr}.columns{grid-template-columns:repeat(2,minmax(0,1fr))}.column:nth-of-type(2){border-right:0}.column:nth-of-type(-n+2){border-bottom:1px solid #dce7f3;margin-bottom:15px;padding-bottom:15px}.sidebar{border-left:0;border-top:1px solid #d7e6f5}.footer{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.footer .cta{margin:0;grid-column:1/-1}}
 @media(max-width:600px){.intro h2{font-size:22px}.intro p{font-size:12px}.columns{grid-template-columns:1fr;padding:8px}.column{border-right:0;border-bottom:1px solid #dce7f3;margin:0!important;padding:12px 8px!important}.column:last-of-type{border:0}.groupHeading{min-height:50px}.footer{grid-template-columns:1fr}.footer>a:not(.cta){border-right:0;border-bottom:1px solid #d5e3f1}.footer .cta{grid-column:auto}}
+
+.links strong { font-size: 14px; }
+.links a > svg { width: 20px; height: 20px; }
+.links a:hover, .links a:focus-visible, .quickLinks a:hover { background: transparent; color: #0756ad; }
