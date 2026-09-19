@@ -13,7 +13,7 @@ const columns = [
 ];
 
 const explore = [
-  ["Explore All Solutions", "/industries/it-and-ites"],
+  ["Explore All Solutions", "/technology-and-digital-solutions"],
   ["Technology Insights", "/insights"],
   ["Digital Transformation", "/services/business-advisory-and-consulting"],
   ["Global Best Practices", "/global-presence"],
@@ -67,7 +67,7 @@ const descriptions: Record<string, string> = {
 };
 
 function solutionHref(title: string) {
-  return `/contact?solution=${encodeURIComponent(title)}`;
+  return `/technology-and-digital-solutions?solution=${encodeURIComponent(title)}#enquiry`;
 }
 
 export default function TechnologyMenu({ id, onNavigate }: { id: string; onNavigate: () => void }) {
@@ -89,7 +89,7 @@ export default function TechnologyMenu({ id, onNavigate }: { id: string; onNavig
             <div className={styles.links}>{column.links.filter(matches).map((title) => <Link href={solutionHref(title)} key={title} onClick={onNavigate}><span><strong>{title}</strong><small>{descriptions[title]}</small></span><Icon name="arrow" /></Link>)}</div>
           </section>)}
           <section className={styles.column} aria-label="Explore technology solutions">
-            <Link className={styles.heading} href="/industries/it-and-ites" onClick={onNavigate}><Icon name="compass" /><h3>Explore</h3><Icon name="arrow" /></Link>
+            <Link className={styles.heading} href="/technology-and-digital-solutions" onClick={onNavigate}><Icon name="compass" /><h3>Explore</h3><Icon name="arrow" /></Link>
             <div className={styles.links}>{explore.map(([title, href]) => <Link href={href} key={title} onClick={onNavigate}><span><strong>{title}</strong><small>{descriptions[title]}</small></span><Icon name="arrow" /></Link>)}</div>
           </section>
         </div>

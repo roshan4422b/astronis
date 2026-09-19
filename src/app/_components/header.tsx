@@ -47,7 +47,7 @@ const navigation = [
   },
   {
     label: "Technology & Digital Solutions",
-    href: "/industries/it-and-ites",
+    href: "/technology-and-digital-solutions",
     items: [
       { title: "Technology, IT & ITES", href: "/industries/it-and-ites" },
       { title: "FinTech & Digital Finance", href: "/industries/fintech-and-digital-finance" },

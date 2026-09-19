@@ -12,7 +12,7 @@ const groups = [
       ["Professionals", "/professionals"],
       ["Knowledge Centre", "/knowledge-centre"],
       ["Insights & Events", "/insights"],
-      ["Technology & Digital Solutions", "/services"],
+      ["Technology & Digital Solutions", "/technology-and-digital-solutions"],
       ["Careers", "/about/careers"],
       ["Contact Us", "/contact"],
     ],
