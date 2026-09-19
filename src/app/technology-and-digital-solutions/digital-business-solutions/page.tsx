@@ -1,0 +1,57 @@
+import Link from "next/link";
+import Image from "../../_components/asset-image";
+import Icon from "../../_components/icon";
+import { professionals } from "../../professionals/leadership";
+import { digitalSolutions } from "@/content/digital-solutions";
+import Enquiry from "../enquiry";
+import styles from "./digital-business.module.css";
+
+export const metadata = {
+  title: "Digital Business Solutions",
+  description: "Modernise operations with digital transformation, process digitisation, workflow solutions, enterprise portals, cloud collaboration and cybersecurity readiness.",
+};
+
+const challenges = [["file", "Manual & fragmented processes"], ["network", "Data silos and poor visibility"], ["document", "Increasing regulatory requirements"], ["gear", "Lack of operational efficiency"], ["chart", "Scalability challenges"], ["shield", "Need for secure digital infrastructure"]];
+const steps = [["Assess", "Understand your business needs"], ["Design", "Create tailored solutions"], ["Implement", "Deploy with minimal disruption"], ["Enable", "Train and build adoption"], ["Support", "Provide ongoing support and improvement"]];
+const sectors = [["building", "Banking & Financial Services", "financial-services"], ["gear", "Manufacturing", "manufacturing"], ["building", "Real Estate & Construction", "real-estate-and-construction"], ["shield", "Healthcare & Life Sciences", "healthcare-and-pharma"], ["laptop", "E-Commerce & Technology", "e-commerce"], ["rocket", "Startups & Emerging Businesses", "startups"]];
+const related = [["Regulatory & Compliance Advisory", "/services/regulatory-and-compliance"], ["Contract Management", "/services/corporate-advisory"], ["Data Protection & Privacy", "/services/regulatory-and-compliance/data-protection"], ["IT & Technology Advisory", "/industries/it-and-ites"], ["Risk & Governance", "/services/risk-governance-and-forensic-advisory"], ["Cybersecurity Legal Advisory", "/services/regulatory-and-compliance"]];
+const insights = [["Business transformation", "Digital transformation in modern enterprises", "/images/india-presence/mumbai.jpg", "/insights/business-updates"], ["Regulatory intelligence", "Explore the next chapter of RegTech", "/FinTech & Digital Finance .png", "/insights/legal-updates"], ["Digital resilience", "Cybersecurity and business resilience", "/Technology, IT & ITES .png", "/insights/articles"]];
+const faqs = [
+  ["How do you customise solutions for different industries?", "We start with your sector, business priorities, workflows and regulatory requirements. These inform a practical scope and roadmap, with the solution adapted to your teams and operating environment."],
+  ["Can you integrate with our existing systems?", "We review your existing tools, data and integration options before recommending changes. Compatibility, migration needs and dependencies are assessed as part of the agreed scope."],
+  ["How do you ensure data security and confidentiality?", "We discuss confidentiality, access and data handling requirements at the outset. Security controls, responsibilities and review arrangements are defined as part of solution design."],
+  ["What kind of support do you provide after implementation?", "Training, adoption support, maintenance coordination and ongoing improvements can be included in the engagement. We agree the support model and responsibilities with you before implementation."],
+];
+
+function TextLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return <Link className={styles.textLink} href={href}>{children}<Icon name="arrow" /></Link>;
+}
+
+export default function DigitalBusinessPage() {
+  return <div className={styles.page}>
+    <section className={styles.hero} aria-labelledby="digital-title">
+      <Image src="/professional-collaboration-hero.png" alt="Business professionals collaborating in a modern office" fill preload sizes="100vw" />
+      <div className={`${styles.wrap} ${styles.heroInner}`}>
+        <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/technology-and-digital-solutions">Technology &amp; Digital Solutions</Link><span aria-hidden="true">›</span><span aria-current="page">Digital Business Solutions</span></nav>
+        <div className={styles.heroCopy}><h1 id="digital-title">Digital Business<br />Solutions</h1><p className={styles.tagline}>Transforming today. Building a smarter tomorrow.</p><p>We help businesses modernise operations, enhance efficiency and create future-ready organisations through practical and scalable digital solutions, supported by our legal, regulatory and business expertise.</p><Link className={styles.button} href="#enquiry">Discuss Your Requirements <Icon name="arrow" /></Link></div>
+        <aside className={styles.motto}>People.<br />Process.<br />Technology.<br />A stronger<br />tomorrow.<span>Astronis<br />Global.</span></aside>
+      </div>
+    </section>
+
+    <section className={styles.challengeSection}><div className={`${styles.wrap} ${styles.challenges}`}><div><h2>Business Challenges<br />We Help You Solve</h2><p>Many organisations face operational inefficiencies, fragmented systems and increasing compliance demands. We bridge these gaps with technology-enabled solutions.</p><TextLink href="#approach">Explore Our Approach</TextLink></div><div className={styles.challengeItems}>{challenges.map(([icon, title]) => <div key={title}><Icon name={icon} /><h3>{title}</h3></div>)}</div></div></section>
+
+    <section className={`${styles.wrap} ${styles.section}`} id="solutions"><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Built around your business</span><h2>Our Digital Business Solutions</h2></div><TextLink href="/technology-and-digital-solutions">Explore All Solutions</TextLink></div><div className={styles.solutions}>{digitalSolutions.map((solution) => <article className={styles.card} id={solution.id} key={solution.id}><div className={styles.solutionImage}><Image src={solution.image} alt="" fill sizes="(max-width: 540px) 90vw, (max-width: 1000px) 30vw, 14vw" /><span className={styles.iconBadge}><Icon name={solution.icon} /></span></div><div className={styles.cardBody}><h3>{solution.title}</h3><p>{solution.description}</p><details className={styles.solutionDetail}><summary>Learn More <Icon name="arrow" /></summary><p>{solution.detail}</p><TextLink href={`?solution=${encodeURIComponent(solution.title)}#enquiry`}>Discuss this solution</TextLink></details></div></article>)}</div></section>
+
+    <section className={styles.implementation} id="approach"><div className={styles.benefits}><h2>Key Benefits</h2><ul>{["Greater Efficiency", "Improved Compliance", "Better Decision-Making", "Enhanced Client Experience", "Scalable Growth"].map((benefit) => <li key={benefit}><Icon name="shield" />{benefit}</li>)}</ul></div><div className={styles.steps}><span className={styles.eyebrow}>From ambition to action</span><h2>Our Implementation Approach</h2><ol>{steps.map(([title, body], index) => <li key={title}><span className={styles.stepNumber}>0{index + 1}</span><h3>{title}</h3><p>{body}</p></li>)}</ol></div><div className={styles.approachImage}><Image src="/images/india-presence/mumbai.jpg" alt="Modern commercial architecture" fill sizes="20vw" /><span>Ideas.<br />Solutions.<br />Progress.</span></div></section>
+
+    <div className={`${styles.wrap} ${styles.connections}`}><section><div className={styles.sectionHeading}><h2>Industries We Support</h2><TextLink href="/industries">View All Industries</TextLink></div><div className={styles.industries}>{sectors.map(([icon, title, slug]) => <Link href={`/industries/${slug}`} key={slug}><Icon name={icon} /><span>{title}</span></Link>)}</div></section><section><div className={styles.sectionHeading}><h2>Related Services</h2><TextLink href="/services">View All Services</TextLink></div><div className={styles.related}>{related.map(([title, href]) => <Link href={href} key={title}><Icon name="arrow" />{title}</Link>)}</div></section></div>
+
+    <section className={styles.teamSection}><div className={styles.wrap}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Connected expertise</span><h2>Technology Specialists</h2></div><TextLink href="/professionals">View All Professionals</TextLink></div><div className={styles.team}>{professionals.slice(0, 2).map((person) => <Link className={styles.person} key={person.slug} href={`/professionals/${person.slug}`}><div className={styles.portrait}><Image src={person.image} alt={person.name} fill sizes="(max-width: 540px) 90vw, 25vw" /></div><div><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><Icon name="arrow" /></div></Link>)}<Link className={styles.extendedTeam} href="/professionals"><Image src="/professional-collaboration-hero.png" alt="Our wider professional network" fill sizes="(max-width: 800px) 90vw, 40vw" /><div><span className={styles.eyebrow}>A multidisciplinary perspective</span><h3>Our Extended Team</h3><p>Legal, regulatory and business expertise, brought together around your needs.</p><span>Meet our professionals <Icon name="arrow" /></span></div></Link></div></div></section>
+
+    <section className={`${styles.wrap} ${styles.section}`}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Ideas for your next step</span><h2>Latest Insights</h2></div><TextLink href="/insights">View All Insights</TextLink></div><div className={styles.insights}>{insights.map(([category, title, image, href]) => <article className={styles.card} key={title}><div className={styles.insightImage}><Image src={image} alt="" fill sizes="(max-width: 540px) 90vw, 30vw" /></div><div className={styles.cardBody}><span className={styles.eyebrow}>{category}</span><h3>{title}</h3><TextLink href={href}>Read More</TextLink></div></article>)}</div></section>
+
+    <section className={styles.faqSection}><div className={`${styles.wrap} ${styles.faqGrid}`}><div><span className={styles.eyebrow}>Your questions, answered</span><h2>Frequently Asked Questions</h2><p>Clear guidance on planning, integrating and supporting your digital business solutions.</p><TextLink href="/faqs">View All FAQs</TextLink></div><div className={styles.faqs}>{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
+
+    <section className={styles.enquirySection} id="enquiry"><div className={`${styles.wrap} ${styles.enquiryGrid}`}><div className={styles.enquiryCopy}><span className={styles.eyebrow}>Let&apos;s build a smarter business</span><h2>Discuss Your Digital Transformation Requirements</h2><p>Share your priorities and explore how we can help you build a smarter, more efficient and future-ready business.</p><div className={styles.enquiryImage}><Image src="/Technology, IT & ITES .png" alt="Digital technology connecting business systems" fill sizes="(max-width: 800px) 90vw, 40vw" /></div><a href="tel:+919311664455"><Icon name="phone" />+91 93116 64455</a><a href="mailto:advisory@astronisglobal.com"><Icon name="mail" />advisory@astronisglobal.com</a></div><div className={styles.formPanel}><span className={styles.eyebrow}>Start a conversation</span><h3>Tell us about your requirements.</h3><p>Our team will get in touch for a detailed discussion.</p><Enquiry defaultService="Digital Business Solutions" /></div></div></section>
+  </div>;
+}

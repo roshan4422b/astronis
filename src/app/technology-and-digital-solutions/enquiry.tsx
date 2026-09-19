@@ -4,7 +4,7 @@ import { useState } from "react";
 import Icon from "../_components/icon";
 import styles from "./technology.module.css";
 
-export default function Enquiry() {
+export default function Enquiry({ defaultService = "Technology & Digital Solutions" }: { defaultService?: string }) {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
@@ -14,7 +14,7 @@ export default function Enquiry() {
     const form = event.currentTarget;
     const data = new FormData(form);
     const solution = new URLSearchParams(window.location.search).get("solution");
-    data.set("service", solution?.slice(0, 160) || "Technology & Digital Solutions");
+    data.set("service", solution?.slice(0, 160) || defaultService);
     if (!String(data.get("message") || "").trim()) data.set("message", "Please contact me to discuss our technology and digital solution requirements.");
     setBusy(true);
     setStatus("");

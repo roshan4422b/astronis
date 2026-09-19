@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Icon from "./icon";
 import styles from "./technology-menu.module.css";
+import { digitalBusinessPath, digitalSolutions } from "@/content/digital-solutions";
 
 const columns = [
   { title: "Digital Business Solutions", icon: "laptop", links: ["Digital Transformation", "Business Process Digitisation", "Digital Operating Models", "Workflow Solutions", "Client & Enterprise Portals", "Cloud & Collaboration Solutions", "Cybersecurity Readiness"] },
@@ -15,7 +16,7 @@ const columns = [
 const explore = [
   ["Explore All Solutions", "/technology-and-digital-solutions"],
   ["Technology Insights", "/insights"],
-  ["Digital Transformation", "/services/business-advisory-and-consulting"],
+  ["Digital Transformation", `${digitalBusinessPath}#digital-transformation`],
   ["Global Best Practices", "/global-presence"],
   ["Industries We Serve", "/industries"],
   ["Our Professionals", "/professionals"],
@@ -67,6 +68,9 @@ const descriptions: Record<string, string> = {
 };
 
 function solutionHref(title: string) {
+  if (title === "Digital Business Solutions") return digitalBusinessPath;
+  const digitalSolution = digitalSolutions.find((solution) => solution.title === title);
+  if (digitalSolution) return `${digitalBusinessPath}#${digitalSolution.id}`;
   return `/technology-and-digital-solutions?solution=${encodeURIComponent(title)}#enquiry`;
 }
 

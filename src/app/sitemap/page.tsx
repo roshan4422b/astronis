@@ -15,6 +15,7 @@ export default function SitemapPage() {
     ["About Us", "/about"],
     ["Services", "/services"],
     ["Technology & Digital Solutions", "/technology-and-digital-solutions"],
+    ["Digital Business Solutions", "/technology-and-digital-solutions/digital-business-solutions"],
     ["Industries", "/industries"],
     ["Professionals", "/professionals"],
     ["Insights", "/insights"],
