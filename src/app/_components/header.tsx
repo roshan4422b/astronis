@@ -17,6 +17,7 @@ import ServicesMenu from "./services-menu";
 import AboutMenu from "./about-menu";
 import GlobalPresenceMenu from "./global-presence-menu";
 import InsightsMenu from "./insights-menu";
+import TechnologyMenu from "./technology-menu";
 const navigation = [
   {
     label: "About Us",
@@ -43,6 +44,17 @@ const navigation = [
       title: service.title,
       href: "/services/" + service.slug,
     })),
+  },
+  {
+    label: "Technology & Digital Solutions",
+    href: "/industries/it-and-ites",
+    items: [
+      { title: "Technology, IT & ITES", href: "/industries/it-and-ites" },
+      { title: "FinTech & Digital Finance", href: "/industries/fintech-and-digital-finance" },
+      { title: "Telecommunications", href: "/industries/telecommunications" },
+      { title: "Digital Transformation", href: "/services/business-advisory-and-consulting" },
+      { title: "Data Protection", href: "/services/regulatory-and-compliance/data-protection" },
+    ],
   },
   {
     label: "Industries",
@@ -186,7 +198,7 @@ export default function Header() {
                   <Icon name="chevron" className="nav-chevron" />
                 </button>
               </div>
-              {n.label === "About Us" ? <AboutMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Global Presence" ? <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Insights" ? <InsightsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
+              {n.label === "Technology & Digital Solutions" ? <TechnologyMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "About Us" ? <AboutMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Professionals" ? <ProfessionalsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Industries" ? <IndustriesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Services" ? <ServicesMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Global Presence" ? <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : n.label === "Insights" ? <InsightsMenu id={"menu-" + slugify(n.label)} onNavigate={close} /> : <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                   <div className="mega-intro">
                     <span className="eyebrow">ASTRONIS GLOBAL</span>
                     <h2>{n.label}</h2>

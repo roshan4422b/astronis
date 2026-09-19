@@ -6,6 +6,8 @@ export default function Icon({
   className?: string;
 }) {
   const paths: Record<string, React.ReactNode> = {
+    laptop: <><rect x="3" y="3" width="18" height="14" rx="1" /><path d="m3 17-2 4h22l-2-4M9 19h6" /></>,
+    compass: <><circle cx="12" cy="12" r="10" /><path d="m16.5 7.5-3 6-6 3 3-6 6-3Z" /></>,
     building: (
       <path d="M3 21h18M6 21V9h5V3h7v18M9 12v1m0 3v1m5-11v1m0 3v1m0 3v1m0 3v1m4-9h3v11" />
     ),

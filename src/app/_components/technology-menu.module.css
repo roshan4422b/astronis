@@ -1,0 +1,99 @@
+.menu {
+  grid-template-columns: 1fr !important;
+  left: 50% !important;
+  right: auto !important;
+  width: min(1660px, calc(100vw - 56px));
+  max-height: calc(100dvh - 115px);
+  border: 1px solid #d4e2ef;
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 24px 50px #071b3a38;
+  transform: translate(-50%, 6px) !important;
+  color: #082675;
+  font-family: Georgia, "Times New Roman", serif;
+}
+:global(.nav-item:hover) .menu,
+:global(.nav-item:focus-within) .menu,
+:global(.nav-item.is-open) .menu { transform: translate(-50%, 0) !important; }
+.intro { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 30px 26px; }
+.intro h2 { font: 400 clamp(28px, 2.5vw, 40px)/1.15 Georgia, serif; margin: 0 0 4px; }
+.intro p { color: #626c91; font: 400 clamp(16px, 1.5vw, 23px)/1.3 Georgia, serif; }
+.motto { flex: none; border-left: 1px solid #4966aa; padding-left: 17px; font-size: 11px; line-height: 1.7; letter-spacing: 1.2px; text-transform: uppercase; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 17.5%; }
+.columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 20px 12px 17px; }
+.column { min-width: 0; padding: 0 18px 12px; border-right: 1px solid #dbe7f6; }
+.column:last-child { border-right: 0; }
+.heading { display: flex; align-items: center; gap: 12px; min-height: 67px; padding-bottom: 15px; border-bottom: 1px solid #dbe7f6; }
+.heading h3 { flex: 1; font: 400 clamp(15px, 1.17vw, 19px)/1.25 Georgia, serif; }
+.heading > svg { flex: none; width: 39px; height: 39px; color: #0759ff; stroke-width: 1.5; }
+.heading > svg:last-child { width: 16px; height: 16px; }
+.links { display: grid; padding-top: 4px; }
+.links a { display: grid; grid-template-columns: minmax(0, 1fr) 14px; align-items: center; gap: 8px; min-height: 70px; padding: 10px 0; border-bottom: 1px solid #dbe7f6; color: #15366f; }
+.links a:last-child { border-bottom: 0; }
+.links a > span { display: grid; gap: 5px; min-width: 0; }
+.links strong { font: 700 14px/1.25 Georgia, serif; }
+.links small { color: #536789; font: 400 12px/1.35 Georgia, serif; }
+.links a > svg { width: 14px; height: 14px; color: #0759ff; }
+.links a:hover, .heading:hover { color: #0759ff; }
+.menu a:focus-visible, .searchField:focus-within { outline: 2px solid #0759ff; outline-offset: 3px; border-radius: 2px; }
+.feature { display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; background: linear-gradient(125deg, #d8effff5, #cbe9ff91 50%, #3c88c324), url('/images/india-presence/mumbai.jpg') center/cover; }
+.feature p { font-size: 14px; line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
+.feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #2852af; margin-top: 16px; }
+.feature > span { font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; }
+.footer { display: grid; grid-template-columns: 42% 16% 42%; padding: 27px 22px 25px; background: linear-gradient(115deg, #eef8ff, #e8f3ff); }
+.search { padding: 0 42px 0 20px; }
+.search label { display: block; margin-bottom: 13px; font-size: 27px; line-height: 1.15; }
+.searchField { display: flex; align-items: center; gap: 15px; padding: 11px 17px; border: 1px solid #b6cdeb; border-radius: 3px; background: #fff; }
+.searchField svg { flex: none; width: 25px; height: 25px; }
+.searchField svg:last-child { width: 17px; height: 17px; }
+.searchField input { min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: #082675; font: 16px/1.4 Georgia, serif; }
+.searchField input::placeholder { color: #68769c; }
+.searchStatus { font-size: 12px; line-height: 1.4; margin-top: 7px; }
+.signature { padding: 0 28px 0 36px; border-left: 1px solid #a9c9ed; text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; line-height: 1.5; }
+.signature small { display: block; margin-top: 13px; font-size: 10px; letter-spacing: .6px; }
+.signature small::before { content: ""; display: block; width: 40px; height: 1px; background: #2852af; margin-bottom: 12px; }
+.shortcuts { display: grid; grid-template-columns: repeat(4, 1fr); }
+.shortcuts a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 8px 15px; border-left: 1px solid #a9c9ed; text-align: center; font-size: 17px; line-height: 1.3; }
+.shortcuts svg { color: #0759ff; width: 38px; height: 38px; stroke-width: 1.4; }
+.shortcuts strong { font-weight: 400; }
+.shortcuts small { display: block; margin-top: 5px; color: #536789; font: 400 12px/1.35 Georgia, serif; }
+.shortcuts .shortcutArrow { width: 15px; height: 15px; }
+.shortcuts a:hover { color: #0759ff; background: #ffffff75; }
+@media (max-width: 1320px) {
+  .menu { width: calc(100vw - 32px); }
+  .column { padding-inline: 10px; }
+  .heading { gap: 7px; }
+  .heading > svg { width: 30px; height: 30px; }
+  .heading > svg:last-child { width: 12px; }
+  .feature { padding-inline: 18px; }
+  .search { padding-right: 25px; }
+  .signature { padding-inline: 20px; }
+  .shortcuts a { font-size: 15px; padding-inline: 10px; }
+}
+@media (max-width: 1050px) {
+  .menu { position: static !important; width: 100%; max-height: none; border: 0; box-shadow: none; transform: none !important; }
+  :global(.nav-item:hover) .menu, :global(.nav-item:focus-within) .menu, :global(.nav-item.is-open) .menu { transform: none !important; }
+  .intro { display: block; padding: 22px 15px; }
+  .motto { display: block; margin-top: 18px; }
+  .main { grid-template-columns: 1fr; }
+  .columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 0; padding: 0 5px 20px; }
+  .column:nth-child(even) { border-right: 0; }
+  .heading h3 { font-size: 18px; }
+  .links { gap: 0; }
+  .links a { font-size: 15px; padding-block: 9px; }
+  .feature { min-height: 230px; background-position: center 55%; }
+  .footer { grid-template-columns: 1fr; gap: 24px; padding: 22px 15px; }
+  .search { padding: 0; }
+  .signature { display: none; }
+  .shortcuts a:first-child { border-left: 0; }
+}
+@media (max-width: 600px) {
+  .columns { grid-template-columns: 1fr; }
+  .column { border-right: 0; }
+  .intro h2 { font-size: 27px; }
+  .search label { font-size: 24px; }
+  .searchField { gap: 8px; padding-inline: 10px; }
+  .searchField input { font-size: 14px; }
+  .shortcuts { grid-template-columns: repeat(2, 1fr); gap: 15px 0; }
+  .shortcuts a:nth-child(odd) { border-left: 0; }
+}
