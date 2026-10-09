@@ -1,0 +1,60 @@
+.page { --gold: #bb8138; }
+.hero { min-height: 465px; }
+.hero > img { object-position: center 52%; }
+.hero::after { background: linear-gradient(90deg, #031d3bf5 0%, #052345e6 35%, #03244776 69%, #031d3bd1 100%); }
+.hero h1 { font-size: clamp(47px, 5.3vw, 73px); }
+.heroCopy { max-width: 645px; }
+.overviewGrid { grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr); align-items: start; }
+.overviewGrid > .sectors { padding: 26px; }
+.sectors h3 { font-size: 24px; }
+.sectors ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.sectors li { min-height: 86px; padding: 13px; font-size: 12px; }
+.benefits { margin-top: 24px; }
+.benefits article { background: linear-gradient(145deg, #f7fbff, #eaf3fd); }
+.challengeGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.challengeGrid .challengeCard,
+.challengeGrid .challengeCard:nth-last-child(-n+2) { grid-column: auto; }
+.challengeImage { aspect-ratio: 1.45; }
+.challengeCard summary { min-height: 112px; padding: 16px; }
+.challengeCard h3 { font-size: 19px; }
+.storiesSection { background: linear-gradient(145deg, #f5f9fe, #fff); }
+.storyGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.storyCard { display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff; border: 1px solid #dce7f2; border-radius: 17px; transition: transform .3s, box-shadow .3s, border-color .3s; }
+.storyImage { position: relative; aspect-ratio: 2.1; overflow: hidden; }
+.storyImage img { object-fit: cover; transition: transform .45s; }
+.storyCard > div:last-child { display: flex; flex-direction: column; flex: 1; padding: 22px; }
+.storyCard span { color: #af792f; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.storyCard h3 { margin: 9px 0; font-size: 24px; }
+.storyCard p { margin-bottom: 18px; font-size: 13px; }
+.storyCard strong { display: inline-flex; align-items: center; gap: 10px; margin-top: auto; color: #14548c; font-size: 12px; }
+.storyCard strong svg { width: 15px; height: 15px; }
+.contactImage { aspect-ratio: 1.7; }
+@media (hover: hover) and (pointer: fine) {
+  .benefits article:hover { background: #deedfb; }
+  .challengeCard:hover { border-color: #8aaed0; box-shadow: 0 15px 28px #0a345d21; }
+  .storyCard:hover { transform: translateY(-5px); border-color: #96b6d4; box-shadow: 0 17px 32px #092d571c; }
+  .storyCard:hover img { transform: scale(1.06); }
+}
+@media (max-width: 1100px) {
+  .challengeGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .challengeGrid .challengeCard:nth-last-child(-n+2) { grid-column: auto; }
+}
+@media (max-width: 900px) {
+  .overviewGrid { grid-template-columns: 1fr; }
+  .challengeGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .storyGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .hero { min-height: 0; }
+  .hero > img { object-position: 50% center; }
+  .overviewGrid > .sectors { padding: 22px 18px; }
+  .sectors ul { grid-template-columns: 1fr; }
+  .sectors li { min-height: 0; flex-direction: row; }
+  .challengeGrid, .storyGrid { grid-template-columns: 1fr; }
+  .challengeImage { aspect-ratio: 2.2; }
+  .storyImage { aspect-ratio: 2.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .storyCard, .storyImage img { transition: none; }
+  .storyCard:hover, .storyCard:hover img { transform: none; }
+}

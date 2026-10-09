@@ -1,0 +1,564 @@
+[
+  {
+    "title": "Corporate & Commercial",
+    "number": "01",
+    "slug": "corporate-commercial-advisory",
+    "subServices": [
+      {
+        "title": "Entity Formation & Business Setup",
+        "slug": "entity-formation-business-setup",
+        "children": [
+          "Private Limited Company Incorporation",
+          "One Person Company (OPC)",
+          "Public Limited Company",
+          "Section 8 Company",
+          "LLP Formation",
+          "Partnership Firm",
+          "Sole Proprietorship",
+          "Wholly Owned Subsidiary",
+          "Foreign Company Setup",
+          "Branch Office",
+          "Liaison Office",
+          "Project Office"
+        ]
+      },
+      {
+        "title": "Corporate Governance and Entity Structuring",
+        "slug": "corporate-governance-and-entity-structuring",
+        "children": [
+          "Entity Structuring",
+          "Group Structuring",
+          "Holding & Subsidiary Structures",
+          "Shareholding Structuring",
+          "Capital Structuring",
+          "Business Reorganisation",
+          "Corporate Conversion",
+          "Succession & Family Business Structuring",
+          "Corporate Exit Plan",
+          "Demerger & Amalgamation",
+          "Slump Sale"
+        ]
+      },
+      {
+        "title": "Mergers, Acquisitions & Transactions",
+        "slug": "mergers-acquisitions-and-transactions",
+        "children": [
+          "Mergers & Acquisitions",
+          "Buy or Sell business entity",
+          "NGO Registration",
+          "Transaction Structuring",
+          "Private Equity Transactions",
+          "Investment Transactions",
+          "Governance Framework & Corporate Policies",
+          "Shareholder Matters",
+          "Board & Committee Processes",
+          "Corporate Due Diligence",
+          "Legal Due Diligence"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Regulatory Services",
+    "number": "02",
+    "slug": "regulatory-services",
+    "subServices": [
+      {
+        "title": "Corporate Regulatory",
+        "slug": "corporate-regulatory",
+        "children": [
+          "Insolvency & Banckruptcy",
+          "MCA21 / ROC Matters",
+          "Statutory Return Filings",
+          "Corporate Compliance",
+          "Compliance Framework",
+          "Regulatory Compliance Review",
+          "Insolvency-related Proceedings",
+          "Regulatory Risk Assessment",
+          "Regulatory Change Management",
+          "Ongoing Compliance Support"
+        ]
+      },
+      {
+        "title": "Banking/NBFC Advisory Services",
+        "slug": "banking-nbfc-advisory-services",
+        "children": [
+          "IFSCA / GIFT City Regulatory Advisory",
+          "RBI Regulatory Advisory",
+          "SEBI Regulatory Advisory",
+          "NBFC Regulatory Advisory",
+          "FinTech Regulatory Advisory",
+          "Payment & Digital Finance Regulatory Advisory",
+          "AMFI Regulatory Advisory",
+          "Insolvency & Bankruptcy Regulatory Advisory"
+        ]
+      },
+      {
+        "title": "Consumer Regulatory Services",
+        "slug": "consumer-regulatory-services",
+        "children": [
+          "Electricity Regulatroy Advisory",
+          "Food Safety Regulatory Advisory",
+          "Drugs & Cosmetic Regulatory Advisory",
+          "Pharmaceutical Regulatory Advisory",
+          "Telecom Regulatory Advisory",
+          "Environmental Regulatory Advisory",
+          "Industrial Regulatory Advisory",
+          "Legal Metrology Advisory",
+          "BIS / ISI Regulatory Advisory",
+          "Pension Fund Regulatory Advisory",
+          "AFT & CAT Advisory",
+          "Airports Economic Regulatory Advisory"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Litigation & Dispute Resolution",
+    "number": "03",
+    "slug": "litigation-dispute-resolution",
+    "subServices": [
+      {
+        "title": "Litigation-Justice Delivery",
+        "slug": "litigation-justice-delivery",
+        "children": [
+          "Corporate Litigation",
+          "Commercial Litigation",
+          "Labour & Industrial Litigation",
+          "Civil Litigation",
+          "White-Collar Crime Litigation",
+          "Criminal Litigation"
+        ]
+      },
+      {
+        "title": "Tribunals - Dispute Resolution",
+        "slug": "tribunals-dispute-resolution",
+        "children": [
+          "National Company Law Tribunal",
+          "Debt Tecovery Tribunal (DRT/DRAT)",
+          "Banking Ombudsman",
+          "Domestic & International Arbitration",
+          "Securities Appellate Tribunal",
+          "MSME-Facilitation Conciliation",
+          "Mediation & Conciliation Cell",
+          "Consumer Commissions",
+          "Real-Estate regulatory Authority",
+          "Telecom Dispute Settlement",
+          "Prevention of Money Laundring",
+          "Central Administrative Tribunal",
+          "Economic Offences Wing",
+          "Regulatory & Administrative Investigations"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Business Advisory & Contracts",
+    "number": "04",
+    "slug": "business-advisory-contracts",
+    "subServices": [
+      {
+        "title": "Business Strategy",
+        "slug": "business-strategy",
+        "children": [
+          "Business Strategy Consultancy",
+          "Business Growth & Expansion Advisory",
+          "Business Market Entry Advisory",
+          "Business Transformation & Startgic",
+          "Startup & MSME Structuring Advisory",
+          "Founder Advisory",
+          "CDSCO Support Advisory",
+          "Investment Readiness",
+          "ESOP Advisory",
+          "Fundraising Support",
+          "DPIIT - Regulatroy & Financial Advisory"
+        ]
+      },
+      {
+        "title": "Commercial Contracts",
+        "slug": "commercial-contracts",
+        "children": [
+          "Contract Drafting, Review & Negotiations",
+          "Contract Management",
+          "Shareholders' Agreements",
+          "Share Subscription Agreements",
+          "Joint Venture Agreements",
+          "Investment Agreements",
+          "Vendor Supply Agreements",
+          "Distribution Agreements",
+          "Franchise Agreements",
+          "Non-Disclosure Agreement",
+          "Employment / Consultancy Agreements"
+        ]
+      },
+      {
+        "title": "Investment & Transaction Advisory",
+        "slug": "investment-and-transaction-advisory",
+        "children": [
+          "Start-Up/MSME Investment Advisory",
+          "Fundraising Advisory",
+          "Investor Coordination",
+          "Commercial Due Diligence",
+          "India Entry Strategy",
+          "Investment Structuring",
+          "Organisational Structuring",
+          "Governance & Management Framework"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Licensing & Registrations",
+    "number": "05",
+    "slug": "licensing-registrations",
+    "subServices": [
+      {
+        "title": "Business Registrations",
+        "slug": "business-registrations",
+        "children": [
+          "Udyam / MSME",
+          "Import-Export",
+          "Shops & Establishment",
+          "Trade / Health Licence",
+          "Professional Registrations"
+        ]
+      },
+      {
+        "title": "Food & Consumer",
+        "slug": "food-and-consumer",
+        "children": [
+          "FSSAI",
+          "Legal Metrology",
+          "Packaging & Labelling",
+          "CDSCO Registration",
+          "Liquor License",
+          "Fire Department NOC"
+        ]
+      },
+      {
+        "title": "Product / Industrial",
+        "slug": "product-industrial",
+        "children": [
+          "BIS - Bureau of Indian Standards",
+          "ISI - Indian Standards Institution",
+          "WPC-Wood Plastic Composite",
+          "EPR - Extended Producer Responsibility",
+          "Pollution / Environmental Permissions",
+          "Factory / Industrial Approvals"
+        ]
+      },
+      {
+        "title": "NGO / Institutional",
+        "slug": "ngo-institutional",
+        "children": [
+          "Trust",
+          "Society",
+          "Section 8 Company",
+          "NGO Darpan",
+          "FCRA",
+          "CSR-related Registrations"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Intellectual Property Right Services",
+    "number": "06",
+    "slug": "intellectual-property-right-services",
+    "subServices": [
+      {
+        "title": "Trademark",
+        "slug": "trademark",
+        "children": [
+          "Trademark Search & Filing",
+          "Opposition",
+          "Reply to Examination Response",
+          "Renewal",
+          "Prosectuion & Enforcement"
+        ]
+      },
+      {
+        "title": "Copyright",
+        "slug": "copyright",
+        "children": [
+          "Copyright Registration",
+          "Assignment",
+          "Licensing",
+          "Enforcement"
+        ]
+      },
+      {
+        "title": "Designs",
+        "slug": "designs",
+        "children": [
+          "Design Registration",
+          "Renewal",
+          "Assignment",
+          "Enforcement"
+        ]
+      },
+      {
+        "title": "Patents",
+        "slug": "patents",
+        "children": [
+          "Patent Advisory",
+          "Patent Search & Filing",
+          "Patent Prosecution",
+          "Portfolio Support"
+        ]
+      },
+      {
+        "title": "IP & Brand Advisory",
+        "slug": "ip-and-brand-advisory",
+        "children": [
+          "IP Due Diligence",
+          "IP Portfolio Management",
+          "Brand Protection",
+          "Licensing",
+          "Assignment",
+          "Franchise IP",
+          "IP Enforcement Strategy"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "FEMA, FDI & Cross-Border",
+    "number": "07",
+    "slug": "fema-fdi-cross-border",
+    "subServices": [
+      {
+        "title": "FEMA-Compliance & Support",
+        "slug": "fema-compliance-and-support",
+        "children": [
+          "FEMA Advisory",
+          "FEMA Compliance",
+          "RBI Reporting",
+          "Foreign Exchange Transactions"
+        ]
+      },
+      {
+        "title": "FDI-Compliance & Support",
+        "slug": "fdi-compliance-and-support",
+        "children": [
+          "FDI Structuring",
+          "Entry Route Advisory",
+          "Foreign Investment Compliance",
+          "Investment Structuring",
+          "Share Issue / Transfer",
+          "Downstream Investment",
+          "Repatriation / Exit"
+        ]
+      },
+      {
+        "title": "ODI-compliance & Support",
+        "slug": "odi-compliance-and-support",
+        "children": [
+          "Overseas Direct Investment",
+          "Overseas Subsidiary",
+          "Overseas Joint Venture",
+          "Restructuring Tax Coordination",
+          "ODI Reporting & Compliance"
+        ]
+      },
+      {
+        "title": "ECB-Compliance & Support",
+        "slug": "ecb-compliance-and-support",
+        "children": [
+          "External Commercial Borrowing",
+          "ECB Structuring",
+          "FEMA/RBI Compliance",
+          "ECB Reporting"
+        ]
+      },
+      {
+        "title": "Cross-Border Compliance & Support",
+        "slug": "cross-border-compliance-and-support",
+        "children": [
+          "Cross-Border Corporate Structuring",
+          "Cross-Border M&A",
+          "International Joint Ventures",
+          "Foreign Collaboration",
+          "Overseas Expansion"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Taxation & Compliance",
+    "number": "08",
+    "slug": "taxation-compliance",
+    "subServices": [
+      {
+        "title": "Direct Tax",
+        "slug": "direct-tax",
+        "children": [
+          "Corporate Tax",
+          "Income Tax",
+          "TDS",
+          "Tax Compliance",
+          "Tax Advisory",
+          "Tax Representation"
+        ]
+      },
+      {
+        "title": "GST & Indirect Tax",
+        "slug": "gst-and-indirect-tax",
+        "children": [
+          "GST Registration",
+          "GST Advisory",
+          "GST Returns",
+          "GST Notices",
+          "GST Refunds",
+          "GST Disputes"
+        ]
+      },
+      {
+        "title": "International Tax",
+        "slug": "international-tax",
+        "children": [
+          "Cross-Border Tax Coordination",
+          "Transfer Pricing Coordination",
+          "International Transaction Support"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Banking, Insolvency & Restructuring Advisory",
+    "number": "09",
+    "slug": "banking-insolvency-restructuring-advisory",
+    "subServices": [
+      {
+        "title": "Banking and Financial Services",
+        "slug": "banking-and-financial-services",
+        "children": [
+          "Banking Advisory",
+          "RBI Regulatory",
+          "NBFC Formation / Licensing Advisory",
+          "NBFC Compliance",
+          "FinTech Advisory & Compliance",
+          "Payment Systems",
+          "Financial Services Regulatory",
+          "Banking - Loan/Security Documentation",
+          "Financial Institution Advisory"
+        ]
+      },
+      {
+        "title": "Insolvency & Restructuring",
+        "slug": "insolvency-and-restructuring",
+        "children": [
+          "Debt & Restructuring Advisory",
+          "IBC Strategy & Advisory",
+          "CIRP-related Advisory",
+          "Creditor & Debtors Advisory",
+          "Resolution Planning Support",
+          "NCLT & NCLAT Advisory",
+          "Debt Restructuring",
+          "Distressed Business Advisory",
+          "Liquidation / Closure Support"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Industrial, Employment & Forensics Advisory",
+    "number": "10",
+    "slug": "industrial-employment-forensics-advisory",
+    "subServices": [
+      {
+        "title": "Employment & Labour",
+        "slug": "employment-and-labour",
+        "children": [
+          "Employment Advisory",
+          "Employment Contracts",
+          "Labour Law Compliance",
+          "Human Resource Policies",
+          "Employee Handbook",
+          "Termination / Separation Advisory"
+        ]
+      },
+      {
+        "title": "Workplace Compliances",
+        "slug": "workplace-compliances",
+        "children": [
+          "Employment Disputes",
+          "POSH Advisory",
+          "Workplace Investigations",
+          "A workplace whistleblower policy",
+          "HR Compliance Review",
+          "Payroll / Statutory Coordination"
+        ]
+      },
+      {
+        "title": "Risk, Forensics & Investigations",
+        "slug": "risk-forensics-and-investigations",
+        "children": [
+          "Fraud Risk & Forensic Review",
+          "Corporate Investigations",
+          "Financial Fraud Investigations",
+          "Compliance Investigations",
+          "Due Diligence / Background Review",
+          "White-Collar Advisory",
+          "Anti-Bribery / Ethics Framework"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Environmental, Technology & Sector Specific",
+    "number": "11",
+    "slug": "environmental-technology-sector-specific",
+    "subServices": [
+      {
+        "title": "ESG & Sustainability",
+        "slug": "esg-and-sustainability",
+        "children": [
+          "ESG Strategy & Advisory",
+          "Sustainability Framework",
+          "ESG Compliance",
+          "Environmental Regulatory",
+          "Governance Advisory",
+          "ESG Risk Assessment",
+          "ESG Due Diligence",
+          "Sustainability Reporting Coordination"
+        ]
+      },
+      {
+        "title": "Technology, Privacy & Digital",
+        "slug": "technology-privacy-and-digital",
+        "children": [
+          "Data Protection & Privacy",
+          "DPDP (Digital Personal Data Protection) Compliance",
+          "AI Governance & Regulatory Advisory",
+          "Technology Contracts",
+          "SaaS (Software as a Service) Agreements",
+          "IT Agreements",
+          "Data Processing Agreements",
+          "Cybersecurity Regulatory Advisory",
+          "E-Commerce Regulatory",
+          "Digital Business Advisory",
+          "Technology Transactions"
+        ]
+      },
+      {
+        "title": "Professional & Sector-Specific Advisory",
+        "slug": "professional-and-sector-specific-advisory",
+        "children": [
+          "Healthcare",
+          "Education",
+          "Hospitality",
+          "Media & Broadcasting",
+          "Telecommunications",
+          "E-Commerce",
+          "Manufacturing",
+          "Automotive",
+          "Logistics",
+          "Energy",
+          "Environment",
+          "Defence / Marine"
+        ]
+      }
+    ]
+  }
+]

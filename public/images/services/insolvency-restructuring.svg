@@ -1,0 +1,68 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="80" x2="1080" y2="680" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1624"/>
+      <stop offset="1" stop-color="#14314A"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="310" y1="170" x2="880" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10273C"/>
+      <stop offset="1" stop-color="#1B3B58"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="600" y1="120" x2="600" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7FE8C9"/>
+      <stop offset="0.5" stop-color="#A2D8FF"/>
+      <stop offset="1" stop-color="#D6B4FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" rx="32" fill="url(#bg)"/>
+  <circle cx="600" cy="380" r="215" fill="url(#ring)" fill-opacity="0.12"/>
+  <circle cx="600" cy="380" r="160" stroke="url(#ring)" stroke-width="2" stroke-dasharray="10 12" opacity="0.8"/>
+  <rect x="220" y="170" width="760" height="420" rx="28" fill="url(#panel)" stroke="#4D7BA2" stroke-opacity="0.7"/>
+
+  <g opacity="0.96">
+    <circle cx="420" cy="280" r="72" fill="#0F2235" stroke="#7FE8C9" stroke-width="2"/>
+    <path d="M385 280H455" stroke="#7FE8C9" stroke-width="10" stroke-linecap="round"/>
+    <path d="M420 245V315" stroke="#7FE8C9" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="420" cy="280" r="32" fill="#7FE8C9" fill-opacity="0.18"/>
+  </g>
+
+  <g opacity="0.96">
+    <circle cx="780" cy="280" r="72" fill="#0F2235" stroke="#A2D8FF" stroke-width="2"/>
+    <path d="M747 280H813" stroke="#A2D8FF" stroke-width="10" stroke-linecap="round"/>
+    <path d="M780 243V317" stroke="#A2D8FF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="780" cy="280" r="32" fill="#A2D8FF" fill-opacity="0.18"/>
+  </g>
+
+  <g opacity="0.96">
+    <circle cx="420" cy="480" r="72" fill="#0F2235" stroke="#D6B4FF" stroke-width="2"/>
+    <path d="M385 480H455" stroke="#D6B4FF" stroke-width="10" stroke-linecap="round"/>
+    <path d="M420 445V515" stroke="#D6B4FF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="420" cy="480" r="32" fill="#D6B4FF" fill-opacity="0.18"/>
+  </g>
+
+  <g opacity="0.96">
+    <circle cx="780" cy="480" r="72" fill="#0F2235" stroke="#F0C98A" stroke-width="2"/>
+    <path d="M747 480H813" stroke="#F0C98A" stroke-width="10" stroke-linecap="round"/>
+    <path d="M780 445V515" stroke="#F0C98A" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="780" cy="480" r="32" fill="#F0C98A" fill-opacity="0.18"/>
+  </g>
+
+  <g>
+    <rect x="498" y="298" width="204" height="164" rx="24" fill="#0F2235" stroke="#B8D8FF" stroke-width="2"/>
+    <path d="M545 385H663" stroke="#E8F4FF" stroke-width="8" stroke-linecap="round"/>
+    <path d="M545 352H634" stroke="#E8F4FF" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+    <path d="M545 420H620" stroke="#E8F4FF" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+    <circle cx="607" cy="332" r="26" fill="#7FE8C9" fill-opacity="0.24"/>
+    <path d="M606 318V344" stroke="#7FE8C9" stroke-width="7" stroke-linecap="round"/>
+    <path d="M593 332H619" stroke="#7FE8C9" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <path d="M492 380H420" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <path d="M708 380H780" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <path d="M420 352V328" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <path d="M780 352V328" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <path d="M420 408V432" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <path d="M780 408V432" stroke="#D9EAF7" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+
+  <text x="600" y="688" text-anchor="middle" fill="#EAF3FF" font-family="Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" letter-spacing="1.5">INSOLVENCY &amp; RESTRUCTURING</text>
+</svg>

@@ -1,0 +1,88 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="100" x2="1080" y2="700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5F8FC"/>
+      <stop offset="1" stop-color="#E9EEF8"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="340" y1="150" x2="870" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#122B4A"/>
+      <stop offset="1" stop-color="#203E67"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0D2240" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+
+  <g opacity="0.75">
+    <path d="M180 160H1018" stroke="#D7E0F3" stroke-width="2" stroke-dasharray="10 18"/>
+    <path d="M180 640H1018" stroke="#D7E0F3" stroke-width="2" stroke-dasharray="10 18"/>
+    <path d="M220 130V670" stroke="#D7E0F3" stroke-width="2" stroke-dasharray="10 18"/>
+    <path d="M980 130V670" stroke="#D7E0F3" stroke-width="2" stroke-dasharray="10 18"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="315" y="142" width="570" height="522" rx="36" fill="url(#panel)"/>
+  </g>
+
+  <circle cx="600" cy="400" r="150" fill="#EAF1FB" fill-opacity="0.08"/>
+  <circle cx="600" cy="400" r="104" fill="#F5F9FF" fill-opacity="0.1" stroke="#E0EAF9" stroke-width="2"/>
+
+  <g>
+    <rect x="452" y="286" width="296" height="72" rx="18" fill="#EEF5FF" fill-opacity="0.12" stroke="#D8E6FF" stroke-opacity="0.25"/>
+    <text x="600" y="330" text-anchor="middle" fill="#F4F9FF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700">Banking &amp; Financial Advisory</text>
+  </g>
+
+  <g>
+    <path d="M430 468C500 430 552 418 600 420C649 423 706 438 770 468" stroke="#E4EDFC" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 0"/>
+    <path d="M465 478C520 515 548 545 600 552C654 559 689 530 744 478" stroke="#BFD0F8" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <path d="M600 420V554" stroke="#D9E6FE" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <g>
+    <circle cx="430" cy="468" r="36" fill="#F3F8FF"/>
+    <text x="430" y="476" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">RBI</text>
+    <text x="430" y="545" text-anchor="middle" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Regulatory</text>
+  </g>
+
+  <g>
+    <circle cx="770" cy="468" r="36" fill="#F3F8FF"/>
+    <text x="770" y="476" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">NBFC</text>
+    <text x="770" y="545" text-anchor="middle" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Finance</text>
+  </g>
+
+  <g>
+    <circle cx="600" cy="600" r="34" fill="#F3F8FF"/>
+    <text x="600" y="608" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">Debt</text>
+    <text x="600" y="647" text-anchor="middle" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="600">Restructuring</text>
+  </g>
+
+  <g>
+    <circle cx="820" cy="318" r="30" fill="#F3F8FF"/>
+    <text x="820" y="325" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">Payments</text>
+    <text x="820" y="268" text-anchor="middle" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">FinTech</text>
+  </g>
+
+  <g>
+    <circle cx="381" cy="318" r="30" fill="#F3F8FF"/>
+    <text x="381" y="325" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">Banks</text>
+    <text x="381" y="268" text-anchor="middle" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">Lending</text>
+  </g>
+
+  <g>
+    <circle cx="880" cy="580" r="28" fill="#F3F8FF"/>
+    <text x="880" y="587" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Docs</text>
+    <text x="922" y="620" text-anchor="start" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">Documentation</text>
+  </g>
+
+  <g>
+    <circle cx="320" cy="580" r="28" fill="#F3F8FF"/>
+    <text x="320" y="587" text-anchor="middle" fill="#123861" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Inst.</text>
+    <text x="70" y="620" text-anchor="start" fill="#E6EEFB" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="600">Financial Institutions</text>
+  </g>
+
+  <g>
+    <path d="M516 384H684" stroke="#E8F0FE" stroke-width="2" stroke-dasharray="8 12"/>
+    <path d="M600 240V384" stroke="#E8F0FE" stroke-width="2" stroke-dasharray="8 12"/>
+  </g>
+</svg>

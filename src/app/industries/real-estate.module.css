@@ -1,0 +1,75 @@
+.page { --gold: #aa7221; }
+.hero h1 { font-size: clamp(45px, 5vw, 72px); }
+.hero > img { object-position: center 42%; }
+.solutions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.solution { display: flex; align-items: center; gap: 15px; border: 1px solid #dce5ee; border-radius: 4px; padding: 24px 18px; min-height: 116px; }
+.solution > svg:first-child { width: 30px; height: 30px; color: #225780; }
+.solution > svg:last-child { width: 16px; height: 16px; margin-left: auto; }
+.solution h3 { font-size: 19px; line-height: 1.35; }
+.solution:hover { background: #f6f9fc; transform: translateY(-3px); box-shadow: 0 7px 20px #082d570a; }
+.regulatory { padding-block: 58px; background: #062746; color: white; }
+.regulatoryGrid { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 80px; }
+.regulatory h2 { max-width: 530px; }
+.regulatory p { color: #d4e0eb; margin: 20px 0; }
+.regulatory a, .regulatoryGrid > div > span { color: #ecc477; }
+.lifecycle { display: grid; gap: 23px; }
+.lifecycle > div { display: flex; gap: 23px; align-items: flex-start; border-bottom: 1px solid #ffffff22; padding-bottom: 21px; }
+.lifecycle > div:last-child { border: 0; padding-bottom: 0; }
+.lifecycle > div > span { color: #eac078; font: 28px Georgia, serif; }
+.lifecycle h3 { font-size: 24px; }
+.lifecycle p { font-size: 13px; margin: 7px 0 0; }
+.stats { background: #f0f6fb; border-bottom: 1px solid #dce5ee; padding-block: 29px; }
+.statsGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.statsGrid > div { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 10px 20px; }
+.statsGrid > div + div { border-left: 1px solid #c7d7e6; }
+.statsGrid svg { width: 37px; height: 37px; color: #235a8e; }
+.statsGrid strong { display: block; font-size: 23px; font-weight: 400; }
+.statsGrid span { display: block; font-size: 12px; margin-top: 3px; }
+.feature { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid #dce5ee; background: #f7f9fc; border-radius: 5px; }
+.featureImage { position: relative; min-height: 330px; }
+.featureImage img { object-fit: cover; }
+.featureCopy { padding: 40px; }
+.featureCopy h3 { font-size: clamp(27px, 2.8vw, 38px); line-height: 1.2; margin-bottom: 18px; }
+.insightDetails { margin-top: 22px; border-top: 1px solid #dce5ee; }
+.insightDetails summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 13px; font-weight: 600; min-height: 52px; }
+.insightDetails p { font-size: 13px; margin: 12px 0; }
+@media (max-width: 1100px) { .solutions { grid-template-columns: repeat(3, minmax(0, 1fr)); } .regulatoryGrid { gap: 35px; } .statsGrid > div { padding-inline: 12px; gap: 12px; } .statsGrid strong { font-size: 21px; } }
+@media (max-width: 900px) { .solutions { grid-template-columns: repeat(2, minmax(0, 1fr)); } .regulatoryGrid { grid-template-columns: 1fr; } .featureCopy { padding: 28px; } .statsGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 0; } .statsGrid > div:nth-child(3) { border-left: 0; } .statsGrid > div { justify-content: flex-start; padding-left: 25px; } }
+@media (max-width: 760px) { .feature { grid-template-columns: 1fr; } .featureImage { min-height: 0; aspect-ratio: 2; } }
+@media (max-width: 600px) { .hero h1 { font-size: clamp(40px, 10vw, 57px); } .solutions { grid-template-columns: 1fr; gap: 12px; } .solution { min-height: 88px; padding: 21px; } .solution h3 { font-size: 21px; } .regulatory { padding-block: 40px; } .statsGrid > div { gap: 11px; padding-left: 8px; } .statsGrid svg { width: 28px; height: 28px; } .statsGrid strong { font-size: 19px; } .statsGrid span { font-size: 11px; } .featureCopy { padding: 25px 21px; } }
+@media (prefers-reduced-motion: reduce) { .solution:hover { transform: none; } }
+
+/* Solution tiles use an offset icon and accent rail, distinct from story cards. */
+.solutions { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.solution { position: relative; min-width: 0; min-height: 170px; display: grid; grid-template-columns: 1fr 22px; align-content: start; align-items: start; gap: 22px 12px; padding: 25px; border-radius: 18px 18px 18px 3px; border: 1px solid #dce5ee; border-bottom: 3px solid #3276b4; background: #f3f8fd; transition: background-color .3s, color .3s, border-color .3s, transform .3s, box-shadow .3s; }
+.solution:nth-child(3n+2) { background: #faf7f0; border-bottom-color: #be914c; }
+.solution:nth-child(3n) { background: #f1f8f7; border-bottom-color: #438679; }
+.solution > svg:first-child { width: 36px; height: 36px; color: #236092; grid-column: 1; }
+.solution h3 { grid-column: 1 / -1; grid-row: 2; font-size: 23px; line-height: 1.3; }
+.solution > svg:last-child { grid-column: 2; grid-row: 1; width: 20px; height: 20px; margin-top: 9px; }
+.solution :is(h3, svg) { transition: color .3s, transform .3s; }
+.solution:focus-visible { background: #082d57; color: white; box-shadow: 0 12px 28px #082d5720; }
+.solution:focus-visible > svg:first-child { color: #f0c882; }
+.feature { border-radius: 22px; border: 1px solid #d8e5f0; background: #f0f6fc; box-shadow: 0 10px 30px #082d5708; transition: box-shadow .3s, border-color .3s; }
+.feature:focus-within { border-color: #b68b47; box-shadow: 0 15px 32px #082d571a; }
+.statsGrid > div { transition: background-color .3s; }
+.lifecycle > div { transition: background-color .3s; }
+@media (hover: hover) and (pointer: fine) {
+  .solution:hover { background: #082d57; color: white; border-bottom-color: #edc982; transform: translateY(-5px); box-shadow: 0 12px 28px #082d5720; }
+  .solution:hover > svg:first-child { color: #f0c882; }
+  .solution:hover > svg:last-child { transform: translateX(3px); }
+  .feature:hover { border-color: #b68b47; box-shadow: 0 15px 32px #082d571a; }
+  .statsGrid > div:hover { background: #dfedf9; }
+  .lifecycle > div:hover { background: #ffffff08; }
+}
+@media (max-width: 1000px) { .solutions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .solutions { grid-template-columns: 1fr; gap: 15px; }
+  .solution { min-height: 0; grid-template-columns: 36px minmax(0, 1fr) 20px; align-items: center; gap: 15px; padding: 23px 20px; border-radius: 12px; }
+  .solution h3 { grid-row: 1; grid-column: 2; font-size: 21px; }
+  .solution > svg:last-child { grid-column: 3; margin: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .solution, .solution svg, .feature, .statsGrid > div, .lifecycle > div { transition: none; }
+  .solution:hover, .solution:hover > svg:last-child { transform: none; }
+}

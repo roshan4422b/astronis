@@ -1,0 +1,105 @@
+import type { ChildServiceContent } from "./service-detail-types";
+
+export const detail = (overview: string, approach: string, covers: string, when: string, considerations: string, assistance: string): ChildServiceContent => ({
+  paragraphs: [overview, approach], covers: covers.split(" | "), when, considerations, assistance,
+});
+
+// Content follows the exact order of the workbook's Entity Formation group.
+export const formationContent: ChildServiceContent[] = [
+  detail(
+    "A private limited company can provide an organised framework for founders, shareholders and a management team to build a business together. The formation exercise should start with the intended activities, ownership arrangements and funding plans, rather than with incorporation documents alone.",
+    "A considered setup connects the proposed entity with its operating model: who will make decisions, where it will operate and how commercial relationships will be documented. Early planning also helps distinguish incorporation work from the registrations, permissions and continuing responsibilities that may follow.",
+    "Proposed activities and ownership review | Incorporation document coordination | Initial governance and operational readiness",
+    "Founders establishing a business, promoters separating a new venture, or investors planning a jointly owned operating company.",
+    "Align ownership, director responsibilities, funding expectations and the registered office arrangements before finalising the incorporation brief.",
+    "Astronis can help assess the proposed structure, coordinate formation documentation and organise a practical handover of the matters that need attention after incorporation.",
+  ),
+  detail(
+    "A One Person Company (OPC) formation enquiry often begins with a founder who wants to formalise a business while retaining a single-owner structure. The appropriate choice depends on the founder's circumstances, the planned activities and how the business is expected to develop.",
+    "The discussion should look beyond the immediate setup. Plans to introduce investors, share ownership or change the management model can affect the longer-term suitability of the structure. Eligibility and current procedural requirements should be reviewed for the particular applicant before proceeding.",
+    "Suitability and founder requirements | Formation documentation | Future ownership and conversion planning",
+    "An individual founder considering an incorporated structure for an existing or proposed business.",
+    "Consider succession arrangements, management responsibilities and future investment plans alongside the setup process.",
+    "Our team can organise the founder's requirements, coordinate the incorporation brief and identify the follow-on governance and compliance questions for review.",
+  ),
+  detail(
+    "Public limited company formation calls for a deliberate approach to ownership, governance and the business's capital plans. It can be relevant to promoters establishing a larger corporate platform or preparing an organisational structure for a broader shareholder base.",
+    "The formation project should connect constitutional documents, board arrangements and shareholder expectations with the proposed business activities. Establishing a public company and pursuing any particular fundraising or listing transaction are distinct workstreams that require their own assessment.",
+    "Promoter and ownership planning | Constitutional document coordination | Board and governance setup",
+    "Promoters evaluating a public company structure for a new undertaking or a wider corporate development plan.",
+    "Clarify intended capital activity, governance capacity and the continuing administrative responsibilities of the proposed structure.",
+    "Astronis can coordinate the formation process with corporate governance and transaction advisors so that the proposed structure reflects the promoters' documented objectives.",
+  ),
+  detail(
+    "Section 8 company enquiries require a clear statement of the organisation's intended purpose and activities. The proposed structure should be assessed in the context of its institutional objectives, governance arrangements and plans for funding and day-to-day operations.",
+    "A coherent formation brief explains how programmes will be conducted, who will oversee decisions and how records will be maintained. Incorporation should be considered separately from any tax-related recognition, funding permission or programme-specific registration that may also need review.",
+    "Purpose and activity mapping | Constitutional and formation documents | Institutional governance planning",
+    "Promoters developing a mission-led institution or reviewing an appropriate structure for organised programmes.",
+    "Consider funding sources, oversight, use of resources and the relationship between the entity's objects and its actual activities.",
+    "We can help translate the institutional brief into formation documentation and coordinate the separate registration and governance workstreams relevant to the proposed organisation.",
+  ),
+  detail(
+    "LLP formation brings the partners' commercial understanding into the entity setup process. Before preparing documents, the partners should identify their contributions, working roles, decision-making expectations and the way they intend to share the results of the business.",
+    "The partnership arrangements should also anticipate change: admission of a new partner, a change in responsibilities, a funding requirement or a partner wishing to leave. These discussions inform the formation brief and the LLP agreement, helping the structure support the intended working relationship.",
+    "Partner roles and contribution planning | Formation documentation | LLP agreement and operating arrangements",
+    "Partners establishing a professional, commercial or other venture who want to evaluate an LLP alongside alternative structures.",
+    "Discuss management authority, partner exits, continuity and the suitability of the structure for the intended activity and investment plans.",
+    "Astronis can support the structure assessment, coordinate formation requirements and assist with documenting the partners' agreed commercial and governance arrangements.",
+  ),
+  detail(
+    "A partnership firm starts with a relationship between people who intend to conduct a business together. Clearly recording their agreement is valuable even when they know one another well: assumptions about authority, contributions and financial arrangements can otherwise remain unresolved.",
+    "The proposed deed should reflect how the business will actually operate. It can address decision-making, allocation of responsibilities, information access and changes in the partnership. The applicable registration and other setup requirements need to be assessed in the firm's operating context.",
+    "Partner understanding and business scope | Partnership deed support | Registration and operational coordination",
+    "Business partners formalising a new undertaking or documenting an existing commercial relationship.",
+    "Review the implications of the chosen structure, partner authority, continuity and dispute-handling arrangements before launch.",
+    "Our team can help prepare a clear partnership brief, support agreement drafting and identify registration and operational matters that require coordination.",
+  ),
+  detail(
+    "A proprietorship setup enquiry is centred on an individual and the activity they intend to carry on. The practical work often involves identifying the business's operating requirements, record-keeping needs and relevant registrations rather than preparing a corporate ownership structure.",
+    "The choice should still be deliberate. The owner should consider how contracts, financial records and business identity will be organised, and whether the structure remains suitable as operations grow. Future plans to introduce partners or investors deserve attention at the outset.",
+    "Activity and operating location review | Relevant registration mapping | Business documentation and setup coordination",
+    "An individual starting a business or organising the formal operating requirements of an existing activity.",
+    "Consider the relationship between personal and business responsibilities, record keeping, branding and future transition to another structure.",
+    "Astronis can map the proposed activities, help identify setup workstreams and coordinate appropriate registration and documentation support.",
+  ),
+  detail(
+    "A wholly owned subsidiary can form part of a group's plan to establish a dedicated operating presence or separate a particular business activity. The formation project should reflect the parent's objectives while setting out how the new entity will be funded, managed and connected to the wider group.",
+    "Where a foreign parent is involved, the project may need coordinated corporate, foreign investment and operational review. Intercompany arrangements, authority levels and reporting responsibilities should be considered alongside incorporation so the subsidiary can operate within a clear governance framework.",
+    "Parent and subsidiary structure review | Ownership and funding coordination | Intercompany and governance arrangements",
+    "A domestic or international group establishing a separately organised business operation.",
+    "Review proposed activities, investment structure, intercompany dependencies and management responsibilities before committing to the setup route.",
+    "We can connect the formation brief with relevant foreign investment, commercial contract and governance workstreams, and coordinate the documentation needed for implementation.",
+  ),
+  detail(
+    "Foreign company setup begins with the intended India presence: what the business wants to do, who its customers will be and how it expects to deploy people, capital and resources. These facts help frame the comparison between possible establishment structures.",
+    "A clear entry plan distinguishes entity formation from the permissions and operating arrangements associated with the proposed activities. It should also account for cross-border governance, documentation from the overseas organisation and coordination among corporate, regulatory and tax specialists.",
+    "India presence and activity assessment | Establishment route comparison | Overseas document and setup coordination",
+    "An overseas organisation planning an India operation or reviewing how to formalise an existing commercial presence.",
+    "Consider the scope of local activity, funding flows, decision-making authority and sector-specific requirements for the selected route.",
+    "Astronis can help organise the entry assessment, compare establishment options and coordinate the formation, regulatory and commercial workstreams around the chosen model.",
+  ),
+  detail(
+    "A branch office proposal should be assessed against the overseas organisation's intended activities in India. The enquiry needs to establish the nature of the parent business, the local operating plan and the commercial responsibilities the proposed office would assume.",
+    "Planning should cover both establishment and ongoing operation. The scope of activity, authorisations, financial arrangements, local representation and record keeping need to be considered together. The appropriate route and current requirements depend on the facts of the proposed presence.",
+    "Proposed branch activity review | Establishment documentation and approvals coordination | Operating and reporting readiness",
+    "An overseas business evaluating a branch presence as part of its India operating strategy.",
+    "Confirm the intended functions, relationship with the parent, funding arrangements and responsibilities for continuing obligations.",
+    "We can prepare the establishment brief, identify questions for regulatory assessment and coordinate documentation and implementation support with the relevant specialists.",
+  ),
+  detail(
+    "A liaison office enquiry is shaped by the overseas organisation's communication and representation objectives. The starting point is a precise description of the proposed functions and how they connect the parent organisation with its contacts and interests in India.",
+    "The office model should be reviewed against the intended activities before practical commitments are made. Establishment documentation, funding, local administration and ongoing reporting need to be planned in line with the scope that is assessed for the proposed office.",
+    "Representation objectives and activity mapping | Establishment application coordination | Local administration and reporting planning",
+    "An overseas organisation assessing a presence focused on liaison and coordination with Indian stakeholders.",
+    "Distinguish the planned representative functions from other business activities and review the operational boundaries of the proposed model.",
+    "Astronis can help define the activity brief, coordinate the regulatory assessment and organise establishment documentation and continuing responsibility mapping.",
+  ),
+  detail(
+    "A project office proposal is tied to a defined project and the overseas organisation's role in delivering it. The assessment should start with the project agreement, delivery timetable, local responsibilities and the resources needed to perform the work.",
+    "The setup plan should remain connected to the project's commercial and operational life. Documentation, funding arrangements, local coordination and eventual closure considerations need to be reviewed alongside the establishment requirements rather than treated as unrelated tasks.",
+    "Project scope and establishment assessment | Project documentation and approval coordination | Operational and closure planning",
+    "An overseas organisation evaluating an India presence to support a specific project engagement.",
+    "Review contract scope, project duration, local dependencies, funding and the responsibilities that continue when delivery is completed.",
+    "Our team can coordinate the project-office assessment, help organise the supporting records and connect establishment requirements with the broader project and commercial workstreams.",
+  ),
+];

@@ -1,0 +1,61 @@
+.ukPage { --uk-blue: #145b9b; }
+
+.heroNote { max-width: 150px; }
+
+.heroPhoto {
+  inset: 0;
+}
+
+.heroPhoto::after {
+  background: linear-gradient(90deg, rgba(245, 248, 250, 0.97) 0%, rgba(245, 248, 250, 0.88) 22%, rgba(245, 248, 250, 0.45) 43%, rgba(8, 43, 83, 0.12) 100%);
+}
+
+.ukMarket > div {
+  grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
+  align-items: stretch;
+  gap: 18px;
+}
+
+.corridor { min-width: 0; padding: 20px 0 8px; }
+.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: 19px; font-weight: 500; }
+.corridorGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+.corridorCard { min-width: 0; padding: 11px; border: 1px solid #e0e8ef; background: #fff; }
+.corridorCardHeading { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #e3eaf0; }
+.corridorFlag { position: relative; display: block; width: 32px; height: 32px; flex: 0 0 32px; overflow: hidden; border: 1px solid #d4e0e9; border-radius: 50%; }
+.corridorFlag img { object-fit: cover; }
+.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
+.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: 11px; line-height: 1.35; }
+.corridor > a { margin-top: 12px; }
+
+.ukIndustryGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 8px; margin-top: 11px; }
+.ukIndustryGrid > a { min-width: 0; }
+.ukIndustryGrid .industryImage { aspect-ratio: 1.65; }
+.ukIndustryGrid .industryTile { font-size: 10px; }
+.ukIndustries .industryHeading .textLink { margin-top: 7px; }
+
+.ukNetwork { gap: 5px; }
+.networkIcon { width: 36px; height: 36px; margin-bottom: 3px; color: #145b9b; }
+.ukNetwork h2 { margin-top: 3px; }
+.ukNetwork .textLink { margin-top: 7px; }
+
+@media (max-width: 1100px) {
+  .ukMarket > div { grid-template-columns: 1fr; }
+  .corridor,
+  .ukIndustries { max-width: 760px; }
+}
+
+@media (max-width: 760px) {
+  .corridor,
+  .ukIndustries { padding-block: 19px; }
+  .corridor h2 { font-size: 18px; }
+  .corridorCard { padding: 10px; }
+  .corridorCard ul { gap: 6px; font-size: 11px; }
+  .ukIndustryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ukIndustryGrid .industryTile { font-size: 11px; }
+}
+
+@media (max-width: 420px) {
+  .corridorGrid { grid-template-columns: 1fr; }
+  .corridorCard ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; }
+  .ukIndustryGrid { gap: 9px; }
+}

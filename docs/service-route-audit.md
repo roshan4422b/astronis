@@ -1,0 +1,322 @@
+# Service Route Audit
+
+Generated from `src/data/service-hierarchy.json`: 11 main services, 36 sub-services, and 269 child services (316 unique URLs).
+
+All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existing corporate formation and structuring pages have dedicated canonical route wrappers.
+
+- ✓ Corporate & Commercial — `/services/corporate-commercial-advisory`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup — `/services/corporate-commercial-advisory/entity-formation-business-setup`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Private Limited Company Incorporation — `/services/corporate-commercial-advisory/entity-formation-business-setup/private-limited-company-incorporation`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → One Person Company (OPC) — `/services/corporate-commercial-advisory/entity-formation-business-setup/one-person-company-opc`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Public Limited Company — `/services/corporate-commercial-advisory/entity-formation-business-setup/public-limited-company`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Section 8 Company — `/services/corporate-commercial-advisory/entity-formation-business-setup/section-8-company`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → LLP Formation — `/services/corporate-commercial-advisory/entity-formation-business-setup/llp-formation`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Partnership Firm — `/services/corporate-commercial-advisory/entity-formation-business-setup/partnership-firm`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Sole Proprietorship — `/services/corporate-commercial-advisory/entity-formation-business-setup/sole-proprietorship`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Wholly Owned Subsidiary — `/services/corporate-commercial-advisory/entity-formation-business-setup/wholly-owned-subsidiary`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Foreign Company Setup — `/services/corporate-commercial-advisory/entity-formation-business-setup/foreign-company-setup`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Branch Office — `/services/corporate-commercial-advisory/entity-formation-business-setup/branch-office`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Liaison Office — `/services/corporate-commercial-advisory/entity-formation-business-setup/liaison-office`
+- ✓ Corporate & Commercial → Entity Formation & Business Setup → Project Office — `/services/corporate-commercial-advisory/entity-formation-business-setup/project-office`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Entity Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/entity-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Group Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/group-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Holding & Subsidiary Structures — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/holding-and-subsidiary-structures`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Shareholding Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/shareholding-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Capital Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/capital-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Business Reorganisation — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/business-reorganisation`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Corporate Conversion — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/corporate-conversion`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Succession & Family Business Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/succession-and-family-business-structuring`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Corporate Exit plan — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/corporate-exit-plan`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Demerger & Amalgamation — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/demerger-and-amalgamation`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Slump Sale — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/slump-sale`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Mergers & Acquisitions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/mergers-and-acquisitions`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Buy or Sell bsuiness entity — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/buy-or-sell-bsuiness-entity`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → NGO Registration — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/ngo-registration`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Transaction Structuring — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/transaction-structuring`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Private Equity Transactions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/private-equity-transactions`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Investment Transactions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/investment-transactions`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Governance Framework & Corporate Policies — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/governance-framework-and-corporate-policies`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Shareholder Matters — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/shareholder-matters`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Board & Committee Processes — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/board-and-committee-processes`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Corporate Due Diligence — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/corporate-due-diligence`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Legal Due Diligence — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/legal-due-diligence`
+- ✓ Regulatory Services — `/services/regulatory-services`
+- ✓ Regulatory Services → Corporate Regulatory — `/services/regulatory-services/corporate-regulatory`
+- ✓ Regulatory Services → Corporate Regulatory → Insolvency & Banckruptcy — `/services/regulatory-services/corporate-regulatory/insolvency-and-banckruptcy`
+- ✓ Regulatory Services → Corporate Regulatory → MCA21 / ROC Matters — `/services/regulatory-services/corporate-regulatory/mca21-roc-matters`
+- ✓ Regulatory Services → Corporate Regulatory → Statutory Return Filings — `/services/regulatory-services/corporate-regulatory/statutory-return-filings`
+- ✓ Regulatory Services → Corporate Regulatory → Corporate Compliance — `/services/regulatory-services/corporate-regulatory/corporate-compliance`
+- ✓ Regulatory Services → Corporate Regulatory → Compliance Framework — `/services/regulatory-services/corporate-regulatory/compliance-framework`
+- ✓ Regulatory Services → Corporate Regulatory → Regulatory Compliance Review — `/services/regulatory-services/corporate-regulatory/regulatory-compliance-review`
+- ✓ Regulatory Services → Corporate Regulatory → Insolvency-related Proceedings — `/services/regulatory-services/corporate-regulatory/insolvency-related-proceedings`
+- ✓ Regulatory Services → Corporate Regulatory → Regulatory Risk Assessment — `/services/regulatory-services/corporate-regulatory/regulatory-risk-assessment`
+- ✓ Regulatory Services → Corporate Regulatory → Regulatory Change Management — `/services/regulatory-services/corporate-regulatory/regulatory-change-management`
+- ✓ Regulatory Services → Corporate Regulatory → Ongoing Compliance Support — `/services/regulatory-services/corporate-regulatory/ongoing-compliance-support`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services — `/services/regulatory-services/banking-nbfc-advisory-services`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → IFSCA / GIFT City Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/ifsca-gift-city-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → RBI Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/rbi-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → SEBI Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/sebi-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → NBFC Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/nbfc-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → FinTech Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/fintech-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → Payment & Digital Finance Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/payment-and-digital-finance-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → AMFI Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/amfi-regulatory-advisory`
+- ✓ Regulatory Services → Banking/NBFC Advisory Services → Insolvency & Bankruptcy Regulatory Advisory — `/services/regulatory-services/banking-nbfc-advisory-services/insolvency-and-bankruptcy-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services — `/services/regulatory-services/consumer-regulatory-services`
+- ✓ Regulatory Services → Consumer Regulatory Services → Electricity Regulatroy Advisory — `/services/regulatory-services/consumer-regulatory-services/electricity-regulatroy-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Food Safety Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/food-safety-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Drugs & Cosmetic Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/drugs-and-cosmetic-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Pharmaceutical Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/pharmaceutical-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Telecom Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/telecom-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Environmental Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/environmental-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Industrial Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/industrial-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Legal Metrology Advisory — `/services/regulatory-services/consumer-regulatory-services/legal-metrology-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → BIS / ISI Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/bis-isi-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Pension Fund Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/pension-fund-regulatory-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → AFT & CAT Advisory — `/services/regulatory-services/consumer-regulatory-services/aft-and-cat-advisory`
+- ✓ Regulatory Services → Consumer Regulatory Services → Airports Economic Regulatory Advisory — `/services/regulatory-services/consumer-regulatory-services/airports-economic-regulatory-advisory`
+- ✓ Litigation & Dispute Resolution — `/services/litigation-dispute-resolution`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery — `/services/litigation-dispute-resolution/litigation-justice-delivery`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → Corporate Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/corporate-litigation`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → Commercial Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/commercial-litigation`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → Labour & Industrial Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/labour-and-industrial-litigation`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → Civil Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/civil-litigation`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → White-Collar Crime Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/white-collar-crime-litigation`
+- ✓ Litigation & Dispute Resolution → Litigation-Justice Delivery → Criminal Litigation — `/services/litigation-dispute-resolution/litigation-justice-delivery/criminal-litigation`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution — `/services/litigation-dispute-resolution/tribunals-dispute-resolution`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → National Company Law Tribunal — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/national-company-law-tribunal`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Debt Tecovery Tribunal (DRT/DRAT) — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/debt-tecovery-tribunal-drt-drat`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Banking Ombudsman — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/banking-ombudsman`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Domestic & International Arbitration — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Securities Appellate Tribunal — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/securities-appellate-tribunal`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → MSME-Facilitation Conciliation — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/msme-facilitation-conciliation`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Mediation & Conciliation Cell — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/mediation-and-conciliation-cell`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Consumer Commissions — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/consumer-commissions`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Real-Estate regulatory Authority — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/real-estate-regulatory-authority`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Telecom Dispute Settlement — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/telecom-dispute-settlement`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Prevention of Money Laundring — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/prevention-of-money-laundring`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Central Administrative Tribunal — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/central-administrative-tribunal`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Economic Offences Wing — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/economic-offences-wing`
+- ✓ Litigation & Dispute Resolution → Tribunals - Dispute Resolution → Regulatory & Administrative Investigations — `/services/litigation-dispute-resolution/tribunals-dispute-resolution/regulatory-and-administrative-investigations`
+- ✓ Business Advisory & Contracts — `/services/business-advisory-contracts`
+- ✓ Business Advisory & Contracts → Business Strategy — `/services/business-advisory-contracts/business-strategy`
+- ✓ Business Advisory & Contracts → Business Strategy → Business Strategy Consultancy — `/services/business-advisory-contracts/business-strategy/business-strategy-consultancy`
+- ✓ Business Advisory & Contracts → Business Strategy → Business Growth & Expansion Advisory — `/services/business-advisory-contracts/business-strategy/business-growth-and-expansion-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → Business Market Entry Advisory — `/services/business-advisory-contracts/business-strategy/business-market-entry-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → Business Transformation & Startgic — `/services/business-advisory-contracts/business-strategy/business-transformation-and-startgic`
+- ✓ Business Advisory & Contracts → Business Strategy → Startup & MSME Structuring Advisory — `/services/business-advisory-contracts/business-strategy/startup-and-msme-structuring-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → Founder Advisory — `/services/business-advisory-contracts/business-strategy/founder-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → CDSCO Support Advisory — `/services/business-advisory-contracts/business-strategy/cdsco-support-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → Investment Readiness — `/services/business-advisory-contracts/business-strategy/investment-readiness`
+- ✓ Business Advisory & Contracts → Business Strategy → ESOP Advisory — `/services/business-advisory-contracts/business-strategy/esop-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → Fundraising Support — `/services/business-advisory-contracts/business-strategy/fundraising-support`
+- ✓ Business Advisory & Contracts → Business Strategy → DPIIT - Regulatroy & Financial Advisory — `/services/business-advisory-contracts/business-strategy/dpiit-regulatroy-and-financial-advisory`
+- ✓ Business Advisory & Contracts → Commercial Contracts — `/services/business-advisory-contracts/commercial-contracts`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Contract Drafting, Review & Negotiations — `/services/business-advisory-contracts/commercial-contracts/contract-drafting-review-and-negotiations`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Contract Management — `/services/business-advisory-contracts/commercial-contracts/contract-management`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Shareholders' Agreements — `/services/business-advisory-contracts/commercial-contracts/shareholders-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Share Subscription Agreements — `/services/business-advisory-contracts/commercial-contracts/share-subscription-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Joint Venture Agreements — `/services/business-advisory-contracts/commercial-contracts/joint-venture-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Investment Agreements — `/services/business-advisory-contracts/commercial-contracts/investment-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Vendor Supply Agreements — `/services/business-advisory-contracts/commercial-contracts/vendor-supply-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Distribution Agreements — `/services/business-advisory-contracts/commercial-contracts/distribution-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Franchise Agreements — `/services/business-advisory-contracts/commercial-contracts/franchise-agreements`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Non-Disclosure Agreement — `/services/business-advisory-contracts/commercial-contracts/non-disclosure-agreement`
+- ✓ Business Advisory & Contracts → Commercial Contracts → Employment / Consultancy Agreements — `/services/business-advisory-contracts/commercial-contracts/employment-consultancy-agreements`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory — `/services/business-advisory-contracts/investment-and-transaction-advisory`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Start-Up/MSME Investment Advisory — `/services/business-advisory-contracts/investment-and-transaction-advisory/start-up-msme-investment-advisory`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Fundraising Advisory — `/services/business-advisory-contracts/investment-and-transaction-advisory/fundraising-advisory`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Investor Coordination — `/services/business-advisory-contracts/investment-and-transaction-advisory/investor-coordination`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Commercial Due Diligence — `/services/business-advisory-contracts/investment-and-transaction-advisory/commercial-due-diligence`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → India Entry Strategy — `/services/business-advisory-contracts/investment-and-transaction-advisory/india-entry-strategy`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Investment Structuring — `/services/business-advisory-contracts/investment-and-transaction-advisory/investment-structuring`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Organisational Structuring — `/services/business-advisory-contracts/investment-and-transaction-advisory/organisational-structuring`
+- ✓ Business Advisory & Contracts → Investment & Transaction Advisory → Governance & Management Framework — `/services/business-advisory-contracts/investment-and-transaction-advisory/governance-and-management-framework`
+- ✓ Licensing & Registrations — `/services/licensing-registrations`
+- ✓ Licensing & Registrations → Business Registrations — `/services/licensing-registrations/business-registrations`
+- ✓ Licensing & Registrations → Business Registrations → Udyam / MSME — `/services/licensing-registrations/business-registrations/udyam-msme`
+- ✓ Licensing & Registrations → Business Registrations → Import-Export — `/services/licensing-registrations/business-registrations/import-export`
+- ✓ Licensing & Registrations → Business Registrations → Shops & Establishment — `/services/licensing-registrations/business-registrations/shops-and-establishment`
+- ✓ Licensing & Registrations → Business Registrations → Trade / Health Licence — `/services/licensing-registrations/business-registrations/trade-health-licence`
+- ✓ Licensing & Registrations → Business Registrations → Professional Registrations — `/services/licensing-registrations/business-registrations/professional-registrations`
+- ✓ Licensing & Registrations → Food & Consumer — `/services/licensing-registrations/food-and-consumer`
+- ✓ Licensing & Registrations → Food & Consumer → FSSAI — `/services/licensing-registrations/food-and-consumer/fssai`
+- ✓ Licensing & Registrations → Food & Consumer → Legal Metrology — `/services/licensing-registrations/food-and-consumer/legal-metrology`
+- ✓ Licensing & Registrations → Food & Consumer → Packaging & Labelling — `/services/licensing-registrations/food-and-consumer/packaging-and-labelling`
+- ✓ Licensing & Registrations → Food & Consumer → CDSCO Registration — `/services/licensing-registrations/food-and-consumer/cdsco-registration`
+- ✓ Licensing & Registrations → Food & Consumer → Liquor License — `/services/licensing-registrations/food-and-consumer/liquor-license`
+- ✓ Licensing & Registrations → Food & Consumer → Fire Department NOC — `/services/licensing-registrations/food-and-consumer/fire-department-noc`
+- ✓ Licensing & Registrations → Product / Industrial — `/services/licensing-registrations/product-industrial`
+- ✓ Licensing & Registrations → Product / Industrial → BIS - Bureau of Indian Standards — `/services/licensing-registrations/product-industrial/bis-bureau-of-indian-standards`
+- ✓ Licensing & Registrations → Product / Industrial → ISI - Indian Standards Institution — `/services/licensing-registrations/product-industrial/isi-indian-standards-institution`
+- ✓ Licensing & Registrations → Product / Industrial → WPC-Wood Plastic Composite — `/services/licensing-registrations/product-industrial/wpc-wood-plastic-composite`
+- ✓ Licensing & Registrations → Product / Industrial → EPR - Extended Producer Responsibility — `/services/licensing-registrations/product-industrial/epr-extended-producer-responsibility`
+- ✓ Licensing & Registrations → Product / Industrial → Pollution / Environmental Permissions — `/services/licensing-registrations/product-industrial/pollution-environmental-permissions`
+- ✓ Licensing & Registrations → Product / Industrial → Factory / Industrial Approvals — `/services/licensing-registrations/product-industrial/factory-industrial-approvals`
+- ✓ Licensing & Registrations → NGO / Institutional — `/services/licensing-registrations/ngo-institutional`
+- ✓ Licensing & Registrations → NGO / Institutional → Trust — `/services/licensing-registrations/ngo-institutional/trust`
+- ✓ Licensing & Registrations → NGO / Institutional → Society — `/services/licensing-registrations/ngo-institutional/society`
+- ✓ Licensing & Registrations → NGO / Institutional → Section 8 Company — `/services/licensing-registrations/ngo-institutional/section-8-company`
+- ✓ Licensing & Registrations → NGO / Institutional → NGO Darpan — `/services/licensing-registrations/ngo-institutional/ngo-darpan`
+- ✓ Licensing & Registrations → NGO / Institutional → FCRA — `/services/licensing-registrations/ngo-institutional/fcra`
+- ✓ Licensing & Registrations → NGO / Institutional → CSR-related Registrations — `/services/licensing-registrations/ngo-institutional/csr-related-registrations`
+- ✓ Intellectual Property Right Services — `/services/intellectual-property-right-services`
+- ✓ Intellectual Property Right Services → Trademark — `/services/intellectual-property-right-services/trademark`
+- ✓ Intellectual Property Right Services → Trademark → Trademark Search & Filing — `/services/intellectual-property-right-services/trademark/trademark-search-and-filing`
+- ✓ Intellectual Property Right Services → Trademark → Opposition — `/services/intellectual-property-right-services/trademark/opposition`
+- ✓ Intellectual Property Right Services → Trademark → Reply to Examination Response — `/services/intellectual-property-right-services/trademark/reply-to-examination-response`
+- ✓ Intellectual Property Right Services → Trademark → Renewal — `/services/intellectual-property-right-services/trademark/renewal`
+- ✓ Intellectual Property Right Services → Trademark → Prosectuion & Enforcement — `/services/intellectual-property-right-services/trademark/prosectuion-and-enforcement`
+- ✓ Intellectual Property Right Services → Copyright — `/services/intellectual-property-right-services/copyright`
+- ✓ Intellectual Property Right Services → Copyright → Copyright Registration — `/services/intellectual-property-right-services/copyright/copyright-registration`
+- ✓ Intellectual Property Right Services → Copyright → Assignment — `/services/intellectual-property-right-services/copyright/assignment`
+- ✓ Intellectual Property Right Services → Copyright → Licensing — `/services/intellectual-property-right-services/copyright/licensing`
+- ✓ Intellectual Property Right Services → Copyright → Enforcement — `/services/intellectual-property-right-services/copyright/enforcement`
+- ✓ Intellectual Property Right Services → Designs — `/services/intellectual-property-right-services/designs`
+- ✓ Intellectual Property Right Services → Designs → Design Registration — `/services/intellectual-property-right-services/designs/design-registration`
+- ✓ Intellectual Property Right Services → Designs → Renewal — `/services/intellectual-property-right-services/designs/renewal`
+- ✓ Intellectual Property Right Services → Designs → Assignment — `/services/intellectual-property-right-services/designs/assignment`
+- ✓ Intellectual Property Right Services → Designs → Enforcement — `/services/intellectual-property-right-services/designs/enforcement`
+- ✓ Intellectual Property Right Services → Patents — `/services/intellectual-property-right-services/patents`
+- ✓ Intellectual Property Right Services → Patents → Patent Advisory — `/services/intellectual-property-right-services/patents/patent-advisory`
+- ✓ Intellectual Property Right Services → Patents → Patent Search & Filing — `/services/intellectual-property-right-services/patents/patent-search-and-filing`
+- ✓ Intellectual Property Right Services → Patents → Patent Prosecution — `/services/intellectual-property-right-services/patents/patent-prosecution`
+- ✓ Intellectual Property Right Services → Patents → Portfolio Support — `/services/intellectual-property-right-services/patents/portfolio-support`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory — `/services/intellectual-property-right-services/ip-and-brand-advisory`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → IP Due Diligence — `/services/intellectual-property-right-services/ip-and-brand-advisory/ip-due-diligence`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → IP Portfolio Management — `/services/intellectual-property-right-services/ip-and-brand-advisory/ip-portfolio-management`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → Brand Protection — `/services/intellectual-property-right-services/ip-and-brand-advisory/brand-protection`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → Licensing — `/services/intellectual-property-right-services/ip-and-brand-advisory/licensing`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → Assignment — `/services/intellectual-property-right-services/ip-and-brand-advisory/assignment`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → Franchise IP — `/services/intellectual-property-right-services/ip-and-brand-advisory/franchise-ip`
+- ✓ Intellectual Property Right Services → IP & Brand Advisory → IP Enforcement Strategy — `/services/intellectual-property-right-services/ip-and-brand-advisory/ip-enforcement-strategy`
+- ✓ FEMA, FDI & Cross-Border — `/services/fema-fdi-cross-border`
+- ✓ FEMA, FDI & Cross-Border → FEMA-Compliance & Support — `/services/fema-fdi-cross-border/fema-compliance-and-support`
+- ✓ FEMA, FDI & Cross-Border → FEMA-Compliance & Support → FEMA Advisory — `/services/fema-fdi-cross-border/fema-compliance-and-support/fema-advisory`
+- ✓ FEMA, FDI & Cross-Border → FEMA-Compliance & Support → FEMA Compliance — `/services/fema-fdi-cross-border/fema-compliance-and-support/fema-compliance`
+- ✓ FEMA, FDI & Cross-Border → FEMA-Compliance & Support → RBI Reporting — `/services/fema-fdi-cross-border/fema-compliance-and-support/rbi-reporting`
+- ✓ FEMA, FDI & Cross-Border → FEMA-Compliance & Support → Foreign Exchange Transactions — `/services/fema-fdi-cross-border/fema-compliance-and-support/foreign-exchange-transactions`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support — `/services/fema-fdi-cross-border/fdi-compliance-and-support`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → FDI Structuring — `/services/fema-fdi-cross-border/fdi-compliance-and-support/fdi-structuring`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Entry Route Advisory — `/services/fema-fdi-cross-border/fdi-compliance-and-support/entry-route-advisory`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Foreign Investment Compliance — `/services/fema-fdi-cross-border/fdi-compliance-and-support/foreign-investment-compliance`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Investment Structuring — `/services/fema-fdi-cross-border/fdi-compliance-and-support/investment-structuring`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Share Issue / Transfer — `/services/fema-fdi-cross-border/fdi-compliance-and-support/share-issue-transfer`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Downstream Investment — `/services/fema-fdi-cross-border/fdi-compliance-and-support/downstream-investment`
+- ✓ FEMA, FDI & Cross-Border → FDI-Compliance & Support → Repatriation / Exit — `/services/fema-fdi-cross-border/fdi-compliance-and-support/repatriation-exit`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support — `/services/fema-fdi-cross-border/odi-compliance-and-support`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support → Overseas Direct Investment — `/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support → Overseas Subsidiary — `/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-subsidiary`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support → Overseas Joint Venture — `/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-joint-venture`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support → Restructuring Tax Coordination — `/services/fema-fdi-cross-border/odi-compliance-and-support/restructuring-tax-coordination`
+- ✓ FEMA, FDI & Cross-Border → ODI-compliance & Support → ODI Reporting & Compliance — `/services/fema-fdi-cross-border/odi-compliance-and-support/odi-reporting-and-compliance`
+- ✓ FEMA, FDI & Cross-Border → ECB-Compliance & Support — `/services/fema-fdi-cross-border/ecb-compliance-and-support`
+- ✓ FEMA, FDI & Cross-Border → ECB-Compliance & Support → External Commercial Borrowing — `/services/fema-fdi-cross-border/ecb-compliance-and-support/external-commercial-borrowing`
+- ✓ FEMA, FDI & Cross-Border → ECB-Compliance & Support → ECB Structuring — `/services/fema-fdi-cross-border/ecb-compliance-and-support/ecb-structuring`
+- ✓ FEMA, FDI & Cross-Border → ECB-Compliance & Support → FEMA/RBI Compliance — `/services/fema-fdi-cross-border/ecb-compliance-and-support/fema-rbi-compliance`
+- ✓ FEMA, FDI & Cross-Border → ECB-Compliance & Support → ECB Reporting — `/services/fema-fdi-cross-border/ecb-compliance-and-support/ecb-reporting`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support — `/services/fema-fdi-cross-border/cross-border-compliance-and-support`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support → Cross-Border Corporate Structuring — `/services/fema-fdi-cross-border/cross-border-compliance-and-support/cross-border-corporate-structuring`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support → Cross-Border M&A — `/services/fema-fdi-cross-border/cross-border-compliance-and-support/cross-border-manda`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support → International Joint Ventures — `/services/fema-fdi-cross-border/cross-border-compliance-and-support/international-joint-ventures`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support → Foreign Collaboration — `/services/fema-fdi-cross-border/cross-border-compliance-and-support/foreign-collaboration`
+- ✓ FEMA, FDI & Cross-Border → Cross-Border Compliance & Support → Overseas Expansion — `/services/fema-fdi-cross-border/cross-border-compliance-and-support/overseas-expansion`
+- ✓ Taxation & Compliance — `/services/taxation-compliance`
+- ✓ Taxation & Compliance → Direct Tax — `/services/taxation-compliance/direct-tax`
+- ✓ Taxation & Compliance → Direct Tax → Corporate Tax — `/services/taxation-compliance/direct-tax/corporate-tax`
+- ✓ Taxation & Compliance → Direct Tax → Income Tax — `/services/taxation-compliance/direct-tax/income-tax`
+- ✓ Taxation & Compliance → Direct Tax → TDS — `/services/taxation-compliance/direct-tax/tds`
+- ✓ Taxation & Compliance → Direct Tax → Tax Compliance — `/services/taxation-compliance/direct-tax/tax-compliance`
+- ✓ Taxation & Compliance → Direct Tax → Tax Advisory — `/services/taxation-compliance/direct-tax/tax-advisory`
+- ✓ Taxation & Compliance → Direct Tax → Tax Representation — `/services/taxation-compliance/direct-tax/tax-representation`
+- ✓ Taxation & Compliance → GST & Indirect Tax — `/services/taxation-compliance/gst-and-indirect-tax`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Registration — `/services/taxation-compliance/gst-and-indirect-tax/gst-registration`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Advisory — `/services/taxation-compliance/gst-and-indirect-tax/gst-advisory`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Returns — `/services/taxation-compliance/gst-and-indirect-tax/gst-returns`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Notices — `/services/taxation-compliance/gst-and-indirect-tax/gst-notices`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Refunds — `/services/taxation-compliance/gst-and-indirect-tax/gst-refunds`
+- ✓ Taxation & Compliance → GST & Indirect Tax → GST Disputes — `/services/taxation-compliance/gst-and-indirect-tax/gst-disputes`
+- ✓ Taxation & Compliance → International Tax — `/services/taxation-compliance/international-tax`
+- ✓ Taxation & Compliance → International Tax → Cross-Border Tax Coordination — `/services/taxation-compliance/international-tax/cross-border-tax-coordination`
+- ✓ Taxation & Compliance → International Tax → Transfer Pricing Coordination — `/services/taxation-compliance/international-tax/transfer-pricing-coordination`
+- ✓ Taxation & Compliance → International Tax → International Transaction Support — `/services/taxation-compliance/international-tax/international-transaction-support`
+- ✓ Banking, Insolvency & Restructuring Advisory — `/services/banking-insolvency-restructuring-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → Banking Advisory — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/banking-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → RBI Regulatory — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/rbi-regulatory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → NBFC Formation / Licensing Advisory — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/nbfc-formation-licensing-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → NBFC Compliance — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/nbfc-compliance`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → FinTech Advisory & Compliance — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/fintech-advisory-and-compliance`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → Payment Systems — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/payment-systems`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → Financial Services Regulatory — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-services-regulatory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → Banking - Loan/Security Documentation — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/banking-loan-security-documentation`
+- ✓ Banking, Insolvency & Restructuring Advisory → Banking and Financial Services → Financial Institution Advisory — `/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-institution-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Debt & Restructuring Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/debt-and-restructuring-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → IBC Strategy & Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/ibc-strategy-and-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → CIRP-related Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/cirp-related-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Creditor & Debtors Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/creditor-and-debtors-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Resolution Planning Support — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/resolution-planning-support`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → NCLT & NCLAT Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/nclt-and-nclat-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Debt Restructuring — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/debt-restructuring`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Distressed Business Advisory — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/distressed-business-advisory`
+- ✓ Banking, Insolvency & Restructuring Advisory → Insolvency & Restructuring → Liquidation / Closure Support — `/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/liquidation-closure-support`
+- ✓ Industrial, Employment & Forensics Advisory — `/services/industrial-employment-forensics-advisory`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour — `/services/industrial-employment-forensics-advisory/employment-and-labour`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Employment Advisory — `/services/industrial-employment-forensics-advisory/employment-and-labour/employment-advisory`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Employment Contracts — `/services/industrial-employment-forensics-advisory/employment-and-labour/employment-contracts`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Labour Law Compliance — `/services/industrial-employment-forensics-advisory/employment-and-labour/labour-law-compliance`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Human Resource Policies — `/services/industrial-employment-forensics-advisory/employment-and-labour/human-resource-policies`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Employee Handbook — `/services/industrial-employment-forensics-advisory/employment-and-labour/employee-handbook`
+- ✓ Industrial, Employment & Forensics Advisory → Employment & Labour → Termination / Separation Advisory — `/services/industrial-employment-forensics-advisory/employment-and-labour/termination-separation-advisory`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances — `/services/industrial-employment-forensics-advisory/workplace-compliances`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → Employment Disputes — `/services/industrial-employment-forensics-advisory/workplace-compliances/employment-disputes`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → POSH Advisory — `/services/industrial-employment-forensics-advisory/workplace-compliances/posh-advisory`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → Workplace Investigations — `/services/industrial-employment-forensics-advisory/workplace-compliances/workplace-investigations`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → A workplace whistleblower policy — `/services/industrial-employment-forensics-advisory/workplace-compliances/a-workplace-whistleblower-policy`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → HR Compliance Review — `/services/industrial-employment-forensics-advisory/workplace-compliances/hr-compliance-review`
+- ✓ Industrial, Employment & Forensics Advisory → Workplace Compliances → Payroll / Statutory Coordination — `/services/industrial-employment-forensics-advisory/workplace-compliances/payroll-statutory-coordination`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Fraud Risk & Forensic Review — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/fraud-risk-and-forensic-review`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Corporate Investigations — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/corporate-investigations`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Financial Fraud Investigations — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/financial-fraud-investigations`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Compliance Investigations — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/compliance-investigations`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Due Diligence / Background Review — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/due-diligence-background-review`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → White-Collar Advisory — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/white-collar-advisory`
+- ✓ Industrial, Employment & Forensics Advisory → Risk, Forensics & Investigations → Anti-Bribery / Ethics Framework — `/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/anti-bribery-ethics-framework`
+- ✓ Environmental, Technology & Sector Specific — `/services/environmental-technology-sector-specific`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability — `/services/environmental-technology-sector-specific/esg-and-sustainability`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → ESG Strategy & Advisory — `/services/environmental-technology-sector-specific/esg-and-sustainability/esg-strategy-and-advisory`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → Sustainability Framework — `/services/environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → ESG Compliance — `/services/environmental-technology-sector-specific/esg-and-sustainability/esg-compliance`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → Environmental Regulatory — `/services/environmental-technology-sector-specific/esg-and-sustainability/environmental-regulatory`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → Governance Advisory — `/services/environmental-technology-sector-specific/esg-and-sustainability/governance-advisory`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → ESG Risk Assessment — `/services/environmental-technology-sector-specific/esg-and-sustainability/esg-risk-assessment`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → ESG Due Diligence — `/services/environmental-technology-sector-specific/esg-and-sustainability/esg-due-diligence`
+- ✓ Environmental, Technology & Sector Specific → ESG & Sustainability → Sustainability Reporting Coordination — `/services/environmental-technology-sector-specific/esg-and-sustainability/sustainability-reporting-coordination`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital — `/services/environmental-technology-sector-specific/technology-privacy-and-digital`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Data Protection & Privacy — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/data-protection-and-privacy`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → DPDP (Digital Personal Data Protection) Compliance — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/dpdp-digital-personal-data-protection-compliance`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → AI Governance & Regulatory Advisory — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/ai-governance-and-regulatory-advisory`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Technology Contracts — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/technology-contracts`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → SaaS (Software as a Service) Agreements — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/saas-software-as-a-service-agreements`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → IT Agreements — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/it-agreements`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Data Processing Agreements — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/data-processing-agreements`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Cybersecurity Regulatory Advisory — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/cybersecurity-regulatory-advisory`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → E-Commerce Regulatory — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/e-commerce-regulatory`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Digital Business Advisory — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/digital-business-advisory`
+- ✓ Environmental, Technology & Sector Specific → Technology, Privacy & Digital → Technology Transactions — `/services/environmental-technology-sector-specific/technology-privacy-and-digital/technology-transactions`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Healthcare — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/healthcare`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Education — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/education`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Hospitality — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/hospitality`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Media & Broadcasting — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/media-and-broadcasting`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Telecommunications — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/telecommunications`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → E-Commerce — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/e-commerce`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Manufacturing — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/manufacturing`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Automotive — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/automotive`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Logistics — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/logistics`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Energy — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/energy`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Environment — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/environment`
+- ✓ Environmental, Technology & Sector Specific → Professional & Sector-Specific Advisory → Defence / Marine — `/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory/defence-marine`

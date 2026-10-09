@@ -1,0 +1,89 @@
+.uaePage { --uae-blue: #145b9b; }
+
+.heroNote { max-width: 150px; }
+
+.heroPhoto {
+  inset: 0;
+}
+
+.heroPhoto::after {
+  background: linear-gradient(90deg, rgba(245, 248, 250, 0.97) 0%, rgba(245, 248, 250, 0.88) 22%, rgba(245, 248, 250, 0.45) 43%, rgba(8, 43, 83, 0.12) 100%);
+}
+
+.uaeMarket > div {
+  grid-template-columns: minmax(0, .98fr) minmax(0, 1.02fr);
+  align-items: stretch;
+  gap: 18px;
+}
+
+.corridor { min-width: 0; padding: 20px 0 8px; }
+.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: 19px; font-weight: 500; }
+.corridorGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+.corridorCard { min-width: 0; padding: 11px; border: 1px solid #e0e8ef; background: #fff; }
+.corridorCardHeading { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #e3eaf0; }
+.corridorFlag { position: relative; display: block; width: 32px; height: 32px; flex: 0 0 32px; overflow: hidden; border: 1px solid #d4e0e9; border-radius: 50%; }
+.corridorFlag img { object-fit: cover; }
+.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
+.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: 11px; line-height: 1.35; }
+.corridor > a { margin-top: 12px; }
+
+.uaeIndustryGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 8px; margin-top: 11px; }
+.uaeIndustryGrid > a { min-width: 0; }
+.uaeIndustryGrid .industryImage { aspect-ratio: 1.65; }
+.uaeIndustryGrid .industryTile { font-size: 10px; }
+.uaeIndustries .industryHeading .textLink { margin-top: 7px; }
+
+.uaeNetwork { gap: 5px; }
+.networkIcon { width: 36px; height: 36px; margin-bottom: 3px; color: #145b9b; }
+.uaeNetwork h2 { margin-top: 3px; }
+.uaeNetwork .textLink { margin-top: 7px; }
+
+.enquiry { display: grid; grid-template-columns: minmax(250px, .7fr) minmax(0, 2fr); align-items: stretch; background: #eef5fb; }
+.enquiryIntro { position: relative; min-height: 360px; display: flex; align-items: flex-end; overflow: hidden; isolation: isolate; color: #fff; background: #0b315f; }
+.enquiryIntro::after { position: absolute; z-index: -1; inset: 0; content: ""; background: linear-gradient(90deg, #0b315fde, #16518ce6); }
+.enquiryIntro > img { position: absolute; z-index: -2; inset: 0; object-fit: cover; object-position: 57% center; }
+.enquiryIntroCopy { padding: 24px; }
+.enquiryIntro h2 { color: #fff; font-size: clamp(24px, 2.4vw, 31px); font-weight: 500; line-height: 1.1; }
+.enquiryIntro p { margin-top: 8px; color: #e0eaf3; font-size: 12px; line-height: 1.5; }
+.enquiryForm { display: flex; min-width: 0; align-items: center; padding: 18px clamp(18px, 3vw, 42px); }
+.enquiryForm > * { width: 100%; }
+
+.contactStrip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 17px max(32px, calc((100% - 1360px) / 2)); color: #fff; background: #062952; }
+.contactStrip > div { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 12px; padding: 5px 15px; }
+.contactStrip > div + div { border-left: 1px solid #8ba7c1; }
+.contactStrip svg { width: 24px; height: 24px; color: #e3edf6; }
+.contactStrip span { display: grid; gap: 2px; min-width: 0; }
+.contactStrip strong { color: #fff; font-family: Georgia, serif; font-size: 13px; font-weight: 500; }
+.contactStrip a { color: #d8e6f2; font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
+.contactStrip a:hover { color: #fff; }
+
+@media (max-width: 1100px) {
+  .uaeMarket > div { grid-template-columns: 1fr; }
+  .corridor,
+  .uaeIndustries { max-width: 760px; }
+  .enquiry { grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); }
+  .enquiryIntro { min-height: 100%; }
+}
+
+@media (max-width: 760px) {
+  .corridor,
+  .uaeIndustries { padding-block: 19px; }
+  .corridor h2 { font-size: 18px; }
+  .corridorCard { padding: 10px; }
+  .corridorCard ul { gap: 6px; font-size: 11px; }
+  .uaeIndustryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .uaeIndustryGrid .industryTile { font-size: 11px; }
+  .enquiry { grid-template-columns: 1fr; }
+  .enquiryIntro { min-height: 230px; }
+  .enquiryIntroCopy { padding: 20px 18px; }
+  .enquiryForm { padding: 14px; }
+  .contactStrip { grid-template-columns: 1fr; padding: 12px 18px; }
+  .contactStrip > div { justify-content: flex-start; padding: 12px 2px; }
+  .contactStrip > div + div { border-top: 1px solid #8ba7c1; border-left: 0; }
+}
+
+@media (max-width: 420px) {
+  .corridorGrid { grid-template-columns: 1fr; }
+  .corridorCard ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; }
+  .uaeIndustryGrid { gap: 9px; }
+}

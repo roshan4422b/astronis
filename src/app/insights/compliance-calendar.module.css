@@ -1,0 +1,50 @@
+.heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.82) 31%,rgba(255,255,255,.5) 48%,rgba(255,255,255,.1) 70%,rgba(7,29,73,.08) 100%)}
+.categoryGrid{align-items:start}
+.categoryGrid :global([class*=categoryCard]){min-height:0;padding-bottom:12px}
+.categoryGrid :global([class*=categoryImage]){height:80px;flex:none}
+.categoryGrid :global([class*=categoryIcon]){flex:none;margin:12px 0 10px}
+.categoryGrid :global([class*=categoryCard])>strong{padding:0 8px;font-size:14px;line-height:1.2}
+.monthSection{padding-top:8px}
+.monthHeading{align-items:center}
+.monthToolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.monthToolbar button,.monthToolbar a{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:6px 10px;border:1px solid #dce5f1;border-radius:4px;background:#fff;color:#0751db;font-size:14px;font-weight:700;cursor:pointer}
+.monthToolbar button:hover,.monthToolbar a:hover{background:#eef5fb}
+.monthToolbar button svg,.monthToolbar a svg{width:15px;height:15px}
+.previousArrow{transform:rotate(180deg)}
+.currentMonth{display:inline-flex;align-items:center;gap:6px;color:#102956;font:600 14px Georgia,serif}
+.currentMonth svg{width:16px;height:16px;color:#0751db}
+.calendarGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.calendarCard{min-width:0;overflow:hidden;border:1px solid #dce5f1;border-radius:5px;background:#fff;box-shadow:0 2px 8px #09234d0d}
+.calendarCardHeader{display:flex;align-items:center;gap:8px;min-height:48px;padding:9px 11px;background:linear-gradient(100deg,#0751db,#0876ec);color:#fff}
+.calendarCardHeader>svg{width:21px;height:21px;flex:none}
+.calendarCardHeader h3{flex:1;color:#fff;font:600 14px/1.2 Georgia,serif}
+.calendarCardHeader a{display:inline-flex;align-items:center;gap:4px;color:#fff;font-size:14px;font-weight:700;white-space:nowrap}
+.calendarCardHeader a svg{width:12px;height:12px}
+.tableScroll{overflow-x:auto;overscroll-behavior-inline:contain}
+.calendarTable{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;text-align:left}
+.calendarTable th{padding:10px 8px;border-bottom:1px solid #dfe8f2;background:#f5f8fc;color:#234369;font-size:14px;font-weight:700}
+.calendarTable td{padding:11px 8px;border-bottom:1px solid #e7edf4;color:#52627a;font-size:14px;line-height:1.35;vertical-align:top}
+.calendarTable tr:last-child td{border-bottom:0}
+.calendarTable th:first-child,.calendarTable td:first-child{width:92px}
+.calendarTable th:last-child,.calendarTable td:last-child{width:105px}
+.calendarTable td:first-child{color:#233d62;white-space:nowrap}
+.calendarTable td:last-child{color:#315780}
+.tableCta{display:flex;align-items:center;gap:6px;padding:12px 10px;border-top:1px solid #e6edf5;color:#0751db;font-size:14px;font-weight:700}
+.tableCta svg{width:13px;height:13px}
+.noCalendarRows{padding:16px;color:#65758b;font-size:12px}
+.monthMessage{margin:0 0 10px;color:#5b6980;font-size:14px;text-align:right}
+@media(max-width:1100px){
+  .monthHeading{align-items:flex-start;flex-direction:column}
+  .monthToolbar{justify-content:flex-start}
+  .calendarGrid{grid-template-columns:1fr}
+  .calendarTable{min-width:0}
+}
+@media(max-width:700px){
+  .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.82) 48%,rgba(255,255,255,.55) 76%,rgba(255,255,255,.25) 100%)}
+  .monthToolbar{justify-content:flex-start}
+  .monthToolbar button,.monthToolbar a{min-height:36px;font-size:11px}
+  .calendarTable{min-width:490px}
+  .calendarTable th,.calendarTable td{font-size:11px;padding:9px 8px}
+  .calendarCardHeader{min-height:48px}
+  .calendarTable{min-width:520px}
+}

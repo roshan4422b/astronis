@@ -1,0 +1,202 @@
+.middleEastPage {
+  --middle-east-navy: #063b69;
+  --middle-east-dark: #022b50;
+  --middle-east-sky: #eaf5fc;
+  --middle-east-ink: #16283a;
+  --middle-east-border: #dbe8f2;
+}
+
+.middleEastHero {
+  background: linear-gradient(90deg, #f9fbfd 0%, #f0f7fb 40%, #dfeaf5 100%);
+}
+
+.middleEastHero .heroPhoto {
+  inset: 0;
+}
+
+.middleEastHero .heroPhoto::after {
+  background: linear-gradient(
+    90deg,
+    rgba(249, 251, 253, 0.96) 0%,
+    rgba(249, 251, 253, 0.88) 22%,
+    rgba(249, 251, 253, 0.5) 42%,
+    rgba(249, 251, 253, 0.12) 58%,
+    rgba(10, 35, 63, 0.18) 100%
+  );
+}
+
+.heroFlag {
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  z-index: 2;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(5, 25, 40, 0.16);
+}
+
+.heroFlag img {
+  object-fit: cover;
+}
+
+.heroNote {
+  color: #12355f;
+  max-width: 155px;
+  margin-left: auto;
+}
+
+.middleEastMarkets {
+  background: linear-gradient(90deg, #eef7fc 0%, #eef7fc 50%, #f5f8fb 50%);
+}
+
+.corridor {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 24px 0 10px;
+}
+
+.corridor h2 {
+  color: #1d3755;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.corridorGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 15px;
+  margin-bottom: 14px;
+  padding-top: 8px;
+}
+
+.corridorCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 186px;
+  padding: 14px 14px 12px;
+  border: 1px solid var(--middle-east-border);
+  border-left: 3px solid #0d5fa7;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.corridorCardHeading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corridorCardHeading h3 {
+  color: #1d3550;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.corridorFlag {
+  position: relative;
+  display: block;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid #d7e0ea;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.corridorCard ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #455d74;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.middleEastIndustries {
+  padding: 24px 0 8px;
+}
+
+.middleEastIndustries h2 {
+  font-size: clamp(22px, 2.1vw, 28px);
+}
+
+.industryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.networkIntro {
+  border-left: 1px solid var(--middle-east-border);
+  padding-left: 18px;
+}
+
+.networkIcon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 3px;
+  color: #0d5fa7;
+}
+
+@media (max-width: 1100px) {
+  .industryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .corridorGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .middleEastHero .heroPhoto {
+    inset: 0;
+    height: 100%;
+    opacity: 0.8;
+  }
+
+  .middleEastHero .heroPhoto::after {
+    background: linear-gradient(180deg, rgba(249, 251, 253, 0.1) 0%, rgba(249, 251, 253, 0.8) 72%, rgba(249, 251, 253, 1) 100%);
+  }
+
+  .heroFlag {
+    right: 14px;
+    top: 12px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .middleEastMarkets {
+    background: #f4f9fc;
+  }
+
+  .corridor {
+    padding-top: 16px;
+  }
+
+  .corridorGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .industryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .networkIntro {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--middle-east-border);
+    padding-top: 16px;
+  }
+}

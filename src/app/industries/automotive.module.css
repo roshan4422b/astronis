@@ -1,0 +1,43 @@
+.page h1 { font-size: clamp(43px, 5vw, 70px); }
+.challenges { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+.challenges article { padding: 28px 20px; background: #f1f7fc; border: 1px solid #e2ebf4; border-radius: 4px; }
+.challenges svg { width: 35px; height: 35px; margin-bottom: 22px; color: #174d85; }
+.challenges h3 { font-size: 23px; margin-bottom: 12px; }
+.challenges p { font-size: 13px; }
+.mobilityImage { position: relative; min-height: 280px; border-radius: 5px; overflow: hidden; }
+.mobilityImage img { object-fit: cover; }
+.global { background: #edf5fc; border-block: 1px solid #dce5ef; padding-block: 35px; }
+.globalInner { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.globalInner > div { display: flex; align-items: center; gap: 22px; }
+.globalInner > div > svg { width: 48px; height: 48px; }
+.globalInner h2 { font-size: 28px; }
+.globalInner p { font-size: 12px; margin-top: 8px; }
+.globalInner dl { display: flex; gap: 24px; margin: 0; }
+.globalInner dl > div { padding-left: 20px; border-left: 1px solid #b6cde4; }
+.globalInner dt { font-size: 24px; }
+.globalInner dd { font-size: 11px; margin: 5px 0 0; }
+.page .relatedGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .challenges { grid-template-columns: repeat(3, minmax(0, 1fr)); } .globalInner { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 600px) { .page h1 { font-size: 43px; } .challenges { grid-template-columns: 1fr; gap: 13px; } .challenges article { padding: 24px; } .challenges svg { margin-bottom: 15px; } .mobilityImage { min-height: 220px; } .page .relatedGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .globalInner dl { flex-wrap: wrap; gap: 20px; } .globalInner dl > div { padding-left: 12px; } .globalInner > div { align-items: flex-start; gap: 15px; } .globalInner h2 { font-size: 26px; } }
+
+/* Automotive issues use open icon panels with a vertical color accent. */
+.challenges { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 22px; }
+.challenges article { grid-column: span 2; position: relative; border: 1px solid #dce7f1; border-left: 4px solid #367fba; border-radius: 4px 18px 18px 4px; background: #f0f6fc; padding: 28px; transition: background-color .3s, border-color .3s, box-shadow .3s, transform .3s; }
+.challenges article:nth-last-child(-n+2) { grid-column: span 3; }
+.challenges article:nth-child(even) { background: #faf7f0; border-left-color: #bb914d; }
+.challenges svg { width: 42px; height: 42px; margin-bottom: 18px; }
+.challenges h3 { font-size: 26px; }
+@media (hover: hover) and (pointer: fine) {
+  .challenges article:hover { background: #e3effa; border-left-color: #0751bd; box-shadow: 0 10px 25px #082d5714; transform: translateY(-4px); }
+  .challenges article:nth-child(even):hover { background: #f5ebd9; border-left-color: #94651f; }
+}
+@media (max-width: 900px) {
+  .challenges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .challenges article, .challenges article:nth-last-child(-n+2) { grid-column: auto; }
+  .challenges article:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .challenges { grid-template-columns: 1fr; }
+  .challenges article:last-child { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .challenges article { transition: none; } .challenges article:hover { transform: none; } }

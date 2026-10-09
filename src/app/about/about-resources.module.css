@@ -1,0 +1,38 @@
+.resources { border-top: 1px solid #e0edf9; background: #f4f8fc; }
+.resourceGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding-block: 32px; }
+.resourceGrid article { padding: 24px; border: 1px solid #dce7f2; border-radius: 16px; background: #fff; box-shadow: 0 10px 24px -20px #193c6980; }
+.resources .resourceGrid h2 { font: 400 25px/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.035em; color: #082e68; margin-bottom: 12px; }
+.resourceGrid h2 a { display: inline-flex; align-items: center; gap: 12px; }
+.resourceGrid h2 svg { width: 18px; }
+.resourceContent { display: grid; grid-template-columns: 32% minmax(0, 1fr); gap: 16px; }
+.resourceImage { position: relative; min-height: 110px; overflow: hidden; border-radius: 9px; }
+.resources .resourceGrid .resourceContent ul { padding-left: 12px; margin: 0 0 9px; font-size: 12px; list-style-type: '◆  '; }
+.resourceContent li::marker { color: #0064c7; font-size: 8px; }
+.textLink { display: inline-flex; align-items: center; gap: 9px; color: #0064c7; font-size: 12px; font-weight: 600; }
+.textLink svg { width: 15px; height: 15px; }
+.textLink:hover, .resourceGrid h2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.resources .resourceGrid .resourceContent li { position: static; padding: 0; color: #254573; font-size: 12px; line-height: 1.65; }
+.resources .resourceGrid .resourceContent li::before { content: none; }
+.resourceGrid article { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.resourceImage img { object-fit: cover; transition: transform .5s ease; }
+.resourceGrid article:focus-within { border-color: #73b7ee; box-shadow: 0 14px 28px -17px #174a8066; }
+@media (hover: hover) and (pointer: fine) {
+ .resourceGrid article:hover { transform: translateY(-5px); border-color: #92bee5; box-shadow: 0 20px 35px -20px #153f7866; }
+ .resourceGrid article:hover img { transform: scale(1.045); }
+}
+@media (max-width: 1100px) {
+ .resourceGrid article { padding-inline: 18px; }
+ .resources .resourceGrid h2 { font-size: 22px; }
+ .resourceContent { grid-template-columns: 1fr; }
+ .resourceImage { min-height: 105px; }
+}
+@media (max-width: 700px) {
+ .resourceGrid { grid-template-columns: 1fr; gap: 22px; }
+ .resourceGrid article { padding: 24px; }
+ .resourceContent { grid-template-columns: 32% minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+ .resourceGrid article, .resourceImage img { transition: none; }
+ .resourceGrid article:hover, .resourceGrid article:hover img { transform: none; }
+}

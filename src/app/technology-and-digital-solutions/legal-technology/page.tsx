@@ -1,0 +1,59 @@
+import Link from "next/link";
+import Image from "../../_components/asset-image";
+import Icon from "../../_components/icon";
+import { professionals } from "../../professionals/leadership";
+import { legalTechnologySolutions } from "@/content/legal-technology";
+import Enquiry from "../enquiry";
+import sharedStyles from "../digital-business-solutions/digital-business.module.css";
+import legalStyles from "./legal-technology.module.css";
+const styles = { ...sharedStyles, ...Object.fromEntries(Object.entries(legalStyles).map(([key, value]) => [key, [sharedStyles[key], value].filter(Boolean).join(' ')])) };
+
+export const metadata = {
+  title: "Legal Technology",
+  description: "Simplify legal operations with contract lifecycle management, document and matter management, workflow automation, e-discovery, knowledge management and AI-assisted research.",
+};
+
+const challenges = [["file", "High document volumes"], ["people", "Complex matter management"], ["calendar", "Time-intensive processes"], ["shield", "Data security and confidentiality"], ["chart", "Need for greater transparency"], ["scale", "Keeping up with regulatory changes"]];
+const steps = [["Assess", "Understand your legal processes and needs"], ["Design", "Create a tailored solution roadmap"], ["Implement", "Deploy and integrate with minimal disruption"], ["Train", "Enable your team for effective use"], ["Support", "Provide continuous support and improvements"]];
+const sectors = [["building", "Banking & Financial Services", "financial-services"], ["gear", "Manufacturing", "manufacturing"], ["building", "Real Estate & Construction", "real-estate-and-construction"], ["shield", "Healthcare & Life Sciences", "healthcare-and-pharma"], ["laptop", "Technology & E-Commerce", "e-commerce"], ["building", "Infrastructure & Energy", "infrastructure"]];
+const related = [["Contract Management", "/services/corporate-advisory"], ["Litigation & Dispute Resolution", "/services/litigation-and-dispute-resolution"], ["Regulatory & Compliance Advisory", "/services/regulatory-and-compliance"], ["Risk & Governance", "/services/risk-governance-and-forensic-advisory"]];
+const insights = [["Legal transformation", "How technology can simplify legal operations", "/images/india-presence/mumbai.jpg", "/insights/articles"], ["Research & innovation", "AI in legal research: opportunities and considerations", "/Banner - Indus - Artificial Intelligence .png", "/insights/blogs"], ["Knowledge & processes", "Document management for growing businesses", "/Part-14 .png", "/insights/business-updates"]];
+const faqs = [
+  ["How can legal technology improve efficiency in my business?", "Legal technology can bring documents, matters, deadlines and approvals into connected workflows. This helps reduce repetitive administration and gives teams a clearer view of outstanding work, alongside professional review and judgement."],
+  ["Do you provide customised legal tech solutions?", "We assess your legal processes, team structure and business priorities before defining the scope. The solution roadmap is tailored to your workflows, reporting needs and existing tools."],
+  ["How do you ensure data security and confidentiality?", "We discuss confidentiality, access permissions and data handling requirements at the outset. Controls, responsibilities and review arrangements are agreed as part of the solution design."],
+  ["Can your solutions integrate with our existing systems?", "We review the tools, data formats and integration options available in your environment. Dependencies, migration requirements and practical limitations are assessed before an implementation plan is agreed."],
+  ["Do you provide training and ongoing support?", "Training, adoption support and ongoing improvements can be included in the engagement. We agree the support model and responsibilities with your team before implementation."],
+];
+function TextLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return <Link className={styles.textLink} href={href}>{children}<Icon name="arrow" /></Link>;
+}
+
+export default function LegalTechnologyPage() {
+  return <div className={styles.page}>
+    <section className={styles.hero} aria-labelledby="legal-technology-title">
+      <Image src="/legal-professionals-hero.png" alt="Legal workspace and technology supporting professional expertise" fill preload sizes="100vw" />
+      <div className={`${styles.wrap} ${styles.heroInner}`}>
+        <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/technology-and-digital-solutions">Technology &amp; Digital Solutions</Link><span aria-hidden="true">›</span><span aria-current="page">Legal Technology</span></nav>
+        <div className={styles.heroCopy}><span className={styles.eyebrow}>Legal Technology</span><h1 id="legal-technology-title">Legal Technology<br />for a Smarter Tomorrow.</h1><p className={styles.tagline}>Simplifying legal operations through technology, so you can focus on what matters most.</p><Link className={styles.button} href="#enquiry">Discuss Your Requirements <Icon name="arrow" /></Link></div>
+        <aside className={styles.motto}>Technology<br />enhancing<br />legal expertise.<br />Delivering<br />better outcomes.<span>Astronis<br />Global.</span></aside>
+      </div>
+    </section>
+
+    <section className={styles.challengeSection}><div className={`${styles.wrap} ${styles.challenges}`}><div><h2>Key Legal Challenges</h2><p>We help you overcome operational and strategic challenges with technology-driven solutions.</p><TextLink href="#approach">Explore Our Approach</TextLink></div><div className={styles.challengeItems}>{challenges.map(([icon, title]) => <div key={title}><Icon name={icon} /><h3>{title}</h3></div>)}</div></div></section>
+
+    <section className={`${styles.wrap} ${styles.section}`} id="solutions"><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Clarity. Control. Confidence.</span><h2>Our Legal Technology Solutions</h2></div><TextLink href="/technology-and-digital-solutions">Explore All Solutions</TextLink></div><div className={styles.solutions}>{legalTechnologySolutions.map((solution) => <article className={styles.card} id={solution.id} key={solution.id}><div className={styles.solutionImage}><Image src={solution.image} alt="" fill sizes="(max-width: 540px) 90vw, (max-width: 1000px) 30vw, 14vw" /><span className={styles.iconBadge}><Icon name={solution.icon} /></span></div><div className={styles.cardBody}><h3>{solution.title}</h3><p>{solution.description}</p><details className={styles.solutionDetail}><summary>Learn More <Icon name="arrow" /></summary><p>{solution.detail}</p><TextLink href={`?solution=${encodeURIComponent(solution.title)}#enquiry`}>Discuss this solution</TextLink></details></div></article>)}</div></section>
+
+    <section className={styles.implementation} id="approach"><div className={styles.benefits}><h2>Why Choose Astronis</h2><ul>{["Domain expertise in legal & regulatory", "Practical and scalable solutions", "Enhanced productivity", "Greater accuracy and compliance", "End-to-end support"].map((benefit) => <li key={benefit}><Icon name="shield" />{benefit}</li>)}</ul></div><div className={styles.steps}><span className={styles.eyebrow}>From ambition to action</span><h2>Our Implementation Approach</h2><ol>{steps.map(([title, body], index) => <li key={title}><span className={styles.stepNumber}>0{index + 1}</span><h3>{title}</h3><p>{body}</p></li>)}</ol></div><div className={styles.approachImage}><Image src="/images/india-presence/mumbai.jpg" alt="Modern commercial architecture" fill sizes="20vw" /><span>Smarter<br />legal operations.<br />Stronger<br />businesses.</span></div></section>
+
+    <div className={`${styles.wrap} ${styles.connections}`}><section><div className={styles.sectionHeading}><h2>Industries We Support</h2><TextLink href="/industries">View All Industries</TextLink></div><div className={styles.industries}>{sectors.map(([icon, title, slug]) => <Link href={`/industries/${slug}`} key={slug}><Icon name={icon} /><span>{title}</span></Link>)}</div></section><section><div className={styles.sectionHeading}><h2>Related Services</h2><TextLink href="/services">View All Services</TextLink></div><div className={styles.related}>{related.map(([title, href]) => <Link href={href} key={title}><Icon name="arrow" />{title}</Link>)}</div></section></div>
+
+    <section className={styles.teamSection}><div className={styles.wrap}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Connected expertise</span><h2>Technology Specialists</h2></div><TextLink href="/professionals">View All Professionals</TextLink></div><div className={styles.team}>{professionals.slice(0, 2).map((person) => <Link className={styles.person} key={person.slug} href={`/professionals/${person.slug}`}><div className={styles.portrait}><Image src={person.image} alt={person.name} fill sizes="(max-width: 540px) 90vw, 25vw" /></div><div><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><Icon name="arrow" /></div></Link>)}<Link className={styles.extendedTeam} href="/professionals"><Image src="/professional-collaboration-hero.png" alt="Our wider professional network" fill sizes="(max-width: 800px) 90vw, 40vw" /><div><span className={styles.eyebrow}>A multidisciplinary perspective</span><h3>Our Extended Team</h3><p>Legal, regulatory and business expertise, brought together around your needs.</p><span>Meet our professionals <Icon name="arrow" /></span></div></Link></div></div></section>
+
+    <section className={`${styles.wrap} ${styles.section}`}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Ideas for your next step</span><h2>Latest Insights</h2></div><TextLink href="/insights">View All Insights</TextLink></div><div className={styles.insights}>{insights.map(([category, title, image, href]) => <article className={styles.card} key={title}><div className={styles.insightImage}><Image src={image} alt="" fill sizes="(max-width: 540px) 90vw, 30vw" /></div><div className={styles.cardBody}><span className={styles.eyebrow}>{category}</span><h3>{title}</h3><TextLink href={href}>Read More</TextLink></div></article>)}</div></section>
+
+    <section className={styles.faqSection}><div className={`${styles.wrap} ${styles.faqGrid}`}><div><span className={styles.eyebrow}>Your questions, answered</span><h2>Frequently Asked Questions</h2><p>Clear guidance on legal technology, systems integration, training and ongoing support.</p><TextLink href="/faqs">View All FAQs</TextLink></div><div className={styles.faqs}>{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
+
+    <section className={styles.enquirySection} id="enquiry"><div className={`${styles.wrap} ${styles.enquiryGrid}`}><div className={styles.enquiryCopy}><span className={styles.eyebrow}>Better tools. Clearer legal operations.</span><h2>Discuss Your Legal Technology Requirements</h2><p>Let&apos;s explore how we can help you simplify legal operations and achieve better outcomes.</p><div className={styles.enquiryImage}><Image src="/Technology, IT & ITES .png" alt="Digital technology connecting business systems" fill sizes="(max-width: 800px) 90vw, 40vw" /></div><a href="tel:+919311664455"><Icon name="phone" />+91 93116 64455</a><a href="mailto:advisory@astronisglobal.com"><Icon name="mail" />advisory@astronisglobal.com</a></div><div className={styles.formPanel}><span className={styles.eyebrow}>Start a conversation</span><h3>Tell us about your requirements.</h3><p>Our team will get in touch for a detailed discussion.</p><Enquiry defaultService="Legal Technology" /></div></div></section>
+  </div>;
+}

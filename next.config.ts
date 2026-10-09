@@ -1,0 +1,68 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  experimental: { cpus: 1 },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
+  async redirects() {
+    return [
+      { source: "/services/business-advisory-consulting", destination: "/services/business-advisory-contracts", permanent: true },
+      { source: "/services/intellectual-property", destination: "/services/intellectual-property-right-services", permanent: true },
+      { source: "/services/banking-rbi-financial-services", destination: "/services/banking-insolvency-restructuring-advisory", permanent: true },
+      { source: "/services/hr-employment-labour", destination: "/services/industrial-employment-forensics-advisory", permanent: true },
+      { source: "/services/esg-sustainability", destination: "/services/environmental-technology-sector-specific", permanent: true },
+      { source: "/services/insolvency-restructuring", destination: "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring", permanent: true },
+      { source: "/services/corporate-and-commercial-advisory", destination: "/services/corporate-commercial-advisory", permanent: true },
+      { source: "/services/corporate-advisory", destination: "/services/corporate-commercial-advisory", permanent: true },
+      { source: "/services/regulatory-and-compliance", destination: "/services/regulatory-services", permanent: true },
+      { source: "/services/business-advisory-and-consulting", destination: "/services/business-advisory-contracts", permanent: true },
+      { source: "/services/business-advisory", destination: "/services/business-advisory-contracts", permanent: true },
+      { source: "/services/startup-and-investment-advisory", destination: "/services/business-advisory-contracts/investment-and-transaction-advisory", permanent: true },
+      { source: "/services/intellectual-property-rights", destination: "/services/intellectual-property-right-services", permanent: true },
+      { source: "/services/fema-fdi-and-foreign-exchange-advisory", destination: "/services/fema-fdi-cross-border", permanent: true },
+      { source: "/services/fema-fdi", destination: "/services/fema-fdi-cross-border", permanent: true },
+      { source: "/services/cross-border-business-support", destination: "/services/fema-fdi-cross-border/cross-border-compliance-and-support", permanent: true },
+      { source: "/services/cross-border-and-international-business-support", destination: "/services/fema-fdi-cross-border/cross-border-compliance-and-support", permanent: true },
+      { source: "/services/foreign-investment", destination: "/services/fema-fdi-cross-border/fdi-compliance-and-support", permanent: true },
+      { source: "/services/taxation-and-compliance", destination: "/services/taxation-compliance", permanent: true },
+      { source: "/services/gst-and-indirect-tax-regulatory-support", destination: "/services/taxation-compliance/gst-and-indirect-tax", permanent: true },
+      { source: "/services/banking-rbi-financial-services-advisory", destination: "/services/banking-insolvency-restructuring-advisory", permanent: true },
+      { source: "/services/banking-nbfc-and-financial-services-advisory", destination: "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services", permanent: true },
+      { source: "/services/insolvency-and-restructuring", destination: "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring", permanent: true },
+      { source: "/services/nclt-and-nclat-advisory", destination: "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/nclt-and-nclat-advisory", permanent: true },
+      { source: "/services/nclt-and-nclat-matters", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/national-company-law-tribunal", permanent: true },
+      { source: "/services/litigation-and-dispute-resolution", destination: "/services/litigation-dispute-resolution", permanent: true },
+      { source: "/services/msme-advisory-and-disputes", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/msme-facilitation-conciliation", permanent: true },
+      { source: "/services/arbitration-and-conciliation", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration", permanent: true },
+      { source: "/services/drt-and-drat-matters", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/debt-tecovery-tribunal-drt-drat", permanent: true },
+      { source: "/services/telecom-disputes-settlement-and-appellate-tribunal-tdsat", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/telecom-dispute-settlement", permanent: true },
+      { source: "/services/aft-and-cat-advisory-matters", destination: "/services/regulatory-services/consumer-regulatory-services/aft-and-cat-advisory", permanent: true },
+      { source: "/services/rera-and-real-estate-advisory", destination: "/services/litigation-dispute-resolution/tribunals-dispute-resolution/real-estate-regulatory-authority", permanent: true },
+      { source: "/services/hr-and-employment-advisory", destination: "/services/industrial-employment-forensics-advisory", permanent: true },
+      { source: "/services/risk-forensics-investigations", destination: "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations", permanent: true },
+      { source: "/services/risk-governance-and-forensic-advisory", destination: "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations", permanent: true },
+      { source: "/services/esg-and-sustainability-advisory", destination: "/services/environmental-technology-sector-specific/esg-and-sustainability", permanent: true },
+      { source: "/services/technology-privacy-digital", destination: "/services/environmental-technology-sector-specific/technology-privacy-and-digital", permanent: true },
+      { source: "/services/technology-and-digital", destination: "/services/environmental-technology-sector-specific/technology-privacy-and-digital", permanent: true },
+      { source: "/services/professional-sector-specific-advisory", destination: "/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory", permanent: true },
+      { source: "/services/sector-specific-advisory", destination: "/services/environmental-technology-sector-specific/professional-and-sector-specific-advisory", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-formation/private-limited", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup/private-limited-company-incorporation", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-formation/opc", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup/one-person-company-opc", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-formation/proprietorship", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup/sole-proprietorship", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation/holding-subsidiary-structures", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/holding-and-subsidiary-structures", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation/succession-family-business-structuring", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/succession-and-family-business-structuring", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-formation/:path*", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup/:path*", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-formation", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation/:path*", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/:path*", permanent: true },
+      { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring", permanent: true },
+    ];
+  },
+};
+
+export default nextConfig;

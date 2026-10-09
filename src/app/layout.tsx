@@ -1,0 +1,38 @@
+import type { Metadata, Viewport } from "next";
+import Header from "./_components/header";
+import Footer from "./_components/footer";
+import PageTransition from "./_components/page-transition";
+import "./globals.css";
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.astronisglobal.com"),
+  title: {
+    default: "Astronis Global | Corporate, Regulatory & Business Advisory",
+    template: "%s | Astronis Global",
+  },
+  description:
+    "Strategic legal, regulatory and business advisory solutions. Pan-India presence and global perspective to navigate complexity, mitigate risk and accelerate growth.",
+};
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
+        <Header />
+        <main id="main-content">
+          <PageTransition>{children}</PageTransition>
+        </main>
+        <Footer />
+      </body>
+    </html>
+  );
+}
