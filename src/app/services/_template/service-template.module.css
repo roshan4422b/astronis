@@ -531,3 +531,11 @@
 .sectionNav[data-theme="taxation"] .dropdownItem:hover { background:#ffffff0c; }
 .sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
 @media(max-width:900px) { .sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
+
+@media(max-width:900px) {
+  .sectionNav { position:static; top:auto; z-index:auto; }
+}
+
+@media(max-width:767px) {
+  .detailAside { position:static; top:auto; z-index:auto; }
+}

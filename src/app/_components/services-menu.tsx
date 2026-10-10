@@ -42,9 +42,9 @@ export default function ServicesMenu({ id, onNavigate }: { id: string; onNavigat
         <p>Search across our main services.</p>
         <div className={shared.search}><input id="service-menu-search" aria-label="Search main services in menu" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search services..." /><Icon name="search" /></div>
         <div className={shared.quickLinks}>
-          <Link href="/services" onClick={onNavigate} className={isRouteActive(pathname, "/services") ? "active-submenu-item" : undefined}><Icon name="file" /><span><strong>Explore All Services</strong><small>View all {services.length} approved main services</small></span><Icon name="arrow" /></Link>
-          <Link href="/insights" onClick={onNavigate}><Icon name="bulb" /><span><strong>Service Insights</strong><small>Articles, guides and publications</small></span><Icon name="arrow" /></Link>
-          <Link href="/professionals" onClick={onNavigate}><Icon name="people" /><span><strong>Find a Professional</strong><small>Connect with our experts</small></span><Icon name="arrow" /></Link>
+          <Link href="/services" onClick={onNavigate} className={`${styles.quickLink} ${isRouteActive(pathname, "/services") ? "active-submenu-item" : ""}`}><Icon name="file" /><span><strong>Explore All Services</strong><small>View all {services.length} approved main services</small></span><Icon name="arrow" /></Link>
+          <Link href="/insights" onClick={onNavigate} className={styles.quickLink}><Icon name="bulb" /><span><strong>Service Insights</strong><small>Articles, guides and publications</small></span><Icon name="arrow" /></Link>
+          <Link href="/professionals" onClick={onNavigate} className={styles.quickLink}><Icon name="people" /><span><strong>Find a Professional</strong><small>Connect with our experts</small></span><Icon name="arrow" /></Link>
         </div>
         <div className={shared.sidebarBottom}><Icon name="globe" /><span>AN INTEGRATED PERSPECTIVE.<br /><strong>Practical advice.</strong></span></div>
       </aside>

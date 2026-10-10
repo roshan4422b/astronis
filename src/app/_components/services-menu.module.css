@@ -113,6 +113,20 @@
   transform: translateX(2px);
 }
 
+.menu .quickLink:global(.active-submenu-item) {
+  margin-inline: -10px;
+  padding-inline: 10px;
+  border-radius: 3px;
+  color: #f4f7fc;
+  background: #1688ff24;
+  box-shadow: inset 3px 0 0 #1688ff;
+}
+
+.menu .quickLink:global(.active-submenu-item) small,
+.menu .quickLink:global(.active-submenu-item) > svg {
+  color: #c8e3ff;
+}
+
 .result {
   grid-column: 1 / -1;
   margin: 8px 10px 0;
