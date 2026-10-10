@@ -477,31 +477,16 @@
 .accordionList a { display:flex; align-items:center; gap:11px; color:#183b5d; }
 .accordionList a > span { display:inline; }
 .accordionList a svg { flex:0 0 15px; width:15px; height:15px; color:#0d4b91; }
-.mobileServiceSelects { display:grid; gap:12px; padding:12px 0; }
-.mobileServiceSelects label { display:grid; gap:6px; color:#f1d19a; font-size: max(var(--font-size-min), 13px); font-weight:600; }
-.mobileServiceSelects select { width:100%; min-height:52px; padding:0 14px; border:1px solid #67829a; border-radius:4px; background:#f8fbff; color:#102b49; font-family:inherit; font-size: max(var(--font-size-min), 16px); font-weight:500; line-height:1.4; }
-.mobileServiceSelects select:disabled { color:#66798d; background:#eaf0f6; }
-.mobileServiceSelects select option { color:#102b49; background:#fff; }
-.mobileCategoryList { display:grid; gap:8px; padding:12px 0; }
-.mobileCategory { min-width:0; border:1px solid #67829a55; border-radius:4px; overflow:hidden; }
-.mobileCategoryButton { display:flex; align-items:center; gap:12px; width:100%; min-height:52px; padding:10px 14px; color:#fff; text-align:left; background:#123654; border:0; cursor:pointer; }
-.mobileCategoryButton>span:first-child { color:#e2c18b; font-size: max(var(--font-size-min), 11px); letter-spacing:.08em; }
-.mobileCategoryButton strong { flex:1; min-width:0; font-size: max(var(--font-size-min), 14px); font-weight:600; }
-.mobileChildList { margin:0; padding:4px 12px 10px; list-style:none; background:#0d2b46; }
-.mobileChildList a { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 8px; color:#e6edf4; font-size: max(var(--font-size-min), 13px); line-height:1.45; text-decoration:none; border-bottom:1px solid #ffffff18; }
-.mobileChildList li:last-child a { border-bottom:0; }
-.mobileChildList a span { flex:0 0 auto; color:#e2c18b; }
-@media(max-width:900px) { .mobileCategoryButton { min-height:50px; } }
+.mobileServiceSelects { display:grid; gap:8px; padding:12px 0; }
+.mobileServiceSelects select { width:100%; min-height:48px; padding:0 14px; border:1px solid #67829a; border-radius:4px; background:#123654; color:#fff; font-family:inherit; font-size: max(var(--font-size-min), 16px); font-weight:500; line-height:1.4; }
+.mobileServiceSelects select:focus-visible { outline:2px solid #1688ff; outline-offset:2px; }
+.mobileServiceSelects select option { color:#fff; background:#123654; }
 @keyframes serviceMenuIn { from { opacity:0; transform:translate(-50%,-6px); } to { opacity:1; transform:translate(-50%,0); } }
 @media(max-width:1200px) { .sectionNav .navItemLink { padding:12px 8px; gap:7px; } .sectionNav .navItemLink .navItemText strong { font-size: max(var(--font-size-min), 16px); } .sectionNav .navItemLink .navIcon { width:27px; height:32px; } }
 @media(max-width:900px) {
   .sectionNav { padding-inline:18px; }
   .sectionNav .dropdownPanel,.sectionNav .navDesktop { display:none; }
   .sectionNav .navMobile { display:block; }
-  .sectionNav .navMobile .mobileServiceSelects label { color:#f1d19a; font-size: max(var(--font-size-min), 13px); }
-  .sectionNav .navMobile .mobileServiceSelects select { background:#f8fbff; color:#102b49; }
-  .sectionNav .navMobile .mobileServiceSelects select:disabled { background:#eaf0f6; color:#66798d; }
-  .sectionNav .navMobile .mobileServiceSelects select option { background:#fff; color:#102b49; }
 }
 @media(prefers-reduced-motion:reduce) { .sectionNav .dropdownPanel,.dropdownColumns .dropdownItem svg { animation:none; transition:none; } }
 .sectionNav[data-theme="banking"] { background:linear-gradient(110deg,#061a33,#123b63); border-color:#294765; box-shadow:0 9px 25px #061a3320; }
@@ -511,8 +496,8 @@
 .sectionNav[data-theme="banking"] .dropdownPanel { background:linear-gradient(110deg,#061a33,#123b63); border-color:#294765; border-top-color:#c9a227; }
 .sectionNav[data-theme="banking"] .dropdownItem:hover { background:#ffffff0c; border-left-color:#c9a227; }
 .sectionNav[data-theme="banking"] .dropdownItem svg { color:#e5c875; }
-.sectionNav[data-theme="banking"] .navMobile .mobileServiceSelects select { background:#f5f8fc; color:#0b2748; }
-@media(max-width:900px) { .sectionNav[data-theme="banking"] .navMobile .mobileServiceSelects select { background:#f5f8fc; color:#0b2748; } }
+.sectionNav[data-theme="banking"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
+@media(max-width:900px) { .sectionNav[data-theme="banking"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
 .sectionNav[data-theme="insolvency"] { background:linear-gradient(110deg,#0b1220,#123b63); border-color:#35465c; box-shadow:0 9px 25px #0b122020; }
 .sectionNav[data-theme="insolvency"] .navItemLink[aria-expanded="true"] { background:linear-gradient(125deg,#214769,#173c5f); border-color:#b7793e55; border-bottom-color:#b7793e; }
 .sectionNav[data-theme="insolvency"] .navItemLink[aria-expanded="true"] .navIcon { color:#d7a06e; border-color:#b7793e7a; background:#b7793e12; }
@@ -520,29 +505,29 @@
 .sectionNav[data-theme="insolvency"] .dropdownPanel { background:linear-gradient(110deg,#0b1220,#123b63); border-color:#35465c; border-top-color:#b7793e; }
 .sectionNav[data-theme="insolvency"] .dropdownItem:hover { background:#ffffff0c; border-left-color:#b7793e; }
 .sectionNav[data-theme="insolvency"] .dropdownItem svg { color:#d7a06e; }
-.sectionNav[data-theme="insolvency"] .navMobile .mobileServiceSelects select { background:#f7f5f2; color:#111827; }
-@media(max-width:900px) { .sectionNav[data-theme="insolvency"] .navMobile .mobileServiceSelects select { background:#f7f5f2; color:#111827; } }
+.sectionNav[data-theme="insolvency"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
+@media(max-width:900px) { .sectionNav[data-theme="insolvency"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
 .sectionNav[data-theme="licensing"] { background:linear-gradient(110deg,#081827,#132536); border-color:#2d586d; box-shadow:0 9px 25px #08182730; }
 .sectionNav[data-theme="licensing"] .navItemLink[aria-expanded="true"] { background:linear-gradient(125deg,#17425d,#15374b); border-color:#65b8c755; border-bottom-color:#65b8c7; }
 .sectionNav[data-theme="licensing"] .navItemLink[aria-expanded="true"] .navIcon { color:#65b8c7; border-color:#65b8c77a; background:#65b8c712; }
 .sectionNav[data-theme="licensing"] .navChevronOpen,.sectionNav[data-theme="licensing"] .dropdownItem:hover { color:#65b8c7; }
 .sectionNav[data-theme="licensing"] .dropdownPanel { background:linear-gradient(110deg,#081827,#132536); border-color:#2d586d; border-top-color:#65b8c7; }
 .sectionNav[data-theme="licensing"] .dropdownItem:hover { background:#ffffff0c; }
-.sectionNav[data-theme="licensing"] .navMobile .mobileServiceSelects select { background:#f3f7f8; color:#132536; }
-@media(max-width:900px) { .sectionNav[data-theme="licensing"] .navMobile .mobileServiceSelects select { background:#f3f7f8; color:#132536; } }
+.sectionNav[data-theme="licensing"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
+@media(max-width:900px) { .sectionNav[data-theme="licensing"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
 .sectionNav[data-theme="fema"] { background:linear-gradient(110deg,#071a35,#0b1220); border-color:#294765; box-shadow:0 9px 25px #071a3530; }
 .sectionNav[data-theme="fema"] .navItemLink[aria-expanded="true"] { background:linear-gradient(125deg,#173c70,#15334d); border-color:#38bdf855; border-bottom-color:#38bdf8; }
 .sectionNav[data-theme="fema"] .navItemLink[aria-expanded="true"] .navIcon { color:#38bdf8; border-color:#38bdf87a; background:#38bdf812; }
 .sectionNav[data-theme="fema"] .navChevronOpen,.sectionNav[data-theme="fema"] .dropdownItem:hover { color:#7dd3fc; }
 .sectionNav[data-theme="fema"] .dropdownPanel { background:linear-gradient(110deg,#071a35,#0b1220); border-color:#294765; border-top-color:#38bdf8; }
 .sectionNav[data-theme="fema"] .dropdownItem:hover { background:#ffffff0c; }
-.sectionNav[data-theme="fema"] .navMobile .mobileServiceSelects select { background:#f4f7fb; color:#0b1220; }
-@media(max-width:900px) { .sectionNav[data-theme="fema"] .navMobile .mobileServiceSelects select { background:#f4f7fb; color:#0b1220; } }
+.sectionNav[data-theme="fema"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
+@media(max-width:900px) { .sectionNav[data-theme="fema"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
 .sectionNav[data-theme="taxation"] { background:linear-gradient(110deg,#061c37,#153858); border-color:#294b6d; box-shadow:0 9px 25px #061c3720; }
 .sectionNav[data-theme="taxation"] .navItemLink[aria-expanded="true"] { background:linear-gradient(125deg,#214769,#173c5f); border-color:#d2af7055; border-bottom-color:#e7be7b; }
 .sectionNav[data-theme="taxation"] .navItemLink[aria-expanded="true"] .navIcon { color:#edca8e; border-color:#dabb7c7a; background:#dcb16b12; }
 .sectionNav[data-theme="taxation"] .navChevronOpen,.sectionNav[data-theme="taxation"] .dropdownItem:hover { color:#e8c68d; }
 .sectionNav[data-theme="taxation"] .dropdownPanel { background:linear-gradient(110deg,#061c37,#153858); border-color:#294b6d; border-top-color:#e5bd78; }
 .sectionNav[data-theme="taxation"] .dropdownItem:hover { background:#ffffff0c; }
-.sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#f5f7fa; color:#0b1220; }
-@media(max-width:900px) { .sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#f5f7fa; color:#0b1220; } }
+.sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; }
+@media(max-width:900px) { .sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
