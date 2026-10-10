@@ -2,13 +2,13 @@
 .hero { min-height: 465px; }
 .hero > img { object-position: center 52%; }
 .hero::after { background: linear-gradient(90deg, #031d3bf5 0%, #052345e6 35%, #03244776 69%, #031d3bd1 100%); }
-.hero h1 { font-size: clamp(47px, 5.3vw, 73px); }
+.hero h1 { font-size: max(var(--font-size-min), clamp(47px, 5.3vw, 73px)); }
 .heroCopy { max-width: 645px; }
 .overviewGrid { grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr); align-items: start; }
 .overviewGrid > .sectors { padding: 26px; }
-.sectors h3 { font-size: 24px; }
+.sectors h3 { font-size: max(var(--font-size-min), 24px); }
 .sectors ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-.sectors li { min-height: 86px; padding: 13px; font-size: 12px; }
+.sectors li { min-height: 86px; padding: 13px; font-size: max(var(--font-size-min), 12px); }
 .benefits { margin-top: 24px; }
 .benefits article { background: linear-gradient(145deg, #f7fbff, #eaf3fd); }
 .challengeGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
@@ -16,17 +16,17 @@
 .challengeGrid .challengeCard:nth-last-child(-n+2) { grid-column: auto; }
 .challengeImage { aspect-ratio: 1.45; }
 .challengeCard summary { min-height: 112px; padding: 16px; }
-.challengeCard h3 { font-size: 19px; }
+.challengeCard h3 { font-size: max(var(--font-size-min), 19px); }
 .storiesSection { background: linear-gradient(145deg, #f5f9fe, #fff); }
 .storyGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .storyCard { display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff; border: 1px solid #dce7f2; border-radius: 17px; transition: transform .3s, box-shadow .3s, border-color .3s; }
 .storyImage { position: relative; aspect-ratio: 2.1; overflow: hidden; }
 .storyImage img { object-fit: cover; transition: transform .45s; }
 .storyCard > div:last-child { display: flex; flex-direction: column; flex: 1; padding: 22px; }
-.storyCard span { color: #af792f; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-.storyCard h3 { margin: 9px 0; font-size: 24px; }
-.storyCard p { margin-bottom: 18px; font-size: 13px; }
-.storyCard strong { display: inline-flex; align-items: center; gap: 10px; margin-top: auto; color: #14548c; font-size: 12px; }
+.storyCard span { color: #af792f; font-size: max(var(--font-size-min), 10px); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.storyCard h3 { margin: 9px 0; font-size: max(var(--font-size-min), 24px); }
+.storyCard p { margin-bottom: 18px; font-size: max(var(--font-size-min), 13px); }
+.storyCard strong { display: inline-flex; align-items: center; gap: 10px; margin-top: auto; color: #14548c; font-size: max(var(--font-size-min), 12px); }
 .storyCard strong svg { width: 15px; height: 15px; }
 .contactImage { aspect-ratio: 1.7; }
 @media (hover: hover) and (pointer: fine) {

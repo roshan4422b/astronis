@@ -29,7 +29,7 @@ const directory = licensingRegistrations.groups.map((group) => ({
 export default function LicensingRegistrationsPage() {
   return (
     <main className={styles.page} data-theme="licensing">
-      <ServiceHero practice={licensingRegistrations} hideBadges hideStageNumbers theme="licensing" />
+      <ServiceHero practice={licensingRegistrations} theme="licensing" />
 
       <SectionNavigation
         variant="bar"

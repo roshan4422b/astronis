@@ -1,7 +1,7 @@
 .solutions { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
 .solutions > article { height: 100%; }
 .solutions > article > div:first-child { height: 145px; }
-.areaDescription { margin-top: 8px; color: #5b6b82; font-size: 12px; line-height: 1.35; }
+.areaDescription { margin-top: 8px; color: #5b6b82; font-size: max(var(--font-size-min), 12px); line-height: 1.35; }
 .stepIcon { display: block; width: 22px; height: 22px; margin: 0 auto 8px; color: #125fa8; }
 @media (min-width: 1400px) {
   .solutions { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }

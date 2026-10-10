@@ -17,13 +17,13 @@
 .compact .form { gap: 0.55rem; }
 .compact .grid { gap: 0.5rem 0.65rem; }
 .compact .field,
-.compact .fieldLabel { gap: 0.25rem; font-size: 0.72rem; }
+.compact .fieldLabel { gap: 0.25rem; font-size: max(var(--font-size-min), 0.72rem); }
 .compact .input,
 .compact .select,
-.compact .textarea { min-height: 32px; padding: 0.35rem 0.5rem; border-radius: 2px; font-size: 0.75rem; }
+.compact .textarea { min-height: 32px; padding: 0.35rem 0.5rem; border-radius: 2px; font-size: max(var(--font-size-min), 0.75rem); }
 .compact .textarea { min-height: 54px; }
 .compact .inline { gap: 0.5rem; padding-top: 0; }
-.compact .inlineText { font-size: 0.7rem; }
+.compact .inlineText { font-size: max(var(--font-size-min), 0.7rem); }
 .compact .button { min-height: 34px; justify-self: start; padding: 0.45rem 0.8rem; border-radius: 2px; }
 
 .header {
@@ -34,7 +34,7 @@
   display: inline-block;
   margin-bottom: 0.6rem;
   color: #b36d2d;
-  font-size: 0.7rem;
+  font-size: max(var(--font-size-min), 0.7rem);
   letter-spacing: 0.14em;
   font-weight: 700;
   text-transform: uppercase;
@@ -43,7 +43,7 @@
 .title {
   margin: 0;
   color: #0b2342;
-  font-size: clamp(1.7rem, 2vw, 2.5rem);
+  font-size: max(var(--font-size-min), clamp(1.7rem, 2vw, 2.5rem));
   line-height: 1.12;
 }
 
@@ -68,13 +68,13 @@
   display: grid;
   gap: 0.45rem;
   color: #0d2d57;
-  font-size: 0.92rem;
+  font-size: max(var(--font-size-min), 0.92rem);
   font-weight: 600;
 }
 
 .fieldLabel {
   color: #0d2d57;
-  font-size: 0.92rem;
+  font-size: max(var(--font-size-min), 0.92rem);
   font-weight: 600;
 }
 
@@ -119,13 +119,13 @@
 
 .errorText {
   color: #9a2f2f;
-  font-size: 0.78rem;
+  font-size: max(var(--font-size-min), 0.78rem);
   font-weight: 600;
 }
 
 .helper {
   color: #5a6b88;
-  font-size: 0.8rem;
+  font-size: max(var(--font-size-min), 0.8rem);
   font-weight: 500;
 }
 
@@ -156,7 +156,7 @@
   margin: 0;
   padding: 0.9rem 1rem;
   border-radius: 10px;
-  font-size: 0.92rem;
+  font-size: max(var(--font-size-min), 0.92rem);
   line-height: 1.5;
 }
 
@@ -213,7 +213,7 @@
   border-radius: 999px;
   background: #edf3ff;
   color: #0d2d57;
-  font-size: 0.82rem;
+  font-size: max(var(--font-size-min), 0.82rem);
   font-weight: 700;
 }
 

@@ -1,7 +1,7 @@
 .hero { min-height: 410px; }
 .hero > img { object-position: center 55%; }
 .heroCopy { max-width: 730px; }
-.heroCopy h1 { font-size: clamp(40px, 4vw, 62px); line-height: 1.04; }
+.heroCopy h1 { font-size: max(var(--font-size-min), clamp(40px, 4vw, 62px)); line-height: 1.04; }
 .heroCopy > span { color: #164c82; }
 .solutions { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .solutions > article { height: 100%; }
@@ -14,5 +14,5 @@
 @media (max-width: 540px) {
   .solutions { grid-template-columns: 1fr; }
   .solutions > article > div:first-child { height: 210px; }
-  .heroCopy h1 { font-size: 39px; letter-spacing: -1.3px; }
+  .heroCopy h1 { font-size: max(var(--font-size-min), 39px); letter-spacing: -1.3px; }
 }

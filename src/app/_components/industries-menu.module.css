@@ -171,7 +171,7 @@
 .result {
   padding: 0 28px 12px;
   color: #476689;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 
 .footer {
@@ -188,7 +188,7 @@
 }
 .footer>span { display:flex; align-items:center; gap:8px; min-width:0; }
 .footer svg { width:22px; height:22px; flex:none; color:#e3bd7d; }
-.footer strong { font-size:14px; font-weight:500; color:#f3f6fb; white-space:nowrap; }
+.footer strong { font-size: max(var(--font-size-min), 14px); font-weight:500; color:#f3f6fb; white-space:nowrap; }
 .footer .footerStatement { display:block; padding-left:18px; border-left:1px solid #b9cce22e; color:#e6c895; font:400 16px/1.25 Georgia,serif; }
 
 .sidebar {
@@ -239,7 +239,7 @@
   }
 
   .groupHeading h3 {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .heading {
@@ -247,7 +247,7 @@
   }
 
   .heading p {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
     padding-left: 15px;
   }
 }
@@ -264,11 +264,11 @@
   }
 
   .heading h2 {
-    font-size: 26px;
+    font-size: max(var(--font-size-min), 26px);
   }
 
   .heading p {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .columns {
@@ -343,7 +343,7 @@
 }
 
 .links strong {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 
 .links a > svg {

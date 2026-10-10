@@ -62,7 +62,7 @@
 
 .corridor h2 {
   color: #1d3755;
-  font-size: clamp(22px, 2.2vw, 30px);
+  font-size: max(var(--font-size-min), clamp(22px, 2.2vw, 30px));
   font-weight: 500;
   margin-top: 6px;
 }
@@ -95,7 +95,7 @@
 
 .corridorCardHeading h3 {
   color: #1d3550;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -116,7 +116,7 @@
   margin: 0;
   padding-left: 18px;
   color: #455d74;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   line-height: 1.6;
 }
 
@@ -125,7 +125,7 @@
 }
 
 .middleEastIndustries h2 {
-  font-size: clamp(22px, 2.1vw, 28px);
+  font-size: max(var(--font-size-min), clamp(22px, 2.1vw, 28px));
 }
 
 .industryGrid {

@@ -29,7 +29,7 @@ const directory = taxationCompliance.groups.map((group) => ({
 export default function TaxationCompliancePage() {
   return (
     <main className={styles.page} data-theme="taxation">
-      <ServiceHero practice={taxationCompliance} hideBadges hideStageNumbers theme="taxation" />
+      <ServiceHero practice={taxationCompliance} theme="taxation" />
 
       <SectionNavigation
         variant="bar"

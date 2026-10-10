@@ -17,20 +17,20 @@
 }
 
 .corridor { min-width: 0; padding: 20px 0 8px; }
-.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: 19px; font-weight: 500; }
+.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: max(var(--font-size-min), 19px); font-weight: 500; }
 .corridorGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
 .corridorCard { min-width: 0; padding: 11px; border: 1px solid #e0e8ef; background: #fff; }
 .corridorCardHeading { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #e3eaf0; }
 .corridorFlag { position: relative; display: block; width: 32px; height: 32px; flex: 0 0 32px; overflow: hidden; border: 1px solid #d4e0e9; border-radius: 50%; }
 .corridorFlag img { object-fit: cover; }
-.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
-.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: 11px; line-height: 1.35; }
+.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: max(var(--font-size-min), 13px); font-weight: 600; }
+.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: max(var(--font-size-min), 11px); line-height: 1.35; }
 .corridor > a { margin-top: 12px; }
 
 .uaeIndustryGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 8px; margin-top: 11px; }
 .uaeIndustryGrid > a { min-width: 0; }
 .uaeIndustryGrid .industryImage { aspect-ratio: 1.65; }
-.uaeIndustryGrid .industryTile { font-size: 10px; }
+.uaeIndustryGrid .industryTile { font-size: max(var(--font-size-min), 10px); }
 .uaeIndustries .industryHeading .textLink { margin-top: 7px; }
 
 .uaeNetwork { gap: 5px; }
@@ -43,8 +43,8 @@
 .enquiryIntro::after { position: absolute; z-index: -1; inset: 0; content: ""; background: linear-gradient(90deg, #0b315fde, #16518ce6); }
 .enquiryIntro > img { position: absolute; z-index: -2; inset: 0; object-fit: cover; object-position: 57% center; }
 .enquiryIntroCopy { padding: 24px; }
-.enquiryIntro h2 { color: #fff; font-size: clamp(24px, 2.4vw, 31px); font-weight: 500; line-height: 1.1; }
-.enquiryIntro p { margin-top: 8px; color: #e0eaf3; font-size: 12px; line-height: 1.5; }
+.enquiryIntro h2 { color: #fff; font-size: max(var(--font-size-min), clamp(24px, 2.4vw, 31px)); font-weight: 500; line-height: 1.1; }
+.enquiryIntro p { margin-top: 8px; color: #e0eaf3; font-size: max(var(--font-size-min), 12px); line-height: 1.5; }
 .enquiryForm { display: flex; min-width: 0; align-items: center; padding: 18px clamp(18px, 3vw, 42px); }
 .enquiryForm > * { width: 100%; }
 
@@ -53,8 +53,8 @@
 .contactStrip > div + div { border-left: 1px solid #8ba7c1; }
 .contactStrip svg { width: 24px; height: 24px; color: #e3edf6; }
 .contactStrip span { display: grid; gap: 2px; min-width: 0; }
-.contactStrip strong { color: #fff; font-family: Georgia, serif; font-size: 13px; font-weight: 500; }
-.contactStrip a { color: #d8e6f2; font-size: 11px; line-height: 1.35; overflow-wrap: anywhere; }
+.contactStrip strong { color: #fff; font-family: Georgia, serif; font-size: max(var(--font-size-min), 13px); font-weight: 500; }
+.contactStrip a { color: #d8e6f2; font-size: max(var(--font-size-min), 11px); line-height: 1.35; overflow-wrap: anywhere; }
 .contactStrip a:hover { color: #fff; }
 
 @media (max-width: 1100px) {
@@ -68,11 +68,11 @@
 @media (max-width: 760px) {
   .corridor,
   .uaeIndustries { padding-block: 19px; }
-  .corridor h2 { font-size: 18px; }
+  .corridor h2 { font-size: max(var(--font-size-min), 18px); }
   .corridorCard { padding: 10px; }
-  .corridorCard ul { gap: 6px; font-size: 11px; }
+  .corridorCard ul { gap: 6px; font-size: max(var(--font-size-min), 11px); }
   .uaeIndustryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .uaeIndustryGrid .industryTile { font-size: 11px; }
+  .uaeIndustryGrid .industryTile { font-size: max(var(--font-size-min), 11px); }
   .enquiry { grid-template-columns: 1fr; }
   .enquiryIntro { min-height: 230px; }
   .enquiryIntroCopy { padding: 20px 18px; }

@@ -15,7 +15,7 @@
 .eyebrow,
 .eyebrowDark {
   display: inline-block;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -46,7 +46,7 @@
   min-height: 48px;
   padding: 0 22px;
   border-radius: 2px;
-  font-size: 0.88rem;
+  font-size: max(var(--font-size-min), 0.88rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-align: center;
@@ -105,7 +105,7 @@
   max-width: 670px;
   margin-top: 20px;
   color: #5c6b7b;
-  font-size: 1.04rem;
+  font-size: max(var(--font-size-min), 1.04rem);
   line-height: 1.8;
 }
 
@@ -149,7 +149,7 @@
   display: block;
   margin-bottom: 14px;
   color: #0d2d4d;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -183,7 +183,7 @@
   max-width: 700px;
   margin: 16px 0 0;
   color: #586a7c;
-  font-size: 1rem;
+  font-size: max(var(--font-size-min), 1rem);
   line-height: 1.8;
 }
 
@@ -310,7 +310,7 @@
 .serviceCard p {
   margin: 10px 0 0;
   color: #627183;
-  font-size: 0.91rem;
+  font-size: max(var(--font-size-min), 0.91rem);
   line-height: 1.72;
 }
 
@@ -326,7 +326,7 @@
   top: 37px;
   right: 24px;
   color: #735b31;
-  font-size: 0.7rem;
+  font-size: max(var(--font-size-min), 0.7rem);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -339,7 +339,7 @@
 
 .cardArrow {
   display: inline-block;
-  font-size: 1rem;
+  font-size: max(var(--font-size-min), 1rem);
   transition: transform 240ms ease;
 }
 
@@ -410,7 +410,7 @@
 .bottomCta p {
   margin: 0;
   color: #c3d0dc;
-  font-size: 0.96rem;
+  font-size: max(var(--font-size-min), 0.96rem);
   line-height: 1.75;
 }
 
@@ -476,7 +476,7 @@
   .cardLink {
     top: 35px;
     right: 20px;
-    font-size: 0.62rem;
+    font-size: max(var(--font-size-min), 0.62rem);
     letter-spacing: 0.08em;
   }
 }
@@ -484,7 +484,7 @@
 @media (max-width: 480px) {
   .eyebrow,
   .eyebrowDark {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
     letter-spacing: 0.12em;
   }
 
@@ -493,7 +493,7 @@
   }
 
   .sectionMeta h2 {
-    font-size: clamp(1.85rem, 8vw, 2.45rem);
+    font-size: max(var(--font-size-min), clamp(1.85rem, 8vw, 2.45rem));
   }
 
   .iconBadge {

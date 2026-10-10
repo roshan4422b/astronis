@@ -26,7 +26,7 @@ export const metadata = {
 export default function RegulatoryServicesPage() {
   return (
     <main className={styles.page}>
-      <ServiceHero practice={regulatoryServices} hideBadges hideStageNumbers />
+      <ServiceHero practice={regulatoryServices} />
 
       <SectionNavigation
         variant="bar"

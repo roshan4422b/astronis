@@ -23,20 +23,20 @@
 }
 
 .corridor { min-width: 0; padding: 20px 0 8px; }
-.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: 19px; font-weight: 500; }
+.corridor h2 { margin-top: 5px; color: #293e52; font-family: Georgia, serif; font-size: max(var(--font-size-min), 19px); font-weight: 500; }
 .corridorGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
 .corridorCard { min-width: 0; padding: 11px; border: 1px solid #e0e8ef; background: #fff; }
 .corridorCardHeading { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid #e3eaf0; }
 .corridorFlag { position: relative; display: block; width: 32px; height: 32px; flex: 0 0 32px; overflow: hidden; border: 1px solid #d4e0e9; border-radius: 50%; }
 .corridorFlag img { object-fit: cover; }
-.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
-.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: 11px; line-height: 1.35; }
+.corridorCard h3 { color: #20384d; font-family: Georgia, serif; font-size: max(var(--font-size-min), 13px); font-weight: 600; }
+.corridorCard ul { display: grid; gap: 5px; margin: 9px 0 0; padding-left: 17px; color: #617282; font-size: max(var(--font-size-min), 11px); line-height: 1.35; }
 .corridor > a { margin-top: 12px; }
 
 .usaIndustryGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 8px; margin-top: 11px; }
 .usaIndustryGrid > a { min-width: 0; }
 .usaIndustryGrid .industryImage { aspect-ratio: 1.65; }
-.usaIndustryGrid .industryTile { font-size: 10px; }
+.usaIndustryGrid .industryTile { font-size: max(var(--font-size-min), 10px); }
 .usaIndustries .industryHeading .textLink { margin-top: 7px; }
 
 .usaNetwork { gap: 5px; }
@@ -53,11 +53,11 @@
 @media (max-width: 760px) {
   .corridor,
   .usaIndustries { padding-block: 19px; }
-  .corridor h2 { font-size: 18px; }
+  .corridor h2 { font-size: max(var(--font-size-min), 18px); }
   .corridorCard { padding: 10px; }
-  .corridorCard ul { gap: 6px; font-size: 11px; }
+  .corridorCard ul { gap: 6px; font-size: max(var(--font-size-min), 11px); }
   .usaIndustryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .usaIndustryGrid .industryTile { font-size: 11px; }
+  .usaIndustryGrid .industryTile { font-size: max(var(--font-size-min), 11px); }
 }
 
 @media (max-width: 420px) {

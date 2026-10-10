@@ -63,7 +63,7 @@
   align-items: center;
   gap: 9px;
   color: rgb(255 255 255 / 76%);
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 
 .breadcrumb a:hover {
@@ -77,7 +77,7 @@
 
 .eyebrow {
   color: var(--gold);
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 700;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -86,7 +86,7 @@
 .heroCopy h1 {
   margin: 9px 0 10px;
   color: #fff;
-  font-size: clamp(38px, 4.7vw, 62px);
+  font-size: max(var(--font-size-min), clamp(38px, 4.7vw, 62px));
   line-height: .98;
   letter-spacing: -.035em;
 }
@@ -94,7 +94,7 @@
 .heroCopy p {
   max-width: 570px;
   color: rgb(255 255 255 / 86%);
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.5;
 }
 
@@ -116,7 +116,7 @@
   padding: 8px 14px;
   border: 1px solid transparent;
   border-radius: 3px;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 700;
 }
 
@@ -163,14 +163,14 @@
 
 .sectionTitle h2 {
   color: var(--navy);
-  font-size: clamp(20px, 2vw, 27px);
+  font-size: max(var(--font-size-min), clamp(20px, 2vw, 27px));
   line-height: 1.12;
 }
 
 .sectionTitle p {
   margin-top: 4px;
   color: #61728a;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   line-height: 1.45;
 }
 
@@ -221,14 +221,14 @@
   margin-bottom: 6px;
   color: var(--navy);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   font-weight: 700;
   line-height: 1.15;
 }
 
 .benefitCard p {
   color: #5a6d85;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.4;
 }
 
@@ -286,7 +286,7 @@
   z-index: 1;
   color: #1b68d4;
   content: "→";
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
 }
 
 .stepIcon {
@@ -303,20 +303,20 @@
 .stepNumber {
   display: block;
   color: var(--navy);
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   font-weight: 700;
 }
 
 .steps li > strong {
   display: block;
   color: var(--navy);
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
 }
 
 .steps li p {
   margin-top: 5px;
   color: #5d7086;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.4;
 }
 
@@ -375,7 +375,7 @@
   min-height: 38px;
   color: var(--navy);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   font-weight: 700;
   line-height: 1.25;
 }
@@ -384,7 +384,7 @@
   min-height: 54px;
   margin-top: 5px;
   color: #5c6e83;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.45;
 }
 
@@ -394,7 +394,7 @@
   gap: 5px;
   margin-top: 7px;
   color: #0a4e9e;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 700;
 }
 
@@ -412,7 +412,7 @@
 .networkIntro {
   margin-top: 7px;
   color: #5a6f87;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.5;
 }
 
@@ -447,7 +447,7 @@
   align-items: center;
   gap: 9px;
   color: #174f92;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.3;
 }
 
@@ -463,7 +463,7 @@
   gap: 6px;
   margin-top: 6px;
   color: #0754a5;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 700;
 }
 
@@ -499,7 +499,7 @@
 }
 
 .typeCard span {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.3;
 }
 
@@ -536,13 +536,13 @@
 
 .statsText h2 {
   color: var(--navy);
-  font-size: 25px;
+  font-size: max(var(--font-size-min), 25px);
 }
 
 .statsText p {
   margin-top: 5px;
   color: #556c86;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.45;
 }
 
@@ -558,14 +558,14 @@
 .stat strong {
   color: #0959c2;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 34px;
+  font-size: max(var(--font-size-min), 34px);
   line-height: 1;
 }
 
 .stat span {
   margin-top: 5px;
   color: #334f70;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.35;
 }
 
@@ -594,7 +594,7 @@
 }
 
 .faqIntro .sectionTitle h2 {
-  font-size: clamp(27px, 2.8vw, 38px);
+  font-size: max(var(--font-size-min), clamp(27px, 2.8vw, 38px));
 }
 
 .faqIntro .textLink {
@@ -617,7 +617,7 @@
   padding: 14px 17px;
   color: #203b5b;
   cursor: pointer;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.35;
   list-style: none;
 }
@@ -629,7 +629,7 @@
 .faqList summary > span {
   flex: 0 0 auto;
   color: #94713a;
-  font-size: 23px;
+  font-size: max(var(--font-size-min), 23px);
   font-weight: 400;
   transition: transform .2s;
 }
@@ -641,7 +641,7 @@
 .faqList details > p {
   padding: 0 17px 15px;
   color: #506783;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.5;
 }
 
@@ -665,13 +665,13 @@
 .enquiryCopy h2 {
   margin-top: 4px;
   color: #fff;
-  font-size: clamp(30px, 3vw, 42px);
+  font-size: max(var(--font-size-min), clamp(30px, 3vw, 42px));
 }
 
 .enquiryCopy > p {
   margin: 12px 0 20px;
   color: #c0d3e5;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 
 .enquiryImage {
@@ -693,7 +693,7 @@
   gap: 12px;
   padding-block: 7px;
   color: #fff;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   overflow-wrap: anywhere;
 }
 
@@ -729,7 +729,7 @@
   display: block;
   margin-bottom: 4px;
   color: #334f70;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 600;
 }
 
@@ -744,7 +744,7 @@
   border-radius: 2px;
   color: #233d5b;
   background: #fff;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 
 .formFields textarea {
@@ -781,7 +781,7 @@
   display: block;
   margin-top: 2px;
   color: #66788f;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
 }
 
 .consent {
@@ -790,7 +790,7 @@
   gap: 8px;
   margin-top: 12px;
   color: #4b617a;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   line-height: 1.45;
 }
 
@@ -811,7 +811,7 @@
   border-radius: 2px;
   color: #fff;
   background: var(--navy);
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 700;
 }
 
@@ -831,7 +831,7 @@
 
 .formStatus {
   margin-top: 10px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   line-height: 1.45;
 }
 
@@ -880,7 +880,7 @@
 
 .ctaInner h2 {
   color: #fff;
-  font-size: clamp(21px, 2.5vw, 30px);
+  font-size: max(var(--font-size-min), clamp(21px, 2.5vw, 30px));
   line-height: 1.08;
 }
 
@@ -888,7 +888,7 @@
   max-width: 610px;
   margin-top: 5px;
   color: rgb(255 255 255 / 82%);
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   line-height: 1.45;
 }
 
@@ -994,11 +994,11 @@
   }
 
   .networkDetails li {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
 
   .typeCard span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .faqGrid,
@@ -1037,14 +1037,14 @@
   }
 
   .formFields label > span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .formFields input,
   .formFields select,
   .formFields textarea {
     height: 36px;
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
 
   .formFields textarea {
@@ -1057,18 +1057,18 @@
 
   .uploadField small,
   .consent {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
 
   .faqList summary {
     min-height: 48px;
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .faqList details > p {
     padding: 0 14px 14px;
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
 
   .ctaInner {
@@ -1087,11 +1087,11 @@
   }
 
   .heroCopy h1 {
-    font-size: clamp(38px, 11vw, 53px);
+    font-size: max(var(--font-size-min), clamp(38px, 11vw, 53px));
   }
 
   .heroCopy p {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
 
   .heroActions {
@@ -1102,7 +1102,7 @@
   .outlineButton {
     min-height: 40px;
     padding: 9px 11px;
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
 
   .benefitGrid {
@@ -1115,11 +1115,11 @@
   }
 
   .benefitCard h3 {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .benefitCard p {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
 
   .steps {
@@ -1140,11 +1140,11 @@
   }
 
   .steps li > strong {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .steps li p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .modelGrid {
@@ -1157,16 +1157,16 @@
 
   .modelCopy h3 {
     min-height: 36px;
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .modelCopy p {
     min-height: 52px;
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .modelCopy > a {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .networkDetails {
@@ -1179,7 +1179,7 @@
   }
 
   .networkDetails li {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
 
   .networkDetails li svg {
@@ -1201,7 +1201,7 @@
   }
 
   .typeCard span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .statsInner {
@@ -1209,7 +1209,7 @@
   }
 
   .statsText h2 {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
   }
 
   .stat {
@@ -1217,11 +1217,11 @@
   }
 
   .stat strong {
-    font-size: 27px;
+    font-size: max(var(--font-size-min), 27px);
   }
 
   .stat span {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
 
   .formFields {
@@ -1251,7 +1251,7 @@
   }
 
   .faqIntro .sectionTitle h2 {
-    font-size: 27px;
+    font-size: max(var(--font-size-min), 27px);
   }
 
   .finalCta {
@@ -1270,7 +1270,7 @@
 .whyHeading .sectionTitle p,
 .processContent .sectionTitle p,
 .sectionTitleRow .sectionTitle p {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   line-height: 1.5;
 }
 
@@ -1291,11 +1291,11 @@
 }
 
 .benefitCard h3 {
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
 }
 
 .benefitCard p {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 
 .processLayout {
@@ -1319,26 +1319,26 @@
 }
 
 .stepNumber {
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
 }
 
 .steps li > strong {
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
   line-height: 1.25;
 }
 
 .steps li p {
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.45;
 }
 
 .modelCopy h3 {
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
 }
 
 .modelCopy p {
   min-height: 76px;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   line-height: 1.5;
 }
 
@@ -1348,7 +1348,7 @@
 }
 
 .networkIntro {
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
 }
 
 .networkDetails {
@@ -1366,7 +1366,7 @@
 }
 
 .networkDetails li {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 
 .networkDetails li svg {
@@ -1396,7 +1396,7 @@
 }
 
 .typeCard span {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   line-height: 1.4;
 }
 
@@ -1419,7 +1419,7 @@
   }
 
   .networkDetails li {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .typeGrid {
@@ -1436,7 +1436,7 @@
   .whyHeading .sectionTitle p,
   .processContent .sectionTitle p,
   .sectionTitleRow .sectionTitle p {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .benefitGrid {
@@ -1448,11 +1448,11 @@
   }
 
   .benefitCard h3 {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
   }
 
   .benefitCard p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .steps li {
@@ -1460,12 +1460,12 @@
   }
 
   .steps li p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .modelCopy p {
     min-height: 70px;
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .networkDetails {
@@ -1477,7 +1477,7 @@
   }
 
   .networkDetails li {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .typeGrid {
@@ -1494,7 +1494,7 @@
   }
 
   .typeCard span {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 }
 

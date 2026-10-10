@@ -29,7 +29,7 @@ const directory = femaFdiCrossBorder.groups.map((group) => ({
 export default function FemaFdiCrossBorderPage() {
   return (
     <main className={styles.page} data-theme="fema">
-      <ServiceHero practice={femaFdiCrossBorder} hideBadges hideStageNumbers theme="fema" />
+      <ServiceHero practice={femaFdiCrossBorder} theme="fema" />
 
       <SectionNavigation
         variant="bar"

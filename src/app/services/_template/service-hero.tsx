@@ -43,8 +43,7 @@ const lifecycleIcons: Record<string, string> = {
   Governance: "shield",
 };
 
-export default function ServiceHero({ practice, group, title, hideBadges = false, hideStageNumbers = false, theme }: { practice: ServicePractice; group?: DetailedServiceGroup; title?: string; hideBadges?: boolean; hideStageNumbers?: boolean; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" | "hr" }) {
-  const badges = group?.badges || practice.badges;
+export default function ServiceHero({ practice, group, title, theme }: { practice: ServicePractice; group?: DetailedServiceGroup; title?: string; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" | "hr" }) {
   return <section className={`${styles.hero} ${group ? styles.detailHero : ""}`} data-theme={theme}>
     {group && <Image src={group.image} alt="" fill preload sizes="100vw" className={styles.heroImage} />}
     <div className="container">
@@ -59,14 +58,13 @@ export default function ServiceHero({ practice, group, title, hideBadges = false
         </div>
         {!group && (practice.visual === "regulatory" ? <RegulatoryEcosystem stages={practice.lifecycle} /> : <div className={styles.lifecycle} aria-label="Business lifecycle">
           <div className={styles.lifecycleHeading}><span>THE BUSINESS LIFECYCLE</span><strong>Connected decisions.<br /><em>Lasting foundations.</em></strong></div>
-          <ol>{practice.lifecycle.map((stage, index) => {
+          <ol>{practice.lifecycle.map((stage) => {
             const iconName = lifecycleIcons[stage] || "globe";
-            return <li key={stage}>{!hideStageNumbers && <span>{String(index + 1).padStart(2,"0")}</span>}<span className={styles.lifecycleIcon}><Icon name={iconName} /></span><strong>{stage}</strong></li>;
+            return <li key={stage}><span className={styles.lifecycleIcon}><Icon name={iconName} /></span><strong>{stage}</strong></li>;
           })}</ol>
           <p>One advisory perspective, through every stage.</p>
         </div>)}
       </div>
-      {!hideBadges && <div className={styles.badges}>{badges.map(badge => <span key={badge}>{badge}</span>)}</div>}
     </div>
   </section>;
 }

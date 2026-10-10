@@ -12,12 +12,12 @@
 }
 
 .page h2 {
-  font-size: clamp(28px, 2.65vw, 38px);
+  font-size: max(var(--font-size-min), clamp(28px, 2.65vw, 38px));
   line-height: 1.13;
 }
 
 .page p {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.7;
   color: #405674;
 }
@@ -25,7 +25,7 @@
 .eyebrow {
   display: block;
   color: #0063be;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   font-weight: 600;
   letter-spacing: 0.23em;
   margin-bottom: 12px;
@@ -72,7 +72,7 @@
   gap: 8px;
   margin-bottom: 28px;
   color: #e1eeff;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
 }
 
 .breadcrumb a:hover {
@@ -100,7 +100,7 @@
 }
 
 .hero h1 {
-  font-size: clamp(44px, 4.8vw, 68px);
+  font-size: max(var(--font-size-min), clamp(44px, 4.8vw, 68px));
   line-height: 1.02;
 }
 
@@ -111,7 +111,7 @@
 
 .heroCopy .heroSubtitle {
   margin: 18px 0 14px;
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   line-height: 1.4;
 }
 
@@ -133,7 +133,7 @@
 
 .heroNote small {
   color: #d4e9ff;
-  font-size: 9px;
+  font-size: max(var(--font-size-min), 9px);
   letter-spacing: 0.15em;
 }
 
@@ -312,7 +312,7 @@
 .valueCard .tagline {
   min-height: 44px;
   color: #244f7c;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 600;
   line-height: 1.5;
 }
@@ -321,7 +321,7 @@
   margin-top: 13px;
   padding-top: 13px;
   border-top: 1px solid #dfe9f3;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   line-height: 1.7;
 }
 
@@ -419,13 +419,13 @@
 
 .principles h3 {
   margin-bottom: 5px;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 600;
 }
 
 .principles p {
   color: #c6dbee;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   line-height: 1.5;
 }
 
@@ -440,7 +440,7 @@
   border-radius: 28px;
   background: #fff;
   color: #005aaa;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 600;
 }
 
@@ -521,12 +521,12 @@
 
 .impactBody h3 {
   margin-bottom: 7px;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.4;
 }
 
 .impactBody p {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   line-height: 1.6;
 }
 
@@ -619,7 +619,7 @@
   }
 
   .valueCard h3 {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
   }
 
   .professionalGrid {
@@ -682,11 +682,11 @@
   }
 
   .hero h1 {
-    font-size: 48px;
+    font-size: max(var(--font-size-min), 48px);
   }
 
   .heroCopy .heroSubtitle {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
   }
 
   .belief {
@@ -706,7 +706,7 @@
   }
 
   .sectionHeading > p {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
     text-align: left;
   }
 
@@ -719,7 +719,7 @@
   }
 
   .cardNumber {
-    font-size: 24px;
+    font-size: max(var(--font-size-min), 24px);
   }
 
   .iconBadge {
@@ -734,13 +734,13 @@
   }
 
   .valueCard h3 {
-    font-size: 21px;
+    font-size: max(var(--font-size-min), 21px);
     overflow-wrap: anywhere;
   }
 
   .valueCard .tagline {
     min-height: 59px;
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .professionalGrid {

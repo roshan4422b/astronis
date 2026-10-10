@@ -69,7 +69,7 @@ export default function InsolvencyRestructuringPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} />
       <main className={styles.page} data-theme="insolvency">
-        <ServiceHero practice={insolvencyRestructuring} hideBadges hideStageNumbers theme="insolvency" />
+        <ServiceHero practice={insolvencyRestructuring} theme="insolvency" />
 
         <SectionNavigation
           variant="bar"
