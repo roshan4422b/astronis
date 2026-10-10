@@ -23,9 +23,7 @@
 .orbit,.orbitInner { position:absolute; inset:13%; border:1px solid #afc4e366; border-radius:50%; }
 .orbitInner { inset:25%; }
 .centralNode { position:absolute; inset:32%; border-radius:50%; background:linear-gradient(135deg,#163d73,#04163c); color:white; display:flex; align-items:center; justify-content:center; flex-direction:column; box-shadow:0 20px 60px #04163c22,0 0 0 12px #fff7; text-align:center; }
-.centralNode>span { color:#9fc9ff; font:italic 30px Georgia,serif; line-height:1; margin-bottom:7px; }
 .centralNode strong { font:400 clamp(17px,2vw,24px)/1.2 Georgia,serif; }
-.centralNode small { font-size: max(var(--font-size-min), 6px); letter-spacing:1.7px; margin-top:12px; }
 .node { --angle:calc(var(--i)*45deg - 90deg); position:absolute; left:calc(50% + cos(var(--angle))*37%); top:calc(50% + sin(var(--angle))*37%); transform:translate(-50%,-50%); padding:12px 16px; border:1px solid #c5d4eb; border-radius:6px; background:#ffffffdf; box-shadow:0 8px 25px #13346009; white-space:nowrap; font-size: max(var(--font-size-min), 11px); font-weight:600; }
 .ecosystemCaption { position:absolute; bottom:0; width:100%; text-align:center; color:var(--muted); font-size: max(var(--font-size-min), 10px); letter-spacing:.5px; }
 .heroBadges { display:flex; flex-wrap:wrap; gap:10px; padding-top:34px; margin-top:35px; border-top:1px solid #cbd9ec; }
@@ -176,7 +174,6 @@
 .orbit,.orbitInner { border-color:#a1bcdb35; }
 .ecosystem svg { stroke:#b6d1ed88; }
 .centralNode { background:linear-gradient(140deg,#224d74,#061a33); box-shadow:0 20px 60px #0004,0 0 0 12px #a8c7e010; border:1px solid #d9b77577; }
-.centralNode>span { color:var(--gold); }
 .ecosystemCaption { color:#c4d4e8; }
 .directory { background:linear-gradient(145deg,#f5f7fb,#eaf0f7); }
 .card { background:#082444; border-color:#254362; border-radius:9px; box-shadow:0 8px 24px #04163c12; }
