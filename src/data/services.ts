@@ -55,6 +55,20 @@ const images = [
   "/images/services/esg-and-sustainability-advisory.webp",
 ];
 
+const heroImages = [
+  "/images/services/corporate-and-commercial-advisory.webp",
+  "/images/services/regulatory-and-compliance.webp",
+  "/images/services/litigation-and-dispute-resolution.webp",
+  "/images/services/business-advisory-and-consulting.webp",
+  "/images/services/licensing-and-registrations.webp",
+  "/images/services/intellectual-property-rights.webp",
+  "/images/services/fema-fdi-and-foreign-exchange-advisory.webp",
+  "/images/services/gst-and-indirect-tax-regulatory-support.webp",
+  "/images/services/banking-nbfc-and-financial-services-advisory.webp",
+  "/images/services/risk-governance-and-forensic-advisory.webp",
+  "/images/services/esg-and-sustainability-advisory.webp",
+];
+
 const icons = ["building", "shield", "scale", "chart", "file", "shield", "globe", "percent", "building", "people", "globe"];
 
 export const services = hierarchy.map((service, index) => ({
@@ -65,6 +79,7 @@ export const services = hierarchy.map((service, index) => ({
   description: descriptions[index],
   icon: icons[index],
   image: images[index],
+  heroImage: heroImages[index],
   category: service.title,
   subServices: service.subServices.map((group) => ({
     ...group,

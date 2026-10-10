@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "../../_components/asset-image";
 import Icon from "../../_components/icon";
 import { practicePath, type ServicePractice, type DetailedServiceGroup } from "@/data/service-detail-types";
-import RegulatoryEcosystem from "./regulatory-ecosystem";
 import Breadcrumbs from "./breadcrumbs";
 import { services } from "@/data/services";
 import styles from "./service-template.module.css";
@@ -43,8 +42,8 @@ const lifecycleIcons: Record<string, string> = {
   Governance: "shield",
 };
 
-export default function ServiceHero({ practice, group, title, theme }: { practice: ServicePractice; group?: DetailedServiceGroup; title?: string; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" | "hr" }) {
-  return <section className={`${styles.hero} ${group ? styles.detailHero : ""}`} data-theme={theme}>
+export default function ServiceHero({ practice, group, title }: { practice: ServicePractice; group?: DetailedServiceGroup; title?: string }) {
+  return <section className={`${styles.hero} ${group ? styles.detailHero : ""}`} style={!group ? { "--service-hero-image": `url("${practice.heroImage}")` } as React.CSSProperties : undefined}>
     {group && <Image src={group.image} alt="" fill preload sizes="100vw" className={styles.heroImage} />}
     <div className="container">
       <Breadcrumbs items={[{title:"Home",href:"/"},{title:"Services",href:"/services"},{title:practice.title,...(group ? {href:practicePath(practice)} : {})},...(group ? [{title:group.title,href:`${practicePath(practice)}#${services.find(service => service.canonicalSlug === practice.slug)?.subServices.find(item => item.slug === group.slug)?.slug || group.slug}`}] : [])]} />
@@ -56,14 +55,14 @@ export default function ServiceHero({ practice, group, title, theme }: { practic
           <p>{group?.description || practice.description}</p>
           <div className={styles.actions}><ServiceButton href="#enquiry">Speak With an Advisor</ServiceButton><ServiceButton href={group ? `#${group.children[0].slug}` : "#service-groups"} secondary>{group ? "Explore Services" : "Explore Our Capabilities"}</ServiceButton></div>
         </div>
-        {!group && (practice.visual === "regulatory" ? <RegulatoryEcosystem stages={practice.lifecycle} /> : <div className={styles.lifecycle} aria-label="Business lifecycle">
+        {!group && <div className={styles.lifecycle} aria-label="Business lifecycle">
           <div className={styles.lifecycleHeading}><span>THE BUSINESS LIFECYCLE</span><strong>Connected decisions.<br /><em>Lasting foundations.</em></strong></div>
           <ol>{practice.lifecycle.map((stage) => {
             const iconName = lifecycleIcons[stage] || "globe";
             return <li key={stage}><span className={styles.lifecycleIcon}><Icon name={iconName} /></span><strong>{stage}</strong></li>;
           })}</ol>
           <p>One advisory perspective, through every stage.</p>
-        </div>)}
+        </div>}
       </div>
     </div>
   </section>;

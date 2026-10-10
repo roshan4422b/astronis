@@ -50,7 +50,7 @@ export const metadata = {
 export default function BankingRbiFinancialServicesPage() {
   return (
     <main className={styles.page} data-theme="banking">
-      <ServiceHero practice={bankingRbiFinancialServices} theme="banking" />
+      <ServiceHero practice={bankingRbiFinancialServices} />
 
       <SectionNavigation
         variant="bar"

@@ -578,9 +578,6 @@
 .page[data-theme="licensing"] .darkCategory .serviceCard:focus-visible { border-color: #65b8c7; }
 .page[data-theme="licensing"] .bottomCta { background: #081827; border-color: #2d586d; }
 .page[data-theme="licensing"] .primaryAction { color: #081827; }
-:global(.hero[data-theme="licensing"]) {
-  background: radial-gradient(ellipse at 95% 35%, #1f5f8b 0, transparent 55%), linear-gradient(110deg, #081827, #132536);
-}
 
 .page[data-theme="fema"] .sectionIntro h2::after,
 .page[data-theme="fema"] .sectionAccent { background: #0f766e; }
@@ -605,9 +602,6 @@
 .page[data-theme="fema"] .darkCategory .serviceCard:hover,
 .page[data-theme="fema"] .darkCategory .serviceCard:focus-visible { border-color: #38bdf8; }
 .page[data-theme="fema"] .bottomCta { background: #071a35; border-color: #294765; }
-:global(.hero[data-theme="fema"]) {
-  background: radial-gradient(ellipse at 95% 35%, #1d4ed8 0, transparent 55%), linear-gradient(110deg, #071a35, #0b1220);
-}
 
 .page[data-theme="taxation"] .sectionIntro h2::after,
 .page[data-theme="taxation"] .sectionAccent { background: #0f766e; }
@@ -632,9 +626,6 @@
 .page[data-theme="taxation"] .darkCategory .serviceCard:hover,
 .page[data-theme="taxation"] .darkCategory .serviceCard:focus-visible { border-color: #10b981; }
 .page[data-theme="taxation"] .bottomCta { background: #081f38; border-color: #29435d; }
-:global(.hero[data-theme="taxation"]) {
-  background: radial-gradient(ellipse at 95% 35%, #224b71 0, transparent 55%), linear-gradient(110deg, #03162e, #0a2b4a);
-}
 
 .page[data-theme="banking"] .sectionIntro h2::after,
 .page[data-theme="banking"] .sectionAccent { background: #c9a227; }
@@ -659,9 +650,6 @@
 .page[data-theme="banking"] .darkCategory .serviceCard:hover,
 .page[data-theme="banking"] .darkCategory .serviceCard:focus-visible { border-color: #c9a227; }
 .page[data-theme="banking"] .bottomCta { background: #061a33; border-color: #294765; }
-:global(.hero[data-theme="banking"]) {
-  background: radial-gradient(ellipse at 95% 35%, #176b87 0, transparent 55%), linear-gradient(110deg, #061a33, #123b63);
-}
 
 .page[data-theme="insolvency"] .sectionIntro h2::after,
 .page[data-theme="insolvency"] .sectionAccent { background: #b7793e; }
@@ -686,9 +674,6 @@
 .page[data-theme="insolvency"] .darkCategory .serviceCard:hover,
 .page[data-theme="insolvency"] .darkCategory .serviceCard:focus-visible { border-color: #b7793e; }
 .page[data-theme="insolvency"] .bottomCta { background: #0b1e35; border-color: #5b4850; }
-:global(.hero[data-theme="insolvency"]) {
-  background: radial-gradient(ellipse at 95% 35%, #284b68 0, transparent 55%), linear-gradient(110deg, #0b1220, #123b63);
-}
 
 .page[data-theme="hr"] .sectionIntro h2::after,
 .page[data-theme="hr"] .sectionAccent { background: #b66b55; }
@@ -713,6 +698,3 @@
 .page[data-theme="hr"] .serviceCard:focus-visible { border-color: #9b5c4b; }
 .page[data-theme="hr"] .darkCategory .serviceCard:hover,
 .page[data-theme="hr"] .darkCategory .serviceCard:focus-visible { border-color: #e4a08a; }
-:global(.hero[data-theme="hr"]) {
-  background: radial-gradient(ellipse at 95% 35%, #7c493d 0, transparent 55%), linear-gradient(110deg, #061b32, #172a39);
-}

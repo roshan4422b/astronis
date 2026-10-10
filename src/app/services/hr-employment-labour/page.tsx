@@ -27,7 +27,7 @@ const directory = hrEmploymentLabour.groups.map((group) => ({
 export default function HrEmploymentLabourPage() {
   return (
     <main className={styles.page} data-theme="hr">
-      <ServiceHero practice={hrEmploymentLabour} theme="hr" />
+      <ServiceHero practice={hrEmploymentLabour} />
 
       <section className={styles.serviceDirectory} id="service-groups">
         <article className={`${styles.categorySection} ${styles.lightCategory}`}>

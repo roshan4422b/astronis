@@ -12,6 +12,7 @@ const metadata = [
 export const regulatoryServices: ServicePractice = {
   title: hierarchy[1].title,
   slug: "regulatory-services",
+  heroImage: "/images/services/regulatory-and-compliance.webp",
   seoTitle: "Regulatory Advisory & Compliance Services | Astronis",
   heroEyebrow: "Regulatory Services",
   heroStatement: "Navigate complex regulations with greater clarity & confidence.",

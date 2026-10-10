@@ -39,6 +39,7 @@ const connectedServices = services.map((service, index): ServicePractice => {
   return {
     title: service.title,
     slug: service.canonicalSlug,
+    heroImage: service.heroImage,
     seoTitle: `${service.title} | Astronis`,
     description: service.shortDescription,
     heroStatement: service.shortDescription,
