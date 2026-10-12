@@ -2,9 +2,12 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { services } from "@/data/services";
 import { resolvePractice } from "@/data/service-practices";
-import { practicePath } from "@/data/service-detail-types";
+import { practicePath, serviceAnchor } from "@/data/service-detail-types";
+import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
 import MainServicePage from "../_template/main-service-page";
 import { Banner } from "../../_components/ui";
+import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
+import { regulatoryServices } from "@/data/regulatory-practice";
 
 function resolveHierarchy(slugs: string[]) {
   const service = services.find(item => item.canonicalSlug === slugs[0]);
@@ -12,13 +15,11 @@ function resolveHierarchy(slugs: string[]) {
   const group = service.subServices.find(item => item.slug === slugs[1]);
   if (!group) return null;
   const child = slugs.length === 3
-    ? group.children.find(item => slugify(item) === slugs[2])
+    ? group.children.find(item => serviceAnchor(item) === slugs[2])
     : undefined;
   if (slugs.length === 3 && !child) return null;
   return { service, group, child };
 }
-
-const slugify = (value: string) => value.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export function generateStaticParams() {
   return services.map(service => ({ slug: [service.canonicalSlug] }));
@@ -29,12 +30,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
-    const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}${hierarchy.child ? `/${slugify(hierarchy.child)}` : ""}`;
+    const consumerDetail = hierarchy.child && hierarchy.service.canonicalSlug === "regulatory-services"
+      ? getConsumerRegulatoryDetail(serviceAnchor(hierarchy.child))
+      : undefined;
+    const pageTitle = consumerDetail?.title || title;
+    const description = consumerDetail?.description || `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`;
+    const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}${hierarchy.child ? `/${serviceAnchor(hierarchy.child)}` : ""}`;
     return {
-      title: `${title} | ${hierarchy.service.title} | Astronis`,
-      description: `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`,
+      title: `${pageTitle} | ${hierarchy.service.title} | Astronis`,
+      description,
       alternates: { canonical },
-      openGraph: { title: `${title} | ${hierarchy.service.title} | Astronis`, description: `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`, url: canonical, type: "website" },
+      openGraph: { title: `${pageTitle} | ${hierarchy.service.title} | Astronis`, description, url: canonical, type: "website" },
     };
   }
   const practice = slugs.length === 1 ? resolvePractice(slugs)?.practice : undefined;
@@ -54,6 +60,13 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const consumerDetail = service.canonicalSlug === "regulatory-services"
+      ? getConsumerRegulatoryDetail(serviceAnchor(child))
+      : undefined;
+    const consumerGroup = regulatoryServices.groups.find(item => item.slug === group.slug);
+    if (consumerDetail && consumerGroup) {
+      return <ConsumerRegulatoryDetailPage detail={consumerDetail} group={consumerGroup} practice={regulatoryServices} />;
+    }
     return <>
       <Banner title={child || group.title} eyebrow={service.title} text={`${child || group.title} support connected to ${service.title.toLowerCase()}.`} />
       <section className="section"><div className="container">
