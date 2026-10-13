@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import styles from "./entity-formation-page.module.css";
 
 type PageSectionNavItem = {
@@ -8,13 +8,27 @@ type PageSectionNavItem = {
   label: string;
 };
 
-export default function PageSectionNav({ items }: { items: PageSectionNavItem[] }) {
-  const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
+const noHiddenSections: string[] = [];
+
+export default function PageSectionNav({
+  items,
+  hiddenWhenVisible = noHiddenSections,
+}: {
+  items: PageSectionNavItem[];
+  hiddenWhenVisible?: string[];
+}) {
+  const visibleItems = useMemo(
+    () => items.filter(({ id, label }) => id !== "overview" && label.trim().toLowerCase() !== "overview"),
+    [items],
+  );
+  const hiddenSectionIds = useMemo(() => hiddenWhenVisible, [hiddenWhenVisible]);
+  const [activeId, setActiveId] = useState<string>(visibleItems[0]?.id ?? "");
+  const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
-    if (!items.length) return;
+    if (!visibleItems.length) return;
 
-    const sectionNodes = items
+    const sectionNodes = visibleItems
       .map(({ id }) => document.getElementById(id))
       .filter((node): node is HTMLElement => Boolean(node));
 
@@ -39,7 +53,36 @@ export default function PageSectionNav({ items }: { items: PageSectionNavItem[] 
     sectionNodes.forEach((node) => observer.observe(node));
 
     return () => observer.disconnect();
-  }, [items]);
+  }, [visibleItems]);
+
+  useEffect(() => {
+    if (!hiddenSectionIds.length) return;
+
+    const sectionNodes = hiddenSectionIds
+      .map((id) => document.getElementById(id))
+      .filter((node): node is HTMLElement => Boolean(node));
+
+    if (!sectionNodes.length) return;
+
+    const visibleFullWidthSections = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visibleFullWidthSections.add(entry.target.id);
+          else visibleFullWidthSections.delete(entry.target.id);
+        });
+        setIsHidden(visibleFullWidthSections.size > 0);
+      },
+      { threshold: 0 },
+    );
+
+    sectionNodes.forEach((node) => observer.observe(node));
+
+    return () => {
+      observer.disconnect();
+      visibleFullWidthSections.clear();
+    };
+  }, [hiddenSectionIds]);
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault();
@@ -59,10 +102,14 @@ export default function PageSectionNav({ items }: { items: PageSectionNavItem[] 
   };
 
   return (
-    <aside className={styles.pageSectionNavWrap} aria-label="Page sections">
+    <aside
+      className={`${styles.pageSectionNavWrap} ${isHidden ? styles.pageSectionNavHidden : ""}`}
+      aria-label="Page sections"
+      aria-hidden={isHidden}
+    >
       <nav className={styles.pageSectionNav}>
         <ol className={styles.pageSectionNavList}>
-          {items.map(({ id, label }) => (
+          {visibleItems.map(({ id, label }) => (
             <li key={id} className={styles.pageSectionNavItem}>
               <a
                 href={`#${id}`}

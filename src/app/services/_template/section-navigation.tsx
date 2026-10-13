@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../../_components/icon";
 import styles from "./service-template.module.css";
@@ -9,7 +9,13 @@ type NavChild = { title: string; url: string };
 type Item = { id: string; title: string; icon?: string; href?: string; description?: string; children?: NavChild[] };
 
 export default function SectionNavigation({ items, title, variant = "sidebar", showItemNumbers = true, theme }: { items: Item[]; title: string; variant?: "sidebar" | "bar"; showItemNumbers?: boolean; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" }) {
-  const [active, setActive] = useState(items[0]?.id || "");
+  const visibleItems = useMemo(
+    () => variant === "sidebar"
+      ? items.filter(item => item.id !== "overview" && item.title.trim().toLowerCase() !== "overview")
+      : items,
+    [items, variant],
+  );
+  const [active, setActive] = useState(visibleItems[0]?.id || "");
   const [openId, setOpenId] = useState<string | null>(null);
   const [mobileCategoryId, setMobileCategoryId] = useState(items[0]?.id || "");
   const [mobileChildUrl, setMobileChildUrl] = useState(items[0]?.children?.[0]?.url || "");
@@ -18,7 +24,14 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
   function navigate(id: string, updateHistory = true) {
     const target = document.getElementById(id);
     if (!target) return;
-    const navigationHeight = variant === "bar" || window.matchMedia("(max-width: 767px)").matches ? (navigationRef.current?.getBoundingClientRect().height || 80) : 0;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isStickyNavigation = navigationRef.current
+      ? window.getComputedStyle(navigationRef.current).position === "sticky"
+        || window.getComputedStyle(navigationRef.current.parentElement ?? navigationRef.current).position === "sticky"
+      : false;
+    const navigationHeight = isStickyNavigation && (variant === "bar" || isMobile)
+      ? (navigationRef.current?.getBoundingClientRect().height || 80)
+      : 0;
     const offset = (document.querySelector(".site-header")?.getBoundingClientRect().height || 120) + navigationHeight + 24;
     if (updateHistory) window.history.pushState(null, "", `#${id}`);
     setActive(id);
@@ -28,12 +41,22 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
   }
 
   useEffect(() => {
-    const nodes = items.map(item => document.getElementById(item.id)).filter((node): node is HTMLElement => Boolean(node));
+    const nodes = visibleItems.map(item => document.getElementById(item.id)).filter((node): node is HTMLElement => Boolean(node));
     const template = nodes[0]?.closest<HTMLElement>("[data-service-template]");
     const header = document.querySelector(".site-header");
     let frame = 0;
     let initialFrame = 0;
-    const offset = () => (header?.getBoundingClientRect().height || 120) + (variant === "bar" || window.matchMedia("(max-width: 767px)").matches ? (navigationRef.current?.getBoundingClientRect().height || 80) : 0) + 24;
+    const offset = () => {
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const isStickyNavigation = navigationRef.current
+        ? window.getComputedStyle(navigationRef.current).position === "sticky"
+          || window.getComputedStyle(navigationRef.current.parentElement ?? navigationRef.current).position === "sticky"
+        : false;
+      const navigationHeight = isStickyNavigation && (variant === "bar" || isMobile)
+        ? (navigationRef.current?.getBoundingClientRect().height || 80)
+        : 0;
+      return (header?.getBoundingClientRect().height || 120) + navigationHeight + 24;
+    };
     const update = () => {
       frame = 0;
       let current = nodes[0];
@@ -69,7 +92,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       observer.disconnect(); resize.disconnect(); cancelAnimationFrame(frame); cancelAnimationFrame(initialFrame);
       window.removeEventListener("scroll", schedule); window.removeEventListener("hashchange", restoreHash); window.removeEventListener("popstate", restoreHash);
     };
-  }, [items, variant]);
+  }, [visibleItems, variant]);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -100,7 +123,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       <div className={styles.navDesktop}>
         <p className={styles.navTitle}>{title}</p>
         <ol className={styles.navList}>
-          {items.map((item, index) => {
+          {visibleItems.map((item, index) => {
             const hasChildren = Boolean(item.children?.length);
             const isOpen = openId === item.id;
             const panelId = `${item.id}-panel`;
@@ -153,7 +176,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
           })}
         </ol>
         {(() => {
-          const selected = items.find(item => item.id === openId);
+          const selected = visibleItems.find(item => item.id === openId);
           if (!isBarNavigation || !selected?.children?.length) return null;
           const columns = Math.min(3, Math.ceil(selected.children.length / 4));
           const perColumn = Math.ceil(selected.children.length / columns);
@@ -173,6 +196,23 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       </div>
 
       <div className={styles.navMobile}>
+        {visibleItems.some(item => item.children?.length) ? <div className={styles.mobileCategoryList}>
+          {visibleItems.map((item, index) => {
+            const hasChildren = Boolean(item.children?.length);
+            const isOpen = openId === item.id;
+            const panelId = `${item.id}-mobile-panel`;
+            return <div className={styles.mobileCategory} key={item.id}>
+              <button type="button" className={styles.mobileCategoryButton} aria-expanded={hasChildren ? isOpen : undefined} aria-controls={hasChildren && isOpen ? panelId : undefined} onClick={() => hasChildren ? setOpenId(current => current === item.id ? null : item.id) : navigate(item.id)}>
+                <span>{String(index + 1).padStart(2, "0")}</span><strong>{item.title}</strong>
+                {hasChildren && <span aria-hidden="true" className={`${styles.navChevronWrap} ${isOpen ? styles.navChevronOpen : ""}`}><Icon name="chevron" className={styles.navChevron} /></span>}
+              </button>
+              {hasChildren && isOpen && <ul id={panelId} className={styles.mobileChildList} aria-label={`${item.title} services`}>
+                {item.children!.map(child => <li key={`${item.id}-${child.url || child.title}`}><Link href={child.url} onClick={() => setOpenId(null)}>{child.title}<span aria-hidden="true">↗</span></Link></li>)}
+              </ul>}
+            </div>;
+          })}
+        </div> : <select aria-label={title} value={active} onChange={event => navigate(event.target.value)}>
+          {visibleItems.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
         {items.some(item => item.children?.length) ? (() => {
           const selectedCategory = items.find(item => item.id === mobileCategoryId);
           return <div className={styles.mobileServiceSelects}>

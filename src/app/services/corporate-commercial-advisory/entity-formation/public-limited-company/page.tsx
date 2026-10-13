@@ -4,8 +4,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
 import { testimonials } from "@/content/testimonials";
-import PageSectionNav from "../_components/page-section-nav";
-import pageLayoutStyles from "../_components/entity-formation-page.module.css";
+import PageSectionLayout from "../_components/page-section-layout";
 import styles from "./public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -15,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 const nav = [["Overview", "overview"], ["Benefits", "benefits"], ["Eligibility & Structure", "eligibility"], ["Process & Timeline", "process"], ["Compliance & Taxation", "taxation"], ["FAQs", "faqs"]];
+const navItems = nav.map(([label, id]) => ({ id, label }));
 const services = [
   ["search", "Name Availability & Reservation", "Review proposed names and coordinate reservation."], ["file", "Incorporation & MOA Filing", "Coordinate incorporation documents and ROC filing."], ["document", "Drafting of MOA & AOA", "Prepare constitutional documents around your objects and governance."], ["building", "PAN, TAN & Bank Account Assistance", "Coordinate essential post-incorporation setup."], ["percent", "GST & Statutory Registrations", "Map registrations to your business activity and location."], ["people", "Shareholding & ESOP Advisory", "Plan ownership and employee equity arrangements."], ["shield", "Corporate Compliance Support", "Establish a practical approach to recurring obligations."], ["calendar", "Board Meetings & Resolutions", "Support board processes, records and resolutions."], ["document", "Secretarial Compliance", "Coordinate company law filings and governance records."], ["chart", "Listing Readiness (Pre-IPO Advisory)", "Prepare governance and documentation workstreams for review."], ["globe", "Foreign Investment (FEMA/FDI) Advisory", "Review investment structures and relevant reporting needs."], ["scale", "Ongoing Legal & Regulatory Advisory", "Connect legal and regulatory questions to business decisions."],
 ];
@@ -44,11 +44,11 @@ export default function PublicLimitedCompanyPage() {
       </div>
     </section>
 
-    <div className={pageLayoutStyles.pageNavLayout}>
-      <div className={pageLayoutStyles.pageContent}>
-
+    <PageSectionLayout variant="full-width">
     <section className={styles.services}><div className="container"><Heading eyebrow="OUR SERVICES FOR PUBLIC LIMITED COMPANY" title="A coordinated path from incorporation to scale" text="Public Limited Company registration is the starting point. Our team can coordinate the connected legal, governance and regulatory workstreams."/><div className={styles.serviceGrid}>{services.map(([icon, title, text]) => <article className={styles.serviceCard} key={title}><span className={styles.icon}><Icon name={icon}/></span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+    </PageSectionLayout>
 
+    <PageSectionLayout variant="with-sidebar" navItems={navItems}>
     <section className={styles.benefits} id="benefits"><div className={`container ${styles.benefitLayout}`}><div><Heading eyebrow="KEY BENEFITS" title="Why choose a Public Limited Company?" text="For businesses with the scale, governance capacity and ambitions to consider a broader ownership structure."/><div className={styles.benefitGrid}>{benefits.map(([icon, title, text]) => <article key={title}><span className={styles.icon}><Icon name={icon}/></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div><aside className={styles.benefitPanel}><span>GOVERNANCE THAT SUPPORTS GROWTH</span><h3>A stronger platform for the next chapter.</h3><p>Public company formation should reflect how the business intends to operate, make decisions and engage with investors over time.</p><Link href="/services/corporate-commercial-advisory#entity-formation-business-setup">Explore entity formation <Icon name="arrow"/></Link></aside></div></section>
 
     <section className={styles.tax} id="taxation"><div className={`container ${styles.taxGrid}`}><div><Heading eyebrow="BUSINESS STRUCTURE & TAXATION SUPPORT" title="Built for a wider business horizon" text="A Public Limited Company provides a robust framework for larger businesses to organise capital, governance and access to domestic and international markets." light/><ul className={styles.taxPoints}>{[["percent", "Corporate taxation", "Taxed separately as a company under applicable corporate tax rules."], ["gem", "Deductions and incentives", "Eligibility depends on the activity, facts and current tax provisions."], ["scale", "Public funding rules", "Public offers, IPOs and listings bring additional regulatory requirements."], ["globe", "Institutional & foreign investment", "A familiar corporate form for many institutional and overseas investors, subject to applicable rules."]].map(([i,t,d])=><li key={t}><Icon name={i}/><div><strong>{t}</strong><p>{d}</p></div></li>)}</ul></div><figure className={styles.taxImage}><Image src="/Part-16 .png" alt="Business leaders discussing corporate finance and expansion" fill sizes="(max-width: 850px) 100vw, 42vw"/><figcaption>Structure for today.<br/><strong>Readiness for tomorrow.</strong></figcaption></figure></div></section>
@@ -62,7 +62,9 @@ export default function PublicLimitedCompanyPage() {
     <section className={styles.requirements} id="eligibility"><div className="container"><Heading eyebrow="MINIMUM REQUIREMENTS" title="Members, directors & capital" text="A concise view of the core incorporation requirements for a public company in India."/><div className={styles.requirementGrid}>{requirements.map(([icon,title,text],i)=><article key={title}><span className={styles.requirementIcon}><Icon name={icon}/></span><small>0{i+1}</small><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
     <section className={styles.pricing}><div className="container"><Heading eyebrow="OUR PROFESSIONAL FEES" title="Transparent and value-driven" text="Choose a starting scope. Final fees and government charges depend on the specific requirements and confirmed scope."/><div className={styles.priceGrid}><article className={styles.priceCard}><span>FORMATION ESSENTIALS</span><h3>Basic Package</h3><strong className={styles.price}>₹19,999<small>/-</small></strong><ul>{["Name reservation", "Incorporation with ROC", "MOA & AOA drafting and filing", "PAN, TAN and basic compliance support"].map(x=><li key={x}><Icon name="shield"/>{x}</li>)}</ul><Link className={styles.priceButton} href="/professionals/enquiry">Get Started <Icon name="arrow"/></Link></article><article className={`${styles.priceCard} ${styles.featuredPrice}`}><span>EXTENDED STARTUP SUPPORT</span><h3>Comprehensive Package</h3><strong className={styles.price}>₹29,999<small>/-</small></strong><ul>{["All Basic Package services", "GST registration", "Bank account assistance", "Initial compliance guidance", "Post-incorporation advisory (1 month)"].map(x=><li key={x}><Icon name="shield"/>{x}</li>)}</ul><Link className={styles.priceButton} href="/contact">Schedule a Consultation <Icon name="arrow"/></Link></article><article className={styles.customPrice}><span>FOR COMPLEX REQUIREMENTS</span><h3>Customised Quote</h3><p>For sector-specific licensing, IPO readiness, foreign investment, listing compliance or a complex structure.</p><Link href="/professionals/enquiry">Get a Quote <Icon name="arrow"/></Link></article></div><p className={styles.priceNote}>Professional fees shown above are indicative. Applicable taxes, statutory fees and third-party costs may be additional.</p></div></section>
+    </PageSectionLayout>
 
+    <PageSectionLayout variant="full-width">
     <section className={styles.features}><div className="container"><Heading eyebrow="KEY FEATURES" title="A public company, considered carefully" text="Core characteristics to weigh alongside your funding and governance plans." light/><div className={styles.featureStrip}>{[["chart","Public capital"],["gem","Market credibility"],["network","Transferable shares"],["building","Separate legal identity"],["shield","Perpetual succession"],["rocket","Scale & IPO potential"],["award","Brand value"]].map(([i,t])=><div key={t}><Icon name={i}/><span>{t}</span></div>)}</div></div></section>
 
     <section className={styles.faq} id="faqs"><div className={`container ${styles.faqLayout}`}><div><Heading eyebrow="FREQUENTLY ASKED QUESTIONS" title="A few useful answers" text="Get familiar with the main considerations before beginning a public company incorporation."/><Link href="/faqs">Browse all FAQs <Icon name="arrow"/></Link></div><div className={styles.faqList}>{faqs.map(([q,a])=><details key={q}><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}</div></div></section>
@@ -76,8 +78,6 @@ export default function PublicLimitedCompanyPage() {
     <section className={styles.experience}><div className="container"><Heading eyebrow="SHARE YOUR EXPERIENCE WITH ASTRONIS GLOBAL" title="Your experience matters"/><div className={styles.experienceGrid}><article><Icon name="message"/><div><h3>Write a review</h3><p>Share your experience and help us serve you better.</p></div><Link href="/testimonials">Write a Review <Icon name="arrow"/></Link></article><article><Icon name="play"/><div><h3>Record a video testimonial</h3><p>Share your video feedback about your journey with Astronis Global.</p></div><Link href="/testimonials">Record a Video <Icon name="arrow"/></Link></article></div></div></section>
 
     <section className={styles.final}><div className="container"><span>YOUR NEXT CHAPTER STARTS HERE</span><h2>Ready to incorporate your Public Limited Company?</h2><p>Let our experts guide you through a seamless and compliant incorporation process.</p><Link href="/contact">Schedule a Consultation <Icon name="arrow"/></Link></div></section>
-      </div>
-      <PageSectionNav items={nav.map(([label, id]) => ({ id, label }))} />
-    </div>
+    </PageSectionLayout>
   </div>;
 }
