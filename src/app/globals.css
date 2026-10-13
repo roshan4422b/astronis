@@ -1,5 +1,6 @@
 @import "tailwindcss";
 :root {
+  --font-size-min: 14px;
   --navy: #04163c;
   --ink: #071c4f;
   --blue: #0751db;
@@ -23,7 +24,7 @@ body {
   margin: 0;
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.65;
   background: white;
 }
@@ -95,10 +96,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 h3 {
   line-height: 1.3;
-  font-size: 20px;
+  font-size: max(var(--font-size-min), 20px);
 }
 h4 {
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
 }
 p {
   color: var(--muted);
@@ -156,7 +157,7 @@ textarea:focus {
   border-radius: 5px;
   background: var(--blue);
   color: white;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 600;
   line-height: 1.5;
   min-height: 48px;
@@ -186,7 +187,7 @@ textarea:focus {
   gap: 10px;
   align-items: center;
   color: #0747c2;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 600;
   border-bottom: 1px solid #90b3fb;
   padding-bottom: 4px;
@@ -210,7 +211,7 @@ textarea:focus {
   margin: 0 auto 42px;
 }
 .section-heading h2 {
-  font-size: clamp(30px, 3vw, 44px);
+  font-size: max(var(--font-size-min), clamp(30px, 3vw, 44px));
 }
 .section-heading .heading-line {
   margin: 18px auto;
@@ -229,7 +230,7 @@ textarea:focus {
   display: block;
   color: #0868e8;
   letter-spacing: 1.7px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 600;
 }
 .icon {
@@ -273,7 +274,7 @@ textarea:focus {
 .utility-bar {
   background: var(--navy);
   color: #eff4ff;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   letter-spacing: 0.3px;
 }
 .utility-inner {
@@ -311,7 +312,7 @@ textarea:focus {
   align-items: center;
   gap: 7px;
   color: #d2e1f7;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
 }
 .social-links a:hover {
   color: white;
@@ -351,7 +352,7 @@ textarea:focus {
   justify-content: flex-end;
   gap: 19px;
   flex: 1;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -416,7 +417,7 @@ textarea:focus {
 .nav-cta {
   padding: 11px 15px;
   gap: 10px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .menu-toggle {
   display: none;
@@ -454,7 +455,7 @@ textarea:focus {
   padding: 32px;
 }
 .mega-intro h2 {
-  font-size: 30px;
+  font-size: max(var(--font-size-min), 30px);
   margin: 12px 0 20px;
 }
 .mega-intro > a {
@@ -527,16 +528,16 @@ textarea:focus {
   padding-block: 65px;
 }
 .hero-copy h1 {
-  font-size: clamp(36px, 3.85vw, 59px);
+  font-size: max(var(--font-size-min), clamp(36px, 3.85vw, 59px));
   letter-spacing: -1px;
 }
 .hero-copy > p {
   max-width: 580px;
   color: #e2eafa;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .hero-copy .hero-tagline {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 17px;
@@ -576,21 +577,21 @@ textarea:focus {
 .stat strong {
   font-family: Georgia, serif;
   display: block;
-  font-size: clamp(21px, 2vw, 31px);
+  font-size: max(var(--font-size-min), clamp(21px, 2vw, 31px));
   line-height: 1.2;
 }
 .stat span {
   display: block;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   color: #c9d9ee;
   margin-top: 10px;
 }
 .stat-multisector strong {
-  font-size: clamp(18px, 1.7vw, 27px);
+  font-size: max(var(--font-size-min), clamp(18px, 1.7vw, 27px));
   white-space: nowrap;
 }
 .stat-multisector span {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 .quick-services {
   position: relative;
@@ -635,7 +636,7 @@ textarea:focus {
   margin-bottom: 22px;
 }
 .quick-grid h3 {
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
 }
 .quick-grid .heading-line {
   width: 25px;
@@ -651,7 +652,7 @@ textarea:focus {
   gap: 35px;
   margin-top: 25px;
   color: white;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
 }
 .why-section {
   display: grid;
@@ -682,17 +683,17 @@ textarea:focus {
   z-index: 2;
 }
 .why-intro h2 {
-  font-size: clamp(45px, 5.3vw, 76px);
+  font-size: max(var(--font-size-min), clamp(45px, 5.3vw, 76px));
   margin-top: 15px;
 }
 .why-intro p {
   color: #dce8ff;
   max-width: 350px;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .why-intro .eyebrow {
   color: #4699ff;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   letter-spacing: 3px;
 }
 .reasons-grid {
@@ -748,7 +749,7 @@ textarea:focus {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   font-weight: 600;
 }
 .reasons-grid .icon {
@@ -758,11 +759,11 @@ textarea:focus {
   margin-top: 3px;
 }
 .reasons-grid h3 {
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   margin-bottom: 10px;
 }
 .reasons-grid p {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.7;
 }
 .practice-grid,
@@ -863,11 +864,11 @@ textarea:focus {
 }
 .card-body h3 {
   font-family: Georgia, serif;
-  font-size: 20px;
+  font-size: max(var(--font-size-min), 20px);
   margin-bottom: 10px;
 }
 .card-body p {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   margin-bottom: 18px;
   line-height: 1.75;
 }
@@ -917,7 +918,7 @@ textarea:focus {
   height: 25px;
 }
 .industry-tile h3 {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   margin-top: 15px;
 }
 .industry-tile .heading-line {
@@ -974,7 +975,7 @@ textarea:focus {
 .industry-tile-content h3 {
   margin: 0;
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   line-height: 1.25;
 }
 .industry-tile-content .heading-line {
@@ -985,7 +986,7 @@ textarea:focus {
   align-items: center;
   gap: 7px;
   color: var(--blue);
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 600;
 }
 .industry-tile-link .icon {
@@ -1052,12 +1053,12 @@ textarea:focus {
 }
 .ribbon h3 {
   font-family: Georgia, serif;
-  font-size: 22px;
+  font-size: max(var(--font-size-min), 22px);
   min-width: 200px;
 }
 .ribbon p {
   color: #cfddf7;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   max-width: 460px;
 }
 .ribbon > .button {
@@ -1088,19 +1089,19 @@ textarea:focus {
   max-width: 620px;
 }
 .global-copy h2 {
-  font-size: clamp(35px, 4vw, 58px);
+  font-size: max(var(--font-size-min), clamp(35px, 4vw, 58px));
   margin-top: 15px;
 }
 .global-copy p {
   color: #dbe8ff;
   max-width: 460px;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .global-copy .eyebrow {
   color: #67b0ff;
 }
 .global-copy .button {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   padding: 12px 16px;
 }
 .approach-section {
@@ -1179,7 +1180,7 @@ textarea:focus {
 }
 .approach-grid h3 {
   font-family: Georgia, serif;
-  font-size: 21px;
+  font-size: max(var(--font-size-min), 21px);
   margin-bottom: 12px;
   transition: color 300ms ease, transform 360ms ease;
 }
@@ -1188,7 +1189,7 @@ textarea:focus {
   transform: translateZ(8px);
 }
 .approach-grid p {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   transition: color 300ms ease;
 }
 .approach-grid article:hover p {
@@ -1204,7 +1205,7 @@ textarea:focus {
 .approach-note {
   margin-top: 30px;
   text-align: center;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 .approach-note strong {
   color: var(--ink);
@@ -1227,7 +1228,7 @@ textarea:focus {
   color: var(--ink);
 }
 .home-contact-section .enquiry-form h3 {
-  font-size: 36px;
+  font-size: max(var(--font-size-min), 36px);
   justify-content: center;
   text-align: center;
 }
@@ -1237,7 +1238,7 @@ textarea:focus {
   margin-inline: auto;
 }
 .contact-main .enquiry-form h3 {
-  font-size: 36px;
+  font-size: max(var(--font-size-min), 36px);
 }
 .home-contact-side {
   display: flex;
@@ -1323,18 +1324,18 @@ textarea:focus {
 }
 .leader-card h3 {
   font-family: Georgia, serif;
-  font-size: 25px;
+  font-size: max(var(--font-size-min), 25px);
   margin-bottom: 10px;
 }
 .leader-card .eyebrow {
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
 }
 .leader-card p {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   margin: 12px 0;
 }
 .insight-card .eyebrow {
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   letter-spacing: 0.8px;
   margin-bottom: 12px;
 }
@@ -1358,7 +1359,7 @@ textarea:focus {
   display: none;
 }
 .faq-list summary span {
-  font-size: 25px;
+  font-size: max(var(--font-size-min), 25px);
   color: var(--blue);
   font-weight: 400;
 }
@@ -1367,7 +1368,7 @@ textarea:focus {
 }
 .faq-list details p {
   padding: 0 35px 24px 4px;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 .clients-section {
   padding-bottom: 10px;
@@ -1452,13 +1453,13 @@ textarea:focus {
   }
 }
 .client-logo-name {
-  font-size: 22px;
+  font-size: max(var(--font-size-min), 22px);
   font-weight: 800;
   line-height: 1.1;
 }
 .client-logo-descriptor {
   color: #5f7091;
-  font-size: 9px;
+  font-size: max(var(--font-size-min), 9px);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -1530,7 +1531,7 @@ textarea:focus {
 }
 .clients-trust-section .trust-grid h3 {
   color: white;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.35;
 }
 .clients-trust-section .trust-grid > div:last-child {
@@ -1581,7 +1582,7 @@ textarea:focus {
   margin: 0 auto 15px;
 }
 .trust-grid h3 {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .testimonial-invite {
   position: relative;
@@ -1644,18 +1645,18 @@ textarea:focus {
   margin: 0 0 20px;
   color: var(--ink);
   font-family: Georgia, serif;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   line-height: 1.65;
 }
 .home-testimonial-card strong {
   color: var(--ink);
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 .home-testimonial-card small {
   display: block;
   margin-top: 4px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   line-height: 1.45;
 }
 .testimonial-invite > .icon {
@@ -1666,7 +1667,7 @@ textarea:focus {
 }
 .testimonial-invite h3 {
   font-family: Georgia, serif;
-  font-size: 27px;
+  font-size: max(var(--font-size-min), 27px);
 }
 .testimonial-invite p {
   margin-top: 12px;
@@ -1699,12 +1700,12 @@ textarea:focus {
 }
 .contact-details h3 {
   font-family: Georgia, serif;
-  font-size: 21px;
+  font-size: max(var(--font-size-min), 21px);
   text-transform: uppercase;
 }
 .contact-details-intro {
   color: #eef5ff;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   line-height: 1.6;
   margin: 5px 0 12px;
 }
@@ -1730,14 +1731,14 @@ textarea:focus {
 .contact-details p,
 .contact-details a {
   color: #dce7fa;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   display: block;
   overflow-wrap: anywhere;
 }
 .contact-details h4 {
   margin-bottom: 6px;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   letter-spacing: 0.3px;
 }
 .contact-details-map {
@@ -1761,12 +1762,12 @@ textarea:focus {
   background: linear-gradient(110deg, #f4f8ff, white 48%, #eef5ff);
 }
 .contact-hero h1 {
-  font-size: clamp(48px, 6vw, 68px);
+  font-size: max(var(--font-size-min), clamp(48px, 6vw, 68px));
   text-transform: uppercase;
 }
 .contact-hero p {
   color: var(--ink);
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
   margin-top: 2px;
 }
 .contact-hero .heading-line {
@@ -1779,7 +1780,7 @@ textarea:focus {
   background: var(--ink);
   color: white;
   font-family: Georgia, serif;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -1792,7 +1793,7 @@ textarea:focus {
 }
 .contact-office-card h2 {
   font-family: Georgia, serif;
-  font-size: 20px;
+  font-size: max(var(--font-size-min), 20px);
   text-transform: uppercase;
 }
 .contact-office-card .heading-line {
@@ -1800,14 +1801,14 @@ textarea:focus {
   margin: 5px 0 10px;
 }
 .contact-office-card h3 {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .office-address {
   display: flex;
   gap: 7px;
   margin: 4px 0 12px;
   color: var(--ink);
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   line-height: 1.5;
 }
 .office-address .icon {
@@ -1840,16 +1841,16 @@ textarea:focus {
 .map-block-three { left: 75px; bottom: 18px; }
 .map-marker { position: absolute; left: 48%; top: 43%; color: #df4b39; }
 .map-marker .icon { width: 30px; height: 30px; fill: #df4b39; }
-.map-label { position: absolute; left: 53%; top: 56%; padding: 2px 5px; background: white; color: #bf4a3c; font-size: 7px; white-space: nowrap; }
+.map-label { position: absolute; left: 53%; top: 56%; padding: 2px 5px; background: white; color: #bf4a3c; font-size: max(var(--font-size-min), 7px); white-space: nowrap; }
 .office-directions {
   min-height: 32px;
   margin: 13px auto 0;
   padding: 6px 13px;
   display: flex;
   width: max-content;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
 }
-.office-directions span { font-size: 18px; line-height: 0; }
+.office-directions span { font-size: max(var(--font-size-min), 18px); line-height: 0; }
 .enquiry-form {
   padding: 17px 20px 20px;
   border-radius: 10px;
@@ -1857,12 +1858,12 @@ textarea:focus {
 }
 .enquiry-form h3 {
   margin-bottom: 1px;
-  font-size: 20px;
+  font-size: max(var(--font-size-min), 20px);
   text-transform: uppercase;
 }
 .enquiry-intro {
   margin-bottom: 13px;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
 }
 .enquiry-form {
   background: white;
@@ -1872,7 +1873,7 @@ textarea:focus {
 }
 .enquiry-form h3 {
   font-family: Georgia, serif;
-  font-size: 24px;
+  font-size: max(var(--font-size-min), 24px);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1888,7 +1889,7 @@ textarea:focus {
 }
 .service-consultation-title {
   margin: 0 0 28px;
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: max(var(--font-size-min), clamp(40px, 5vw, 72px));
   line-height: 1.08;
   color: #082b69;
   font-family: Georgia, serif;
@@ -1909,14 +1910,14 @@ textarea:focus {
   min-height: 520px;
 }
 .service-consultation-side h3 {
-  font-size: clamp(24px, 2vw, 32px);
+  font-size: max(var(--font-size-min), clamp(24px, 2vw, 32px));
   line-height: 1.1;
   font-family: Georgia, serif;
   margin: 0 0 18px;
   max-width: 300px;
 }
 .service-consultation-side p {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.6;
   color: rgba(225, 234, 255, 0.95);
   margin: 0 0 18px;
@@ -1928,7 +1929,7 @@ textarea:focus {
   margin-top: 28px;
 }
 .service-consultation-points p {
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   line-height: 1.45;
   color: white;
   font-family: Georgia, serif;
@@ -1968,18 +1969,18 @@ textarea:focus {
   padding: 20px 18px;
 }
 .service-consultation-form-wrap .enquiry-form h3 {
-  font-size: clamp(28px, 2vw, 36px);
+  font-size: max(var(--font-size-min), clamp(28px, 2vw, 36px));
   margin-bottom: 14px;
 }
 .service-consultation-form-wrap .enquiry-intro {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   margin-bottom: 18px;
 }
 .service-consultation-form-wrap .form-grid {
   gap: 18px 18px;
 }
 .service-consultation-form-wrap .form-grid label {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 700;
 }
 .service-consultation-form-wrap input,
@@ -1999,7 +2000,7 @@ textarea:focus {
   gap: 21px;
 }
 .form-grid label {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 600;
   display: flex;
   flex-direction: column;
@@ -2019,7 +2020,7 @@ textarea {
   background: white;
   color: var(--ink);
   font-weight: 400;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 textarea {
   resize: vertical;
@@ -2027,14 +2028,14 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: #728099;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
 }
 .form-grid .consent {
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: flex-start;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 400;
 }
 .consent input {
@@ -2054,7 +2055,7 @@ textarea::placeholder {
   margin-top: 26px;
 }
 .form-note {
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   margin-top: 12px;
 }
 .form-status {
@@ -2062,7 +2063,7 @@ textarea::placeholder {
   margin-top: 18px;
   border: 1px solid var(--line);
   background: var(--pale);
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
 }
 .form-status a {
   text-decoration: underline;
@@ -2091,12 +2092,12 @@ textarea::placeholder {
 .connect-strip strong {
   display: block;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   letter-spacing: 0.6px;
   color: var(--blue);
 }
 .connect-strip span:not(.round-icon) {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   overflow-wrap: anywhere;
 }
 .contact-quick-connect {
@@ -2111,7 +2112,7 @@ textarea::placeholder {
 .contact-quick-connect h2 {
   color: var(--ink);
   font-family: Georgia, serif;
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
   text-align: center;
   text-transform: uppercase;
 }
@@ -2139,14 +2140,14 @@ textarea::placeholder {
   color: white;
 }
 .quick-connect-icon .icon { width: 22px; height: 22px; }
-.whatsapp-icon { background: #23bf68; font-size: 30px; transform: rotate(-35deg); }
+.whatsapp-icon { background: #23bf68; font-size: max(var(--font-size-min), 30px); transform: rotate(-35deg); }
 .whatsapp-icon svg { width: 24px; height: 24px; transform: rotate(35deg); }
 .contact-quick-grid strong,
 .contact-quick-grid small,
 .contact-quick-grid em { display: block; line-height: 1.35; }
-.contact-quick-grid strong { color: var(--blue); font-size: 11px; text-transform: uppercase; }
-.contact-quick-grid small { color: var(--ink); font-size: 10px; overflow-wrap: anywhere; }
-.contact-quick-grid em { color: var(--ink); font-size: 9px; font-style: normal; }
+.contact-quick-grid strong { color: var(--blue); font-size: max(var(--font-size-min), 11px); text-transform: uppercase; }
+.contact-quick-grid small { color: var(--ink); font-size: max(var(--font-size-min), 10px); overflow-wrap: anywhere; }
+.contact-quick-grid em { color: var(--ink); font-size: max(var(--font-size-min), 9px); font-style: normal; }
 .contact-values {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -2168,8 +2169,8 @@ textarea::placeholder {
 .contact-values > div > .icon { width: 34px; height: 34px; flex-shrink: 0; }
 .contact-values strong,
 .contact-values small { display: block; }
-.contact-values strong { font-size: 11px; text-transform: uppercase; }
-.contact-values small { color: #dce7fa; font-size: 9px; line-height: 1.35; }
+.contact-values strong { font-size: max(var(--font-size-min), 11px); text-transform: uppercase; }
+.contact-values small { color: #dce7fa; font-size: max(var(--font-size-min), 9px); line-height: 1.35; }
 .site-footer {
   background: linear-gradient(110deg, #03162e, #06224e);
   color: white;
@@ -2190,7 +2191,7 @@ textarea::placeholder {
 .footer-grid h3 {
   text-transform: uppercase;
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 23px;
@@ -2200,7 +2201,7 @@ textarea::placeholder {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 9px;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   font-weight: 500;
   line-height: 1.6;
   padding: 5px 0;
@@ -2238,7 +2239,7 @@ textarea::placeholder {
   flex: 1;
 }
 .footer-grid p {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 500;
   color: #c4d5ed;
   line-height: 1.7;
@@ -2249,7 +2250,7 @@ textarea::placeholder {
   justify-content: space-between;
   gap: 25px;
   padding-block: 20px;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 500;
   color: #c4d5ed;
 }
@@ -2299,7 +2300,7 @@ textarea::placeholder {
   gap: 18px;
 }
 .page-banner-content h1 {
-  font-size: clamp(48px, 5vw, 74px);
+  font-size: max(var(--font-size-min), clamp(48px, 5vw, 74px));
   line-height: 0.96;
   color: white;
   margin: 0;
@@ -2308,7 +2309,7 @@ textarea::placeholder {
 }
 .page-banner-content p {
   margin-top: 14px;
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
   color: #dfeeff;
 }
 .subnav {
@@ -2320,7 +2321,7 @@ textarea::placeholder {
   overflow-x: auto;
 }
 .subnav a {
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 600;
   white-space: nowrap;
   padding: 16px 20px;
@@ -2344,13 +2345,13 @@ textarea::placeholder {
 }
 .methodology-intro h2 {
   margin: 0;
-  font-size: clamp(34px, 3vw, 52px);
+  font-size: max(var(--font-size-min), clamp(34px, 3vw, 52px));
   line-height: 1.08;
   letter-spacing: -0.06em;
 }
 .methodology-intro p {
   margin: 0;
-  font-size: 15px;
+  font-size: max(var(--font-size-min), 15px);
   line-height: 1.75;
   color: var(--ink);
 }
@@ -2397,12 +2398,12 @@ textarea::placeholder {
 }
 .feature-card h3 {
   margin: 0 0 10px;
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   line-height: 1.3;
 }
 .feature-card p {
   margin: 0;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.7;
   color: #37547d;
 }
@@ -2415,7 +2416,7 @@ textarea::placeholder {
 }
 .section-heading-inline h2 {
   margin: 0;
-  font-size: clamp(32px, 3vw, 46px);
+  font-size: max(var(--font-size-min), clamp(32px, 3vw, 46px));
   line-height: 1.08;
   letter-spacing: -0.06em;
 }
@@ -2423,7 +2424,7 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 700;
   color: var(--blue);
 }
@@ -2447,7 +2448,7 @@ textarea::placeholder {
   margin-bottom: 14px;
 }
 .process-step {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 700;
   color: var(--blue);
 }
@@ -2468,11 +2469,11 @@ textarea::placeholder {
 }
 .process-card h3 {
   margin: 0 0 12px;
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
 }
 .process-card p {
   margin: 0;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.7;
   color: #35527d;
 }
@@ -2494,7 +2495,7 @@ textarea::placeholder {
 }
 .differentiator-copy h2 {
   margin: 0 0 18px;
-  font-size: clamp(32px, 2.9vw, 48px);
+  font-size: max(var(--font-size-min), clamp(32px, 2.9vw, 48px));
   line-height: 1.08;
   letter-spacing: -0.06em;
 }
@@ -2510,7 +2511,7 @@ textarea::placeholder {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.7;
   color: var(--ink);
 }
@@ -2535,7 +2536,7 @@ textarea::placeholder {
 }
 .stats-copy h2 {
   margin: 0 0 12px;
-  font-size: clamp(32px, 3vw, 48px);
+  font-size: max(var(--font-size-min), clamp(32px, 3vw, 48px));
   line-height: 1.08;
   letter-spacing: -0.06em;
 }
@@ -2559,13 +2560,13 @@ textarea::placeholder {
   min-height: 170px;
 }
 .stat-box strong {
-  font-size: clamp(28px, 2vw, 36px);
+  font-size: max(var(--font-size-min), clamp(28px, 2vw, 36px));
   font-family: Georgia, serif;
   color: var(--navy);
   margin-bottom: 10px;
 }
 .stat-box span {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   color: #45608b;
 }
 .cta-strip {
@@ -2580,7 +2581,7 @@ textarea::placeholder {
 }
 .cta-strip h2 {
   margin: 0;
-  font-size: clamp(32px, 2.8vw, 48px);
+  font-size: max(var(--font-size-min), clamp(32px, 2.8vw, 48px));
   letter-spacing: -0.06em;
 }
 .cta-strip p {
@@ -2604,20 +2605,20 @@ textarea::placeholder {
   z-index: 2;
 }
 .banner-content h1 {
-  font-size: clamp(35px, 4.4vw, 60px);
+  font-size: max(var(--font-size-min), clamp(35px, 4.4vw, 60px));
   max-width: 950px;
 }
 .banner-content p {
   max-width: 720px;
   color: #dce7fa;
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .breadcrumb {
   display: flex;
   gap: 13px;
   color: #b8d2fc;
   margin-bottom: 26px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .split-section {
   display: grid;
@@ -2626,7 +2627,7 @@ textarea::placeholder {
   align-items: center;
 }
 .split-section h2 {
-  font-size: 36px;
+  font-size: max(var(--font-size-min), 36px);
   margin-bottom: 22px;
 }
 .split-section p {
@@ -2655,18 +2656,18 @@ textarea::placeholder {
 .directory-card h2,
 .directory-card h3 {
   font-family: Georgia, serif;
-  font-size: 25px;
+  font-size: max(var(--font-size-min), 25px);
   margin-bottom: 18px;
 }
 .directory-card > p {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   margin-bottom: 20px;
 }
 .testimonial-rating {
   margin: -6px 0 14px;
   color: #d5a93a;
   letter-spacing: 2px;
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
 }
 .testimonial-rating span {
   color: #cbd5e4;
@@ -2681,7 +2682,7 @@ textarea::placeholder {
   gap: 15px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 .directory-card li a:hover {
   color: var(--blue);
@@ -2692,7 +2693,7 @@ textarea::placeholder {
   gap: 60px;
 }
 .article-copy h2 {
-  font-size: 29px;
+  font-size: max(var(--font-size-min), 29px);
   margin: 35px 0 17px;
 }
 .article-copy h2:first-child {
@@ -2717,11 +2718,11 @@ textarea::placeholder {
 }
 .article-aside h3 {
   font-family: Georgia, serif;
-  font-size: 24px;
+  font-size: max(var(--font-size-min), 24px);
   margin-bottom: 15px;
 }
 .article-aside p {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   margin-bottom: 20px;
 }
 .search-toolbar {
@@ -2740,7 +2741,7 @@ textarea::placeholder {
 .industry-results-count {
   margin: -8px 0 24px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
 }
 .industry-directory-grid {
   display: grid;
@@ -2783,7 +2784,7 @@ textarea::placeholder {
   display: block;
   margin-bottom: 9px;
   color: #b38628;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 700;
   letter-spacing: 1.5px;
 }
@@ -2791,11 +2792,11 @@ textarea::placeholder {
   min-height: 52px;
   margin-bottom: 12px;
   font-family: Georgia, serif;
-  font-size: 19px;
+  font-size: max(var(--font-size-min), 19px);
   line-height: 1.25;
 }
 .industry-directory-body .text-link {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .filter-tabs {
   display: flex;
@@ -2808,7 +2809,7 @@ textarea::placeholder {
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 9px 15px;
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
 }
 .filter-tabs button.selected {
   background: var(--blue);
@@ -2825,7 +2826,7 @@ textarea::placeholder {
 .empty-state h2,
 .empty-state h3 {
   font-family: Georgia, serif;
-  font-size: 27px;
+  font-size: max(var(--font-size-min), 27px);
   margin-bottom: 15px;
 }
 .empty-state p {
@@ -2856,10 +2857,10 @@ textarea::placeholder {
 }
 .country-card h3 {
   font-family: Georgia, serif;
-  font-size: 25px;
+  font-size: max(var(--font-size-min), 25px);
 }
 .country-card p {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .sitemap-links {
   columns: 3;
@@ -2868,7 +2869,7 @@ textarea::placeholder {
 .sitemap-links a {
   display: block;
   padding: 8px 0;
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   color: var(--blue);
 }
 .video-preview {
@@ -2893,7 +2894,7 @@ textarea::placeholder {
     min-height: 660px;
   }
   .hero-copy h1 {
-    font-size: 63px;
+    font-size: max(var(--font-size-min), 63px);
   }
 }
 /* Compact desktop navigation before its contents exceed the viewport. */
@@ -2901,8 +2902,8 @@ textarea::placeholder {
   .nav-shell { gap: 20px; }
   .brand { flex-basis: 180px; }
   .brand img { width: 180px; }
-  .navigation { gap: 12px; font-size: 12px; }
-  .nav-cta { padding: 12px; font-size: 12px; }
+  .navigation { gap: 12px; font-size: max(var(--font-size-min), 12px); }
+  .nav-cta { padding: 12px; font-size: max(var(--font-size-min), 12px); }
 }
 @media (max-width: 1250px) {
   .container {
@@ -2919,11 +2920,11 @@ textarea::placeholder {
   }
   .navigation {
     gap: 10px;
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .nav-cta {
     padding: 10px;
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .hero-grid {
     gap: 35px;
@@ -2953,7 +2954,7 @@ textarea::placeholder {
     gap: 35px;
   }
   .quick-grid h3 {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
   .practice-grid,
   .insight-grid {
@@ -2967,7 +2968,7 @@ textarea::placeholder {
     gap: 32px 10px;
   }
   .industry-tile h3 {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .approach-grid {
     gap: 12px;
@@ -2980,10 +2981,10 @@ textarea::placeholder {
     gap: 18px;
   }
   .leader-card h3 {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
   }
   .leader-avatar {
-    font-size: 40px;
+    font-size: max(var(--font-size-min), 40px);
   }
   .ribbon {
     gap: 20px;
@@ -2995,10 +2996,10 @@ textarea::placeholder {
 }
 @media (max-width: 1050px) {
   .utility-inner {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .utility-inner > span {
-    font-size: 9px;
+    font-size: max(var(--font-size-min), 9px);
   }
   .utility-inner > div {
     gap: 14px;
@@ -3017,7 +3018,7 @@ textarea::placeholder {
     display: block;
     border: 1px solid var(--line);
     background: white;
-    font-size: 25px;
+    font-size: max(var(--font-size-min), 25px);
     line-height: 1;
     width: 44px;
     height: 44px;
@@ -3034,7 +3035,7 @@ textarea::placeholder {
     background: white;
     box-shadow: 0 12px 20px #03163826;
     padding: 20px 28px;
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
     white-space: normal;
   }
   .navigation.is-open {
@@ -3091,20 +3092,20 @@ textarea::placeholder {
     gap: 0 20px;
   }
   .mega-links > a {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .hero-grid {
     grid-template-columns: 1.15fr 1fr;
     gap: 25px;
   }
   .hero-copy h1 {
-    font-size: 38px;
+    font-size: max(var(--font-size-min), 38px);
   }
   .hero-copy > p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .hero-copy .hero-tagline {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .hero-statistics {
     padding: 10px;
@@ -3117,21 +3118,21 @@ textarea::placeholder {
     gap: 9px;
   }
   .stat strong {
-    font-size: 23px;
+    font-size: max(var(--font-size-min), 23px);
   }
   .stat span {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
     margin-top: 5px;
   }
   .stat-multisector strong {
-    font-size: 20px;
+    font-size: max(var(--font-size-min), 20px);
   }
   .stat-multisector span {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
   .hero .button {
     padding: 12px 14px;
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
     gap: 10px;
   }
   .quick-grid {
@@ -3142,7 +3143,7 @@ textarea::placeholder {
     min-height: 185px;
   }
   .quick-grid h3 {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
   .quick-grid > a > .icon:first-child {
     margin-bottom: 15px;
@@ -3155,17 +3156,17 @@ textarea::placeholder {
     border-bottom-right-radius: 80px;
   }
   .why-intro h2 {
-    font-size: 48px;
+    font-size: max(var(--font-size-min), 48px);
   }
   .reasons-grid {
     gap: 0 18px;
     padding: 22px;
   }
   .reasons-grid h3 {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
   }
   .reasons-grid p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .practice-grid,
   .insight-grid {
@@ -3179,7 +3180,7 @@ textarea::placeholder {
     gap: 35px 15px;
   }
   .industry-tile h3 {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .ribbon {
     flex-wrap: wrap;
@@ -3211,10 +3212,10 @@ textarea::placeholder {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .leader-card h3 {
-    font-size: 21px;
+    font-size: max(var(--font-size-min), 21px);
   }
   .leader-card p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .connect-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3268,7 +3269,7 @@ textarea::placeholder {
     gap: 18px;
   }
   .utility-inner a {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .utility-inner .icon {
     width: 12px;
@@ -3278,7 +3279,7 @@ textarea::placeholder {
     min-height: 77px;
   }
   .service-consultation-title {
-    font-size: clamp(34px, 9vw, 52px);
+    font-size: max(var(--font-size-min), clamp(34px, 9vw, 52px));
   }
   .service-consultation-shell {
     grid-template-columns: 1fr;
@@ -3307,11 +3308,11 @@ textarea::placeholder {
     gap: 35px;
   }
   .hero-copy h1 {
-    font-size: clamp(34px, 6.5vw, 48px);
+    font-size: max(var(--font-size-min), clamp(34px, 6.5vw, 48px));
     letter-spacing: -0.6px;
   }
   .hero-copy .hero-tagline {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
     line-height: 1.8;
   }
   .hero-tagline b {
@@ -3341,10 +3342,10 @@ textarea::placeholder {
     border-bottom: 0;
   }
   .stat strong {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
   }
   .stat span {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .stat > .icon {
     width: 28px;
@@ -3357,17 +3358,17 @@ textarea::placeholder {
     gap: 10px;
   }
   .hero .button {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
     padding: 11px 13px;
   }
   .section-heading {
     margin-bottom: 30px;
   }
   .section-heading h2 {
-    font-size: 32px;
+    font-size: max(var(--font-size-min), 32px);
   }
   .section-heading p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .quick-grid {
     gap: 10px;
@@ -3377,7 +3378,7 @@ textarea::placeholder {
     padding: 20px 8px 13px;
   }
   .quick-grid h3 {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .quick-grid > a > .icon:first-child {
     width: 35px;
@@ -3392,7 +3393,7 @@ textarea::placeholder {
     min-height: 350px;
   }
   .why-intro h2 {
-    font-size: 54px;
+    font-size: max(var(--font-size-min), 54px);
   }
   .why-intro p {
     max-width: 450px;
@@ -3418,7 +3419,7 @@ textarea::placeholder {
     padding: 18px;
   }
   .card-body h3 {
-    font-size: 20px;
+    font-size: max(var(--font-size-min), 20px);
   }
   .card-image {
     height: 160px;
@@ -3430,7 +3431,7 @@ textarea::placeholder {
     padding: 45px 0;
   }
   .industry-tile h3 {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
   .industry-carousel {
     grid-template-columns: 34px minmax(0, 1fr) 34px;
@@ -3455,7 +3456,7 @@ textarea::placeholder {
     gap: 18px;
   }
   .ribbon h3 {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
     min-width: 0;
   }
   .ribbon p {
@@ -3472,19 +3473,19 @@ textarea::placeholder {
     background: linear-gradient(90deg, #04143bef, #04143b90);
   }
   .global-copy h2 {
-    font-size: 43px;
+    font-size: max(var(--font-size-min), 43px);
   }
   .global-copy p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .approach-grid {
     gap: 40px 16px;
   }
   .approach-grid h3 {
-    font-size: 20px;
+    font-size: max(var(--font-size-min), 20px);
   }
   .approach-grid p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .approach-note strong {
     display: block;
@@ -3504,10 +3505,10 @@ textarea::placeholder {
     gap: 23px;
   }
   .leader-card h3 {
-    font-size: 24px;
+    font-size: max(var(--font-size-min), 24px);
   }
   .leader-card p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .leader-avatar {
     min-height: min(420px, 90vw);
@@ -3523,7 +3524,7 @@ textarea::placeholder {
     padding: 13px 8px;
   }
   .client-logo-name {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
   .clients-note {
     align-items: flex-start;
@@ -3541,7 +3542,7 @@ textarea::placeholder {
     border: 0;
   }
   .trust-grid h3 {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .clients-trust-section {
     padding: 18px 0 0;
@@ -3567,7 +3568,7 @@ textarea::placeholder {
     height: 30px;
   }
   .clients-trust-section .trust-grid h3 {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .contact-grid {
     grid-template-columns: 1fr;
@@ -3589,7 +3590,7 @@ textarea::placeholder {
     padding-bottom: 17px;
   }
   .contact-details h3 {
-    font-size: 24px;
+    font-size: max(var(--font-size-min), 24px);
   }
   .contact-details .heading-line {
     margin-block: 15px 0;
@@ -3598,7 +3599,7 @@ textarea::placeholder {
     padding: 25px;
   }
   .testimonial-invite h3 {
-    font-size: 25px;
+    font-size: max(var(--font-size-min), 25px);
   }
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3627,17 +3628,17 @@ textarea::placeholder {
     min-height: 300px;
   }
   .banner-content h1 {
-    font-size: 40px;
+    font-size: max(var(--font-size-min), 40px);
   }
   .banner-content p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .split-section {
     grid-template-columns: 1fr;
     gap: 25px;
   }
   .split-section h2 {
-    font-size: 31px;
+    font-size: max(var(--font-size-min), 31px);
   }
   .split-image {
     min-height: 280px;
@@ -3649,7 +3650,7 @@ textarea::placeholder {
     padding: 22px;
   }
   .directory-card h2 {
-    font-size: 23px;
+    font-size: max(var(--font-size-min), 23px);
   }
   .article-layout {
     grid-template-columns: 1fr;
@@ -3664,7 +3665,7 @@ textarea::placeholder {
     gap: 13px;
   }
   .country-card h3 {
-    font-size: 23px;
+    font-size: max(var(--font-size-min), 23px);
   }
   .sitemap-links {
     columns: 2;
@@ -3675,10 +3676,10 @@ textarea::placeholder {
     gap: 10px;
   }
   .utility-inner a {
-    font-size: 9px;
+    font-size: max(var(--font-size-min), 9px);
   }
   .hero-copy h1 {
-    font-size: 35px;
+    font-size: max(var(--font-size-min), 35px);
   }
   .hero .button-row {
     flex-direction: column;
@@ -3688,19 +3689,19 @@ textarea::placeholder {
     padding: 5px;
   }
   .stat strong {
-    font-size: 18px;
+    font-size: max(var(--font-size-min), 18px);
   }
   .stat {
     min-height: 115px;
   }
   .stat span {
-    font-size: 9px;
+    font-size: max(var(--font-size-min), 9px);
   }
   .stat-multisector strong {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
   .stat-multisector span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .quick-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3710,7 +3711,7 @@ textarea::placeholder {
     min-height: 165px;
   }
   .quick-grid h3 {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .quick-extra {
     gap: 12px;
@@ -3721,7 +3722,7 @@ textarea::placeholder {
     min-height: 48px;
     padding: 10px 12px;
     gap: 8px;
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .reasons-grid {
     grid-template-columns: 1fr;
@@ -3731,10 +3732,10 @@ textarea::placeholder {
     border-bottom: 1px solid var(--line);
   }
   .reasons-grid h3 {
-    font-size: 18px;
+    font-size: max(var(--font-size-min), 18px);
   }
   .reasons-grid p {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
   .reasons-grid article > .icon {
     display: block;
@@ -3749,14 +3750,14 @@ textarea::placeholder {
     height: 195px;
   }
   .card-body p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .industries-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 33px 13px;
   }
   .industry-tile h3 {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .approach-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3769,26 +3770,26 @@ textarea::placeholder {
     padding: 38px 14px 23px;
   }
   .approach-grid p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .global-copy .button-row {
     flex-direction: column;
     align-items: flex-start;
   }
   .global-copy h2 {
-    font-size: 38px;
+    font-size: max(var(--font-size-min), 38px);
   }
   .leader-card {
     gap: 0;
   }
   .leader-avatar {
-    font-size: 35px;
+    font-size: max(var(--font-size-min), 35px);
   }
   .leader-card h3 {
-    font-size: 21px;
+    font-size: max(var(--font-size-min), 21px);
   }
   .leader-card p {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .form-grid {
     grid-template-columns: 1fr;
@@ -3820,10 +3821,10 @@ textarea::placeholder {
     gap: 7px;
   }
   .connect-strip span:not(.round-icon) {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .connect-strip strong {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .footer-grid {
     gap: 30px 20px;
@@ -3833,10 +3834,10 @@ textarea::placeholder {
   }
   .footer-grid a,
   .footer-grid p {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .footer-grid h3 {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .directory-grid {
     grid-template-columns: 1fr;
@@ -3850,13 +3851,13 @@ textarea::placeholder {
     height: 25px;
   }
   .country-card h3 {
-    font-size: 20px;
+    font-size: max(var(--font-size-min), 20px);
   }
   .country-card p {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .banner-content h1 {
-    font-size: 35px;
+    font-size: max(var(--font-size-min), 35px);
   }
   .search-toolbar select {
     width: 100%;
@@ -3880,7 +3881,7 @@ textarea::placeholder {
     height: 32px;
   }
   .why-intro h2 {
-    font-size: 46px;
+    font-size: max(var(--font-size-min), 46px);
   }
 }
 @media (max-width: 1050px) {
@@ -3909,10 +3910,10 @@ textarea::placeholder {
     padding-top: 24px;
   }
   .contact-hero h1 {
-    font-size: 48px;
+    font-size: max(var(--font-size-min), 48px);
   }
   .contact-hero p {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
   }
   .contact-grid {
     grid-template-columns: 1fr;
@@ -3958,21 +3959,21 @@ textarea::placeholder {
     height: 35px;
   }
   .contact-quick-grid strong {
-    font-size: 9px;
+    font-size: max(var(--font-size-min), 9px);
   }
   .contact-quick-grid small,
   .contact-quick-grid em {
-    font-size: 8px;
+    font-size: max(var(--font-size-min), 8px);
   }
   .contact-values > div > .icon {
     width: 27px;
     height: 27px;
   }
   .contact-values strong {
-    font-size: 9px;
+    font-size: max(var(--font-size-min), 9px);
   }
   .contact-values small {
-    font-size: 8px;
+    font-size: max(var(--font-size-min), 8px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -3987,12 +3988,12 @@ textarea::placeholder {
   }
 }
 .testimonial-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.testimonial-column-title { margin-bottom: 20px; font-family: Georgia, serif; font-size: 26px; }
+.testimonial-column-title { margin-bottom: 20px; font-family: Georgia, serif; font-size: max(var(--font-size-min), 26px); }
 .testimonial-columns blockquote { margin: 20px 0; color: var(--muted); }
 .video-dialog { margin: auto; border: 0; border-radius: 10px; padding: 0; width: min(850px, calc(100% - 32px)); max-height: 90dvh; background: white; color: var(--ink); }
 .video-dialog::backdrop { background: #00102ce8; }
 .video-dialog-content { position: relative; padding: 35px 25px 25px; }
-.video-dialog h2 { font-size: 26px; padding-right: 35px; }
+.video-dialog h2 { font-size: max(var(--font-size-min), 26px); padding-right: 35px; }
 .dialog-close { position: absolute; top: 10px; right: 10px; background: var(--pale); border: 1px solid var(--line); border-radius: 50%; width: 34px; height: 34px; }
 @media (max-width: 600px) { .testimonial-columns { grid-template-columns: 1fr; } }
 @media (max-width: 1050px) {
@@ -4101,13 +4102,13 @@ textarea::placeholder {
   margin: 0;
   color: var(--ink);
   font-family: Georgia, serif;
-  font-size: clamp(22px, 1.8vw, 25px);
+  font-size: max(var(--font-size-min), clamp(22px, 1.8vw, 25px));
   line-height: 1.18;
 }
 .industry-card-content p {
   margin-top: 13px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   line-height: 1.65;
 }
 .industry-card-link {
@@ -4115,7 +4116,7 @@ textarea::placeholder {
   bottom: 25px;
   left: 24px;
   color: var(--blue);
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 700;
 }
 .industry-card-arrow {
@@ -4176,10 +4177,10 @@ textarea::placeholder {
     padding: 52px 0 18px;
   }
   .industries-section .industry-heading .section-heading h2 {
-    font-size: clamp(30px, 8vw, 36px);
+    font-size: max(var(--font-size-min), clamp(30px, 8vw, 36px));
   }
   .industries-section .industry-heading .section-heading p {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
   }
   .premium-industry-carousel {
     display: block;
@@ -4213,10 +4214,10 @@ textarea::placeholder {
     transform: translateX(calc(var(--card-position) * (min(88vw, 360px) + 12px))) scale(1);
   }
   .industry-card-content h3 {
-    font-size: 22px;
+    font-size: max(var(--font-size-min), 22px);
   }
   .industry-card-content p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .premium-industry-carousel .industry-carousel-control {
     position: absolute;
@@ -4317,7 +4318,7 @@ textarea::placeholder {
   align-self: flex-end;
   color: #9aaec6;
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: max(var(--font-size-min), 18px);
   line-height: 1;
 }
 .service-card-icon {
@@ -4335,9 +4336,9 @@ textarea::placeholder {
 }
 .service-card-icon .icon { width: 29px; height: 29px; }
 .service-card-content { display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.service-card-title { max-width: 250px; font-family: Georgia, serif; font-size: 21px; font-weight: 700; line-height: 1.2; }
-.service-card-description { color: #526581; font-size: 13px; line-height: 1.65; }
-.service-card-cta { display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; color: var(--blue); font-size: 13px; font-weight: 700; }
+.service-card-title { max-width: 250px; font-family: Georgia, serif; font-size: max(var(--font-size-min), 21px); font-weight: 700; line-height: 1.2; }
+.service-card-description { color: #526581; font-size: max(var(--font-size-min), 13px); line-height: 1.65; }
+.service-card-cta { display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; color: var(--blue); font-size: max(var(--font-size-min), 13px); font-weight: 700; }
 .service-card-cta .icon { width: 18px; height: 18px; transition: transform 0.35s ease; }
 .quick-grid .service-card:hover,
 .quick-grid .service-card:focus-visible {
@@ -4361,8 +4362,8 @@ textarea::placeholder {
 @media (max-width: 760px) {
   .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
   .quick-grid .service-card { min-height: 278px; padding: 22px 19px 20px; }
-  .service-card-title { font-size: 19px; }
-  .service-card-description { font-size: 12px; }
+  .service-card-title { font-size: max(var(--font-size-min), 19px); }
+  .service-card-description { font-size: max(var(--font-size-min), 12px); }
 }
 @media (max-width: 639px) {
   .quick-grid { grid-template-columns: 1fr; }
@@ -4383,11 +4384,11 @@ textarea::placeholder {
 @media (max-width: 760px) {
   .industry-directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .industry-directory-body { min-height: 124px; padding: 16px 14px 14px; }
-  .industry-directory-body h3 { min-height: 48px; font-size: 17px; }
+  .industry-directory-body h3 { min-height: 48px; font-size: max(var(--font-size-min), 17px); }
 }
 @media (max-width: 480px) {
   .industry-directory-grid { grid-template-columns: 1fr; gap: 18px; }
   .industry-directory-image { aspect-ratio: 1.8; }
   .industry-directory-body { min-height: 0; padding: 18px; }
-  .industry-directory-body h3 { min-height: 0; font-size: 21px; }
+  .industry-directory-body h3 { min-height: 0; font-size: max(var(--font-size-min), 21px); }
 }

@@ -415,11 +415,11 @@
 	}
 
 	.heading h3 {
-		font-size: 11px;
+		font-size: max(var(--font-size-min), 11px);
 	}
 
 	.heading p {
-		font-size: 10px;
+		font-size: max(var(--font-size-min), 10px);
 	}
 
 	.links a {
@@ -433,11 +433,11 @@
 	}
 
 	.links strong {
-		font-size: 12px;
+		font-size: max(var(--font-size-min), 12px);
 	}
 
 	.links small {
-		font-size: 10px;
+		font-size: max(var(--font-size-min), 10px);
 	}
 
 	.featureCopy {
@@ -488,11 +488,11 @@
 	}
 
 	.heading h3 {
-		font-size: 14px;
+		font-size: max(var(--font-size-min), 14px);
 	}
 
 	.heading p {
-		font-size: 12px;
+		font-size: max(var(--font-size-min), 12px);
 	}
 
 	.links a {
@@ -500,11 +500,11 @@
 	}
 
 	.links strong {
-		font-size: 14px;
+		font-size: max(var(--font-size-min), 14px);
 	}
 
 	.links small {
-		font-size: 12px;
+		font-size: max(var(--font-size-min), 12px);
 	}
 
 	.feature,
@@ -555,7 +555,7 @@
 	}
 
 	.featureCopy h2 {
-		font-size: 29px;
+		font-size: max(var(--font-size-min), 29px);
 	}
 
 	.footer {

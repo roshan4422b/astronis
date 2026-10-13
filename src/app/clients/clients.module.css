@@ -51,7 +51,7 @@
   display: inline-block;
   margin-bottom: 18px;
   color: #d7b87a;
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -62,7 +62,7 @@
   max-width: 760px;
   color: #f3f7ff;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.2rem, 3vw, 3.4rem);
+  font-size: max(var(--font-size-min), clamp(2.2rem, 3vw, 3.4rem));
   line-height: 1.08;
   letter-spacing: -0.06em;
 }
@@ -70,7 +70,7 @@
 .heroText {
   max-width: 620px;
   color: rgba(229, 237, 252, 0.85);
-  font-size: 1.03rem;
+  font-size: max(var(--font-size-min), 1.03rem);
   line-height: 1.8;
 }
 
@@ -92,7 +92,7 @@
   min-height: 48px;
   padding: 0 18px;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: max(var(--font-size-min), 0.78rem);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -179,14 +179,14 @@
   display: block;
   margin-bottom: 4px;
   color: #f0ca75;
-  font-size: 2.2rem;
+  font-size: max(var(--font-size-min), 2.2rem);
   line-height: 1;
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
 }
 
 .centerNode strong {
-  font-size: 1.2rem;
+  font-size: max(var(--font-size-min), 1.2rem);
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 600;
 }
@@ -195,7 +195,7 @@
   display: inline-block;
   margin-top: 10px;
   color: rgba(214, 230, 255, 0.8);
-  font-size: 0.6rem;
+  font-size: max(var(--font-size-min), 0.6rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -212,7 +212,7 @@
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 10px 24px rgba(10, 35, 72, 0.08);
   color: #173d6b;
-  font-size: 0.62rem;
+  font-size: max(var(--font-size-min), 0.62rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-align: center;
@@ -236,7 +236,7 @@
   color: #061a3a;
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 600;
-  font-size: clamp(2.1rem, 2.8vw, 3.2rem);
+  font-size: max(var(--font-size-min), clamp(2.1rem, 2.8vw, 3.2rem));
   line-height: 1.12;
   letter-spacing: -0.04em;
 }
@@ -251,7 +251,7 @@
   display: block;
   margin-bottom: 16px;
   color: #0e62d7;
-  font-size: 0.72rem;
+  font-size: max(var(--font-size-min), 0.72rem);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -304,7 +304,7 @@
 .storyCopy p {
   margin: 0;
   color: #4d6280;
-  font-size: 1.02rem;
+  font-size: max(var(--font-size-min), 1.02rem);
   line-height: 1.9;
 }
 
@@ -327,13 +327,13 @@
   display: block;
   margin-bottom: 6px;
   color: #061a3a;
-  font-size: 1.2rem;
+  font-size: max(var(--font-size-min), 1.2rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .factItem span {
   color: #536a88;
-  font-size: 0.82rem;
+  font-size: max(var(--font-size-min), 0.82rem);
   line-height: 1.5;
 }
 
@@ -367,7 +367,7 @@
   display: block;
   color: #061a3a;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 2vw, 2.8rem);
+  font-size: max(var(--font-size-min), clamp(2rem, 2vw, 2.8rem));
   line-height: 1;
   letter-spacing: -0.05em;
 }
@@ -376,7 +376,7 @@
   display: block;
   margin-top: 10px;
   color: #536a88;
-  font-size: 0.74rem;
+  font-size: max(var(--font-size-min), 0.74rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -388,7 +388,7 @@
 .logoDisclaimer {
   margin-top: 18px;
   color: #5d7290;
-  font-size: 0.73rem;
+  font-size: max(var(--font-size-min), 0.73rem);
   line-height: 1.6;
 }
 
@@ -479,13 +479,13 @@
 
 .pillar h3 {
   margin: 0 0 12px;
-  font-size: 1.05rem;
+  font-size: max(var(--font-size-min), 1.05rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .pillar p {
   color: rgba(221, 235, 255, 0.76);
-  font-size: 0.9rem;
+  font-size: max(var(--font-size-min), 0.9rem);
   line-height: 1.75;
 }
 
@@ -510,14 +510,14 @@
 .typeCard h3 {
   margin: 0 0 8px;
   color: #071c4f;
-  font-size: 1.1rem;
+  font-size: max(var(--font-size-min), 1.1rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .typeCard p {
   margin: 0;
   color: #596f8d;
-  font-size: 0.82rem;
+  font-size: max(var(--font-size-min), 0.82rem);
   line-height: 1.7;
 }
 
@@ -569,7 +569,7 @@
 .industryCard strong {
   display: block;
   color: #071c4f;
-  font-size: 1.02rem;
+  font-size: max(var(--font-size-min), 1.02rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -579,7 +579,7 @@
   gap: 8px;
   margin-top: 12px;
   color: #0d63d9;
-  font-size: 0.7rem;
+  font-size: max(var(--font-size-min), 0.7rem);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -622,7 +622,7 @@
   display: block;
   width: min(100%, 150px);
   color: #061a3a;
-  font-size: 1.07rem;
+  font-size: max(var(--font-size-min), 1.07rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -638,14 +638,14 @@
   display: block;
   margin-bottom: 10px;
   color: #071c4f;
-  font-size: 1rem;
+  font-size: max(var(--font-size-min), 1rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .expertiseItem p {
   margin: 0;
   color: #58708c;
-  font-size: 0.82rem;
+  font-size: max(var(--font-size-min), 0.82rem);
   line-height: 1.7;
 }
 
@@ -698,20 +698,20 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(171, 204, 255, 0.5);
   color: #f5d49d;
-  font-size: 0.82rem;
+  font-size: max(var(--font-size-min), 0.82rem);
   font-weight: 700;
 }
 
 .step h3 {
   margin: 18px 0 8px;
-  font-size: 1rem;
+  font-size: max(var(--font-size-min), 1rem);
   font-family: Georgia, "Times New Roman", serif;
 }
 
 .step p {
   margin: 0;
   color: rgba(224, 235, 252, 0.75);
-  font-size: 0.8rem;
+  font-size: max(var(--font-size-min), 0.8rem);
   line-height: 1.7;
 }
 
@@ -764,7 +764,7 @@
 
 .articleMeta {
   color: #0d63d9;
-  font-size: 0.68rem;
+  font-size: max(var(--font-size-min), 0.68rem);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -774,14 +774,14 @@
   margin: 0;
   color: #071c4f;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.45rem;
+  font-size: max(var(--font-size-min), 1.45rem);
   line-height: 1.3;
 }
 
 .articleBody p {
   margin: 0;
   color: #58708b;
-  font-size: 0.9rem;
+  font-size: max(var(--font-size-min), 0.9rem);
   line-height: 1.75;
 }
 
@@ -791,7 +791,7 @@
   padding-left: 0;
   padding-right: 0;
   color: #0d63d9;
-  font-size: 0.72rem;
+  font-size: max(var(--font-size-min), 0.72rem);
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -840,7 +840,7 @@
 
 .feature h3 {
   margin: 0 0 10px;
-  font-size: clamp(1.8rem, 2vw, 2.5rem);
+  font-size: max(var(--font-size-min), clamp(1.8rem, 2vw, 2.5rem));
   font-family: Georgia, "Times New Roman", serif;
   line-height: 1.2;
 }
@@ -895,7 +895,7 @@
   max-width: 760px;
   color: #eef5ff;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.4rem, 3vw, 4rem);
+  font-size: max(var(--font-size-min), clamp(2.4rem, 3vw, 4rem));
   line-height: 1.1;
   letter-spacing: -0.05em;
 }
@@ -1013,7 +1013,7 @@
   .networkNode {
     min-width: 90px;
     padding: 8px 10px;
-    font-size: 0.5rem;
+    font-size: max(var(--font-size-min), 0.5rem);
   }
 
   .centerNode {
@@ -1038,11 +1038,11 @@
   }
 
   .heroBadge {
-    font-size: 0.64rem;
+    font-size: max(var(--font-size-min), 0.64rem);
   }
 
   .networkNode {
-    font-size: 0.5rem;
+    font-size: max(var(--font-size-min), 0.5rem);
     letter-spacing: 0.02em;
   }
 }

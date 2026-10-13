@@ -27,7 +27,7 @@ const directory = intellectualProperty.groups.map((group) => ({
 export default function IntellectualPropertyPage() {
   return (
     <main className={styles.page}>
-      <ServiceHero practice={intellectualProperty} hideBadges hideStageNumbers />
+      <ServiceHero practice={intellectualProperty} />
 
       <SectionNavigation
         variant="bar"

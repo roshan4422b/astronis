@@ -33,6 +33,7 @@ export type ServicePractice = {
   finalSecondaryCTA?: string;
   title: string;
   slug: string;
+  heroImage: string;
   description: string;
   heroStatement: string;
   introHeading: string;

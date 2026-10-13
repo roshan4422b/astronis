@@ -28,7 +28,7 @@ const directory = businessAdvisoryConsulting.groups.map((group) => ({
 export default function BusinessAdvisoryConsultingPage() {
   return (
     <main className={styles.page} data-theme="business">
-      <ServiceHero practice={businessAdvisoryConsulting} title="Business Advisory" hideBadges hideStageNumbers />
+      <ServiceHero practice={businessAdvisoryConsulting} title="Business Advisory" />
 
       <SectionNavigation
         variant="bar"

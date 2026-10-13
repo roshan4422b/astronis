@@ -18,7 +18,7 @@
 .intro { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 30px 26px; }
 .intro h2 { font: 400 clamp(28px, 2.5vw, 40px)/1.15 Georgia, serif; margin: 0 0 4px; }
 .intro p { color: #626c91; font: 400 clamp(16px, 1.5vw, 23px)/1.3 "Segoe UI", Arial, sans-serif; }
-.motto { flex: none; border-left: 1px solid #4966aa; padding-left: 17px; font-size: 11px; line-height: 1.7; letter-spacing: 1.2px; text-transform: uppercase; }
+.motto { flex: none; border-left: 1px solid #4966aa; padding-left: 17px; font-size: max(var(--font-size-min), 11px); line-height: 1.7; letter-spacing: 1.2px; text-transform: uppercase; }
 .main { display: grid; grid-template-columns: minmax(0, 1fr) 17.5%; }
 .columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 20px 12px 17px; }
 .column { min-width: 0; padding: 0 18px 12px; border-right: 1px solid #dbe7f6; }
@@ -46,9 +46,9 @@
 }
 .feature { display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; background: linear-gradient(125deg, #d8effff5, #cbe9ff91 50%, #3c88c324), url('/images/india-presence/mumbai.jpg') center/cover; }
 .featureCopy { display: flex; flex-direction: column; gap: 12px; }
-.feature p { font-size: 14px; line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
+.feature p { font-size: max(var(--font-size-min), 14px); line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
 .feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #2852af; margin-top: 16px; }
-.feature > span { font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; }
+.feature > span { font-size: max(var(--font-size-min), 12px); letter-spacing: 1.8px; text-transform: uppercase; }
 .footer { display: none; }
 .search { display: none; }
 .searchField { display: none; }
@@ -63,7 +63,7 @@
   .feature { padding-inline: 18px; }
   .search { padding-right: 25px; }
   .signature { padding-inline: 20px; }
-  .shortcuts a { font-size: 15px; padding-inline: 10px; }
+  .shortcuts a { font-size: max(var(--font-size-min), 15px); padding-inline: 10px; }
 }
 @media (max-width: 1050px) {
   .menu { position: static !important; width: 100%; max-height: none; border: 0; box-shadow: none; transform: none !important; }
@@ -73,9 +73,9 @@
   .main { grid-template-columns: 1fr; }
   .columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 0; padding: 0 5px 20px; }
   .column:nth-child(even) { border-right: 0; }
-  .heading h3 { font-size: 18px; }
+  .heading h3 { font-size: max(var(--font-size-min), 18px); }
   .links { gap: 0; }
-  .links a { font-size: 15px; padding-block: 9px; }
+  .links a { font-size: max(var(--font-size-min), 15px); padding-block: 9px; }
   .feature { min-height: 230px; background-position: center 55%; }
   .footer { grid-template-columns: 1fr; gap: 24px; padding: 22px 15px; }
   .search { padding: 0; }
@@ -85,10 +85,10 @@
 @media (max-width: 600px) {
   .columns { grid-template-columns: 1fr; }
   .column { border-right: 0; }
-  .intro h2 { font-size: 27px; }
-  .search label { font-size: 24px; }
+  .intro h2 { font-size: max(var(--font-size-min), 27px); }
+  .search label { font-size: max(var(--font-size-min), 24px); }
   .searchField { gap: 8px; padding-inline: 10px; }
-  .searchField input { font-size: 14px; }
+  .searchField input { font-size: max(var(--font-size-min), 14px); }
   .shortcuts { grid-template-columns: repeat(2, 1fr); gap: 15px 0; }
   .shortcuts a:nth-child(odd) { border-left: 0; }
 }
