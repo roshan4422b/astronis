@@ -5,7 +5,9 @@ import { resolvePractice } from "@/data/service-practices";
 import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
 import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-details";
+import { getBusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import MainServicePage from "../_template/main-service-page";
+import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
@@ -16,7 +18,10 @@ function resolveHierarchy(slugs: string[]) {
   const group = service.subServices.find(item => item.slug === slugs[1]);
   if (!group) return null;
   const child = slugs.length === 3
-    ? group.children.find(item => serviceAnchor(item) === slugs[2])
+    ? group.children.find(item =>
+      serviceAnchor(item) === slugs[2]
+      || item.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") === slugs[2],
+    )
     : undefined;
   if (slugs.length === 3 && !child) return null;
   return { service, group, child };
@@ -31,13 +36,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
+    const businessAdvisoryDetail = hierarchy.child
+      && hierarchy.service.canonicalSlug === "business-advisory-contracts"
+      && hierarchy.group.slug === "business-strategy"
+      ? getBusinessAdvisoryDetail(slugs[2])
+        || getBusinessAdvisoryDetail(serviceAnchor(hierarchy.child))
+      : undefined;
+    if (businessAdvisoryDetail) return businessAdvisoryMetadata(businessAdvisoryDetail);
     const regulatoryDetail = hierarchy.child && hierarchy.service.canonicalSlug === "regulatory-services"
       ? getConsumerRegulatoryDetail(serviceAnchor(hierarchy.child))
         || (hierarchy.group.slug === "corporate-regulatory" ? getCorporateRegulatoryDetail(serviceAnchor(hierarchy.child)) : undefined)
       : undefined;
     const pageTitle = regulatoryDetail?.title || title;
     const description = regulatoryDetail?.description || `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`;
-    const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}${hierarchy.child ? `/${serviceAnchor(hierarchy.child)}` : ""}`;
+    const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}${hierarchy.child ? `/${businessAdvisoryDetail ? slugs[2] : serviceAnchor(hierarchy.child)}` : ""}`;
     return {
       title: `${pageTitle} | ${hierarchy.service.title} | Astronis`,
       description,
@@ -62,6 +74,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const businessAdvisoryDetail = service.canonicalSlug === "business-advisory-contracts" && group.slug === "business-strategy"
+      ? getBusinessAdvisoryDetail(slugs[2])
+        || getBusinessAdvisoryDetail(serviceAnchor(child))
+      : undefined;
+    if (businessAdvisoryDetail) return <BusinessAdvisoryDetailPage detail={businessAdvisoryDetail} />;
     const regulatoryDetail = service.canonicalSlug === "regulatory-services"
       ? getConsumerRegulatoryDetail(serviceAnchor(child))
         || (group.slug === "corporate-regulatory" ? getCorporateRegulatoryDetail(serviceAnchor(child)) : undefined)
