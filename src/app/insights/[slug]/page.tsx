@@ -8,6 +8,7 @@ import StartupUpdates from "../startup-updates";
 import ComplianceCalendar from "../compliance-calendar";
 import UsefulDocuments from "../useful-documents";
 import SebiUpdates from "../sebi-updates";
+import BusinessUpdates from "../business-updates";
 const categories = [...new Set([...siteMenu.insights, ...insightCategories])];
 export function generateStaticParams() {
   return [...categories.map((t) => ({ slug: slugify(t) })), { slug: "startup-news" }, { slug: "download-useful-documents" }, ...corporateArticles.map(a => ({ slug: a.slug }))];
@@ -25,6 +26,7 @@ export async function generateMetadata({
   if (slug === "compliance-calendar") return { title: "Compliance Calendar", description: "Important compliance deadlines for MCA, GST, Income Tax and other regulatory laws from Astronis Global." };
   if (slug === "download-useful-documents") return { title: "Download – Useful Documents", description: "Ready-to-use legal, corporate and regulatory document templates from Astronis Global." };
   if (slug === "sebi-updates") return { title: "SEBI Updates", description: "SEBI developments, market insights and regulatory impact from Astronis Global." };
+  if (slug === "business-updates") return { title: "Business Updates", description: "Business, regulatory and policy developments affecting decision-making, compliance and growth across sectors." };
   return { title: article?.title || categories.find((t) => slugify(t) === slug), description: article?.excerpt };
 }
 export default async function CategoryPage({
@@ -40,6 +42,7 @@ export default async function CategoryPage({
   if (slug === "compliance-calendar") return <ComplianceCalendar />;
   if (slug === "download-useful-documents") return <UsefulDocuments />;
   if (slug === "sebi-updates") return <SebiUpdates />;
+  if (slug === "business-updates") return <BusinessUpdates />;
   if (article) return <><Banner title={article.title} text={article.excerpt} image={article.image} eyebrow="Corporate & Commercial Insights" /><article className="section"><div className="container narrow"><TextLink href="/services/corporate-advisory">Corporate & Commercial Services</TextLink>{article.sections.map(([heading, text]) => <section key={heading} style={{ marginBlock: 32 }}><h2 style={{ fontSize: 28, marginBottom: 14 }}>{heading}</h2><p>{text}</p></section>)}<Button href="/contact">Discuss Your Requirements</Button></div></article></>;
   const title = categories.find((t) => slugify(t) === slug);
   if (!title) notFound();
