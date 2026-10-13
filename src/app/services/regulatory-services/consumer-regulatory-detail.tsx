@@ -66,7 +66,7 @@ export default function ConsumerRegulatoryDetailPage({
             <span aria-current="page">{detail.title}</span>
           </nav>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>CONSUMER REGULATORY SERVICES</span>
+            <span className={styles.eyebrow}>{group.title.toUpperCase()} SERVICES</span>
             <h1>{detail.title}</h1>
             <h2>{detail.subtitle}</h2>
             <p>{detail.description}</p>

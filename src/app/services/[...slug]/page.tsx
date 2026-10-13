@@ -4,6 +4,7 @@ import { services } from "@/data/services";
 import { resolvePractice } from "@/data/service-practices";
 import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
+import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-details";
 import MainServicePage from "../_template/main-service-page";
 import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
@@ -30,11 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
-    const consumerDetail = hierarchy.child && hierarchy.service.canonicalSlug === "regulatory-services"
+    const regulatoryDetail = hierarchy.child && hierarchy.service.canonicalSlug === "regulatory-services"
       ? getConsumerRegulatoryDetail(serviceAnchor(hierarchy.child))
+        || (hierarchy.group.slug === "corporate-regulatory" ? getCorporateRegulatoryDetail(serviceAnchor(hierarchy.child)) : undefined)
       : undefined;
-    const pageTitle = consumerDetail?.title || title;
-    const description = consumerDetail?.description || `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`;
+    const pageTitle = regulatoryDetail?.title || title;
+    const description = regulatoryDetail?.description || `${title} support within ${hierarchy.service.title}, with connected legal, regulatory and business advisory.`;
     const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}${hierarchy.child ? `/${serviceAnchor(hierarchy.child)}` : ""}`;
     return {
       title: `${pageTitle} | ${hierarchy.service.title} | Astronis`,
@@ -60,12 +62,13 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
-    const consumerDetail = service.canonicalSlug === "regulatory-services"
+    const regulatoryDetail = service.canonicalSlug === "regulatory-services"
       ? getConsumerRegulatoryDetail(serviceAnchor(child))
+        || (group.slug === "corporate-regulatory" ? getCorporateRegulatoryDetail(serviceAnchor(child)) : undefined)
       : undefined;
-    const consumerGroup = regulatoryServices.groups.find(item => item.slug === group.slug);
-    if (consumerDetail && consumerGroup) {
-      return <ConsumerRegulatoryDetailPage detail={consumerDetail} group={consumerGroup} practice={regulatoryServices} />;
+    const regulatoryGroup = regulatoryServices.groups.find(item => item.slug === group.slug);
+    if (regulatoryDetail && regulatoryGroup) {
+      return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
     return <>
       <Banner title={child || group.title} eyebrow={service.title} text={`${child || group.title} support connected to ${service.title.toLowerCase()}.`} />
