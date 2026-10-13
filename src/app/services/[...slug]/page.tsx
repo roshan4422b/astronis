@@ -7,12 +7,14 @@ import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details"
 import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-details";
 import { getBusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getFemaCrossBorderDetail } from "@/data/fema-cross-border-details";
+import { getLicensingRegistrationPage, licensingRegistrationPages } from "@/data/licensing-registration-pages";
 import MainServicePage from "../_template/main-service-page";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
 import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
+import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
 
 function resolveHierarchy(slugs: string[]) {
   const service = services.find(item => item.canonicalSlug === slugs[0]);
@@ -30,7 +32,12 @@ function resolveHierarchy(slugs: string[]) {
 }
 
 export function generateStaticParams() {
-  return services.map(service => ({ slug: [service.canonicalSlug] }));
+  return [
+    ...services.map(service => ({ slug: [service.canonicalSlug] })),
+    ...licensingRegistrationPages.map(({ groupSlug, slug }) => ({
+      slug: ["licensing-registrations", groupSlug, slug],
+    })),
+  ];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }) {
@@ -38,6 +45,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
+    const licensingRegistrationPage = hierarchy.child
+      && hierarchy.service.canonicalSlug === "licensing-registrations"
+      ? getLicensingRegistrationPage(slugs[2])
+      : undefined;
+    if (licensingRegistrationPage) {
+      const canonical = `/services/licensing-registrations/${licensingRegistrationPage.groupSlug}/${licensingRegistrationPage.slug}`;
+      return {
+        title: `${licensingRegistrationPage.title} | Licensing & Registrations | Astronis`,
+        description: licensingRegistrationPage.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${licensingRegistrationPage.title} | Licensing & Registrations | Astronis`,
+          description: licensingRegistrationPage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
     const femaDetail = hierarchy.child
       && hierarchy.service.canonicalSlug === "fema-fdi-cross-border"
       ? getFemaCrossBorderDetail(slugs[2])
@@ -81,6 +106,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const licensingRegistrationPage = service.canonicalSlug === "licensing-registrations"
+      ? getLicensingRegistrationPage(slugs[2])
+      : undefined;
+    if (licensingRegistrationPage) return <EntityFormationPage data={licensingRegistrationPage} />;
     const femaDetail = service.canonicalSlug === "fema-fdi-cross-border"
       ? getFemaCrossBorderDetail(slugs[2])
       : undefined;

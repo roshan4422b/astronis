@@ -39,7 +39,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const category = corporateService?.subServices.find((item) => item.title === data.categoryTitle)
     ?? corporateService?.subServices.find((item) => item.slug === categoryAliases[data.categoryTitle ?? ""])
     ?? corporateService?.subServices.find((item) => item.slug === "entity-formation-business-setup");
-  const categoryHref = `${corporateService ? `/services/${corporateService.canonicalSlug}` : "/services/corporate-commercial-advisory"}#${category?.slug ?? "entity-formation-business-setup"}`;
+  const serviceTitle = data.serviceTitle ?? corporateService?.title ?? "Corporate & Commercial";
+  const serviceHref = data.serviceHref ?? `/services/${corporateService?.canonicalSlug ?? "corporate-commercial-advisory"}`;
+  const categoryHref = data.categoryHref
+    ?? `${serviceHref}#${category?.slug ?? "entity-formation-business-setup"}`;
   const currentTestimonial = data.testimonials ? undefined : testimonials.find(
     (testimonial) =>
       testimonial.status === "approved" &&
@@ -96,7 +99,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
             <Link href="/">Home</Link><span>/</span>
             <Link href="/services">Services</Link><span>/</span>
-            <Link href="/services/corporate-commercial-advisory">Corporate &amp; Commercial</Link><span>/</span>
+            <Link href={serviceHref}>{serviceTitle}</Link><span>/</span>
             <Link href={categoryHref}>{data.categoryTitle ?? category?.title ?? "Entity Formation & Business Setup"}</Link><span>/</span>
             <span aria-current="page">{data.title}</span>
           </nav>
@@ -127,9 +130,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <p>{data.introduction}</p>
           </div>
           <aside className={styles.introPanel}>
-            <span>FORMATION PERSPECTIVE</span>
-            <h3>Start with the way you intend to work.</h3>
-            <p>Consider your purpose, participants, responsibilities and plans before settling the formation brief.</p>
+            <span>{data.focusEyebrow ?? "FORMATION PERSPECTIVE"}</span>
+            <h3>{data.focusTitle ?? "Start with the way you intend to work."}</h3>
+            <p>{data.focusDescription ?? "Consider your purpose, participants, responsibilities and plans before settling the formation brief."}</p>
           </aside>
         </div>
         </section>
@@ -156,7 +159,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <nav className={styles.relatedPages} aria-label="Foreign company office structures">
               <span>Explore a specific India office structure</span>
               {data.relatedPages.map(([title, href]) => (
-                <Link key={href} href={href}>{title}<Icon name="arrow" /></Link>
+                <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
               ))}
             </nav>
           )}
@@ -194,7 +197,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         <div className={`container ${styles.structureGrid}`}>
           <div>
             <Heading
-              eyebrow="BUSINESS STRUCTURE & TAXATION ASPECTS"
+              eyebrow={data.structureEyebrow ?? "BUSINESS STRUCTURE & TAXATION ASPECTS"}
               title={data.structureHeading ?? "Plan the structure around the purpose"}
               text={data.introduction}
               light
@@ -408,7 +411,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             ["TEMPLATE", "Governance and resolution templates", "folder"],
             ["RESOURCE", "Compliance and filing resources", "calendar"],
           ]).map(([type, title, icon]) => (
-            <Link href="/knowledge-centre" key={type}><span className={styles.icon}><Icon name={icon} /></span><small>{type}</small><h3>{title}</h3><span className={styles.resourceAction}>Explore resource <Icon name="arrow" /></span></Link>
+            <Link href="/knowledge-centre" key={`${type}-${title}`}><span className={styles.icon}><Icon name={icon} /></span><small>{type}</small><h3>{title}</h3><span className={styles.resourceAction}>Explore resource <Icon name="arrow" /></span></Link>
           ))}</div>
         </div>
         </section>
