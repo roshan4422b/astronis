@@ -22,7 +22,14 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
   function navigate(id: string, updateHistory = true) {
     const target = document.getElementById(id);
     if (!target) return;
-    const navigationHeight = variant === "bar" || window.matchMedia("(max-width: 767px)").matches ? (navigationRef.current?.getBoundingClientRect().height || 80) : 0;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isStickyNavigation = navigationRef.current
+      ? window.getComputedStyle(navigationRef.current).position === "sticky"
+        || window.getComputedStyle(navigationRef.current.parentElement ?? navigationRef.current).position === "sticky"
+      : false;
+    const navigationHeight = isStickyNavigation && (variant === "bar" || isMobile)
+      ? (navigationRef.current?.getBoundingClientRect().height || 80)
+      : 0;
     const offset = (document.querySelector(".site-header")?.getBoundingClientRect().height || 120) + navigationHeight + 24;
     if (updateHistory) window.history.pushState(null, "", `#${id}`);
     setActive(id);
@@ -37,7 +44,17 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
     const header = document.querySelector(".site-header");
     let frame = 0;
     let initialFrame = 0;
-    const offset = () => (header?.getBoundingClientRect().height || 120) + (variant === "bar" || window.matchMedia("(max-width: 767px)").matches ? (navigationRef.current?.getBoundingClientRect().height || 80) : 0) + 24;
+    const offset = () => {
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const isStickyNavigation = navigationRef.current
+        ? window.getComputedStyle(navigationRef.current).position === "sticky"
+          || window.getComputedStyle(navigationRef.current.parentElement ?? navigationRef.current).position === "sticky"
+        : false;
+      const navigationHeight = isStickyNavigation && (variant === "bar" || isMobile)
+        ? (navigationRef.current?.getBoundingClientRect().height || 80)
+        : 0;
+      return (header?.getBoundingClientRect().height || 120) + navigationHeight + 24;
+    };
     const update = () => {
       frame = 0;
       let current = nodes[0];
