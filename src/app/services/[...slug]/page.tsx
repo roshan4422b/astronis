@@ -6,8 +6,10 @@ import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
 import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-details";
 import { getBusinessAdvisoryDetail } from "@/data/business-advisory-details";
+import { getFemaCrossBorderDetail } from "@/data/fema-cross-border-details";
 import MainServicePage from "../_template/main-service-page";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
+import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
 import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
@@ -36,6 +38,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
+    const femaDetail = hierarchy.child
+      && hierarchy.service.canonicalSlug === "fema-fdi-cross-border"
+      ? getFemaCrossBorderDetail(slugs[2])
+      : undefined;
+    if (femaDetail) return femaCrossBorderMetadata(femaDetail);
     const businessAdvisoryDetail = hierarchy.child
       && hierarchy.service.canonicalSlug === "business-advisory-contracts"
       && hierarchy.group.slug === "business-strategy"
@@ -74,6 +81,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const femaDetail = service.canonicalSlug === "fema-fdi-cross-border"
+      ? getFemaCrossBorderDetail(slugs[2])
+      : undefined;
+    if (femaDetail) return <FemaCrossBorderDetailPage detail={femaDetail} />;
     const businessAdvisoryDetail = service.canonicalSlug === "business-advisory-contracts" && group.slug === "business-strategy"
       ? getBusinessAdvisoryDetail(slugs[2])
         || getBusinessAdvisoryDetail(serviceAnchor(child))
