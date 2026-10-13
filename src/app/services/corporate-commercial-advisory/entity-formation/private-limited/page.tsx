@@ -4,8 +4,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
 import { testimonials } from "@/content/testimonials";
-import PageSectionNav from "../_components/page-section-nav";
-import pageLayoutStyles from "../_components/entity-formation-page.module.css";
+import PageSectionLayout from "../_components/page-section-layout";
 import styles from "../public-limited-company/public-limited-company.module.css";
 import PrivateLimitedFaq from "./private-limited-faq";
 
@@ -29,6 +28,8 @@ const nav = [
   ["Fees", "fees"],
   ["FAQs", "faqs"],
 ];
+
+const navItems = nav.map(([label, id]) => ({ id, label }));
 
 const services = [
   ["search", "Name Reservation", "Review proposed company names and coordinate reservation."],
@@ -178,9 +179,8 @@ export default function PrivateLimitedCompanyPage() {
         </div>
       </section>
 
-      <div className={pageLayoutStyles.pageNavLayout}>
-        <div className={pageLayoutStyles.pageContent}>
-          <section className={styles.services}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.services}>
         <div className="container">
           <Heading
             eyebrow="PRIVATE LIMITED COMPANY"
@@ -197,9 +197,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.benefits} id="benefits">
+      <PageSectionLayout variant="with-sidebar" navItems={navItems}>
+        <section className={styles.benefits} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
             <Heading
@@ -223,9 +225,9 @@ export default function PrivateLimitedCompanyPage() {
             <Link href="#process">Explore the process <Icon name="arrow" /></Link>
           </aside>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.tax} id="structure">
+        <section className={styles.tax} id="structure">
         <div className={`container ${styles.taxGrid}`}>
           <div>
             <Heading
@@ -251,9 +253,9 @@ export default function PrivateLimitedCompanyPage() {
             <figcaption>Structure for today.<br /><strong>Readiness for tomorrow.</strong></figcaption>
           </figure>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.comparison} id="comparison">
+        <section className={styles.comparison} id="comparison">
         <div className="container">
           <Heading
             eyebrow="COMPARATIVE ANALYSIS"
@@ -276,9 +278,9 @@ export default function PrivateLimitedCompanyPage() {
           </div>
           <p className={styles.tableNote}>This comparison is for general information and is not a substitute for advice on your proposed structure.</p>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.process} id="process">
+        <section className={styles.process} id="process">
         <div className="container">
           <Heading
             eyebrow="INCORPORATION PROCESS"
@@ -296,9 +298,9 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </ol>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.documents} id="documents">
+        <section className={styles.documents} id="documents">
         <div className={`container ${styles.documentGrid}`}>
           <div>
             <Heading
@@ -313,9 +315,9 @@ export default function PrivateLimitedCompanyPage() {
             <span>Prepared with care.<br /><strong>Filed with clarity.</strong></span>
           </div>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.requirements} id="requirements">
+        <section className={styles.requirements} id="requirements">
         <div className="container">
           <Heading
             eyebrow="KEY REQUIREMENTS"
@@ -333,9 +335,9 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.pricing} id="fees">
+        <section className={styles.pricing} id="fees">
         <div className="container">
           <Heading
             eyebrow="OUR PROFESSIONAL FEES"
@@ -366,9 +368,11 @@ export default function PrivateLimitedCompanyPage() {
           </div>
           <p className={styles.priceNote}>Professional fees are indicative. Applicable taxes, statutory fees and third-party costs may be additional.</p>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.features}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.features}>
         <div className="container">
           <Heading
             eyebrow="KEY FEATURES"
@@ -389,9 +393,11 @@ export default function PrivateLimitedCompanyPage() {
             ].map(([icon, title]) => <div key={title}><Icon name={icon} /><span>{title}</span></div>)}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.faq} id="faqs">
+      <PageSectionLayout variant="full-width">
+        <section className={styles.faq} id="faqs">
         <div className={`container ${styles.faqLayout}`}>
           <div>
             <Heading
@@ -403,10 +409,12 @@ export default function PrivateLimitedCompanyPage() {
           </div>
           <PrivateLimitedFaq faqs={faqs} styles={{ list: styles.faqList }} />
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
       {review && (
-        <section className={styles.testimonial}>
+        <PageSectionLayout variant="full-width">
+          <section className={styles.testimonial}>
           <div className="container">
             <Heading
               eyebrow="CLIENT PERSPECTIVE"
@@ -423,10 +431,12 @@ export default function PrivateLimitedCompanyPage() {
               </figcaption>
             </figure>
           </div>
-        </section>
+          </section>
+        </PageSectionLayout>
       )}
 
-      <section className={styles.insights}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.insights}>
         <div className="container">
           <div className={styles.sectionTop}>
             <Heading eyebrow="INSIGHTS" title="Latest articles, updates and events" />
@@ -448,9 +458,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.knowledge}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.knowledge}>
         <div className="container">
           <Heading
             eyebrow="KNOWLEDGE CENTRE"
@@ -473,9 +485,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.experience}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.experience}>
         <div className="container">
           <Heading eyebrow="SHARE YOUR EXPERIENCE WITH ASTRONIS GLOBAL" title="Your experience matters" />
           <div className={styles.experienceGrid}>
@@ -483,19 +497,19 @@ export default function PrivateLimitedCompanyPage() {
             <article><Icon name="play" /><div><h3>Record a video testimonial</h3><p>Share your video feedback about your journey with Astronis Global.</p></div><Link href="/testimonials">Record a Video <Icon name="arrow" /></Link></article>
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.final}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.final}>
         <div className="container">
           <span>YOUR NEXT CHAPTER STARTS HERE</span>
           <h2>Ready to incorporate your Private Limited Company?</h2>
           <p>Let our experts guide you through a seamless and compliant incorporation process.</p>
           <Link href="/contact">Schedule a Consultation <Icon name="arrow" /></Link>
         </div>
-      </section>
-        </div>
-        <PageSectionNav items={nav.map(([label, id]) => ({ id, label }))} />
-      </div>
+        </section>
+      </PageSectionLayout>
     </div>
   );
 }

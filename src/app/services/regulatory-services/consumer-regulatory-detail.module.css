@@ -275,15 +275,31 @@
 }
 
 .pageNavLayout {
+  --page-nav-width: 220px;
+  --page-nav-gap: 12px;
   --navy: #061e3b;
   --gold: #e4bf80;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) var(--page-nav-width);
   align-items: start;
-  gap: 12px;
+  gap: var(--page-nav-gap);
   max-width: 1500px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+.pageNavLayout .pageContent {
+  grid-column: 1;
+}
+
+.pageNavLayout .pageContent > [data-section-layout="full-width"] {
+  position: relative;
+  width: calc(100% + var(--page-nav-width) + var(--page-nav-gap));
+  margin-right: calc(0px - var(--page-nav-width) - var(--page-nav-gap));
+}
+
+.pageNavLayout > :global(aside[aria-label="Page sections"]) {
+  grid-column: 2;
 }
 
 .pageContent {
@@ -914,6 +930,16 @@
     grid-template-columns: 1fr;
     gap: 0;
     padding: 0 20px;
+  }
+
+  .pageNavLayout .pageContent > [data-section-layout="full-width"] {
+    width: auto;
+    margin-right: 0;
+  }
+
+  .pageNavLayout > :global(aside[aria-label="Page sections"]) {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .highlightGrid,

@@ -16,6 +16,7 @@ const sectionLinks = [
   ["Documents", "documents"],
   ["FAQs", "faqs"],
 ];
+const fullWidthSections = ["services", "features", "faqs", "consultation"];
 
 function Heading({
   eyebrow,
@@ -123,7 +124,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
             </div>
           </section>
 
-          <section className={styles.services} id="services">
+          <section className={styles.services} id="services" data-section-layout="full-width">
             <div className="container">
               <Heading
                 eyebrow={`OUR ${detail.title.toUpperCase()} SERVICES`}
@@ -292,7 +293,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
             </div>
           </section>
 
-          <section className={styles.features}>
+          <section className={styles.features} id="features" data-section-layout="full-width">
             <div className="container">
               <Heading eyebrow="PRECAUTIONS & LEGAL CONSIDERATIONS" title="Plan carefully before implementation" light />
               <div className={styles.featureStrip}>
@@ -301,7 +302,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
             </div>
           </section>
 
-          <section className={styles.faq} id="faqs">
+          <section className={styles.faq} id="faqs" data-section-layout="full-width">
             <div className={`container ${styles.faqLayout}`}>
               <div>
                 <Heading
@@ -322,7 +323,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
             </div>
           </section>
 
-          <section className={styles.final} id="consultation">
+          <section className={styles.final} id="consultation" data-section-layout="full-width">
             <div className="container">
               <span>YOUR NEXT STEP STARTS HERE</span>
               <h2>{detail.finalHeading}</h2>
@@ -331,7 +332,10 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
             </div>
           </section>
         </div>
-        <PageSectionNav items={sectionLinks.map(([label, id]) => ({ id, label }))} />
+        <PageSectionNav
+          items={sectionLinks.map(([label, id]) => ({ id, label }))}
+          hiddenWhenVisible={fullWidthSections}
+        />
       </div>
     </div>
   );

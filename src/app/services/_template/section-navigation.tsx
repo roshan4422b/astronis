@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../../_components/icon";
 import styles from "./service-template.module.css";
@@ -9,7 +9,13 @@ type NavChild = { title: string; url: string };
 type Item = { id: string; title: string; icon?: string; href?: string; description?: string; children?: NavChild[] };
 
 export default function SectionNavigation({ items, title, variant = "sidebar", showItemNumbers = true, theme }: { items: Item[]; title: string; variant?: "sidebar" | "bar"; showItemNumbers?: boolean; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" }) {
-  const [active, setActive] = useState(items[0]?.id || "");
+  const visibleItems = useMemo(
+    () => variant === "sidebar"
+      ? items.filter(item => item.id !== "overview" && item.title.trim().toLowerCase() !== "overview")
+      : items,
+    [items, variant],
+  );
+  const [active, setActive] = useState(visibleItems[0]?.id || "");
   const [openId, setOpenId] = useState<string | null>(null);
   const navigationRef = useRef<HTMLElement>(null);
 
@@ -26,7 +32,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
   }
 
   useEffect(() => {
-    const nodes = items.map(item => document.getElementById(item.id)).filter((node): node is HTMLElement => Boolean(node));
+    const nodes = visibleItems.map(item => document.getElementById(item.id)).filter((node): node is HTMLElement => Boolean(node));
     const template = nodes[0]?.closest<HTMLElement>("[data-service-template]");
     const header = document.querySelector(".site-header");
     let frame = 0;
@@ -67,7 +73,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       observer.disconnect(); resize.disconnect(); cancelAnimationFrame(frame); cancelAnimationFrame(initialFrame);
       window.removeEventListener("scroll", schedule); window.removeEventListener("hashchange", restoreHash); window.removeEventListener("popstate", restoreHash);
     };
-  }, [items, variant]);
+  }, [visibleItems, variant]);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
@@ -98,7 +104,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       <div className={styles.navDesktop}>
         <p className={styles.navTitle}>{title}</p>
         <ol className={styles.navList}>
-          {items.map((item, index) => {
+          {visibleItems.map((item, index) => {
             const hasChildren = Boolean(item.children?.length);
             const isOpen = openId === item.id;
             const panelId = `${item.id}-panel`;
@@ -151,7 +157,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
           })}
         </ol>
         {(() => {
-          const selected = items.find(item => item.id === openId);
+          const selected = visibleItems.find(item => item.id === openId);
           if (!isBarNavigation || !selected?.children?.length) return null;
           const columns = Math.min(3, Math.ceil(selected.children.length / 4));
           const perColumn = Math.ceil(selected.children.length / columns);
@@ -171,8 +177,8 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       </div>
 
       <div className={styles.navMobile}>
-        {items.some(item => item.children?.length) ? <div className={styles.mobileCategoryList}>
-          {items.map((item, index) => {
+        {visibleItems.some(item => item.children?.length) ? <div className={styles.mobileCategoryList}>
+          {visibleItems.map((item, index) => {
             const hasChildren = Boolean(item.children?.length);
             const isOpen = openId === item.id;
             const panelId = `${item.id}-mobile-panel`;
@@ -187,7 +193,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
             </div>;
           })}
         </div> : <select aria-label={title} value={active} onChange={event => navigate(event.target.value)}>
-          {items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
+          {visibleItems.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
         </select>}
       </div>
     </nav>

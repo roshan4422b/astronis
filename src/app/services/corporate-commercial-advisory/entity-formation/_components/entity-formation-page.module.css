@@ -238,13 +238,55 @@
 }
 
 .pageNavLayout {
+  --page-nav-width: 220px;
+  --page-nav-gap: 12px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) var(--page-nav-width);
+  gap: var(--page-nav-gap);
   align-items: start;
   max-width: 1500px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+.pageNavLayout .pageContent {
+  grid-column: 1;
+}
+
+.pageNavLayout .pageContent > [data-section-layout="full-width"] {
+  position: relative;
+  width: calc(100% + var(--page-nav-width) + var(--page-nav-gap));
+  margin-right: calc(0px - var(--page-nav-width) - var(--page-nav-gap));
+}
+
+.pageNavLayout > :global(aside[aria-label="Page sections"]) {
+  grid-column: 2;
+}
+
+.sectionLayout {
+  display: grid;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.sectionLayoutWithSidebar {
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 12px;
+  align-items: start;
+}
+
+.sectionLayoutFullWidth {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sectionLayoutContent {
+  min-width: 0;
+}
+
+.sectionLayoutSidebar {
+  align-self: stretch;
+  min-width: 0;
 }
 
 .pageContent {
@@ -253,12 +295,16 @@
 
 .pageSectionNavWrap {
   position: sticky;
-  top: 110px;
+  top: 160px;
   align-self: start;
   width: 220px;
   min-width: 0;
   margin-top: 8px;
-  max-height: calc(100vh - 130px);
+  max-height: calc(100vh - 180px);
+}
+
+.pageSectionNavHidden {
+  display: none;
 }
 
 .pageSectionNav {
@@ -1429,11 +1475,25 @@
     padding: 0 20px;
   }
 
+  .pageNavLayout .pageContent > [data-section-layout="full-width"] {
+    width: auto;
+    margin-right: 0;
+  }
+
+  .pageNavLayout > :global(aside[aria-label="Page sections"]) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .sectionLayoutWithSidebar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
   .pageSectionNavWrap {
     position: relative;
     top: auto;
     right: auto;
-    order: -1;
     width: auto;
     max-height: none;
     padding-bottom: 14px;

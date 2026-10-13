@@ -16,6 +16,7 @@ const sections = [
   ["Documents & Preparation", "documents"],
   ["FAQs", "faqs"],
 ];
+const fullWidthSections = ["services", "features", "faqs", "consultation"];
 
 function Heading({
   eyebrow,
@@ -108,7 +109,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
             </div>
           </section>
 
-          <section className={styles.services} id="services">
+          <section className={styles.services} id="services" data-section-layout="full-width">
             <div className="container">
               <Heading
                 eyebrow={`OUR SERVICES IN ${detail.title.toUpperCase()}`}
@@ -224,7 +225,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
             </div>
           </section>
 
-          <section className={styles.features}>
+          <section className={styles.features} id="features" data-section-layout="full-width">
             <div className="container">
               <Heading eyebrow="KEY FRAMEWORKS & CONSIDERATIONS" title="Connected perspectives for better decisions" light />
               <div className={styles.featureStrip}>
@@ -233,7 +234,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
             </div>
           </section>
 
-          <section className={styles.faq} id="faqs">
+          <section className={styles.faq} id="faqs" data-section-layout="full-width">
             <div className={`container ${styles.faqLayout}`}>
               <div>
                 <Heading
@@ -254,7 +255,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
             </div>
           </section>
 
-          <section className={styles.final} id="consultation">
+          <section className={styles.final} id="consultation" data-section-layout="full-width">
             <div className="container">
               <span>YOUR NEXT CHAPTER STARTS HERE</span>
               <h2>{detail.finalHeading}</h2>
@@ -263,7 +264,10 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
             </div>
           </section>
         </div>
-        <PageSectionNav items={sections.map(([label, id]) => ({ id, label }))} />
+        <PageSectionNav
+          items={sections.map(([label, id]) => ({ id, label }))}
+          hiddenWhenVisible={fullWidthSections}
+        />
       </div>
     </div>
   );

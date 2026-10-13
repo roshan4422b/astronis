@@ -14,6 +14,7 @@ const sectionLinks = [
   ["Our Approach", "process"],
   ["FAQs", "faqs"],
 ];
+const fullWidthSections = ["services", "resources", "faqs", "consultation"];
 
 function Heading({
   label,
@@ -113,7 +114,7 @@ export default function ConsumerRegulatoryDetailPage({
             </div>
           </section>
 
-      <section className={styles.services} id="services">
+      <section className={styles.services} id="services" data-section-layout="full-width">
         <div className="container">
           <Heading
             label="OUR SERVICES"
@@ -233,7 +234,7 @@ export default function ConsumerRegulatoryDetailPage({
         </div>
       </section>
 
-      <section className={styles.resources}>
+      <section className={styles.resources} id="resources" data-section-layout="full-width">
         <div className="container">
           <div className={styles.resourcesHeading}>
             <Heading label="INSIGHTS & RESOURCES" title="Keep informed as requirements evolve" text="Explore further information and discuss how current regulatory developments may affect your organisation." />
@@ -256,7 +257,7 @@ export default function ConsumerRegulatoryDetailPage({
         </div>
       </section>
 
-      <section className={styles.faq} id="faqs">
+      <section className={styles.faq} id="faqs" data-section-layout="full-width">
         <div className={`container ${styles.faqGrid}`}>
           <div>
             <Heading
@@ -277,7 +278,7 @@ export default function ConsumerRegulatoryDetailPage({
         </div>
       </section>
 
-          <section className={styles.finalCta} id="consultation">
+          <section className={styles.finalCta} id="consultation" data-section-layout="full-width">
             <div className={`container ${styles.finalInner}`}>
               <div>
                 <span className={styles.cardLabel}>LET&apos;S DISCUSS YOUR REQUIREMENTS</span>
@@ -291,7 +292,10 @@ export default function ConsumerRegulatoryDetailPage({
             </div>
           </section>
         </div>
-        <PageSectionNav items={sectionLinks.map(([label, id]) => ({ id, label }))} />
+        <PageSectionNav
+          items={sectionLinks.map(([label, id]) => ({ id, label }))}
+          hiddenWhenVisible={fullWidthSections}
+        />
       </div>
     </div>
   );

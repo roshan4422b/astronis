@@ -6,7 +6,7 @@ import { testimonials } from "@/content/testimonials";
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { services } from "@/data/services";
 import PrivateLimitedFaq from "../private-limited/private-limited-faq";
-import PageSectionNav from "./page-section-nav";
+import PageSectionLayout from "./page-section-layout";
 import styles from "./entity-formation-page.module.css";
 
 function Heading({
@@ -67,6 +67,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         ["Fees", "fees"],
         ["FAQs", "faqs"],
       ];
+  const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
   const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
   const defaultAlternatives = data.slug === "opc"
     ? ["One Person Company", "Private Limited Company", "LLP", "Partnership"]
@@ -117,9 +118,8 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
-      <div className={styles.pageNavLayout}>
-        <div className={styles.pageContent}>
-          {data.showIntro !== false && <section className={styles.intro}>
+      {data.showIntro !== false && <PageSectionLayout variant="full-width">
+        <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
           <div>
             <Heading eyebrow={data.shortTitle.toUpperCase()} title={data.introHeading ?? "A clear foundation for your organisation"} />
@@ -132,9 +132,11 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <p>Consider your purpose, participants, responsibilities and plans before settling the formation brief.</p>
           </aside>
         </div>
-      </section>}
+        </section>
+      </PageSectionLayout>}
 
-      <section className={styles.services}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.services}>
         <div className="container">
           <Heading
             eyebrow={`OUR SERVICES FOR ${data.shortTitle.toUpperCase()}`}
@@ -159,9 +161,11 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </nav>
           )}
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.benefits} id="benefits">
+      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
+        <section className={styles.benefits} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
             <Heading
@@ -183,9 +187,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      {!data.hideStructure && <section className={styles.structure} id="structure">
+      {!data.hideStructure && (
+        <section className={styles.structure} id="structure">
         <div className={`container ${styles.structureGrid}`}>
           <div>
             <Heading
@@ -205,9 +210,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <figcaption>Structure for today.<br /><strong>Clarity for what comes next.</strong></figcaption>
           </figure>
         </div>
-      </section>}
+        </section>
+      )}
 
-      <section className={styles.comparison} id="comparison">
+        <section className={styles.comparison} id="comparison">
         <div className="container">
           <Heading
             eyebrow="COMPARATIVE ANALYSIS"
@@ -224,10 +230,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </div>
           <p className={styles.tableNote}>Use this overview as a starting point for advice on the proposed structure and circumstances.</p>
         </div>
-      </section>
+        </section>
 
       {data.structureSections && (
-        <section className={styles.structuringDetails} id="structure">
+          <section className={styles.structuringDetails} id="structure">
           <div className={`container ${styles.structuringDetailsGrid}`}>
             {data.structureSections.map((section) => (
               <article className={styles.structuringDetail} key={section.title}>
@@ -241,10 +247,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               </article>
             ))}
           </div>
-        </section>
+          </section>
       )}
 
-      <section className={styles.process} id="process">
+        <section className={styles.process} id="process">
         <div className="container">
           <Heading eyebrow={data.processEyebrow ?? (data.slug === "foreign-company-setup" ? "SETUP PROCESS" : data.slug === "partnership-firm" || data.slug === "proprietorship" ? data.slug === "partnership-firm" ? "INCORPORATION PROCESS" : "REGISTRATION PROCESS" : "INCORPORATION PROCESS")} title={data.processHeading ?? "Simple, transparent and timely"} text={data.processDescription ?? "A clear sequence of decisions and filings, coordinated around complete information and authority processing."} />
           <ol className={styles.timeline}>
@@ -257,9 +263,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             ))}
           </ol>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.documents} id="documents">
+        <section className={styles.documents} id="documents">
         <div className={`container ${styles.documentGrid}`}>
           <div>
             <Heading eyebrow={data.slug === "partnership-firm" || data.slug === "proprietorship" ? "DOCUMENTS REQUIRED" : "DOCUMENTS & REQUIREMENTS"} title={data.documentsHeading ?? "Prepare the right information"} text={data.documentsDescription ?? "The exact checklist depends on the proposed entity, participants and activities. We will confirm requirements for your circumstances."} />
@@ -275,10 +281,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             ))}
           </aside>
         </div>
-      </section>
+        </section>
 
       {data.advantages && data.challenges && (
-        <section className={styles.prosCons}>
+          <section className={styles.prosCons}>
           <div className="container">
             <Heading eyebrow="PROS AND CONS" title={`Pros and Cons of ${data.shortTitle}`} />
             <div className={styles.prosConsGrid}>
@@ -292,10 +298,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               </article>
             </div>
           </div>
-        </section>
+          </section>
       )}
 
-      <section className={styles.pricing} id="fees">
+        <section className={styles.pricing} id="fees">
         <div className="container">
           <Heading
             eyebrow={data.pricingEyebrow ?? "OUR PROFESSIONAL FEES"}
@@ -323,18 +329,22 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </div>
           {data.priceNote !== null && <p className={styles.priceNote}>{data.priceNote ?? "Government charges, applicable taxes and third-party costs are confirmed separately as part of the proposed scope."}</p>}
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      {showFeatures && <section className={styles.features}>
+      {showFeatures && <PageSectionLayout variant="full-width">
+        <section className={styles.features}>
         <div className="container">
           <Heading eyebrow="KEY FEATURES" title={data.featureHeading ?? `${data.shortTitle} at a glance`} light />
           <div className={`${styles.featureStrip} ${data.featureItems ? styles.featureStripWide : ""}`}>{(data.featureItems ?? data.benefits.map(([, title]) => title)).map((title, index) => (
             <div key={title}><Icon name={data.benefits[index % data.benefits.length][0]} /><span>{title}</span></div>
           ))}</div>
         </div>
-      </section>}
+        </section>
+      </PageSectionLayout>}
 
-      <section className={styles.faq} id="faqs">
+      <PageSectionLayout variant="full-width">
+        <section className={styles.faq} id="faqs">
         <div className={`container ${styles.faqLayout}`}>
           <div>
             <Heading eyebrow="FREQUENTLY ASKED QUESTIONS" title="A few useful answers" text={data.faqDescription ?? `Common questions about ${data.shortTitle} formation and planning.`} />
@@ -342,10 +352,12 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </div>
           <PrivateLimitedFaq faqs={data.faqs} styles={{ list: styles.faqList }} />
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
       {showTestimonials && (data.testimonials || currentTestimonial) && (
-        <section className={styles.testimonial}>
+        <PageSectionLayout variant="full-width">
+          <section className={styles.testimonial}>
           <div className="container">
             <Heading eyebrow="TESTIMONIALS" title="What Our Clients Say" />
             {data.testimonials ? <div className={styles.testimonialGrid}>
@@ -363,10 +375,12 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               <figcaption><strong>{currentTestimonial.name}</strong><span>{currentTestimonial.designation}, {currentTestimonial.company}</span><span className={styles.stars} aria-label={`${currentTestimonial.rating} out of 5 stars`}>{"★".repeat(currentTestimonial.rating || 0)}</span></figcaption>
             </figure>}
           </div>
-        </section>
+          </section>
+        </PageSectionLayout>
       )}
 
-      {showInsights && <section className={styles.insights}>
+      {showInsights && <PageSectionLayout variant="full-width">
+        <section className={styles.insights}>
         <div className="container">
           <div className={styles.sectionTop}><Heading eyebrow={data.insights ? "INSIGHTS & EVENTS" : "INSIGHTS"} title={data.insights ? "Latest Articles, Updates and Events" : "Latest articles, updates and events"} /><Link href="/insights">View all insights <Icon name="arrow" /></Link></div>
           {data.insights ? <div className={styles.articleGrid}>{data.insights.map(([title, date, category], index) => (
@@ -381,9 +395,11 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </article>
           ))}</div>}
         </div>
-      </section>}
+        </section>
+      </PageSectionLayout>}
 
-      {showKnowledge && <section className={styles.knowledge}>
+      {showKnowledge && <PageSectionLayout variant="full-width">
+        <section className={styles.knowledge}>
         <div className="container">
           <Heading eyebrow="KNOWLEDGE CENTRE" title="Guides, checklists and templates" text="Explore resources to help organise your formation planning." />
           <div className={styles.resourceGrid}>{(data.resources ?? [
@@ -395,9 +411,11 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <Link href="/knowledge-centre" key={type}><span className={styles.icon}><Icon name={icon} /></span><small>{type}</small><h3>{title}</h3><span className={styles.resourceAction}>Explore resource <Icon name="arrow" /></span></Link>
           ))}</div>
         </div>
-      </section>}
+        </section>
+      </PageSectionLayout>}
 
-      {showReviewActions && <section className={styles.experience}>
+      {showReviewActions && <PageSectionLayout variant="full-width">
+        <section className={styles.experience}>
         <div className="container">
           <Heading eyebrow="SHARE YOUR EXPERIENCE WITH ASTRONIS GLOBAL" title="Your experience matters" />
           <div className={styles.experienceGrid}>
@@ -405,20 +423,19 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <article><Icon name="play" /><div><h3>Record a video testimonial</h3><p>Share your video feedback about your journey with Astronis Global.</p></div><Link href="/testimonials">Record a Video <Icon name="arrow" /></Link></article>
           </div>
         </div>
-      </section>}
+        </section>
+      </PageSectionLayout>}
 
-          <section className={styles.final}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.final}>
             <div className="container">
               <span>YOUR NEXT CHAPTER STARTS HERE</span>
               <h2>{data.finalHeading ?? `Ready to form your ${data.shortTitle}?`}</h2>
               <p>{data.finalDescription ?? "Let our experts guide you through a considered and compliant formation process."}</p>
               <Link href="/contact">{data.finalAction ?? "Schedule a Consultation"} <Icon name="arrow" /></Link>
             </div>
-          </section>
-        </div>
-
-        <PageSectionNav items={navItems.map(([label, id]) => ({ id, label }))} />
-      </div>
+        </section>
+      </PageSectionLayout>
     </div>
   );
 }
