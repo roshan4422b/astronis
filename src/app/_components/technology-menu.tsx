@@ -11,10 +11,10 @@ import { dataAiPath, dataAiSolutions } from "@/content/data-ai-solutions";
 import { isRouteActive } from "./navigation-state";
 
 const columns = [
-  { title: "Digital Business Solutions", icon: "laptop", links: ["Digital Transformation", "Business Process Digitisation", "Digital Operating Models", "Workflow Solutions", "Client & Enterprise Portals", "Cloud & Collaboration", "Cybersecurity Readiness"] },
-  { title: "RegTech & Compliance Technology", icon: "shield", links: ["Compliance Management", "Regulatory Monitoring & Alerts", "Compliance Calendar", "Licensing & Approval Tracking", "Policy & Regulatory Intelligence", "Risk & Governance Technology", "ESG & Sustainability Tools"] },
-  { title: "Legal Technology", icon: "file", links: ["Contract Lifecycle Management", "Document Management", "Matter / Case Management", "Legal Workflow Automation", "e-Discovery & Evidence Management", "Knowledge Management", "AI-Assisted Legal Research"] },
-  { title: "Data, AI & Automation", icon: "network", links: ["Artificial Intelligence Solutions", "Data Analytics & Visualisation", "Intelligent Automation (RPA)", "Predictive Insights", "Regulatory Data Intelligence", "Business Intelligence Dashboards", "Process Optimisation"] },
+  { title: "Digital Business Solutions", links: ["Client & Enterprise Portals", "Cloud & Collaboration", "Cybersecurity Readiness"] },
+  { title: "RegTech & Compliance Technology", links: ["Compliance Management", "Regulatory Monitoring & Alerts", "Compliance Calendar", "Licensing & Approval Tracking", "Policy & Regulatory Intelligence", "Risk & Governance Technology", "ESG & Sustainability Tools"] },
+  { title: "Legal Technology", links: ["Document Management", "Matter / Case Management", "Legal Workflow Automation"] },
+  { title: "Data, AI & Automation", links: ["Predictive Insights", "Regulatory Data Intelligence"] },
 ];
 
 const explore = [
@@ -26,6 +26,17 @@ const explore = [
   ["Our Professionals", "/professionals"],
   ["Discuss Your Requirement", "/contact"],
 ];
+
+const allLinks = [
+  ...columns.flatMap((column) => column.links.map((title) => ({ title, href: solutionHref(title) }))),
+  ...explore.map(([title, href]) => ({ title, href })),
+];
+const menuColumns = [
+  allLinks.slice(0, 8),
+  allLinks.slice(8, 15),
+  allLinks.slice(15),
+];
+
 const shortcuts = [
   ["gear", "Technology Insights", "/technology-and-digital-solutions/technology-insights"],
   ["people", "Industries", "/industries"],
@@ -35,9 +46,6 @@ const shortcuts = [
 
 const descriptions: Record<string, string> = {
   "Digital Transformation": "Modernise your business.",
-  "Business Process Digitisation": "Move processes online.",
-  "Digital Operating Models": "Build connected operations.",
-  "Workflow Solutions": "Streamline everyday tasks.",
   "Client & Enterprise Portals": "Connect teams and clients.",
   "Cloud & Collaboration": "Work together securely.",
   "Cybersecurity Readiness": "Prepare for cyber threats.",
@@ -48,20 +56,11 @@ const descriptions: Record<string, string> = {
   "Policy & Regulatory Intelligence": "Understand policy impacts.",
   "Risk & Governance Technology": "Strengthen risk oversight.",
   "ESG & Sustainability Tools": "Measure sustainable progress.",
-  "Contract Lifecycle Management": "Manage every contract stage.",
   "Document Management": "Organise and retrieve files.",
   "Matter / Case Management": "Keep casework connected.",
   "Legal Workflow Automation": "Simplify legal processes.",
-  "e-Discovery & Evidence Management": "Find and organise evidence.",
-  "Knowledge Management": "Make expertise accessible.",
-  "AI-Assisted Legal Research": "Accelerate legal discovery.",
-  "Artificial Intelligence Solutions": "Apply AI to business needs.",
-  "Data Analytics & Visualisation": "Turn data into clear insights.",
-  "Intelligent Automation (RPA)": "Automate repetitive tasks.",
   "Predictive Insights": "Anticipate emerging trends.",
   "Regulatory Data Intelligence": "Analyse compliance data.",
-  "Business Intelligence Dashboards": "See performance at a glance.",
-  "Process Optimisation": "Improve operational efficiency.",
   "Explore All Solutions": "Discover digital capabilities.",
   "Technology Insights": "Explore ideas and updates.",
   "Global Best Practices": "Learn from global experience.",
@@ -70,6 +69,22 @@ const descriptions: Record<string, string> = {
   "Our Professionals": "Meet our advisory experts.",
   "Discuss Your Requirement": "Talk through your next step.",
 };
+
+const exploreIcons: Record<string, string> = {
+  "Explore All Solutions": "compass",
+  "Technology Insights": "bulb",
+  "Global Best Practices": "globe",
+  "Industries We Serve": "building",
+  "Our Professionals": "people",
+  "Discuss Your Requirement": "message",
+};
+
+const technologySolutions = [...digitalSolutions, ...regtechSolutions, ...legalTechnologySolutions, ...dataAiSolutions];
+
+function solutionIcon(title: string) {
+  const solution = technologySolutions.find((item) => item.title === title || (title === "Cloud & Collaboration" && item.title === "Cloud & Collaboration Solutions"));
+  return solution?.icon ?? exploreIcons[title] ?? "globe";
+}
 
 function solutionHref(title: string) {
   if (title === "Client & Enterprise Portals") return clientEnterprisePortalsPath;
@@ -97,17 +112,13 @@ export default function TechnologyMenu({ id, onNavigate }: { id: string; onNavig
     <div className={`mega-menu ${styles.menu}`} id={id}>
       <div className={styles.main}>
         <div className={styles.columns}>
-          {columns.map((column) => <section className={styles.column} key={column.title} aria-label={column.title}>
-            <Link className={`${styles.heading} ${isRouteActive(pathname, solutionHref(column.title)) ? "active-submenu-item" : ""}`.trim()} href={solutionHref(column.title)} onClick={onNavigate}><Icon name={column.icon} /><h3>{column.title}</h3><Icon name="arrow" /></Link>
-            <div className={styles.links}>{column.links.map((title) => {
-              const href = solutionHref(title);
-              return <Link href={href} key={title} onClick={onNavigate} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}><span><strong>{title}</strong><small>{descriptions[title]}</small></span><Icon name="arrow" /></Link>;
-            })}</div>
+          {menuColumns.map((column, index) => <section className={styles.column} key={index} aria-label={`Technology menu column ${index + 1}`}>
+            <div className={styles.links}>{column.map(({ title, href }) => <Link href={href} key={title} onClick={onNavigate} className={`${styles.solution} ${isRouteActive(pathname, href) ? "active-submenu-item" : ""}`}>
+              <span className={styles.solutionIcon} aria-hidden="true"><Icon name={solutionIcon(title)} /></span>
+              <span className={styles.copy}><strong title={title}>{title}</strong><small>{descriptions[title]}</small></span>
+              <Icon name="arrow" />
+            </Link>)}</div>
           </section>)}
-          <section className={styles.column} aria-label="Explore technology solutions">
-            <Link className={`${styles.heading} ${isRouteActive(pathname, "/technology-and-digital-solutions") ? "active-submenu-item" : ""}`.trim()} href="/technology-and-digital-solutions" onClick={onNavigate}><Icon name="compass" /><h3>Explore</h3><Icon name="arrow" /></Link>
-            <div className={styles.links}>{explore.map(([title, href]) => <Link href={href} key={title} onClick={onNavigate} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}><span><strong>{title}</strong><small>{descriptions[title]}</small></span><Icon name="arrow" /></Link>)}</div>
-          </section>
         </div>
         <aside className={styles.feature}>
           <div className={styles.featureCopy}><p>Innovation<br />for a more<br />resilient<br />tomorrow.</p><span>Astronis Global</span></div>
