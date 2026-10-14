@@ -54,6 +54,7 @@ function hrefFor(title: string) {
   if (title === "FAQs") return "/faqs";
   if (title === "Case Studies & Success Stories") return "/success-stories";
   if (title === "Downloads") return "/insights/download-useful-documents";
+  if (title === "White Papers") return "/insights/white-papers-research";
   return `/insights/${slugify(title)}`;
 }
 
