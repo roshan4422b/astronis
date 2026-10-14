@@ -1,0 +1,68 @@
+.heroImage{object-fit:cover;object-position:center 53%}
+.heroCopy{max-width:840px}
+.section.section{padding:40px 0 16px}
+.featuredLatest{grid-template-columns:minmax(0,1fr)}
+.featuredLatest>div{min-width:0}
+.featuredLatest>div+div{grid-column:1}
+.featuredCard{grid-template-columns:minmax(0,1.5fr) minmax(180px,.65fr);min-height:260px}
+.featuredCopy>p{font-size:17px}
+.unavailableButton{display:inline-flex;align-items:center;gap:6px;min-height:38px;margin-top:auto;padding:9px 13px;border:0;border-radius:3px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;opacity:.75}
+.unavailableButton svg{width:15px;height:15px}
+.reportCover{position:relative;display:flex;min-width:0;min-height:100%;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:14px 10px;background:#123666;color:#fff;text-align:center}
+.reportCover>img{object-fit:cover}
+.coverShade{position:absolute;inset:0;background:linear-gradient(180deg,#092754db,#092754bd 60%,#061b3eef)}
+.reportCover>span,.reportCover>strong,.reportCover>small{position:relative;z-index:1}
+.coverBrand{margin-bottom:auto;color:#fff;font-size:8px;font-weight:700;letter-spacing:.8px}
+.reportCover>strong{margin-top:auto;font:600 clamp(17px,1.7vw,23px)/1.1 Georgia,serif}
+.reportCover>span:not(.coverBrand){margin-top:7px;font:12px/1.3 Georgia,serif}
+.reportCover>small{margin-top:auto;padding-top:12px;font-size:8px;letter-spacing:.3px}
+.reportList{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:10px}
+.latestReportsPanel{padding:14px;background:#eef5fb}
+.reportItem{display:flex;min-width:0;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:0}
+.reportThumbnail{position:relative;display:block;width:100%;height:160px;flex:none;overflow:hidden;background:#eaf1f7}
+.reportThumbnail img{object-fit:cover}
+.reportDetails{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;padding:12px}
+.reportCategory{display:inline-block;padding:4px 6px;background:#0751a9;color:#fff;font-size:9px;font-weight:700;line-height:1.2;text-transform:uppercase}
+.reportDetails h3{margin-top:7px;color:#263b5a;font:600 17px/1.25 Georgia,serif}
+.reportMeta{display:flex;flex-wrap:wrap;gap:5px 9px;margin-top:auto;padding-top:10px}
+.reportMeta span{display:inline-flex;align-items:center;gap:3px}
+.reportMeta svg{width:13px;height:13px}
+.downloadUnavailable{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin:0 12px 12px;padding:5px 2px;border:0;background:transparent;color:var(--blue);font-size:12px;font-weight:700;white-space:nowrap;opacity:.65}
+.downloadUnavailable svg{width:13px;height:13px}
+.sectorCard{padding-bottom:12px;cursor:pointer}
+.sectorCard>strong{font-size:14px}
+.sectorImage{height:135px}
+.regulationCard{min-height:126px;gap:9px;font-size:14px;cursor:pointer}
+.regulatorMark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--blue)}
+.regulatorMark svg{width:40px;height:40px}
+.regulatorMark strong{font:700 16px Arial,sans-serif}
+.resourceCard{grid-template-columns:1fr;align-items:start;justify-items:start;gap:9px;padding:14px}
+.resourceCard>svg{width:36px;height:36px;color:var(--blue)}
+.resourceCard>span{display:flex;min-width:0;flex-direction:column;align-items:flex-start}
+.resourceCard strong{color:#152b50;font:600 18px Georgia,serif}
+.resourceCard small{margin-top:4px;color:#6a7789;font:16px/1.4 Georgia,serif}
+.resourceCard em{display:inline-flex;align-items:center;gap:5px;margin-top:7px;color:var(--blue);font-size:11px;font-style:normal;font-weight:700}
+.resourceCard em svg{width:12px;height:12px}
+.selectedCard{border-color:#a9c6e9!important;background:#f4f8ff!important}
+.ctaInner p{font-size:14px}
+@media(max-width:1100px){
+  .reportList{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sectorImage{height:120px}
+  .resourceCard{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .heroCopy{max-width:540px}
+  .featuredCard{grid-template-columns:minmax(0,1fr) 120px;min-height:0}
+  .reportList{grid-template-columns:1fr}
+  .reportThumbnail{height:180px}
+  .reportDetails h3{font-size:17px}
+  .sectorGrid,.regulationGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sectorImage{height:135px}
+  .regulationCard{min-height:112px}
+  .regulatorMark svg{width:36px;height:36px}
+  .resourceCard{grid-template-columns:1fr;align-items:start}
+}
+@media(max-width:420px){
+  .featuredCard{grid-template-columns:minmax(0,1fr) 96px}
+  .reportThumbnail{height:165px}
+}
