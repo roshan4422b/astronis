@@ -1,9 +1,9 @@
 .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.82) 31%,rgba(255,255,255,.5) 48%,rgba(255,255,255,.1) 70%,rgba(7,29,73,.08) 100%)}
-.categoryGrid{align-items:start}
-.categoryGrid :global([class*=categoryCard]){min-height:0;padding-bottom:12px}
-.categoryGrid :global([class*=categoryImage]){height:80px;flex:none}
-.categoryGrid :global([class*=categoryIcon]){flex:none;margin:12px 0 10px}
-.categoryGrid :global([class*=categoryCard])>strong{padding:0 8px;font-size: max(var(--font-size-min), 14px);line-height:1.2}
+.technologyCalendar .categoryGrid{grid-template-columns:repeat(8,minmax(0,1fr));align-items:start}
+.technologyCalendar .categoryGrid :global([class*=categoryCard]){min-height:0;padding-bottom:12px}
+.technologyCalendar .categoryGrid :global([class*=categoryImage]){height:80px;flex:none}
+.technologyCalendar .categoryGrid :global([class*=categoryIcon]){flex:none;margin:12px 0 10px}
+.technologyCalendar .categoryGrid :global([class*=categoryCard])>strong{padding:0 8px;font-size: max(var(--font-size-min), 14px);line-height:1.2}
 .monthSection{padding-top:8px}
 .monthHeading{align-items:center}
 .monthToolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
@@ -33,18 +33,65 @@
 .tableCta svg{width:13px;height:13px}
 .noCalendarRows{padding:16px;color:#65758b;font-size: max(var(--font-size-min), 12px)}
 .monthMessage{margin:0 0 10px;color:#5b6980;font-size: max(var(--font-size-min), 14px);text-align:right}
+.yearSection{padding-top:22px}
+.yearGrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.miniMonth{min-width:0;padding:7px 7px 6px;border:1px solid #dce5f1;border-radius:4px;background:#fff;box-shadow:0 2px 8px #09234d0d;transition:transform .2s ease,box-shadow .2s ease}
+.miniMonth:hover{transform:translateY(-2px);box-shadow:0 6px 15px #09234d16}
+.miniMonth h3{margin:0 0 5px;color:#0751db;font:600 12px/1.2 Georgia,serif;text-align:center}
+.miniCalendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;text-align:center}
+.weekday{padding:2px 0;color:#6c7d93;font:700 9px/1.2 Arial,sans-serif}
+.calendarDay{position:relative;display:grid;min-height:17px;place-items:center;border-radius:2px;color:#34445b;font:10px/1 Arial,sans-serif}
+.yearSection .monthToolbar button{transition:background .18s ease,transform .18s ease}
+.yearSection .monthToolbar button:hover{transform:translateY(-1px)}
+.testimonialCarousel{overflow:hidden}
+.testimonialCarousel :global(.testimonial-auto-scroll){overflow:hidden}
+.testimonialCarousel :global(.testimonial-track){display:flex;width:max-content;animation:testimonial-scroll 32s linear infinite}
+.testimonialCarousel :global(.testimonial-lane){display:flex;flex:none;gap:10px;padding-right:10px}
+.testimonialCarousel :global(.home-testimonial-card){width:min(360px,calc((100vw - 100px)/3));min-height:170px;flex:0 0 min(360px,calc((100vw - 100px)/3));padding:14px}
+.testimonialCarousel :global(.home-testimonial-card blockquote){margin-bottom:12px;font-size: max(var(--font-size-min), 13px);line-height:1.45}
+.testimonialCarousel :global(.testimonial-track:hover),
+.testimonialCarousel :global(.testimonial-track:focus-within){animation-play-state:paused}
+@keyframes testimonial-scroll{to{transform:translateX(-50%)}}
 @media(max-width:1100px){
+  .technologyCalendar .categoryGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .monthHeading{align-items:flex-start;flex-direction:column}
   .monthToolbar{justify-content:flex-start}
+  .yearGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .calendarGrid{grid-template-columns:1fr}
   .calendarTable{min-width:0}
 }
 @media(max-width:700px){
+  .technologyCalendar .categoryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.82) 48%,rgba(255,255,255,.55) 76%,rgba(255,255,255,.25) 100%)}
   .monthToolbar{justify-content:flex-start}
   .monthToolbar button,.monthToolbar a{min-height:36px;font-size: max(var(--font-size-min), 11px)}
+  .yearGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .miniMonth{padding:6px 4px}
+  .miniMonth h3{font-size: max(var(--font-size-min), 10px)}
+  .calendarDay{min-height:20px;font-size: max(var(--font-size-min), 10px)}
+  .testimonialCarousel :global(.home-testimonial-card){width:calc(100vw - 50px);flex-basis:calc(100vw - 50px)}
   .calendarTable{min-width:490px}
   .calendarTable th,.calendarTable td{font-size: max(var(--font-size-min), 11px);padding:9px 8px}
   .calendarCardHeader{min-height:48px}
   .calendarTable{min-width:520px}
+}
+@media(max-width:420px){
+  .technologyCalendar .yearGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+  .miniMonth,.yearSection .monthToolbar button{transition:none}
+  .miniMonth:hover,.yearSection .monthToolbar button:hover{transform:none}
+  .testimonialCarousel :global(.testimonial-track){width:100%;animation:none}
+  .testimonialCarousel :global(.testimonial-lane[aria-hidden="true"]){display:none}
+  .testimonialCarousel :global(.testimonial-lane){width:100%;flex-direction:column;padding:0}
+  .testimonialCarousel :global(.home-testimonial-card){width:100%;flex-basis:auto}
+}
+@media print{
+  .technologyCalendar{overflow:visible}
+  .technologyCalendar .hero{min-height:180px}
+  .technologyCalendar .heroInner,.technologyCalendar .content{width:100%}
+  .technologyCalendar .searchPanel,.technologyCalendar .heroActions,.technologyCalendar .monthToolbar,.technologyCalendar .cta form{display:none!important}
+  .technologyCalendar .yearGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .technologyCalendar .section{break-inside:avoid;padding-block:10px}
+  .technologyCalendar .calendarCard,.technologyCalendar .miniMonth,.technologyCalendar .resourceCard,.technologyCalendar .episodeCard{break-inside:avoid}
 }
