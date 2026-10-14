@@ -117,6 +117,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
   }, []);
 
   const isBarNavigation = variant === "bar";
+  const selectedMobileCategory = items.find(item => item.id === mobileCategoryId);
 
   return (
     <nav ref={navigationRef} className={isBarNavigation ? styles.sectionNav : styles.sidebarNav} aria-label={title} data-theme={theme}>
@@ -196,86 +197,38 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       </div>
 
       <div className={styles.navMobile}>
-        {visibleItems.some(item => item.children?.length)
-          ? (
-              <div className={styles.mobileCategoryList}>
-                {visibleItems.map((item, index) => {
-                  const hasChildren = Boolean(item.children?.length);
-                  const isOpen = openId === item.id;
-                  const panelId = `${item.id}-mobile-panel`;
-                  return (
-                    <div className={styles.mobileCategory} key={item.id}>
-                      <button
-                        type="button"
-                        className={styles.mobileCategoryButton}
-                        aria-expanded={hasChildren ? isOpen : undefined}
-                        aria-controls={hasChildren && isOpen ? panelId : undefined}
-                        onClick={() => hasChildren ? setOpenId(current => current === item.id ? null : item.id) : navigate(item.id)}
-                      >
-                        <span>{String(index + 1).padStart(2, "0")}</span><strong>{item.title}</strong>
-                        {hasChildren && (
-                          <span aria-hidden="true" className={`${styles.navChevronWrap} ${isOpen ? styles.navChevronOpen : ""}`}>
-                            <Icon name="chevron" className={styles.navChevron} />
-                          </span>
-                        )}
-                      </button>
-                      {hasChildren && isOpen && (
-                        <ul id={panelId} className={styles.mobileChildList} aria-label={`${item.title} services`}>
-                          {item.children!.map(child => (
-                            <li key={`${item.id}-${child.url || child.title}`}>
-                              <Link href={child.url} onClick={() => setOpenId(null)}>
-                                {child.title}<span aria-hidden="true">↗</span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )
-          : items.some(item => item.children?.length)
-            ? (() => {
-                const selectedCategory = items.find(item => item.id === mobileCategoryId);
-                return (
-                  <div className={styles.mobileServiceSelects}>
-                    <select
-                      aria-label="Choose a submenu"
-                      value={selectedCategory?.id || ""}
-                      onChange={event => {
-                        const id = event.target.value;
-                        const category = items.find(item => item.id === id);
-                        setMobileCategoryId(id);
-                        setMobileChildUrl(category?.children?.[0]?.url || "");
-                        navigate(id);
-                      }}
-                    >
-                      {items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
-                    </select>
-                    {selectedCategory?.children?.length ? (
-                      <select
-                        aria-label="Choose a child service"
-                        value={mobileChildUrl}
-                        onChange={event => {
-                          const childUrl = event.target.value;
-                          setMobileChildUrl(childUrl);
-                          if (childUrl) window.location.assign(childUrl);
-                        }}
-                      >
-                        {selectedCategory.children.map(child => (
-                          <option key={`${selectedCategory.id}-${child.url || child.title}`} value={child.url}>{child.title}</option>
-                        ))}
-                      </select>
-                    ) : null}
-                  </div>
-                );
-              })()
-            : (
-                <select aria-label={title} value={active} onChange={event => navigate(event.target.value)}>
-                  {items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
-                </select>
-              )}
+        {items.some(item => item.children?.length) ? (
+          <div className={styles.mobileServiceSelects}>
+            <select
+              aria-label="Choose a submenu"
+              value={selectedMobileCategory?.id || ""}
+              onChange={event => {
+                const id = event.target.value;
+                const category = items.find(item => item.id === id);
+                setMobileCategoryId(id);
+                setMobileChildUrl(category?.children?.[0]?.url || "");
+                navigate(id);
+              }}
+            >
+              {items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
+            </select>
+            {selectedMobileCategory?.children?.length ? (
+              <select
+                aria-label="Choose a child service"
+                value={mobileChildUrl}
+                onChange={event => {
+                  const childUrl = event.target.value;
+                  setMobileChildUrl(childUrl);
+                  if (childUrl) window.location.assign(childUrl);
+                }}
+              >
+                {selectedMobileCategory.children.map(child => <option key={`${selectedMobileCategory.id}-${child.url || child.title}`} value={child.url}>{child.title}</option>)}
+              </select>
+            ) : null}
+          </div>
+        ) : <select aria-label={title} value={active} onChange={event => navigate(event.target.value)}>
+          {visibleItems.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}
+        </select>}
       </div>
     </nav>
   );
