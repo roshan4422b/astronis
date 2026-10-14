@@ -10,9 +10,17 @@ import UsefulDocuments from "../useful-documents";
 import SebiUpdates from "../sebi-updates";
 import BusinessUpdates from "../business-updates";
 import LegalUpdates from "../legal-updates";
+import ArticlesAndResources from "../articles-and-resources";
 const categories = [...new Set([...siteMenu.insights, ...insightCategories])];
 export function generateStaticParams() {
-  return [...categories.filter((t) => slugify(t) !== "government-notifications").map((t) => ({ slug: slugify(t) })), { slug: "startup-news" }, { slug: "download-useful-documents" }, ...corporateArticles.map(a => ({ slug: a.slug }))];
+  return [
+    ...categories.filter((t) => slugify(t) !== "government-notifications").map((t) => ({ slug: slugify(t) })),
+    { slug: "articles" },
+    { slug: "blogs" },
+    { slug: "startup-news" },
+    { slug: "download-useful-documents" },
+    ...corporateArticles.map((article) => ({ slug: article.slug })),
+  ];
 }
 export async function generateMetadata({
   params,
@@ -21,6 +29,9 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const article = corporateArticles.find(a => a.slug === slug);
+  if (["articles-and-resources", "articles", "blogs"].includes(slug)) {
+    return { title: "Articles & Resources", description: "Articles, analysis and practical resources from Astronis Global." };
+  }
   if (slug === "gst-updates") return { title: "GST Updates", description: "GST filing, notifications, returns, compliance updates and practical indirect tax guidance from Astronis Global." };
   if (slug === "mca-updates") return { title: "MCA Updates", description: "MCA notifications, circulars, Companies Act amendments, compliance updates and company law insights from Astronis Global." };
   if (slug === "start-up-and-msme-updates" || slug === "startup-news") return { title: "Start-Up and MSME Updates", description: "Start-up and MSME policy updates, schemes, notifications, compliance information and business insights from Astronis Global." };
@@ -38,6 +49,7 @@ export default async function CategoryPage({
 }) {
   const { slug } = await params;
   const article = corporateArticles.find(a => a.slug === slug);
+  if (["articles-and-resources", "articles", "blogs"].includes(slug)) return <ArticlesAndResources />;
   if (slug === "gst-updates") return <GstUpdates />;
   if (slug === "mca-updates") return <McaUpdates />;
   if (slug === "start-up-and-msme-updates" || slug === "startup-news") return <StartupUpdates />;

@@ -4,7 +4,7 @@ import { siteMenu, slugify } from "@/content/site";
 import { TextLink } from "../_components/ui";
 const entries = siteMenu.insights.map((title) => ({
   title,
-  category: ["Articles", "Blogs", "White Papers", "Downloads"].includes(title)
+  category: ["Articles & Resources", "White Papers", "Downloads"].includes(title)
     ? "Publications"
     : ["Case Studies", "Success Stories"].includes(title)
       ? "Case Studies"

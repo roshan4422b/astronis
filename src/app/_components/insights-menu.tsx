@@ -9,8 +9,7 @@ const columns = [
   {
     icon: "file", title: "Thought Leadership", tagline: "Ideas. Analysis. Perspectives.",
     links: [
-      ["file", "Articles", "Analysis on legal and regulatory developments."],
-      ["pencil", "Blogs", "Views on emerging opportunities and risks."],
+      ["file", "Articles & Resources", "Articles, analysis and practical resources."],
       ["file", "White Papers", "Research on key sectors and regulations."],
       ["building", "Government Notifications", "Central and state notifications."],
     ],
