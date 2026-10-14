@@ -28,7 +28,7 @@ const directory = litigationDisputeResolution.groups.map((group) => ({
 export default function LitigationDisputeResolutionPage() {
   return (
     <main className={styles.page}>
-      <ServiceHero practice={litigationDisputeResolution} hideBadges hideStageNumbers />
+      <ServiceHero practice={litigationDisputeResolution} />
 
       <SectionNavigation
         variant="bar"

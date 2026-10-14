@@ -3,10 +3,10 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
-import { testimonials } from "@/content/testimonials";
+import PageSectionLayout from "../_components/page-section-layout";
 import PageSectionNav from "../_components/page-section-nav";
-import pageLayoutStyles from "../_components/entity-formation-page.module.css";
 import styles from "../public-limited-company/public-limited-company.module.css";
+import layoutStyles from "./private-limited-page-layout.module.css";
 import PrivateLimitedFaq from "./private-limited-faq";
 
 export const metadata: Metadata = {
@@ -30,6 +30,8 @@ const nav = [
   ["FAQs", "faqs"],
 ];
 
+const navItems = nav.map(([label, id]) => ({ id, label }));
+
 const services = [
   ["search", "Name Reservation", "Review proposed company names and coordinate reservation."],
   ["file", "Incorporation with ROC", "Coordinate incorporation filings with the Registrar of Companies."],
@@ -51,7 +53,7 @@ const benefits = [
   ["calendar", "Perpetual succession", "The company's continuity is not ordinarily affected by a change in its membership."],
   ["chart", "Fundraising options", "A share-based structure can support investment discussions, subject to the company's plans and applicable requirements."],
   ["percent", "Tax and incentive assessment", "Corporate tax treatment and any available deductions or incentives depend on eligibility and current law."],
-  ["gem", "Credibility for growth", "A formal company structure can support confidence with customers, suppliers, lenders and potential investors."],
+  ["award", "Credibility for growth", "A formal company structure can support confidence with customers, suppliers, lenders and potential investors."],
 ];
 
 const comparison = [
@@ -75,16 +77,42 @@ const process = [
   ["Post-incorporation compliances", "Set up initial records, governance routines and applicable ongoing filings."],
 ];
 
+const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
+
+const sampleTestimonials = [
+  {
+    name: "Ananya Mehta",
+    designation: "Chief Executive Officer",
+    company: "Northstar Manufacturing Pvt. Ltd.",
+    message:
+      "Astronis Global brought clarity and commercial focus to a complex restructuring exercise. Their advice was practical, timely and easy for our leadership team to act on.",
+  },
+  {
+    name: "Rahul Sharma",
+    designation: "Managing Director",
+    company: "Sample Company",
+    message:
+      "The team helped us understand our business requirements and provided clear, structured guidance throughout the process.",
+  },
+  {
+    name: "Priya Kapoor",
+    designation: "Founder",
+    company: "Sample Enterprises",
+    message:
+      "The advice was straightforward, professional and focused on practical next steps for our business.",
+  },
+];
+
 const documents = [
-  "Proposed company name(s)",
-  "PAN, Aadhaar and address proof of all directors and shareholders",
-  "Passport photographs of directors and shareholders",
-  "Address proof for the registered office",
-  "Digital Signature Certificate (DSC)",
-  "Director Identification Number (DIN), where required",
-  "Draft Memorandum of Association (MOA) and Articles of Association (AOA)",
-  "Nominee consent, if applicable",
-  "Business activity details and sector licences, if applicable",
+  ["search", "Proposed company name(s)"],
+  ["person", "PAN, Aadhaar and address proof of all directors and shareholders"],
+  ["person", "Passport photographs of directors and shareholders"],
+  ["pin", "Address proof for the registered office"],
+  ["file", "Digital Signature Certificate (DSC)"],
+  ["person", "Director Identification Number (DIN), where required"],
+  ["document", "Draft Memorandum of Association (MOA) and Articles of Association (AOA)"],
+  ["people", "Nominee consent, if applicable"],
+  ["file", "Business activity details and sector licences, if applicable"],
 ];
 
 const requirements = [
@@ -122,12 +150,6 @@ function Heading({
 }
 
 export default function PrivateLimitedCompanyPage() {
-  const review = testimonials.find(
-    (item) =>
-      item.status === "approved" &&
-      item.publicationConsent &&
-      item.service === "Corporate & Commercial Advisory",
-  );
   const articles = corporateArticles.slice(0, 3);
 
   return (
@@ -138,7 +160,7 @@ export default function PrivateLimitedCompanyPage() {
           alt="Corporate professionals discussing a business plan"
           fill
           priority
-          sizes="(max-width: 850px) 100vw, 50vw"
+          sizes="100vw"
           className={styles.heroImage}
         />
         <div className={`container ${styles.heroInner}`}>
@@ -156,31 +178,19 @@ export default function PrivateLimitedCompanyPage() {
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span>
             <h1>Private Limited Company Incorporation</h1>
-            <h2>A strong foundation for sustainable business growth.</h2>
-            <p>
-              Plan and incorporate a private limited company with coordinated support for
-              ownership, documentation, regulatory filings and the requirements that follow.
-            </p>
             <div className={styles.actions}>
-              <Link className={styles.primary} href="/professionals/enquiry">
-                Get Started <Icon name="arrow" />
-              </Link>
               <Link className={styles.secondary} href="/contact">
                 Schedule a Consultation <Icon name="calendar" />
               </Link>
             </div>
           </div>
-          <div className={styles.heroNote}>
-            <span>FORMATION WITH A LONG VIEW</span>
-            <strong>Structure first.<br />Then grow with clarity.</strong>
-            <p>Connect incorporation, governance and your next business priorities.</p>
-          </div>
         </div>
       </section>
 
-      <div className={pageLayoutStyles.pageNavLayout}>
-        <div className={pageLayoutStyles.pageContent}>
-          <section className={styles.services}>
+      <div className={layoutStyles.pageLayout}>
+      <div className={layoutStyles.pageContent}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.services}>
         <div className="container">
           <Heading
             eyebrow="PRIVATE LIMITED COMPANY"
@@ -197,9 +207,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.benefits} id="benefits">
+      <PageSectionLayout variant="full-width">
+        <section className={styles.benefits} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
             <Heading
@@ -216,16 +228,10 @@ export default function PrivateLimitedCompanyPage() {
               ))}
             </div>
           </div>
-          <aside className={styles.benefitPanel}>
-            <span>BUILT AROUND YOUR BUSINESS</span>
-            <h3>A considered foundation for the next chapter.</h3>
-            <p>Align the entity, ownership and governance with the way the business intends to operate and grow.</p>
-            <Link href="#process">Explore the process <Icon name="arrow" /></Link>
-          </aside>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.tax} id="structure">
+        <section className={styles.tax} id="structure">
         <div className={`container ${styles.taxGrid}`}>
           <div>
             <Heading
@@ -246,14 +252,10 @@ export default function PrivateLimitedCompanyPage() {
               ))}
             </ul>
           </div>
-          <figure className={styles.taxImage}>
-            <Image src="/Part-16 .png" alt="A modern business district representing company growth" fill sizes="(max-width: 850px) 100vw, 42vw" />
-            <figcaption>Structure for today.<br /><strong>Readiness for tomorrow.</strong></figcaption>
-          </figure>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.comparison} id="comparison">
+        <section className={styles.comparison} id="comparison">
         <div className="container">
           <Heading
             eyebrow="COMPARATIVE ANALYSIS"
@@ -276,9 +278,9 @@ export default function PrivateLimitedCompanyPage() {
           </div>
           <p className={styles.tableNote}>This comparison is for general information and is not a substitute for advice on your proposed structure.</p>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.process} id="process">
+        <section className={styles.process} id="process">
         <div className="container">
           <Heading
             eyebrow="INCORPORATION PROCESS"
@@ -289,16 +291,16 @@ export default function PrivateLimitedCompanyPage() {
             {process.map(([title, description], index) => (
               <li key={title}>
                 <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
-                <span className={styles.stepIcon}><Icon name={["people", "search", "document", "file", "award", "building", "calendar"][index]} /></span>
+                <span className={styles.stepIcon}><Icon name={processIcons[index]} /></span>
                 <h3>{title}</h3>
                 <p>{description}</p>
               </li>
             ))}
           </ol>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.documents} id="documents">
+        <section className={styles.documents} id="documents">
         <div className={`container ${styles.documentGrid}`}>
           <div>
             <Heading
@@ -306,16 +308,12 @@ export default function PrivateLimitedCompanyPage() {
               title="Key documents for incorporation"
               text="We will confirm the documents needed for your circumstances and the current filing process."
             />
-            <ul className={styles.checklist}>{documents.map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul>
-          </div>
-          <div className={styles.documentImage}>
-            <Image src="/Part-18 .png" alt="Company incorporation documents prepared for review" fill sizes="(max-width: 800px) 100vw, 45vw" />
-            <span>Prepared with care.<br /><strong>Filed with clarity.</strong></span>
+            <ul className={styles.checklist}>{documents.map(([icon, item]) => <li key={item}><Icon name={icon} />{item}</li>)}</ul>
           </div>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.requirements} id="requirements">
+        <section className={styles.requirements} id="requirements">
         <div className="container">
           <Heading
             eyebrow="KEY REQUIREMENTS"
@@ -333,9 +331,9 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      <section className={styles.pricing} id="fees">
+        <section className={styles.pricing} id="fees">
         <div className="container">
           <Heading
             eyebrow="OUR PROFESSIONAL FEES"
@@ -343,7 +341,7 @@ export default function PrivateLimitedCompanyPage() {
             text="Choose a starting scope. Final fees and government charges depend on the specific requirements and confirmed scope."
           />
           <div className={styles.priceGrid}>
-            <article className={styles.priceCard}>
+            <article className={`${styles.priceCard} ${styles.featuredPrice}`}>
               <span>FORMATION ESSENTIALS</span>
               <h3>Basic Package</h3>
               <strong className={styles.price}>₹9,999<small>/-</small></strong>
@@ -357,18 +355,20 @@ export default function PrivateLimitedCompanyPage() {
               <ul>{["All Basic Package services", "GST registration", "Director DIN & DSC coordination", "Initial compliance guidance", "Post-incorporation advisory"].map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul>
               <Link className={styles.priceButton} href="/contact">Schedule a Consultation <Icon name="arrow" /></Link>
             </article>
-            <article className={styles.customPrice}>
+            <article className={`${styles.priceCard} ${styles.featuredPrice}`}>
               <span>FOR COMPLEX REQUIREMENTS</span>
               <h3>Customised Quote</h3>
               <p>For multiple directors, foreign shareholders, sector-specific compliances or other tailored requirements.</p>
-              <Link href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
+              <Link className={styles.priceButton} href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
             </article>
           </div>
           <p className={styles.priceNote}>Professional fees are indicative. Applicable taxes, statutory fees and third-party costs may be additional.</p>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.features}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.features}>
         <div className="container">
           <Heading
             eyebrow="KEY FEATURES"
@@ -389,9 +389,11 @@ export default function PrivateLimitedCompanyPage() {
             ].map(([icon, title]) => <div key={title}><Icon name={icon} /><span>{title}</span></div>)}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.faq} id="faqs">
+      <PageSectionLayout variant="full-width">
+        <section className={styles.faq} id="faqs">
         <div className={`container ${styles.faqLayout}`}>
           <div>
             <Heading
@@ -403,9 +405,10 @@ export default function PrivateLimitedCompanyPage() {
           </div>
           <PrivateLimitedFaq faqs={faqs} styles={{ list: styles.faqList }} />
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      {review && (
+      <PageSectionLayout variant="full-width">
         <section className={styles.testimonial}>
           <div className="container">
             <Heading
@@ -413,20 +416,28 @@ export default function PrivateLimitedCompanyPage() {
               title="Clear advice. Practical direction."
               text="A perspective shared with permission by a client of our corporate and commercial advisory team."
             />
-            <figure>
-              <span className={styles.quoteMark}>“</span>
-              <blockquote>{review.quote}</blockquote>
-              <figcaption>
-                <strong>{review.name}</strong>
-                <span>{review.designation}, {review.company}</span>
-                <span className={styles.stars} aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating || 0)}</span>
-              </figcaption>
-            </figure>
+            <p className={layoutStyles.sampleTestimonialNotice} role="note">
+              Sample testimonials for layout purposes only. These are not verified client reviews and must be replaced with approved client feedback before publishing.
+            </p>
+            <div className={layoutStyles.testimonialGrid}>
+              {sampleTestimonials.map((testimonial) => (
+                <figure key={testimonial.name}>
+                  <span className={styles.quoteMark}>“</span>
+                  <blockquote>{testimonial.message}</blockquote>
+                  <figcaption>
+                    <strong>{testimonial.name}</strong>
+                    <span>{testimonial.designation}, {testimonial.company}</span>
+                    <span className={styles.stars} aria-label="5 out of 5 stars">{"★".repeat(5)}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
-      )}
+      </PageSectionLayout>
 
-      <section className={styles.insights}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.insights}>
         <div className="container">
           <div className={styles.sectionTop}>
             <Heading eyebrow="INSIGHTS" title="Latest articles, updates and events" />
@@ -448,9 +459,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.knowledge}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.knowledge}>
         <div className="container">
           <Heading
             eyebrow="KNOWLEDGE CENTRE"
@@ -473,9 +486,11 @@ export default function PrivateLimitedCompanyPage() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.experience}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.experience}>
         <div className="container">
           <Heading eyebrow="SHARE YOUR EXPERIENCE WITH ASTRONIS GLOBAL" title="Your experience matters" />
           <div className={styles.experienceGrid}>
@@ -483,18 +498,21 @@ export default function PrivateLimitedCompanyPage() {
             <article><Icon name="play" /><div><h3>Record a video testimonial</h3><p>Share your video feedback about your journey with Astronis Global.</p></div><Link href="/testimonials">Record a Video <Icon name="arrow" /></Link></article>
           </div>
         </div>
-      </section>
+        </section>
+      </PageSectionLayout>
 
-      <section className={styles.final}>
+      <PageSectionLayout variant="full-width">
+        <section className={styles.final}>
         <div className="container">
           <span>YOUR NEXT CHAPTER STARTS HERE</span>
           <h2>Ready to incorporate your Private Limited Company?</h2>
           <p>Let our experts guide you through a seamless and compliant incorporation process.</p>
           <Link href="/contact">Schedule a Consultation <Icon name="arrow" /></Link>
         </div>
-      </section>
-        </div>
-        <PageSectionNav items={nav.map(([label, id]) => ({ id, label }))} />
+        </section>
+      </PageSectionLayout>
+      </div>
+      <PageSectionNav items={navItems} mobileCollapsible branded />
       </div>
     </div>
   );

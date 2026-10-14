@@ -107,7 +107,7 @@
 }
 
 .columnCard small {
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   font-weight: 500;
   line-height: 1.35;
   color: #e7f2ff;
@@ -124,7 +124,7 @@
   border-radius: 5px;
   background: linear-gradient(120deg, #edd3a3, #d9b378);
   color: #102b45;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 600;
   line-height: 1.3;
   white-space: normal;
@@ -146,7 +146,7 @@
   min-height: 30px;
   margin-top: 5px;
   color: #456890;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.35;
@@ -186,13 +186,13 @@
 }
 
 .links strong {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 600;
   line-height: 1.25;
 }
 
 .links small {
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   font-weight: 400;
   line-height: 1.35;
   color: #58718c;
@@ -259,7 +259,7 @@
 .featureEyebrow {
   margin-bottom: 9px;
   color: #d9bb86;
-  font-size: 10px;
+  font-size: max(var(--font-size-min), 10px);
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -276,7 +276,7 @@
 
 .featureCopy p {
   color: #b5c8dc;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 400;
   line-height: 1.5;
   white-space: normal;
@@ -292,11 +292,11 @@
   }
 
   .column h2 {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
 
   .links strong {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 
   .featureImage {
@@ -304,7 +304,7 @@
   }
 
   .feature h2 {
-    font-size: 26px;
+    font-size: max(var(--font-size-min), 26px);
   }
 }
 
@@ -341,7 +341,7 @@
   }
 
   .column h2 {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
 
   .tagline {
@@ -367,7 +367,7 @@
   }
 
   .feature h2 {
-    font-size: 25px;
+    font-size: max(var(--font-size-min), 25px);
   }
 
   .featureCopy a {
@@ -386,11 +386,11 @@
   }
 
   .column h2 {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
 
   .tagline {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
 
   .links {

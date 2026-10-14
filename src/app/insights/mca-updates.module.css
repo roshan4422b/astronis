@@ -1,6 +1,6 @@
 .avatar{position:absolute;top:12px;left:12px;display:grid;width:34px;height:34px;place-items:center;border-radius:50%;background:#e8f1fc;color:#0751db}
 .avatar svg{width:22px;height:22px}
 .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.68) 0%,rgba(255,255,255,.58) 25%,rgba(255,255,255,.26) 48%,rgba(255,255,255,.04) 72%,rgba(7,29,73,.08) 100%)}
-.startupHeroTitle{font-size:clamp(34px,3.6vw,46px)!important;white-space:nowrap}
+.startupHeroTitle{font-size: max(var(--font-size-min), clamp(34px,3.6vw,46px)) !important;white-space:nowrap}
 @media(max-width:700px){.heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.8) 0%,rgba(255,255,255,.68) 42%,rgba(255,255,255,.3) 72%,rgba(255,255,255,.1) 100%)}}
-@media(max-width:700px){.startupHeroTitle{font-size:clamp(32px,8vw,42px)!important;white-space:normal}}
+@media(max-width:700px){.startupHeroTitle{font-size: max(var(--font-size-min), clamp(32px,8vw,42px)) !important;white-space:normal}}

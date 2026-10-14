@@ -9,29 +9,29 @@
 .featuredImage{grid-column:2;grid-row:1}
 .featuredArticle>div:first-child{grid-column:1;grid-row:1}
 .featuredBody{padding:16px}
-.featuredBody h3{font-size:clamp(19px,1.9vw,25px)}
+.featuredBody h3{font-size: max(var(--font-size-min), clamp(19px,1.9vw,25px))}
 .analysisThemes{grid-template-columns:minmax(0,1fr);align-items:start;gap:20px}
 .analysisGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .analysisCard{min-height:360px}
-.analysisTitle{font-size:14px!important}
+.analysisTitle{font-size: max(var(--font-size-min), 14px) !important}
 .themeGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.themeCard{min-height:125px;gap:10px;font-size:14px}
+.themeCard{min-height:125px;gap:10px;font-size: max(var(--font-size-min), 14px)}
 .themeCard svg{width:38px;height:38px}
 .resourceGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
 .resourceCard{display:flex;min-height:150px;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:14px 12px;text-align:center}
 .resourceIcon{display:grid;width:40px;height:40px;flex:none;place-items:center;color:var(--blue)}
 .resourceIcon svg{width:36px;height:36px}
 .resourceBody{min-height:0;align-items:center;padding:0}
-.resourceBody>strong{font-size:14px}
-.resourceBody>span{font-size:14px;text-align:center}
+.resourceBody>strong{font-size: max(var(--font-size-min), 14px)}
+.resourceBody>span{font-size: max(var(--font-size-min), 14px);text-align:center}
 .resourceBody>em{margin-top:6px;padding-top:0}
 .conversationGrid{grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch}
 .conversationGrid .promoPanel{grid-column:auto;min-height:0;margin:0}
 .testimonials{padding-bottom:20px}
 .testimonialTrack{align-items:stretch}
 .testimonialCard{min-height:130px;padding:12px 12px 12px 52px!important}
-.testimonialQuote{font-size:14px!important;line-height:1.4}
-.testimonialCompany{font-size:14px!important}
+.testimonialQuote{font-size: max(var(--font-size-min), 14px) !important;line-height:1.4}
+.testimonialCompany{font-size: max(var(--font-size-min), 14px) !important}
 .avatar{position:absolute;top:12px;left:10px;display:grid;width:32px;height:32px;place-items:center;border-radius:50%;background:#e8f1fc;color:#0751db}
 .avatar svg{width:22px;height:22px}
 .ctaInner{grid-template-columns:minmax(0,1fr) minmax(360px,.95fr)}

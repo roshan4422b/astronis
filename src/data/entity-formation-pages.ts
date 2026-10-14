@@ -52,6 +52,11 @@ export type EntityFormationPageData = {
   showIntro?: boolean;
   categoryTitle?: string;
   categoryHref?: string;
+  serviceTitle?: string;
+  serviceHref?: string;
+  focusEyebrow?: string;
+  focusTitle?: string;
+  focusDescription?: string;
   heroEyebrow?: string;
   heroNoteEyebrow?: string;
   heroNoteTitle?: string;
@@ -59,6 +64,7 @@ export type EntityFormationPageData = {
   servicesHeading?: string;
   servicesDescription?: string;
   benefitsHeading?: string;
+  structureEyebrow?: string;
   requirementsEyebrow?: string;
   structureSections?: {
     eyebrow: string;

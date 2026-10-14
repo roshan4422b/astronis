@@ -1,0 +1,503 @@
+.page {
+  width: 100%;
+}
+
+.hero {
+  width: 100%;
+}
+
+.pageLayout {
+  --sidebar-width: 280px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+  gap: 12px;
+  align-items: stretch;
+  width: min(100%, 1500px);
+  max-width: 1500px;
+  margin-inline: auto;
+}
+
+.pageContent {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.pageContent > :global([class*="sectionLayout"]) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pageContent :global(.container) {
+  width: calc(100% - 16px);
+  margin-right: 0;
+  margin-left: 16px;
+}
+
+.pageContent :global([class*="comparison"]) :global([class*="tableWrap"]) {
+  margin-inline: 0;
+}
+
+.pageContent :global([class*="heroCopy"]) {
+  max-width: min(770px, calc(100% - 320px));
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) {
+  position: sticky;
+  top: 160px;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  width: var(--sidebar-width);
+  height: calc(100vh - 160px);
+  max-height: none;
+  margin-top: 8px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: #0751db;
+  border: 1px solid #0751db;
+  box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]) {
+  margin-bottom: 14px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+  display: none;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) ol {
+  display: block;
+  overflow: visible;
+  border-left-color: #34516d;
+  white-space: normal;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) li {
+  flex: initial;
+  margin-top: 6px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #c9d7e6;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a :global(svg) {
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  color: #9fb9d2;
+  stroke-width: 1.8;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a:hover,
+.pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible,
+.pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] {
+  background: #0644b8;
+  color: #fff;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a:hover :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] :global(svg) {
+  color: #e4bf80;
+}
+
+@media (max-width: 1100px) {
+  .pageLayout {
+    --sidebar-width: 220px;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) {
+    position: sticky;
+    top: 160px;
+    align-self: start;
+    grid-column: 2;
+    grid-row: 1;
+    width: var(--sidebar-width);
+    height: calc(100vh - 160px);
+    margin-top: 8px;
+    padding: 0;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
+  }
+}
+
+@media (max-width: 760px) {
+  .pageLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .pageContent {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) {
+    position: relative;
+    top: auto;
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    height: auto;
+    max-height: none;
+    margin: 12px 16px 0;
+    padding: 0;
+    overflow: visible;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 12%);
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 0;
+    background: #0751db;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) span:last-child {
+    color: #e4bf80;
+    font-weight: 600;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[aria-expanded="false"]) + :global(nav) {
+    display: none;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(nav) {
+    position: relative;
+    top: auto;
+    padding: 8px 12px 12px;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    border-left: 0;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) li {
+    margin-top: 0;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 4px;
+    white-space: normal;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) a[class*="Active"] {
+    background: #123a61;
+    color: #fff;
+    transform: none;
+  }
+}
+
+.pageContent :global([class*="benefitLayout"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global([class*="benefitGrid"]) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pageContent :global([class*="taxGrid"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global(section[class*="tax"]) {
+  background: hsl(219, 94%, 44%);
+}
+
+.pageContent :global(section[class*="features"]) {
+  background: #0751db;
+}
+
+.pageContent :global(section[class*="final"]) {
+  background: #0751db;
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) > div > span {
+  color: #e4bf80;
+}
+
+.pageContent :global(section[class*="final"]) h2 {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) p {
+  color: #e0e8f1;
+}
+
+.pageContent :global([class*="taxPoints"]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.pageContent :global([class*="timeline"]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  list-style: none;
+  margin: 42px 0 0;
+  padding: 0;
+}
+
+.pageContent :global([class*="timeline"])::before,
+.pageContent :global([class*="timeline"]) > li::before {
+  display: none;
+}
+
+.pageContent :global([class*="timeline"]) > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: start;
+  min-width: 0;
+  min-height: 220px;
+  padding: 24px;
+  border: 1px solid #dce5ef;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(6 30 59 / 6%);
+}
+
+.pageContent :global([class*="timeline"]) [class*="stepNum"] {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  width: auto;
+  height: auto;
+  padding: 5px 9px;
+  border: 1px solid #d7e6f6;
+  border-radius: 999px;
+  background: #edf4fb;
+  color: #0751db;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.pageContent :global([class*="timeline"]) [class*="stepIcon"] {
+  position: static;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border: 1px solid #d7e6f6;
+  border-radius: 12px;
+  background: #edf4fb;
+  color: #0751db;
+}
+
+.pageContent :global([class*="timeline"]) [class*="stepIcon"] :global(.icon) {
+  width: 21px;
+  height: 21px;
+}
+
+.pageContent :global([class*="timeline"]) h3,
+.pageContent :global([class*="timeline"]) p {
+  grid-column: 1 / -1;
+}
+
+.pageContent :global([class*="timeline"]) h3 {
+  margin: 24px 0 10px;
+  color: #0a2949;
+  font-size: 19px;
+}
+
+.pageContent :global([class*="timeline"]) p {
+  margin: 0;
+  color: #586c82;
+  line-height: 1.65;
+}
+
+.pageContent :global([class*="documentGrid"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global([class*="checklist"]) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  margin-top: 30px;
+}
+
+.pageContent :global([class*="checklist"]) li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pageContent :global([class*="checklist"]) :global(.icon) {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: #0751db;
+}
+
+.pageContent :global([class*="priceGrid"]) > article {
+  min-width: 0;
+  height: 100%;
+}
+
+.pageContent :global([class*="priceGrid"]) > article > p {
+  margin: 18px 0 20px;
+  color: #435d76;
+  font-size: max(var(--font-size-min), 16px);
+  line-height: 1.7;
+}
+
+.pageContent :global([class*="priceGrid"]) > article > a {
+  margin-top: auto;
+}
+
+.pageContent :global([class*="featureStrip"]) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pageContent :global([class*="featureStrip"]) > div {
+  min-width: 0;
+  min-height: 125px;
+  border-right: 1px solid #a8c0d52b;
+  border-bottom: 1px solid #a8c0d52b;
+}
+
+.pageContent :global([class*="featureStrip"]) > div:nth-child(4n) {
+  border-right: 0;
+}
+
+.pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 4) {
+  border-bottom: 0;
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.testimonialGrid > figure {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding-bottom: 24px;
+  background: #f3f8fc;
+}
+
+.testimonialGrid blockquote {
+  flex: 1;
+  margin-bottom: 24px;
+  font-size: max(var(--font-size-min), 17px);
+}
+
+.testimonialGrid figcaption {
+  margin-top: auto;
+}
+
+.sampleTestimonialNotice {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  border: 1px solid #d7e6f6;
+  border-left: 3px solid #0751db;
+  background: #f3f8fc;
+  color: #435d76;
+  font-size: max(var(--font-size-min), 14px);
+  line-height: 1.6;
+}
+
+@media (max-width: 1100px) {
+  .pageContent :global([class*="benefitGrid"]),
+  .pageContent :global([class*="taxPoints"]),
+  .pageContent :global([class*="timeline"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonialGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global([class*="featureStrip"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(4n) {
+    border-right: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 4) {
+    border-bottom: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .pageContent :global([class*="benefitGrid"]),
+  .pageContent :global([class*="taxPoints"]),
+  .pageContent :global([class*="timeline"]),
+  .pageContent :global([class*="checklist"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pageContent :global([class*="timeline"]) > li {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .pageContent :global([class*="featureStrip"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div,
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(4n),
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(2n) {
+    border-right: 0;
+    border-bottom: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:last-child {
+    border-bottom: 0;
+  }
+
+  .testimonialGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

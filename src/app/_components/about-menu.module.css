@@ -465,11 +465,11 @@
 
 @media (max-width: 600px) {
   .intro h2 {
-    font-size: 26px;
+    font-size: max(var(--font-size-min), 26px);
   }
 
   .intro p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
 
   .columns,
@@ -503,11 +503,11 @@
   }
 
   .stats strong {
-    font-size: 25px;
+    font-size: max(var(--font-size-min), 25px);
   }
 
   .stats span {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
 
   .footer {

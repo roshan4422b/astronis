@@ -63,14 +63,14 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  font-size: 21px;
+  font-size: max(var(--font-size-min), 21px);
 }
 .mapCta svg {
   width: 19px;
   height: 19px;
 }
 .mapCta small {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   color: #4d5360;
 }
 .mapCta > span {
@@ -232,7 +232,7 @@
   background: linear-gradient(145deg, #fbfdff, #f1f7fc);
 }
 .sectionLabel {
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   letter-spacing: 2px;
 }
 .stats {
@@ -264,7 +264,7 @@
     serif;
 }
 .sectionLabel {
-  font-size: 11px;
+  font-size: max(var(--font-size-min), 11px);
   letter-spacing: 2px;
 }
 .stats {
@@ -603,10 +603,10 @@
     height: 49px;
   }
   .regionCopy strong {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
   .regionCopy small {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .footprint {
     padding-inline: 18px;
@@ -615,20 +615,20 @@
     padding-inline: 9px;
   }
   .stats strong {
-    font-size: 31px;
+    font-size: max(var(--font-size-min), 31px);
   }
   .stats span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .feature,
   .explore {
     padding-inline: 17px;
   }
   .feature p {
-    font-size: 16px;
+    font-size: max(var(--font-size-min), 16px);
   }
   .explore a {
-    font-size: 13px;
+    font-size: max(var(--font-size-min), 13px);
     gap: 8px;
   }
   .footer a {
@@ -692,13 +692,13 @@
 }
 @media (max-width: 650px) {
   .intro h2 {
-    font-size: 28px;
+    font-size: max(var(--font-size-min), 28px);
   }
   .intro p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .mapCta > span {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
   .main {
     display: block;
@@ -760,10 +760,10 @@
   height: 51px;
 }
 .regionCopy strong {
-  font-size: 17px;
+  font-size: max(var(--font-size-min), 17px);
 }
 .regionCopy small {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .footprint {
   padding-right: 20px;
@@ -774,10 +774,10 @@
   padding-left: 10px;
 }
 .stats strong {
-  font-size: 32px;
+  font-size: max(var(--font-size-min), 32px);
 }
 .stats span {
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .feature,
 .explore {
@@ -785,15 +785,15 @@
   padding-left: 16px;
 }
 .feature p {
-  font-size: 16px;
+  font-size: max(var(--font-size-min), 16px);
 }
 .feature a {
-  font-size: 13px;
+  font-size: max(var(--font-size-min), 13px);
   padding: 10px;
 }
 .explore a {
   gap: 8px;
-  font-size: 12px;
+  font-size: max(var(--font-size-min), 12px);
 }
 .opportunities {
   display: flex;
@@ -890,29 +890,29 @@
     height: 46px;
   }
   .regionCopy strong {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
   .regionCopy small {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .footprint {
     padding-inline: 12px;
   }
   .stats strong {
-    font-size: 27px;
+    font-size: max(var(--font-size-min), 27px);
   }
   .stats span {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
   .feature,
   .explore {
     padding-inline: 12px;
   }
   .feature p {
-    font-size: 14px;
+    font-size: max(var(--font-size-min), 14px);
   }
   .explore a {
-    font-size: 11px;
+    font-size: max(var(--font-size-min), 11px);
   }
   .opportunities {
     padding-inline: 10px;
@@ -926,10 +926,10 @@
     height: 20px;
   }
   .opportunity strong {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .opportunity small {
-    font-size: 10px;
+    font-size: max(var(--font-size-min), 10px);
   }
 }
 @media (max-width: 1050px) {
@@ -948,19 +948,19 @@
     height: 49px;
   }
   .regionCopy strong {
-    font-size: 17px;
+    font-size: max(var(--font-size-min), 17px);
   }
   .regionCopy small {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .footprint {
     padding: 18px;
   }
   .stats strong {
-    font-size: 31px;
+    font-size: max(var(--font-size-min), 31px);
   }
   .stats span {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
   .side {
     border-left: 0;
@@ -981,10 +981,10 @@
     min-height: 75px;
   }
   .opportunity strong {
-    font-size: 15px;
+    font-size: max(var(--font-size-min), 15px);
   }
   .opportunity small {
-    font-size: 12px;
+    font-size: max(var(--font-size-min), 12px);
   }
 }
 @media (max-width: 650px) {
@@ -1010,7 +1010,7 @@
   height: 42px;
 }
 .regionCopy strong {
-  font-size: 14px;
+  font-size: max(var(--font-size-min), 14px);
 }
 
 .menu {
