@@ -153,15 +153,14 @@ export default function PrivateLimitedCompanyPage() {
   const articles = corporateArticles.slice(0, 3);
 
   return (
-    <div className={`${styles.page} ${layoutStyles.pageLayout}`} data-text-size="plus-two">
-      <div className={layoutStyles.pageContent}>
+    <div className={styles.page} data-text-size="plus-two">
       <section className={styles.hero} id="overview">
         <Image
           src="/corporate-regulatory-hero.png"
           alt="Corporate professionals discussing a business plan"
           fill
           priority
-          sizes="(max-width: 1100px) 100vw, calc(100vw - 292px)"
+          sizes="100vw"
           className={styles.heroImage}
         />
         <div className={`container ${styles.heroInner}`}>
@@ -188,6 +187,8 @@ export default function PrivateLimitedCompanyPage() {
         </div>
       </section>
 
+      <div className={layoutStyles.pageLayout}>
+      <div className={layoutStyles.pageContent}>
       <PageSectionLayout variant="full-width">
         <section className={styles.services}>
         <div className="container">
@@ -511,7 +512,8 @@ export default function PrivateLimitedCompanyPage() {
         </section>
       </PageSectionLayout>
       </div>
-      <PageSectionNav items={navItems} />
+      <PageSectionNav items={navItems} mobileCollapsible branded />
+      </div>
     </div>
   );
 }

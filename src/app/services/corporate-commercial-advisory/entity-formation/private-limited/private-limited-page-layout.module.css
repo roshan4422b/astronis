@@ -1,9 +1,18 @@
+.page {
+  width: 100%;
+}
+
+.hero {
+  width: 100%;
+}
+
 .pageLayout {
   --sidebar-width: 280px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
   gap: 12px;
   align-items: stretch;
+  width: min(100%, 1500px);
   max-width: 1500px;
   margin-inline: auto;
 }
@@ -40,29 +49,85 @@
   grid-row: 1;
   align-self: start;
   width: var(--sidebar-width);
+  height: calc(100vh - 160px);
+  max-height: none;
   margin-top: 8px;
-  max-height: calc(100vh - 180px);
-  background: #061e3b;
-  border: 1px solid #1d4163;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: #0751db;
+  border: 1px solid #0751db;
   box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
 }
 
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]) {
+  margin-bottom: 14px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+  display: none;
+}
+
 .pageLayout > :global(aside[aria-label="Page sections"]) ol {
+  display: block;
+  overflow: visible;
   border-left-color: #34516d;
+  white-space: normal;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) li {
+  flex: initial;
+  margin-top: 6px;
 }
 
 .pageLayout > :global(aside[aria-label="Page sections"]) a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
   color: #c9d7e6;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a :global(svg) {
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  color: #9fb9d2;
+  stroke-width: 1.8;
 }
 
 .pageLayout > :global(aside[aria-label="Page sections"]) a:hover,
 .pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible,
 .pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] {
-  background: #123a61;
+  background: #0644b8;
   color: #fff;
 }
 
+.pageLayout > :global(aside[aria-label="Page sections"]) a:hover :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] :global(svg) {
+  color: #e4bf80;
+}
+
 @media (max-width: 1100px) {
+  .pageLayout {
+    --sidebar-width: 220px;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) {
+    position: sticky;
+    top: 160px;
+    align-self: start;
+    grid-column: 2;
+    grid-row: 1;
+    width: var(--sidebar-width);
+    height: calc(100vh - 160px);
+    margin-top: 8px;
+    padding: 0;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
+  }
+}
+
+@media (max-width: 760px) {
   .pageLayout {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
@@ -73,68 +138,77 @@
     grid-row: 2;
   }
 
-  .pageContent :global([class*="heroCopy"]) {
-    max-width: 770px;
-  }
-
-  .pageContent :global([class*="heroNote"]) {
-    position: relative;
-    right: auto;
-    bottom: auto;
-    width: min(280px, 100%);
-    margin: 28px 0 0 auto;
-  }
-
   .pageLayout > :global(aside[aria-label="Page sections"]) {
     position: relative;
     top: auto;
     grid-column: 1;
     grid-row: 1;
     width: auto;
+    height: auto;
     max-height: none;
-    margin: 0;
-    padding: 0 16px 10px;
-    border: 0;
-    border-bottom: 1px solid #1d4163;
-    box-shadow: none;
+    margin: 12px 16px 0;
+    padding: 0;
+    overflow: visible;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 12%);
   }
 
-  .pageLayout > :global(aside[aria-label="Page sections"]) nav {
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 0;
+    background: #0751db;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) span:last-child {
+    color: #e4bf80;
+    font-weight: 600;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[aria-expanded="false"]) + :global(nav) {
+    display: none;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(nav) {
     position: relative;
     top: auto;
-    padding-top: 0;
+    padding: 8px 12px 12px;
   }
 
   .pageLayout > :global(aside[aria-label="Page sections"]) ol {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
     border-left: 0;
-    white-space: nowrap;
   }
 
   .pageLayout > :global(aside[aria-label="Page sections"]) li {
-    flex: 0 0 auto;
     margin-top: 0;
   }
 
   .pageLayout > :global(aside[aria-label="Page sections"]) a {
-    border-left: 0;
-    border-bottom: 2px solid transparent;
-    padding: 12px 14px 14px;
-    background: transparent;
-    transform: none;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 4px;
+    white-space: normal;
   }
 
-  .pageLayout > :global(aside[aria-label="Page sections"]) a:hover,
-  .pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible,
   .pageLayout > :global(aside[aria-label="Page sections"]) a[class*="Active"] {
-    border-left: 0;
-    border-bottom-color: #e4bf80;
     background: #123a61;
     color: #fff;
+    transform: none;
   }
 }
 
@@ -150,6 +224,31 @@
 .pageContent :global([class*="taxGrid"]) {
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
+}
+
+.pageContent :global(section[class*="tax"]) {
+  background: hsl(219, 94%, 44%);
+}
+
+.pageContent :global(section[class*="features"]) {
+  background: #0751db;
+}
+
+.pageContent :global(section[class*="final"]) {
+  background: #0751db;
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) > div > span {
+  color: #e4bf80;
+}
+
+.pageContent :global(section[class*="final"]) h2 {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) p {
+  color: #e0e8f1;
 }
 
 .pageContent :global([class*="taxPoints"]) {

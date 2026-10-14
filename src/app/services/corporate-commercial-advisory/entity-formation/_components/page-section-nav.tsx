@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import Link from "next/link";
+import { useEffect, useId, useMemo, useState, type MouseEvent } from "react";
+import Image from "@/app/_components/asset-image";
+import Icon from "@/app/_components/icon";
 import styles from "./entity-formation-page.module.css";
 
 type PageSectionNavItem = {
@@ -9,13 +12,27 @@ type PageSectionNavItem = {
 };
 
 const noHiddenSections: string[] = [];
+const sectionIcons: Record<string, string> = {
+  benefits: "award",
+  structure: "network",
+  comparison: "scale",
+  process: "checklist",
+  documents: "file",
+  requirements: "shield",
+  fees: "rupee",
+  faqs: "help",
+};
 
 export default function PageSectionNav({
   items,
   hiddenWhenVisible = noHiddenSections,
+  mobileCollapsible = false,
+  branded = false,
 }: {
   items: PageSectionNavItem[];
   hiddenWhenVisible?: string[];
+  mobileCollapsible?: boolean;
+  branded?: boolean;
 }) {
   const visibleItems = useMemo(
     () => items.filter(({ id, label }) => id !== "overview" && label.trim().toLowerCase() !== "overview"),
@@ -24,6 +41,8 @@ export default function PageSectionNav({
   const hiddenSectionIds = useMemo(() => hiddenWhenVisible, [hiddenWhenVisible]);
   const [activeId, setActiveId] = useState<string>(visibleItems[0]?.id ?? "");
   const [isHidden, setIsHidden] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const navigationId = useId();
 
   useEffect(() => {
     if (!visibleItems.length) return;
@@ -99,6 +118,7 @@ export default function PageSectionNav({
     });
 
     setActiveId(id);
+    if (mobileCollapsible) setIsMobileNavOpen(false);
   };
 
   return (
@@ -107,7 +127,24 @@ export default function PageSectionNav({
       aria-label="Page sections"
       aria-hidden={isHidden}
     >
-      <nav className={styles.pageSectionNav}>
+      {branded && (
+        <Link className={styles.pageSectionNavBrand} href="/" aria-label="Astronis Global home">
+          <Image src="/astronis_logo.jpeg" alt="Astronis Global" width={250} height={94} />
+        </Link>
+      )}
+      {mobileCollapsible && (
+        <button
+          className={styles.pageSectionNavMobileToggle}
+          type="button"
+          aria-expanded={isMobileNavOpen}
+          aria-controls={`page-section-navigation-${navigationId}`}
+          onClick={() => setIsMobileNavOpen((open) => !open)}
+        >
+          <span>Page sections</span>
+          <span aria-hidden="true">{visibleItems.find(({ id }) => id === activeId)?.label}</span>
+        </button>
+      )}
+      <nav className={styles.pageSectionNav} id={`page-section-navigation-${navigationId}`}>
         <ol className={styles.pageSectionNavList}>
           {visibleItems.map(({ id, label }) => (
             <li key={id} className={styles.pageSectionNavItem}>
@@ -116,7 +153,10 @@ export default function PageSectionNav({
                 className={activeId === id ? styles.pageSectionNavLinkActive : styles.pageSectionNavLink}
                 onClick={(event) => handleClick(event, id)}
               >
-                {label}
+                {branded && sectionIcons[id] && (
+                  <Icon className={styles.pageSectionNavIcon} name={sectionIcons[id]} />
+                )}
+                <span>{label}</span>
               </a>
             </li>
           ))}

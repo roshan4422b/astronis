@@ -17,6 +17,8 @@ export default function Icon({
     target: <><circle cx="11" cy="13" r="8" /><circle cx="11" cy="13" r="4" /><path d="m11 13 9-9m-3 0h3v3" /></>,
     gem: <><path d="M3 8 7 3h10l4 5-9 13L3 8Z" /><path d="M3 8h18M7 3l3 5 2 13 2-13 3-5" /></>,
     network: <><circle cx="12" cy="4" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="19" r="2" /><path d="m11 6-5 11m7-11 5 11M7 19h10" /></>,
+    checklist: <><path d="m9 6 2 2 4-4M9 12l2 2 4-4M9 18l2 2 4-4" /><path d="M5 6h.01M5 12h.01M5 18h.01M19 6h2M19 12h2M19 18h2" /></>,
+    rupee: <><path d="M6 4h12M6 8h12M6 4c5 0 8 2 8 6s-3 6-8 6l8 6" /><path d="M6 12h8" /></>,
     gear: <><path d="M10 2h4l.6 2.5 2 .8 2.2-1.3 2.8 2.8-1.3 2.2.8 2L23 12v4l-2.5.6-.8 2 1.3 2.2-2.8 2.8-2.2-1.3-2 .8L14 25h-4l-.6-2.5-2-.8-2.2 1.3-2.8-2.8 1.3-2.2-.8-2L.5 16v-4L3 11.4l.8-2-1.3-2.2 2.8-2.8 2.2 1.3 2-.8L10 2Z" transform="translate(2 1) scale(.78)" /><circle cx="12" cy="12" r="3" /></>,
     person: <><circle cx="12" cy="7" r="3" /><path d="M4 21v-3a8 8 0 0 1 16 0v3H4Zm8-4 2 2-2 2-2-2 2-2Z" /></>,
     india: (
