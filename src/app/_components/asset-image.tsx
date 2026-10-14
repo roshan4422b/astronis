@@ -7,7 +7,7 @@ export default function AssetImage({
 }: Omit<ImageProps, "src"> & { src: string }) {
   const encodedSrc = src
     .split("/")
-    .map((segment) => encodeURIComponent(segment))
+    .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
     .join("/");
   return <NextImage {...props} src={encodedSrc} />;
 }

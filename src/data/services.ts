@@ -42,13 +42,13 @@ const descriptions = [
 ];
 
 const images = [
-  "/Part-10 .png",
-  "/Part-8 .png",
-  "/Part-6 .png",
-  "/Part-16 .png",
-  "/Part-7 .png",
-  "/images/services/intellectual-property.webp",
-  "/images/services/fema-fdi-and-foreign-exchange-advisory.webp",
+  "/services/Corporate & Commercial Advisory.png",
+  "/services/Regulatory Services.png",
+  "/services/Litigation & Dispute Resolution.png",
+  "/services/Business Advisory & Contracts.png",
+  "/services/Licensing & Registrations.png",
+  "/services/Intellectual Property Right Services.png",
+  "/services/FEMA_FDI_CROSS.png",
   "/images/services/gst-and-indirect-tax-regulatory-support.webp",
   "/images/services/banking-nbfc-and-financial-services-advisory.webp",
   "/images/services/hr-and-employment-advisory.webp",
@@ -56,13 +56,13 @@ const images = [
 ];
 
 const heroImages = [
-  "/images/services/corporate-and-commercial-advisory.webp",
-  "/images/services/regulatory-and-compliance.webp",
-  "/images/services/litigation-and-dispute-resolution.webp",
-  "/images/services/business-advisory-and-consulting.webp",
-  "/images/services/licensing-and-registrations.webp",
-  "/images/services/intellectual-property-rights.webp",
-  "/images/services/fema-fdi-and-foreign-exchange-advisory.webp",
+  "/services/Corporate & Commercial Advisory.png",
+  "/services/Regulatory Services.png",
+  "/services/Litigation & Dispute Resolution.png",
+  "/services/Business Advisory & Contracts.png",
+  "/services/Licensing & Registrations.png",
+  "/services/Intellectual Property Right Services.png",
+  "/services/FEMA_FDI_CROSS.png",
   "/images/services/gst-and-indirect-tax-regulatory-support.webp",
   "/images/services/banking-nbfc-and-financial-services-advisory.webp",
   "/images/services/risk-governance-and-forensic-advisory.webp",

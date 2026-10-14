@@ -20,7 +20,7 @@
 .intro p { color: #626c91; font: 400 clamp(16px, 1.5vw, 23px)/1.3 "Segoe UI", Arial, sans-serif; }
 .motto { flex: none; border-left: 1px solid #4966aa; padding-left: 17px; font-size: max(var(--font-size-min), 11px); line-height: 1.7; letter-spacing: 1.2px; text-transform: uppercase; }
 .main { display: grid; grid-template-columns: minmax(0, 1fr) 17.5%; }
-.columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 20px 12px 17px; }
+.columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 20px 12px 17px; }
 .column { min-width: 0; padding: 0 18px 12px; border-right: 1px solid #dbe7f6; }
 .column:last-child { border-right: 0; }
 .heading { display: flex; align-items: center; gap: 12px; min-height: 67px; padding-bottom: 15px; border-bottom: 1px solid #dbe7f6; }
@@ -28,14 +28,16 @@
 .heading > svg { flex: none; width: 39px; height: 39px; color: #0d2c5d; stroke-width: 1.5; }
 .heading > svg:last-child { width: 16px; height: 16px; }
 .links { display: grid; padding-top: 4px; }
-.links a { display: grid; grid-template-columns: minmax(0, 1fr) 14px; align-items: center; gap: 8px; min-height: 70px; padding: 10px 9px; border-bottom: 1px solid #dbe7f6; border-radius: 4px; color: #15366f; transform: translateZ(0); transition: background-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease; }
+.links a { display: flex; align-items: flex-start; gap: 8px; min-width: 0; min-height: 75px; padding: 9px 8px; border-bottom: 1px solid #dbe7f6; border-radius: 4px; color: #0b376f; transform: translateZ(0); transition: background-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease; }
 .links a:last-child { border-bottom: 0; }
-.links a > span { display: grid; gap: 5px; min-width: 0; }
-.links strong { font: 700 14px/1.25 "Segoe UI", Arial, sans-serif; }
-.links small { color: #536789; font: 400 12px/1.35 "Segoe UI", Arial, sans-serif; }
-.links a > svg { width: 14px; height: 14px; color: #0d2c5d; transition: color 180ms ease, transform 180ms ease; }
+.solutionIcon { display: grid; place-items: center; width: 42px; height: 42px; flex: 0 0 42px; color: #0b376f; transition: color 180ms ease; }
+.solutionIcon svg { width: 29px; height: 29px; stroke-width: 2.2; }
+.copy { display: grid; gap: 4px; flex: 1; min-width: 0; }
+.copy strong { overflow: hidden; font: 600 13px/1.25 "Segoe UI", Arial, sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.copy small { color: #58718c; font: 11px/1.3 "Segoe UI", Arial, sans-serif; }
+.links a > svg { flex: none; width: 18px; height: 18px; margin-top: 1px; color: #1555a7; transition: color 180ms ease, transform 180ms ease; }
 .links a:hover, .links a:focus-visible { color: #fff; background: #0d4c9e; box-shadow: 0 8px 18px #0d4c9e2e; transform: scale(1.018); }
-.links a:hover small, .links a:focus-visible small, .links a:hover > svg, .links a:focus-visible > svg { color: #dceeff; }
+.links a:hover .solutionIcon, .links a:focus-visible .solutionIcon, .links a:hover small, .links a:focus-visible small, .links a:hover > svg, .links a:focus-visible > svg { color: #dceeff; }
 .links a:hover > svg, .links a:focus-visible > svg { transform: translateX(2px); }
 .heading:hover { color: #0759ff; }
 .menu a:focus-visible,
@@ -57,6 +59,9 @@
 @media (max-width: 1320px) {
   .menu { width: calc(100vw - 32px); }
   .column { padding-inline: 10px; }
+  .solutionIcon { width: 38px; height: 38px; flex-basis: 38px; }
+  .solutionIcon svg { width: 26px; height: 26px; }
+  .copy strong { font-size: max(var(--font-size-min), 12px); }
   .heading { gap: 7px; }
   .heading > svg { width: 30px; height: 30px; }
   .heading > svg:last-child { width: 12px; }
