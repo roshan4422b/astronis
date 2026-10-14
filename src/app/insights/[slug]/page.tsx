@@ -12,7 +12,7 @@ import BusinessUpdates from "../business-updates";
 import LegalUpdates from "../legal-updates";
 const categories = [...new Set([...siteMenu.insights, ...insightCategories])];
 export function generateStaticParams() {
-  return [...categories.map((t) => ({ slug: slugify(t) })), { slug: "startup-news" }, { slug: "download-useful-documents" }, ...corporateArticles.map(a => ({ slug: a.slug }))];
+  return [...categories.filter((t) => slugify(t) !== "government-notifications").map((t) => ({ slug: slugify(t) })), { slug: "startup-news" }, { slug: "download-useful-documents" }, ...corporateArticles.map(a => ({ slug: a.slug }))];
 }
 export async function generateMetadata({
   params,
