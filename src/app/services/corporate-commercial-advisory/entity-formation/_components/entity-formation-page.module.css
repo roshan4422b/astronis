@@ -374,6 +374,10 @@
   gap: 18px;
 }
 
+.serviceGrid.serviceCardsThreeColumns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .relatedPages {
   display: flex;
   flex-wrap: wrap;
@@ -480,6 +484,10 @@
   background: #f3f7fb;
 }
 
+.benefitsStacked {
+  background: #fff;
+}
+
 .benefitLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
@@ -543,6 +551,93 @@
   gap: 14px;
 }
 
+.benefitCards {
+  grid-auto-rows: 1fr;
+}
+
+.benefitCards article {
+  min-height: 180px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-content: start;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(6, 30, 59, 0.045);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.benefitCards article:hover {
+  transform: translateY(-3px);
+  border-color: #b9cde1;
+  box-shadow: 0 14px 28px rgba(6, 30, 59, 0.09);
+}
+
+.benefitCards h3 {
+  margin-top: 1px;
+}
+
+.benefitCards .icon {
+  width: 42px;
+  height: 42px;
+}
+
+.benefitCardsStacked {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 22px;
+}
+
+.benefitGrid.benefitCardsThreeColumns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.benefitCardsStacked article {
+  min-height: 242px;
+  padding: 26px;
+  display: block;
+  border: 1px solid #dbe4ef;
+  border-radius: 0;
+  background: linear-gradient(145deg, #fff, #f4f8fc);
+  box-shadow: none;
+}
+
+.benefitCardsStacked article:hover {
+  border-color: #a8c3e0;
+  box-shadow: 0 12px 24px #0a294912;
+}
+
+.benefitCardsStacked .icon {
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent;
+}
+
+.benefitCardsStacked .icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.benefitCardsStacked h3 {
+  margin: 28px 0 8px;
+  font-size: max(var(--font-size-min), 19px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefitCards article,
+  .benefitCardsStacked article {
+    transition: none;
+  }
+
+  .benefitCards article:hover,
+  .benefitCardsStacked article:hover {
+    transform: none;
+  }
+}
+
 .benefitGrid h3 {
   margin: 1px 0 7px;
   font-size: max(var(--font-size-min), 19px);
@@ -599,6 +694,27 @@
   background: #fff;
 }
 
+.comparisonPanels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.comparisonPanel {
+  min-width: 0;
+}
+
+.comparisonPanel h3 {
+  margin: 0 0 14px;
+  color: var(--navy);
+  font: 400 clamp(22px, 2vw, 28px) / 1.25 Georgia, serif;
+}
+
+.comparisonPanel > p {
+  color: var(--muted);
+  font-size: max(var(--font-size-min), 14px);
+}
+
 .tableWrap {
   overflow-x: auto;
   border: 1px solid #d9e3ef;
@@ -612,6 +728,10 @@
   border-collapse: collapse;
   font-size: max(var(--font-size-min), 15px);
   line-height: 1.55;
+}
+
+.comparisonPanels .tableWrap table {
+  min-width: 560px;
 }
 
 .tableWrap th,
@@ -1423,6 +1543,10 @@
 }
 
 @media (max-width: 1000px) {
+  .comparisonPanels {
+    grid-template-columns: 1fr;
+  }
+
   .pageNavLayout {
     grid-template-columns: 1fr;
     gap: 0;
@@ -1489,6 +1613,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .serviceGrid.serviceCardsThreeColumns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .structuringDetailsGrid {
     grid-template-columns: 1fr;
   }
@@ -1503,6 +1631,10 @@
   }
 
   .benefitGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .benefitGrid.benefitCardsThreeColumns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1589,6 +1721,10 @@
     grid-template-columns: 1fr;
   }
 
+  .serviceGrid.serviceCardsThreeColumns {
+    grid-template-columns: 1fr;
+  }
+
   .relatedPages {
     align-items: flex-start;
     flex-direction: column;
@@ -1599,6 +1735,10 @@
   }
 
   .benefitGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .benefitGrid.benefitCardsThreeColumns {
     grid-template-columns: 1fr;
   }
 
