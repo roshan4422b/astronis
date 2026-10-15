@@ -20,7 +20,17 @@ export type EntityFormationPageData = {
   comparisonHeaders?: string[];
   comparisonHeading?: string;
   comparisonDescription?: string;
+  comparisonNote?: string;
+  comparisonPanels?: {
+    heading: string;
+    description?: string;
+    headers: string[];
+    rows: string[][];
+  }[];
   introHeading?: string;
+  introPanelEyebrow?: string;
+  introPanelHeading?: string;
+  introPanelDescription?: string;
   structureHeading?: string;
   processHeading?: string;
   processDescription?: string;
@@ -43,6 +53,9 @@ export type EntityFormationPageData = {
   showKnowledge?: boolean;
   showReviewActions?: boolean;
   showFeatures?: boolean;
+  benefitCards?: boolean;
+  benefitCardsStacked?: boolean;
+  benefitCardsThreeColumns?: boolean;
   featureItems?: string[];
   featureHeading?: string;
   insightImages?: [string, string, string];
@@ -52,17 +65,15 @@ export type EntityFormationPageData = {
   showIntro?: boolean;
   categoryTitle?: string;
   categoryHref?: string;
-  serviceTitle?: string;
-  serviceHref?: string;
-  focusEyebrow?: string;
-  focusTitle?: string;
-  focusDescription?: string;
+  categoryParentTitle?: string;
+  categoryParentHref?: string;
   heroEyebrow?: string;
   heroNoteEyebrow?: string;
   heroNoteTitle?: string;
   heroNoteDescription?: string;
   servicesHeading?: string;
   servicesDescription?: string;
+  serviceCardsThreeColumns?: boolean;
   benefitsHeading?: string;
   structureEyebrow?: string;
   requirementsEyebrow?: string;

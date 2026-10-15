@@ -27,31 +27,50 @@ const corporateGovernanceChildRoutes: Record<string, string> = {
   "Slump Sale": "/services/corporate-commercial-advisory/slump-sale",
 };
 
-const trademarkChildRoutes: Record<string, string> = {
-  "Trademark Search & Filing": "/services/intellectual-property-right-services/trademark/trademark-search-filing",
-  Opposition: "/services/intellectual-property-right-services/trademark/opposition",
-  "Reply to Examination Response": "/services/intellectual-property-right-services/trademark/reply-to-examination-response",
-  Renewal: "/services/intellectual-property-right-services/trademark/renewal",
-  "Prosecution & Enforcement": "/services/intellectual-property-right-services/trademark/prosecution-enforcement",
+const investmentAndTransactionChildRoutes: Record<string, string> = {
+  "Investor Coordination":
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
+  "Commercial Due Diligence":
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/commercial-due-diligence",
+  "India Entry Strategy":
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/india-entry-strategy",
+  "Investment Structuring":
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investment-structuring",
 };
 
-const ipBrandAdvisoryChildRoutes: Record<string, string> = {
-  Licensing: "/services/intellectual-property-right-services/ip-and-brand-advisory/licensing",
-  Assignment: "/services/intellectual-property-right-services/ip-and-brand-advisory/assignment",
+const workplaceComplianceChildRoutes: Record<string, string> = {
+  "Employment Disputes":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/employment-disputes",
+  "POSH Advisory":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/posh-advisory",
+  "Workplace Investigations":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/workplace-investigations",
+  "HR Compliance Review":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/hr-compliance-review",
+  "Payroll / Statutory Coordination":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/payroll-statutory-coordination",
 };
 
-const litigationChildRoutes: Record<string, string> = {
-  "Corporate Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/corporate-litigation",
-  "Commercial Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/commercial-litigation",
-  "Labour & Industrial Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/labour-industrial-litigation",
-  "White-Collar Crime Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/white-collar-crime-litigation",
-  "Criminal Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/criminal-litigation",
+const employmentAndLabourChildRoutes: Record<string, string> = {
+  "Employee Handbook":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/employee-handbook",
+  "Termination / Separation Advisory":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/termination-separation-advisory",
 };
 
-const internationalTaxChildRoutes: Record<string, string> = {
-  "Cross-Border Tax Coordination": "/services/taxation-compliance/international-tax/cross-border-tax-coordination",
-  "Transfer Pricing Coordination": "/services/taxation-compliance/international-tax/transfer-pricing-coordination",
-  "International Transaction Support": "/services/taxation-compliance/international-tax/international-transaction-support",
+const riskForensicsChildRoutes: Record<string, string> = {
+  "Fraud Risk & Forensic Review":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/fraud-risk-and-forensic-review",
+  "Corporate Investigations":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/corporate-investigations",
+  "Compliance Investigations":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/compliance-investigations",
+  "Due Diligence / Background Review":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/due-diligence-background-review",
+  "White-Collar Advisory":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/white-collar-advisory",
+  "Anti-Bribery / Ethics Framework":
+    "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/anti-bribery-ethics-framework",
 };
 
 const descriptions = [
@@ -127,6 +146,18 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "corporate-commercial-advisory" && group.slug === "corporate-governance-and-entity-structuring"
       ? { childRoutes: corporateGovernanceChildRoutes }
+      : {}),
+    ...(service.slug === "business-advisory-contracts" && group.slug === "investment-and-transaction-advisory"
+      ? { childRoutes: investmentAndTransactionChildRoutes }
+      : {}),
+    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "workplace-compliances"
+      ? { childRoutes: workplaceComplianceChildRoutes }
+      : {}),
+    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "employment-and-labour"
+      ? { childRoutes: employmentAndLabourChildRoutes }
+      : {}),
+    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "risk-forensics-and-investigations"
+      ? { childRoutes: riskForensicsChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
