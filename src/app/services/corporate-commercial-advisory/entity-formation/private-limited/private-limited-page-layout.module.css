@@ -22,6 +22,85 @@
   min-width: 0;
 }
 
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details),
+.testimonialGrid > figure,
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article) {
+  transition: transform .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) {
+  border: 2px solid #d6e7ff;
+  background: #fff;
+  transition: background-color .2s ease, border-color .2s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details) {
+  padding: 19px 20px;
+}
+
+.pageContent :global(section[id="structure"]),
+.pageContent :global(section[id="structure"] *) {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceButton"]) {
+  background: #0751db;
+  border-color: #0751db;
+  color: #fff;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceButton"]:hover) {
+  background: #12375c;
+  border-color: #12375c;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:not([class*="customPrice"]):hover),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover),
+  .testimonialGrid > figure:hover,
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover) {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+    background-color: #eff6ff;
+    box-shadow: 0 8px 20px rgb(6 30 59 / 10%);
+  }
+
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover) {
+    transform: translateY(-3px);
+    background-color: rgb(255 255 255 / 10%);
+  }
+
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover) {
+    transform: translateY(-3px);
+    background-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 8px 20px rgb(0 25 57 / 16%);
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="customPrice"]:hover) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgb(6 30 59 / 18%);
+  }
+
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
+    border-color: #93c5fd;
+    background: #b4d5fa;
+  }
+}
+
 .pageContent > :global([class*="sectionLayout"]) {
   max-width: none;
   margin: 0;
@@ -234,13 +313,21 @@
   background: #0751db;
 }
 
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div > span) {
+  font-size: calc(max(var(--font-size-min), 15px) + 3px);
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] svg) {
+  color: #fff;
+}
+
 .pageContent :global(section[class*="final"]) {
   background: #0751db;
   color: #fff;
 }
 
 .pageContent :global(section[class*="final"]) > div > span {
-  color: #e4bf80;
+  color: #fff;
 }
 
 .pageContent :global(section[class*="final"]) h2 {
@@ -251,11 +338,27 @@
   color: #e0e8f1;
 }
 
+.pageContent :global(section[class*="final"]) a {
+  color: #fff;
+  transition: transform .25s ease, background-color .2s ease, border-color .2s ease;
+}
+
+.pageContent :global(section[class*="final"]) a:hover {
+  background: #12375c;
+  border-color: #12375c;
+}
+
 .pageContent :global([class*="taxPoints"]) {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   margin-top: 32px;
+}
+
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .pageContent :global([class*="timeline"]) {
@@ -284,23 +387,6 @@
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 8px 24px rgb(6 30 59 / 6%);
-}
-
-.pageContent :global([class*="timeline"]) [class*="stepNum"] {
-  position: static;
-  display: inline-flex;
-  align-items: center;
-  justify-self: start;
-  width: auto;
-  height: auto;
-  padding: 5px 9px;
-  border: 1px solid #d7e6f6;
-  border-radius: 999px;
-  background: #edf4fb;
-  color: #0751db;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.2;
 }
 
 .pageContent :global([class*="timeline"]) [class*="stepIcon"] {
@@ -346,8 +432,17 @@
 .pageContent :global([class*="checklist"]) {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 28px;
+  gap: 0 28px;
   margin-top: 30px;
+}
+
+.pageContent :global([class*="checklist"]) > ul {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .pageContent :global([class*="checklist"]) li {
@@ -426,21 +521,14 @@
   margin-top: auto;
 }
 
-.sampleTestimonialNotice {
-  margin: 0 0 20px;
-  padding: 12px 16px;
-  border: 1px solid #d7e6f6;
-  border-left: 3px solid #0751db;
-  background: #f3f8fc;
-  color: #435d76;
-  font-size: max(var(--font-size-min), 14px);
-  line-height: 1.6;
-}
-
 @media (max-width: 1100px) {
   .pageContent :global([class*="benefitGrid"]),
   .pageContent :global([class*="taxPoints"]),
   .pageContent :global([class*="timeline"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -477,6 +565,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .pageContent :global([class*="timeline"]) > li {
     min-height: 0;
     padding: 22px;
@@ -500,4 +592,35 @@
   .testimonialGrid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="benefits"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="comparison"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="process"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="documents"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="requirements"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="pricing"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="faq"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="testimonial"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="insights"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="knowledge"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="experience"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] p),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] p),
+.pageContent :global(section[class*="comparison"]) :global([class*="tableNote"]),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] p),
+.pageContent :global(section[class*="documents"]) :global([class*="checklist"]) li,
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] p),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"] > span),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"] li),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceNote"]),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > p),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] details p),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] figcaption > span:not(.stars)),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] article > div > span),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] p),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] small),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] p) {
+  color: #000;
 }

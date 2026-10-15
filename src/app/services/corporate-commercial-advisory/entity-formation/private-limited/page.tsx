@@ -103,16 +103,21 @@ const sampleTestimonials = [
   },
 ];
 
-const documents = [
-  ["search", "Proposed company name(s)"],
-  ["person", "PAN, Aadhaar and address proof of all directors and shareholders"],
-  ["person", "Passport photographs of directors and shareholders"],
-  ["pin", "Address proof for the registered office"],
-  ["file", "Digital Signature Certificate (DSC)"],
-  ["person", "Director Identification Number (DIN), where required"],
-  ["document", "Draft Memorandum of Association (MOA) and Articles of Association (AOA)"],
-  ["people", "Nominee consent, if applicable"],
-  ["file", "Business activity details and sector licences, if applicable"],
+const documentColumns = [
+  [
+    ["search", "Proposed company name(s)"],
+    ["person", "Passport photographs of directors and shareholders"],
+    ["file", "Digital Signature Certificate (DSC)"],
+    ["file", "Business activity details and sector licences, if applicable"],
+    ["person", "PAN, Aadhaar and address proof of all directors and shareholders"],
+  ],
+  [
+    ["pin", "Address proof for the registered office"],
+    ["person", "Director Identification Number (DIN), where required"],
+    ["people", "Nominee consent, if applicable"],
+    ["document", "Memorandum of Association (MOA)"],
+    ["document", "Articles of Association (AOA)"],
+  ],
 ];
 
 const requirements = [
@@ -290,7 +295,6 @@ export default function PrivateLimitedCompanyPage() {
           <ol className={styles.timeline}>
             {process.map(([title, description], index) => (
               <li key={title}>
-                <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.stepIcon}><Icon name={processIcons[index]} /></span>
                 <h3>{title}</h3>
                 <p>{description}</p>
@@ -308,7 +312,13 @@ export default function PrivateLimitedCompanyPage() {
               title="Key documents for incorporation"
               text="We will confirm the documents needed for your circumstances and the current filing process."
             />
-            <ul className={styles.checklist}>{documents.map(([icon, item]) => <li key={item}><Icon name={icon} />{item}</li>)}</ul>
+            <div className={styles.checklist}>
+              {documentColumns.map((column, index) => (
+                <ul key={index}>
+                  {column.map(([icon, item]) => <li key={item}><Icon name={icon} />{item}</li>)}
+                </ul>
+              ))}
+            </div>
           </div>
         </div>
         </section>
@@ -321,10 +331,9 @@ export default function PrivateLimitedCompanyPage() {
             text="A concise view of the core requirements for incorporating a private limited company in India."
           />
           <div className={styles.requirementGrid}>
-            {requirements.map(([icon, title, text], index) => (
+            {requirements.map(([icon, title, text]) => (
               <article key={title}>
                 <span className={styles.requirementIcon}><Icon name={icon} /></span>
-                <small>0{index + 1}</small>
                 <h3>{title}</h3>
                 <p>{text}</p>
               </article>
@@ -416,9 +425,6 @@ export default function PrivateLimitedCompanyPage() {
               title="Clear advice. Practical direction."
               text="A perspective shared with permission by a client of our corporate and commercial advisory team."
             />
-            <p className={layoutStyles.sampleTestimonialNotice} role="note">
-              Sample testimonials for layout purposes only. These are not verified client reviews and must be replaced with approved client feedback before publishing.
-            </p>
             <div className={layoutStyles.testimonialGrid}>
               {sampleTestimonials.map((testimonial) => (
                 <figure key={testimonial.name}>

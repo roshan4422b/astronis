@@ -27,6 +27,33 @@ const corporateGovernanceChildRoutes: Record<string, string> = {
   "Slump Sale": "/services/corporate-commercial-advisory/slump-sale",
 };
 
+const trademarkChildRoutes: Record<string, string> = {
+  "Trademark Search & Filing": "/services/intellectual-property-right-services/trademark/trademark-search-filing",
+  Opposition: "/services/intellectual-property-right-services/trademark/opposition",
+  "Reply to Examination Response": "/services/intellectual-property-right-services/trademark/reply-to-examination-response",
+  Renewal: "/services/intellectual-property-right-services/trademark/renewal",
+  "Prosecution & Enforcement": "/services/intellectual-property-right-services/trademark/prosecution-enforcement",
+};
+
+const ipBrandAdvisoryChildRoutes: Record<string, string> = {
+  Licensing: "/services/intellectual-property-right-services/ip-and-brand-advisory/licensing",
+  Assignment: "/services/intellectual-property-right-services/ip-and-brand-advisory/assignment",
+};
+
+const litigationChildRoutes: Record<string, string> = {
+  "Corporate Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/corporate-litigation",
+  "Commercial Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/commercial-litigation",
+  "Labour & Industrial Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/labour-industrial-litigation",
+  "White-Collar Crime Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/white-collar-crime-litigation",
+  "Criminal Litigation": "/services/litigation-dispute-resolution/litigation-justice-delivery/criminal-litigation",
+};
+
+const internationalTaxChildRoutes: Record<string, string> = {
+  "Cross-Border Tax Coordination": "/services/taxation-compliance/international-tax/cross-border-tax-coordination",
+  "Transfer Pricing Coordination": "/services/taxation-compliance/international-tax/transfer-pricing-coordination",
+  "International Transaction Support": "/services/taxation-compliance/international-tax/international-transaction-support",
+};
+
 const descriptions = [
   "Support across business formation, corporate structuring, transactions and governance.",
   "Practical guidance on corporate, financial and consumer regulatory obligations.",
@@ -83,6 +110,18 @@ export const services = hierarchy.map((service, index) => ({
   category: service.title,
   subServices: service.subServices.map((group) => ({
     ...group,
+    ...(service.slug === "intellectual-property-right-services" && group.slug === "trademark"
+      ? { childRoutes: trademarkChildRoutes }
+      : {}),
+    ...(service.slug === "intellectual-property-right-services" && group.slug === "ip-and-brand-advisory"
+      ? { childRoutes: ipBrandAdvisoryChildRoutes }
+      : {}),
+    ...(service.slug === "litigation-dispute-resolution" && group.slug === "litigation-justice-delivery"
+      ? { childRoutes: litigationChildRoutes }
+      : {}),
+    ...(service.slug === "taxation-compliance" && group.slug === "international-tax"
+      ? { childRoutes: internationalTaxChildRoutes }
+      : {}),
     ...(service.slug === "corporate-commercial-advisory" && group.slug === "mergers-acquisitions-and-transactions"
       ? { childRoutes: corporateTransactionChildRoutes }
       : {}),

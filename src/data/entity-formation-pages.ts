@@ -78,6 +78,7 @@ export type EntityFormationPageData = {
   challenges?: string[];
   processEyebrow?: string;
   documentsDescription?: string;
+  resourcesDescription?: string;
   pricingEyebrow?: string;
   pricingHeading?: string;
   pricingDescription?: string;

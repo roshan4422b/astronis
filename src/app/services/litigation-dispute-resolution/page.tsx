@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
 import { litigationDisputeResolution } from "@/data/service-practices";
+import { serviceAnchor } from "@/data/service-detail-types";
 import SectionNavigation from "@/app/services/_template/section-navigation";
 import ServiceHero from "@/app/services/_template/service-hero";
 import styles from "../corporate-commercial-advisory/page.module.css";
@@ -21,7 +22,7 @@ const directory = litigationDisputeResolution.groups.map((group) => ({
     name: child.title,
     slug: child.slug,
     description: child.paragraphs[0],
-    url: `/services/${litigationDisputeResolution.slug}/${group.slug}/${child.slug}`,
+    url: `/services/${litigationDisputeResolution.slug}/${group.slug}/${serviceAnchor(child.title)}`,
   })),
 }));
 
