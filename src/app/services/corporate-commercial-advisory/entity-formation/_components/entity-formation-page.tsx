@@ -404,7 +404,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       {showKnowledge && <PageSectionLayout variant="full-width">
         <section className={styles.knowledge}>
         <div className="container">
-          <Heading eyebrow="KNOWLEDGE CENTRE" title="Guides, checklists and templates" text="Explore resources to help organise your formation planning." />
+          <Heading eyebrow="KNOWLEDGE CENTRE" title="Guides, checklists and templates" text={data.resourcesDescription ?? "Explore resources to help organise your formation planning."} />
           <div className={styles.resourceGrid}>{(data.resources ?? [
             ["GUIDE", `${data.shortTitle} formation guide`, "document"],
             ["CHECKLIST", "Formation documents checklist", "file"],

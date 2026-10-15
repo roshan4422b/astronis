@@ -8,6 +8,14 @@ import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-detail
 import { getBusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getFemaCrossBorderDetail } from "@/data/fema-cross-border-details";
 import { getLicensingRegistrationPage, licensingRegistrationPages } from "@/data/licensing-registration-pages";
+import {
+  getIntellectualPropertyServicePage,
+  getIntellectualPropertyServiceStaticParams,
+} from "@/data/intellectual-property-service-pages";
+import {
+  getAdditionalServiceDetailPage,
+  getAdditionalServiceDetailStaticParams,
+} from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
@@ -37,6 +45,8 @@ export function generateStaticParams() {
     ...licensingRegistrationPages.map(({ groupSlug, slug }) => ({
       slug: ["licensing-registrations", groupSlug, slug],
     })),
+    ...getIntellectualPropertyServiceStaticParams(),
+    ...getAdditionalServiceDetailStaticParams(),
   ];
 }
 
@@ -45,6 +55,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
+    const additionalServicePage = hierarchy.child
+      ? getAdditionalServiceDetailPage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
+      : undefined;
+    if (additionalServicePage) {
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      return {
+        title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
+        description: additionalServicePage.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
+          description: additionalServicePage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
+    const intellectualPropertyPage = hierarchy.child
+      && hierarchy.service.canonicalSlug === "intellectual-property-right-services"
+      ? getIntellectualPropertyServicePage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
+      : undefined;
+    if (intellectualPropertyPage) {
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      return {
+        title: `${intellectualPropertyPage.title} | Intellectual Property Right Services | Astronis`,
+        description: intellectualPropertyPage.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${intellectualPropertyPage.title} | Intellectual Property Right Services | Astronis`,
+          description: intellectualPropertyPage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
     const licensingRegistrationPage = hierarchy.child
       && hierarchy.service.canonicalSlug === "licensing-registrations"
       ? getLicensingRegistrationPage(slugs[2])
@@ -106,6 +151,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
+    if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
+    const intellectualPropertyPage = service.canonicalSlug === "intellectual-property-right-services"
+      ? getIntellectualPropertyServicePage(group.slug, serviceAnchor(child))
+      : undefined;
+    if (intellectualPropertyPage) return <EntityFormationPage data={intellectualPropertyPage} />;
     const licensingRegistrationPage = service.canonicalSlug === "licensing-registrations"
       ? getLicensingRegistrationPage(slugs[2])
       : undefined;
