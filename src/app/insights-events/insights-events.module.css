@@ -1,4 +1,7 @@
-.page{--navy:#071d49;--blue:#0751db;--ink:#10274e;--muted:#5b6980;--line:#dce5f1;--pale:#f2f7fd;--gst-pale:#f2f7fd;--gst-line:#dce5f1;--gst-ink:#10274e;--gst-muted:#5b6980;color:var(--ink);background:#fff}
+.page{--navy:#071d49;--blue:#0751db;--ink:#000;--muted:#000;--line:#dce5f1;--pale:#f2f7fd;--gst-pale:#f2f7fd;--gst-line:#dce5f1;--gst-ink:#000;--gst-muted:#000;color:#000;background:#fff}
+.page :where(h1,h2,h3,h4,h5,h6,p,a,span,strong,small,time,button,blockquote,li,label){color:#000!important}
+.page :where(input,select,textarea){color:#000!important}
+.page :where(input,textarea)::placeholder{color:#000!important;opacity:1}
 .page a{color:inherit;text-decoration:none}
 .page img{object-fit:cover}
 .page a:focus-visible,.page button:focus-visible,.page input:focus-visible{outline:3px solid #1688ff;outline-offset:3px}
@@ -46,6 +49,9 @@
 .categoryCard>strong{padding:0 8px;color:#122a52;font-size: max(var(--font-size-min), 16px);line-height:1.2}
 .categoryCard>span:last-child{margin-top:6px;padding:0 9px 11px;color:#65748a;font-size: max(var(--font-size-min), 12px);line-height:1.35}
 .featuredGrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1.3fr);gap:11px}
+.featuredRight{grid-template-columns:minmax(0,1.3fr) minmax(0,1.35fr)}
+.featuredRight .supportingGrid{grid-column:1;grid-row:1}
+.featuredRight>.featuredCard{grid-column:2;grid-row:1}
 .insightCard{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid #e0e8f1;border-radius:4px;background:#fff;box-shadow:0 2px 8px #09234d0d}
 .insightCard:hover{box-shadow:0 6px 18px #09234d1a;transform:translateY(-1px)}
 .insightImage{position:relative;display:block;height:112px;overflow:hidden;background:#eaf1f7}
@@ -54,6 +60,8 @@
 .featuredCard .insightImage{height:100%;min-height:390px}
 .insightBody{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;padding:10px 11px;font-family:inherit}
 .insightCategory{display:inline-block;margin-bottom:5px;padding:3px 6px;background:#0751a9;color:#fff;font-size:9px;font-weight:700;line-height:1.2;text-transform:uppercase}
+.page .insightCategory,.page .insightAudience{font-size:12px;margin-bottom:5px;padding:0;background:transparent;color:#0751db!important}
+.page .featuredGrid .insightDescription{color:#0751db!important}
 .insightBody time{margin:1px 0 5px;color:#66758a;font-size:12px}
 .insightBody strong{color:#102651;font-family:inherit;font-size:17px;line-height:1.3}
 .headlineContinuation{color:#44546a;font-weight:400}
@@ -133,6 +141,8 @@
   .categoryCard{min-height:194px}
   .categoryImage{height:104px}
   .featuredGrid{grid-template-columns:1fr}
+  .featuredRight .supportingGrid{grid-column:1;grid-row:2}
+  .featuredRight>.featuredCard{grid-column:1;grid-row:1}
   .featuredCard{min-height:340px}
   .featuredCard .insightImage{min-height:340px}
   .supportingGrid .insightImage{height:115px}
@@ -300,7 +310,7 @@
   .businessInsightCard{min-height:220px;padding:20px}
 }
 .businessInsightCard:hover .businessInsightIcon,.businessInsightCard:focus-visible .businessInsightIcon{color:#0d2d4d;border-color:#0d2d4d;background:#e8f1ff}
-.legalInsightSection{position:relative;isolation:isolate;padding:50px 0 22px;color:#f8f5ee;background:#061b32;border-top:1px solid #24405b;border-bottom:1px solid #24405b;box-shadow:0 0 0 100vmax #061b32;clip-path:inset(0 -100vmax)}
+.legalInsightSection{position:relative;isolation:isolate;padding:50px 0 22px;color:#000;background:#edf5ff;border-top:1px solid #d9e8f8;border-bottom:1px solid #d9e8f8;box-shadow:0 0 0 100vmax #edf5ff;clip-path:inset(0 -100vmax)}
 .legalEditorialHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px}
 .legalEditorialTitle{color:#f8f5ee;font-size:30px;font-weight:700;line-height:1.15}
 .legalEditorialTitle::after{display:block;width:44px;height:3px;margin-top:9px;background:#d7b475;content:""}
@@ -309,21 +319,21 @@
 .legalEditorialHeading>a svg{width:15px;height:15px}
 .legalInsightCount{flex:none;color:#c0ceda;font-size:12px;font-weight:700;text-transform:uppercase}
 .legalInsightGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
-.legalInsightCard{position:relative;display:flex;min-width:0;min-height:258px;flex-direction:column;padding:24px;color:#f7f4ed;border:1px solid #29435d;border-left:3px solid #d7b475;border-radius:15px;background:#0b2946;text-decoration:none;box-shadow:0 9px 24px #0000001a;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background-color .22s ease}
-.legalInsightCard:nth-child(3n + 2){border-top:3px solid #d7b475}
-.legalInsightCard:nth-child(3n){border-bottom:3px solid #d7b475}
-.legalInsightCard:hover,.legalInsightCard:focus-visible{transform:translateY(-4px);border-color:#d7b475;background:#103251;box-shadow:0 16px 30px #00000038}
+.legalInsightCard{position:relative;display:flex;min-width:0;min-height:258px;flex-direction:column;padding:24px;color:#000;border:1px solid #d2e2f3;border-left:3px solid #77a8df;border-radius:15px;background:#fff;text-decoration:none;box-shadow:0 9px 24px #0000000a;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background-color .22s ease}
+.legalInsightCard:nth-child(3n + 2){border-top:3px solid #77a8df}
+.legalInsightCard:nth-child(3n){border-bottom:3px solid #77a8df}
+.legalInsightCard:hover,.legalInsightCard:focus-visible{transform:translateY(-4px);border-color:#8db4e2;background:#f8fbff;box-shadow:0 16px 30px #174a7a17}
 .legalInsightTop{display:flex;align-items:center;justify-content:space-between;gap:14px}
 .legalInsightNumber{color:#c0ceda;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.legalInsightIcon{display:grid;width:42px;height:42px;flex:none;place-items:center;color:#d8c398;border:1px solid #425a70;border-radius:3px;background:#102f4d}
+.legalInsightIcon{display:grid;width:42px;height:42px;flex:none;place-items:center;color:#0751db;border:1px solid #b9d0eb;border-radius:3px;background:#edf5ff}
 .legalInsightIcon svg{width:20px;height:20px}
-.legalInsightFocus{margin-top:16px;color:#ebce96;font-size:12px;font-weight:700;line-height:1.35;text-transform:uppercase}
+.legalInsightFocus{margin-top:16px;color:#0751db;font-size:12px;font-weight:700;line-height:1.35;text-transform:uppercase}
 .legalInsightTitle{margin-top:7px;color:#f7f4ed;font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:600;line-height:1.35}
 .legalInsightTitle span{color:#c0ceda;font-weight:400}
-.legalInsightAction{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:18px;color:#ebce96;font-size:11px;font-weight:700;text-transform:uppercase}
+.legalInsightAction{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:18px;color:#0751db;font-size:11px;font-weight:700;text-transform:uppercase}
 .legalInsightAction svg{width:15px;height:15px;transition:transform .2s ease}
 .legalInsightCard:hover .legalInsightAction svg,.legalInsightCard:focus-visible .legalInsightAction svg{transform:translateX(4px)}
-.legalInsightCard:hover .legalInsightIcon,.legalInsightCard:focus-visible .legalInsightIcon{color:#ebce96;border-color:#d7b475;background:#183d5c}
+.legalInsightCard:hover .legalInsightIcon,.legalInsightCard:focus-visible .legalInsightIcon{color:#0751db;border-color:#8db4e2;background:#e5f0fc}
 @media(max-width:1024px){.legalInsightGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){
   .legalEditorialHeading{align-items:flex-start;flex-direction:column;gap:11px}
