@@ -47,7 +47,7 @@
 .heroShade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #fff 0%, #fffffff5 32%, #ffffffd9 49%, #ffffff54 70%, #071d4920 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.55) 32%, rgba(255,255,255,.32) 49%, rgba(255,255,255,.12) 70%, rgba(7,29,73,.08) 100%);
 }
 
 .heroInner,
@@ -328,7 +328,7 @@
   position: relative;
   display: block;
   width: 100%;
-  height: 85px;
+  height: 130px;
   flex: none;
   overflow: hidden;
   background: #eaf1f7;
@@ -1206,7 +1206,7 @@
   }
 
   .heroShade {
-    background: linear-gradient(90deg, #fff 0%, #fffffff2 58%, #ffffffa8 100%);
+    background: linear-gradient(90deg, rgba(255,255,255,.68) 0%, rgba(255,255,255,.46) 58%, rgba(255,255,255,.2) 100%);
   }
 
   .heroInner,
@@ -1292,7 +1292,7 @@
   }
 
   .categoryImage {
-    height: 105px;
+    height: 120px;
   }
 
   .featuredSection {

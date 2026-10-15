@@ -17,6 +17,7 @@ export default function ArticlesAndResources() {
         title="Articles & Resources"
         eyebrow="Insights & Resources"
         text="Explore practical articles, business perspectives and resources from Astronis Global."
+        variant="insights"
         image="/Part-14 .png"
       />
       <section className="section">
