@@ -7,6 +7,7 @@ export type EntityFormationPageData = {
   introduction: string;
   image: string;
   imageAlt: string;
+  heroOverlay?: boolean;
   basicPrice: string;
   comprehensivePrice: string;
   benefits: [string, string, string][];
@@ -121,8 +122,9 @@ export const entityFormationPages: EntityFormationPageData[] = [
     heroStatement: "A considered structure for a founder-led business.",
     description: "A One Person Company (OPC) formation enquiry often begins with a founder who wants to formalise a business while retaining a single-owner structure. The appropriate choice depends on the founder's circumstances, the planned activities and how the business is expected to develop.",
     introduction: "The discussion should look beyond the immediate setup. Plans to introduce investors, share ownership or change the management model can affect the longer-term suitability of the structure. Eligibility and current procedural requirements should be reviewed for the particular applicant before proceeding.",
-    image: "/business-financial-hero.png",
-    imageAlt: "A founder-led business planning its next stage",
+    image: "/images/services/corporate-commercial-heroes/one-person-company-opc.png",
+    imageAlt: "Corporate filing and compliance services",
+    heroOverlay: false,
     basicPrice: "₹7,999",
     comprehensivePrice: "₹14,999",
     benefits: [
@@ -180,8 +182,9 @@ export const entityFormationPages: EntityFormationPageData[] = [
     heroStatement: "A purpose-led organisation, structured with clarity.",
     description: "Section 8 company enquiries require a clear statement of the organisation's intended purpose and activities. The proposed structure should be assessed in the context of its institutional objectives, governance arrangements and plans for funding and day-to-day operations.",
     introduction: "A coherent formation brief explains how programmes will be conducted, who will oversee decisions and how records will be maintained. Incorporation should be considered separately from any tax-related recognition, funding permission or programme-specific registration that may also need review.",
-    image: "/images/services/esg-and-sustainability-advisory.webp",
-    imageAlt: "Purpose-led sustainability and community initiatives",
+    image: "/images/services/corporate-commercial-heroes/section-8-company.png",
+    imageAlt: "Business and professional services in a modern city",
+    heroOverlay: false,
     basicPrice: "₹14,999",
     comprehensivePrice: "₹29,999",
     benefits: [
@@ -244,8 +247,9 @@ export const entityFormationPages: EntityFormationPageData[] = [
     heroStatement: "A flexible partnership, shaped around how you work.",
     description: "LLP formation brings the partners' commercial understanding into the entity setup process. Before preparing documents, the partners should identify their contributions, working roles, decision-making expectations and the way they intend to share the results of the business.",
     introduction: "The partnership arrangements should also anticipate change: admission of a new partner, a change in responsibilities, a funding requirement or a partner wishing to leave. These discussions inform the formation brief and the LLP agreement, helping the structure support the intended working relationship.",
-    image: "/images/services/business-advisory-consulting.webp",
-    imageAlt: "Business partners discussing an LLP structure and operating agreement",
+    image: "/images/services/corporate-commercial-heroes/llp-formation.png",
+    imageAlt: "Blue corporate background for business services",
+    heroOverlay: false,
     basicPrice: "₹7,999",
     comprehensivePrice: "₹12,999",
     benefits: [

@@ -97,6 +97,10 @@
   content: "";
 }
 
+.heroNoOverlay::after {
+  display: none;
+}
+
 .heroImage {
   z-index: -2;
   object-fit: cover;

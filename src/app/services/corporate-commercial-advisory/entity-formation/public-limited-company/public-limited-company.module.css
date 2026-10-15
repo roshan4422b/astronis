@@ -358,3 +358,7 @@
 .page .hero {
   min-height: 0;
 }
+
+.heroNoOverlay:after {
+  display: none;
+}
