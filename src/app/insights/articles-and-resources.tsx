@@ -26,6 +26,33 @@ export default function ArticlesAndResources() {
             title="Articles & Expert Perspectives"
             text="Analysis and practical guidance on corporate, commercial and business matters."
           />
+          <article className={styles.featuredArticle}>
+            <Link
+              className={styles.featuredImage}
+              href="/insights/articles-and-resources"
+              aria-label="Read RBI’s Scale-Based Regulation for NBFCs"
+            >
+              <Image
+                src="/Banking & Financial Services1 .png"
+                alt=""
+                fill
+                sizes="(max-width: 700px) 100vw, 40vw"
+              />
+            </Link>
+            <div className={styles.featuredCopy}>
+              <span className="eyebrow">Regulatory &amp; Compliance</span>
+              <h2>
+                <Link
+                  href="/insights/articles-and-resources"
+                  className={styles.featuredTitleLink}
+                >
+                  RBI’s Scale-Based Regulation for NBFCs: Understanding the Four-Layer Regulatory Framework
+                </Link>
+              </h2>
+              <p>A comprehensive analysis of the SBR framework, its four layers and practical considerations for NBFC governance and compliance teams.</p>
+              <TextLink href="/insights/articles-and-resources">Read Article</TextLink>
+            </div>
+          </article>
           <div className={styles.grid}>
             {corporateArticles.map((article) => (
               <article className={styles.card} key={article.slug}>

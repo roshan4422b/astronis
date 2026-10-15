@@ -180,15 +180,9 @@
   .sectionHeading h2{font-size: max(var(--font-size-min), 22px)}
   .sectionHeading>a{font-size: max(var(--font-size-min), 10px)}
   .categoryGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-<<<<<<< HEAD
-  .categoryImage{height:105px}
+  .categoryImage{height:120px}
   .categoryCard>strong{font-size: max(var(--font-size-min), 14px)}
   .categoryCard>span:last-child{font-size: max(var(--font-size-min), 14px)}
-=======
-  .categoryImage{height:120px}
-  .categoryCard>strong{font-size:14px}
-  .categoryCard>span:last-child{font-size:14px}
->>>>>>> 9b822a1 (Improve Insights hero backgrounds and category image sizing)
   .featuredArticle{grid-template-columns:1fr}
   .featuredImage{height:260px}
   .featuredBody{min-height:250px;padding:14px}

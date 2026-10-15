@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { insightCategories, siteMenu, slugify } from "@/content/site";
 import { Banner, Button, TextLink } from "../../_components/ui";
 import { corporateArticles } from "@/content/corporate-articles";
@@ -17,6 +18,7 @@ import SebiUpdates from "../sebi-updates";
 import BusinessUpdates from "../business-updates";
 import LegalUpdates from "../legal-updates";
 import ArticlesAndResources from "../articles-and-resources";
+import RbiSbrArticle from "../articles-and-resources/rbi-scale-based-regulation-nbfcs/rbi-sbr-article";
 const categories = [...new Set([...siteMenu.insights, ...insightCategories])];
 export function generateStaticParams() {
   return [
@@ -47,7 +49,15 @@ export async function generateMetadata({
   const legalAdvisoryInsight = legalAdvisoryInsights.find((item) => item.slug === slug);
   const priorityInsight = priorityInsights.find((item) => item.slug === slug);
   const rbiNbfcInsight = rbiNbfcInsights.find((item) => item.slug === slug);
-  if (["articles-and-resources", "articles", "blogs"].includes(slug)) {
+  if (slug === "articles-and-resources") {
+    return {
+      title: "RBI’s Scale-Based Regulation for NBFCs",
+      description:
+        "An overview of RBI’s four-layer Scale-Based Regulation framework for NBFCs, including governance, compliance and practical readiness considerations.",
+      alternates: { canonical: "/insights/articles-and-resources" },
+    } satisfies Metadata;
+  }
+  if (["articles", "blogs"].includes(slug)) {
     return { title: "Articles & Resources", description: "Articles, analysis and practical resources from Astronis Global." };
   }
   if (slug === "gst-updates") return { title: "GST Updates", description: "GST filing, notifications, returns, compliance updates and practical indirect tax guidance from Astronis Global." };
@@ -73,7 +83,8 @@ export default async function CategoryPage({
   const legalAdvisoryInsight = legalAdvisoryInsights.find((item) => item.slug === slug);
   const priorityInsight = priorityInsights.find((item) => item.slug === slug);
   const rbiNbfcInsight = rbiNbfcInsights.find((item) => item.slug === slug);
-  if (["articles-and-resources", "articles", "blogs"].includes(slug)) return <ArticlesAndResources />;
+  if (slug === "articles-and-resources") return <RbiSbrArticle />;
+  if (["articles", "blogs"].includes(slug)) return <ArticlesAndResources />;
   if (slug === "gst-updates") return <GstUpdates />;
   if (slug === "mca-updates") return <McaUpdates />;
   if (slug === "start-up-and-msme-updates" || slug === "startup-news") return <StartupUpdates />;
