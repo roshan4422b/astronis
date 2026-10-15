@@ -9,8 +9,7 @@ const columns = [
   {
     icon: "file", title: "Thought Leadership", tagline: "Ideas. Analysis. Perspectives.",
     links: [
-      ["file", "Articles", "Analysis on legal and regulatory developments."],
-      ["pencil", "Blogs", "Views on emerging opportunities and risks."],
+      ["file", "Articles & Resources", "Articles, analysis and practical resources."],
       ["file", "White Papers", "Research on key sectors and regulations."],
       ["building", "Government Notifications", "Central and state notifications."],
     ],
@@ -54,6 +53,7 @@ function hrefFor(title: string) {
   if (title === "FAQs") return "/faqs";
   if (title === "Case Studies & Success Stories") return "/success-stories";
   if (title === "Downloads") return "/insights/download-useful-documents";
+  if (title === "White Papers") return "/insights/white-papers-research";
   return `/insights/${slugify(title)}`;
 }
 

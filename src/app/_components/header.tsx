@@ -250,7 +250,13 @@ export default function Header() {
                     aria-expanded={open === n.label}
                     aria-haspopup="true"
                     aria-controls={"menu-" + slugify(n.label)}
-                    onClick={() => toggleMenu(n.label)}
+                    onClick={() => {
+                      if (window.innerWidth > 1050) {
+                        setOpen(n.label);
+                      } else {
+                        toggleMenu(n.label);
+                      }
+                    }}
                   >
                     <Icon name="chevron" className="nav-chevron" />
                   </button>

@@ -5,11 +5,18 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
+import { corporateAdvisoryInsights, splitCorporateHeadline } from "@/content/corporate-advisory-insights";
+import { regulatoryInsights as regulatoryInsightArticles } from "@/content/regulatory-insights";
+import { businessAdvisoryInsights } from "@/content/business-advisory-insights";
+import { legalAdvisoryInsights } from "@/content/legal-advisory-insights";
+import { priorityInsights } from "@/content/priority-insights";
+import { rbiNbfcInsights } from "@/content/rbi-nbfc-insights";
 import { cloudCollaborationInsights, digitalBusinessInsights } from "@/content/digital-solutions";
 import { homeMedia } from "@/content/home-media";
 import { testimonials } from "@/content/testimonials";
 import { globalPresenceInsights } from "@/app/global-presence/ideas-across-borders/ideas-directory";
 import { professionalInsights } from "@/app/professionals/insights-by-professional/page-content";
+import gstStyles from "../insights/gst-updates.module.css";
 import styles from "./insights-events.module.css";
 
 type HubInsight = {
@@ -20,6 +27,7 @@ type HubInsight = {
   href: string;
   date?: string;
   author?: string;
+  audience?: string;
   source: string;
   searchTerms: string;
   court?: string;
@@ -35,6 +43,51 @@ const globalImages: Record<string, string> = {
   publicationsImage: "/Part-6 .png",
 };
 
+const sectionImages = {
+  corporate: [
+    "/Real Estate & Construction .png",
+    "/Part-14 .png",
+    "/Part-18 .png",
+    "/Part-9 .png",
+    "/Part-6 .png",
+  ],
+  regulatory: [
+    "/Banking & Financial Services .png",
+    "/international-network-hero.png",
+    "/international-regions.png",
+    "/Part-10 .png",
+    "/Part-11 .png",
+  ],
+  business: [
+    "/Part-12 .png",
+    "/Part-13 .png",
+    "/Part-15 .png",
+    "/Part-17 .png",
+    "/Part-20 .png",
+  ],
+  legal: [
+    "/Banking & Financial Services1 .png",
+    "/Part-4 .png",
+    "/Part-5 .png",
+    "/Part-7 .png",
+    "/Part-8 .png",
+  ],
+  priority: [
+    "/images/services/regulatory-and-compliance.webp",
+    "/images/services/corporate-and-commercial-advisory.webp",
+    "/images/services/arbitration-and-conciliation.webp",
+    "/images/services/business-advisory-and-consulting.webp",
+    "/images/services/gst-and-indirect-tax-regulatory-support.webp",
+  ],
+  rbi: [
+    "/images/services/banking-nbfc-and-financial-services-advisory.webp",
+    "/images/services/gst-and-indirect-tax-regulatory-support.webp",
+    "/Banking & Financial Services .png",
+    "/Part-10 .png",
+    "/Part-11 .png",
+  ],
+} as const;
+
 const hubInsights: HubInsight[] = [
   ...corporateArticles.map((article) => ({
     title: article.title,
@@ -44,6 +97,61 @@ const hubInsights: HubInsight[] = [
     href: `/insights/${article.slug}`,
     source: "Corporate & Commercial Advisory",
     searchTerms: `${article.category} corporate business services`,
+  })),
+  ...corporateAdvisoryInsights.map((insight) => ({
+    title: insight.title,
+    category: "Corporate Advisory",
+    description: insight.description,
+    audience: insight.audience,
+    image: insight.image,
+    href: `/insights/${insight.slug}`,
+    source: "Corporate & Commercial Advisory",
+    searchTerms: `${insight.audience} corporate advisory business`,
+  })),
+  ...regulatoryInsightArticles.map((insight) => ({
+    title: insight.title,
+    category: "Regulatory Insight",
+    description: "",
+    image: "/Banking & Financial Services .png",
+    href: `/insights/${insight.slug}`,
+    source: "Regulatory Intelligence",
+    searchTerms: insight.focus,
+  })),
+  ...businessAdvisoryInsights.map((insight) => ({
+    title: insight.title,
+    category: "Business Advisory",
+    description: "",
+    image: "/Part-18 .png",
+    href: `/insights/${insight.slug}`,
+    source: "Business Advisory",
+    searchTerms: insight.focus,
+  })),
+  ...legalAdvisoryInsights.map((insight) => ({
+    title: insight.title,
+    category: "Legal Advisory",
+    description: "",
+    image: "/Part-14 .png",
+    href: `/insights/${insight.slug}`,
+    source: "Legal Advisory & Dispute Resolution",
+    searchTerms: insight.focus,
+  })),
+  ...priorityInsights.map((insight) => ({
+    title: insight.title,
+    category: insight.category,
+    description: "",
+    image: insight.image,
+    href: `/insights/${insight.slug}`,
+    source: "Priority Insights",
+    searchTerms: insight.category,
+  })),
+  ...rbiNbfcInsights.map((insight) => ({
+    title: insight.title,
+    category: "Banking, RBI & Financial Services",
+    description: "",
+    image: "/images/services/banking-nbfc-and-financial-services-advisory.webp",
+    href: `/insights/${insight.slug}`,
+    source: "Banking, RBI & Financial Services",
+    searchTerms: "banking RBI NBFC FinTech digital lending",
   })),
   ...professionalInsights.map((insight) => ({
     title: insight.title,
@@ -115,14 +223,14 @@ const courtTabs = [
 ] as const;
 
 const insightCategories = [
-  ["file", "Latest Insights", "Recent articles and analysis", "#featured-insights", "/Part-6 .png"],
-  ["building", "Regulatory Updates", "Key changes from regulators", "#regulatory-intelligence", "/Banking & Financial Services .png"],
-  ["scale", "Legal Insights", "Judgments and legal developments", "#case-law-intelligence", "/Part-14 .png"],
-  ["chart", "Corporate & Business Insights", "Strategy, governance and transactions", "#featured-insights", "/Part-18 .png"],
-  ["building", "Industry Insights", "Sector-specific perspectives", "#featured-insights", "/Technology, IT & ITES .png"],
-  ["document", "Case Law Intelligence", "Key decisions and implications", "#case-law-intelligence", "/Part-16 .png"],
-  ["message", "Client Alerts", "Time-sensitive updates", "#regulatory-intelligence", "/Part-8 .png"],
-  ["document", "Knowledge Centre", "Guides, toolkits and resources", "#knowledge-centre", "/Part-14 .png"],
+  ["file", "Articles & Resources", "Articles, analysis and practical resources.", "/insights/articles-and-resources", "/Part-6 .png"],
+  ["file", "White Papers", "Research on key sectors and regulations.", "/insights/white-papers-research", "/Part-18 .png"],
+  ["building", "Government Notifications", "Central and state notifications.", "/insights/government-notifications", "/Part-16 .png"],
+  ["scale", "Legal Updates", "Key judgments and regulatory changes.", "/insights/legal-updates", "/Part-14 .png"],
+  ["chart", "Business Updates", "Policy updates affecting businesses.", "/insights/business-updates", "/Part-18 .png"],
+  ["building", "RBI Circulars", "Reserve Bank updates.", "/insights/rbi-circulars", "/Banking & Financial Services .png"],
+  ["chart", "SEBI Updates", "SEBI developments.", "/insights/sebi-updates", "/Part-16 .png"],
+  ["percent", "GST Updates", "GST news and advisories.", "/insights/gst-updates", "/Part-14 .png"],
 ] as const;
 
 const resources = [
@@ -189,6 +297,10 @@ function InsightCard({
   iconName?: string;
   actionLabel?: string;
 }) {
+  const headline = insight.audience
+    ? splitCorporateHeadline(insight.title)
+    : { lead: insight.title, continuation: "" };
+
   return (
     <Link href={insight.href} className={`${styles.insightCard} ${featured ? styles.featuredCard : ""}`}>
       <span className={styles.insightImage}>
@@ -197,14 +309,63 @@ function InsightCard({
       <span className={styles.insightBody}>
         {iconName ? (
           <span className={styles.regulatoryLabel}><Icon name={iconName} /><span className={styles.insightCategory}>{insight.category}</span></span>
+        ) : insight.audience ? (
+          <span className={styles.insightAudience}>{insight.audience}</span>
         ) : <span className={styles.insightCategory}>{insight.category}</span>}
         {insight.date && <time>{insight.date}</time>}
-        <strong>{insight.title}</strong>
-        <span className={styles.insightDescription}>{insight.description}</span>
+        <strong>{headline.lead}{headline.continuation && <> <span className={styles.headlineContinuation}>{headline.continuation}</span></>}</strong>
+        {!insight.audience && insight.description && <span className={styles.insightDescription}>{insight.description}</span>}
         {insight.author && <span className={styles.insightAuthor}>{insight.author}</span>}
         <span className={styles.readMore}>{actionLabel} <Icon name="arrow" /></span>
       </span>
     </Link>
+  );
+}
+
+function createSectionInsights<T extends { slug: string; title: string }>(
+  items: readonly T[],
+  category: string,
+  source: string,
+  images: readonly string[],
+  descriptionFor: (item: T) => string,
+  searchTermsFor: (item: T) => string,
+): HubInsight[] {
+  return items.slice(0, 5).map((item, index) => ({
+    title: item.title,
+    category,
+    description: descriptionFor(item),
+    image: images[index],
+    href: `/insights/${item.slug}`,
+    source,
+    searchTerms: searchTermsFor(item),
+  }));
+}
+
+function FeaturedInsightCards({
+  insights,
+  featuredPosition = "left",
+}: {
+  insights: readonly HubInsight[];
+  featuredPosition?: "left" | "right";
+}) {
+  const cards = insights.slice(0, 5);
+  const supportingCards = cards.slice(1);
+  const supportingGrid = (
+    <div className={styles.supportingGrid}>
+      {supportingCards.map((insight) => (
+        <InsightCard key={`${insight.title}-${insight.source}`} insight={insight} />
+      ))}
+    </div>
+  );
+
+  return cards.length ? (
+    <div className={`${styles.featuredGrid} ${featuredPosition === "right" ? styles.featuredRight : ""}`}>
+      {featuredPosition === "right" && supportingGrid}
+      <InsightCard insight={cards[0]} featured />
+      {featuredPosition === "left" && supportingGrid}
+    </div>
+  ) : (
+    <div className={styles.emptyState} role="status">No insights found.</div>
   );
 }
 
@@ -228,7 +389,53 @@ export default function InsightsEvents() {
     () => caseLawInsights.filter((insight) => insight.court === court),
     [court],
   );
-  const featuredInsights = normalizedQuery ? searchResults.slice(0, 5) : deduplicatedInsights.slice(0, 5);
+  const featuredInsights = normalizedQuery
+    ? searchResults.slice(0, 5)
+    : deduplicatedInsights.filter((insight) => insight.category === "Corporate Advisory").slice(0, 5);
+  const corporateCards = featuredInsights.map((insight, index) => ({
+    ...insight,
+    image: sectionImages.corporate[index],
+  }));
+  const regulatoryCards = createSectionInsights(
+    regulatoryInsightArticles,
+    "Regulatory Intelligence",
+    "Regulatory Intelligence",
+    sectionImages.regulatory,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const businessCards = createSectionInsights(
+    businessAdvisoryInsights,
+    "Business Advisory",
+    "Business Advisory",
+    sectionImages.business,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const legalCards = createSectionInsights(
+    legalAdvisoryInsights,
+    "Legal Advisory",
+    "Legal Advisory & Dispute Resolution",
+    sectionImages.legal,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const priorityCards = createSectionInsights(
+    priorityInsights,
+    "Priority Insight",
+    "Priority Insights",
+    sectionImages.priority,
+    (insight) => `${insight.category} priority insight`,
+    (insight) => insight.category,
+  );
+  const rbiCards = createSectionInsights(
+    rbiNbfcInsights,
+    "Banking, RBI & Financial Services",
+    "Banking, RBI & Financial Services",
+    sectionImages.rbi,
+    () => "Banking, RBI & Financial Services insight",
+    () => "banking RBI NBFC FinTech digital lending",
+  );
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -257,8 +464,8 @@ export default function InsightsEvents() {
       </section>
 
       <div className={styles.content}>
-        <form className={styles.searchBar} onSubmit={submitSearch}>
-          <label className={styles.searchInput}>
+        <form className={gstStyles.searchPanel} onSubmit={submitSearch}>
+          <label className={gstStyles.searchBox}>
             <span className={styles.srOnly}>Search insights, regulatory updates, case laws, industries, services or topics</span>
             <input
               type="search"
@@ -266,9 +473,9 @@ export default function InsightsEvents() {
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search insights, regulatory updates, case laws, industries, services or topics..."
             />
-            <button type="submit" aria-label="Search"><Icon name="search" /></button>
+            <Icon name="search" />
           </label>
-          <div className={styles.popularSearches}>
+          <div className={gstStyles.popularTopics}>
             <strong>Popular Searches:</strong>
             <div>{popularSearches.map((term) => <button type="button" key={term} onClick={() => setQuery(term)}>{term}</button>)}</div>
           </div>
@@ -289,17 +496,57 @@ export default function InsightsEvents() {
         </section>
 
         <section className={styles.section} id="featured-insights">
-          <SectionHeading title={normalizedQuery ? "Search Results" : "Featured Insights"} href="/insights" action="View All Insights" />
-          {featuredInsights.length ? (
-            <div className={styles.featuredGrid}>
-              <InsightCard insight={featuredInsights[0]} featured />
-              <div className={styles.supportingGrid}>
-                {featuredInsights.slice(1, 5).map((insight) => <InsightCard key={`${insight.title}-${insight.source}`} insight={insight} />)}
-              </div>
+          <SectionHeading title={normalizedQuery ? "Search Results" : "Corporate Advisory"} href="/insights/corporate-advisory" action="View All 20 Articles" />
+          <FeaturedInsightCards insights={corporateCards} />
+        </section>
+
+        <section className={`${styles.section} ${styles.regulatorySpotlight}`} id="regulatory-editorial">
+          <div className={styles.regulatoryEditorialHeading}>
+            <div>
+              <h2 className={styles.regulatoryEditorialTitle}>Regulatory Intelligence &amp; Compliance</h2>
+              <p>Practical perspectives on the rules shaping Indian businesses.</p>
             </div>
-          ) : (
-            <div className={styles.emptyState} role="status">No insights found.</div>
-          )}
+            <Link href="/insights/regulatory-intelligence">View all 20 insights<Icon name="arrow" /></Link>
+          </div>
+          <FeaturedInsightCards insights={regulatoryCards} featuredPosition="right" />
+        </section>
+
+        <section className={`${styles.section} ${styles.businessAdvisorySection}`} id="business-advisory">
+          <div className={styles.businessEditorialHeading}>
+            <div>
+              <h2 className={styles.businessEditorialTitle}>Business Advisory &amp; Growth</h2>
+              <p>Commercial strategy, investment readiness and growth planning for Indian businesses.</p>
+            </div>
+            <Link href="/insights/business-advisory">View all 20 insights<Icon name="arrow" /></Link>
+          </div>
+          <FeaturedInsightCards insights={businessCards} />
+        </section>
+
+        <section className={`${styles.section} ${styles.legalInsightSection}`} id="legal-advisory-disputes">
+          <div className={styles.legalEditorialHeading}>
+            <div>
+              <h2 className={styles.legalEditorialTitle}>Legal Advisory &amp; Dispute Resolution</h2>
+              <p>20 Authoritative Insights</p>
+            </div>
+            <Link href="/insights/legal-advisory-disputes">View all 20 insights<Icon name="arrow" /></Link>
+          </div>
+          <FeaturedInsightCards insights={legalCards} featuredPosition="right" />
+        </section>
+
+        <section className={styles.section} id="priority-insights">
+          <SectionHeading title="Priority Insights" subtitle="Publication-ready headlines spanning regulatory, corporate, legal and business priorities." href="/insights/priority-insights" action="View all 20 insights" />
+          <FeaturedInsightCards insights={priorityCards} />
+        </section>
+
+        <section className={`${styles.section} ${styles.rbiInsightsSection}`} id="banking-rbi-insights">
+          <div className={styles.rbiEditorialHeading}>
+            <div>
+              <span className={styles.rbiEditorialEyebrow}>BANKING, RBI &amp; FINANCIAL SERVICES</span>
+              <h2 className={styles.rbiEditorialTitle}>RBI &amp; NBFC Regulatory Insights</h2>
+            </div>
+            <Link href="/insights/banking-rbi-regulatory">View all 13 insights<Icon name="arrow" /></Link>
+          </div>
+          <FeaturedInsightCards insights={rbiCards} featuredPosition="right" />
         </section>
 
         <section className={styles.section} id="regulatory-intelligence">

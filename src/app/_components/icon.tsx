@@ -14,9 +14,16 @@ export default function Icon({
     building: (
       <path d="M3 21h18M6 21V9h5V3h7v18M9 12v1m0 3v1m5-11v1m0 3v1m0 3v1m0 3v1m4-9h3v11" />
     ),
+    bank: (
+      <>
+        <path d="m3 9 9-6 9 6M4 10h16M5 20h14M7 10v8m5-8v8m5-8v8M3 21h18" />
+      </>
+    ),
     target: <><circle cx="11" cy="13" r="8" /><circle cx="11" cy="13" r="4" /><path d="m11 13 9-9m-3 0h3v3" /></>,
     gem: <><path d="M3 8 7 3h10l4 5-9 13L3 8Z" /><path d="M3 8h18M7 3l3 5 2 13 2-13 3-5" /></>,
     network: <><circle cx="12" cy="4" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="19" r="2" /><path d="m11 6-5 11m7-11 5 11M7 19h10" /></>,
+    checklist: <><path d="m9 6 2 2 4-4M9 12l2 2 4-4M9 18l2 2 4-4" /><path d="M5 6h.01M5 12h.01M5 18h.01M19 6h2M19 12h2M19 18h2" /></>,
+    rupee: <><path d="M6 4h12M6 8h12M6 4c5 0 8 2 8 6s-3 6-8 6l8 6" /><path d="M6 12h8" /></>,
     gear: <><path d="M10 2h4l.6 2.5 2 .8 2.2-1.3 2.8 2.8-1.3 2.2.8 2L23 12v4l-2.5.6-.8 2 1.3 2.2-2.8 2.8-2.2-1.3-2 .8L14 25h-4l-.6-2.5-2-.8-2.2 1.3-2.8-2.8 1.3-2.2-.8-2L.5 16v-4L3 11.4l.8-2-1.3-2.2 2.8-2.8 2.2 1.3 2-.8L10 2Z" transform="translate(2 1) scale(.78)" /><circle cx="12" cy="12" r="3" /></>,
     person: <><circle cx="12" cy="7" r="3" /><path d="M4 21v-3a8 8 0 0 1 16 0v3H4Zm8-4 2 2-2 2-2-2 2-2Z" /></>,
     india: (
@@ -52,6 +59,19 @@ export default function Icon({
     ),
     bulb: (
       <path d="M9 18h6m-6 3h6M8 14a7 7 0 1 1 8 0l-1 2H9l-1-2ZM12 2V0M3 5 1 3m20 2 2-2M2 12H0m22 0h2" />
+    ),
+    leaf: (
+      <>
+        <path d="M20 4c-8 0-14 2-14 9a6 6 0 0 0 6 6c7 0 8-8 8-15Z" />
+        <path d="M4 22c2-6 6-10 12-14" />
+      </>
+    ),
+    more: (
+      <>
+        <circle cx="5" cy="12" r="1" />
+        <circle cx="12" cy="12" r="1" />
+        <circle cx="19" cy="12" r="1" />
+      </>
     ),
     globe: (
       <>

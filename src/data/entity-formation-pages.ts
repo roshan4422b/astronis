@@ -75,6 +75,7 @@ export type EntityFormationPageData = {
   servicesDescription?: string;
   serviceCardsThreeColumns?: boolean;
   benefitsHeading?: string;
+  structureEyebrow?: string;
   requirementsEyebrow?: string;
   structureSections?: {
     eyebrow: string;
@@ -88,6 +89,7 @@ export type EntityFormationPageData = {
   challenges?: string[];
   processEyebrow?: string;
   documentsDescription?: string;
+  resourcesDescription?: string;
   pricingEyebrow?: string;
   pricingHeading?: string;
   pricingDescription?: string;

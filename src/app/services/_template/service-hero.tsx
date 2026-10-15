@@ -43,7 +43,9 @@ const lifecycleIcons: Record<string, string> = {
 };
 
 export default function ServiceHero({ practice, group, title }: { practice: ServicePractice; group?: DetailedServiceGroup; title?: string }) {
-  return <section className={`${styles.hero} ${group ? styles.detailHero : ""}`} style={!group ? { "--service-hero-image": `url("${practice.heroImage}")` } as React.CSSProperties : undefined}>
+  const heroImageUrl = encodeURI(practice.heroImage);
+
+  return <section className={`${styles.hero} ${group ? styles.detailHero : ""}`} style={!group ? { "--service-hero-image": `url("${heroImageUrl}")` } as React.CSSProperties : undefined}>
     {group && <Image src={group.image} alt="" fill preload sizes="100vw" className={styles.heroImage} />}
     <div className="container">
       <Breadcrumbs items={[{title:"Home",href:"/"},{title:"Services",href:"/services"},{title:practice.title,...(group ? {href:practicePath(practice)} : {})},...(group ? [{title:group.title,href:`${practicePath(practice)}#${services.find(service => service.canonicalSlug === practice.slug)?.subServices.find(item => item.slug === group.slug)?.slug || group.slug}`}] : [])]} />

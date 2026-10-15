@@ -1,0 +1,151 @@
+export const corporateAdvisoryInsights = [
+  {
+    slug: "choosing-business-structure-india",
+    title: "Choosing the Right Business Structure in India: Private Company, LLP, OPC or Partnership?",
+    description: "Compare ownership, liability, governance and compliance considerations before choosing a structure for your business.",
+    audience: "Founders, SMEs, foreign investors",
+    image: "/Real Estate & Construction .png",
+  },
+  {
+    slug: "private-limited-company-india-roadmap",
+    title: "Private Limited Company in India: Incorporation, Governance, Tax and Compliance Roadmap",
+    description: "A practical overview of incorporation steps and the recurring governance and compliance responsibilities that follow.",
+    audience: "Start-ups, promoters",
+    image: "/Part-14 .png",
+  },
+  {
+    slug: "corporate-restructuring-india",
+    title: "Corporate Restructuring in India: When Should a Business Reorganise Its Legal Structure?",
+    description: "Understand the business triggers, structural options and planning questions involved in a corporate reorganisation.",
+    audience: "Growing companies/groups",
+    image: "/Part-18 .png",
+  },
+  {
+    slug: "holding-subsidiary-structures-india",
+    title: "Holding-Subsidiary Structures: Building an Efficient Corporate Group in India",
+    description: "Explore how ownership, operations and governance can be organised across a group of Indian entities.",
+    audience: "Corporate groups",
+    image: "/Part-9 .png",
+  },
+  {
+    slug: "shareholding-structure-promoters-investors",
+    title: "Shareholding Structuring: Promoter Control, Investor Rights and Future Fund-Raising",
+    description: "Plan shareholding arrangements that account for decision-making, investor protections and future capital needs.",
+    audience: "Promoters/investors",
+    image: "/Part-6 .png",
+  },
+  {
+    slug: "capital-structuring-instruments-explained",
+    title: "Capital Structuring: Equity, Preference Shares, Debt and Convertible Instruments Explained",
+    description: "Compare common funding instruments and the ownership, control and repayment considerations attached to each.",
+    audience: "Companies/investors",
+    image: "/Part-16 .png",
+  },
+  {
+    slug: "mergers-acquisitions-india-roadmap",
+    title: "Mergers & Acquisitions in India: Legal, Regulatory and Transaction Roadmap",
+    description: "Follow the key legal and regulatory workstreams from early transaction planning through completion.",
+    audience: "Buyers/sellers/investors",
+    image: "/Part-18 .png",
+  },
+  {
+    slug: "buying-company-legal-risks",
+    title: "Buying a Company? 15 Legal and Corporate Risks a Buyer Should Investigate Before Signing",
+    description: "A buyer-focused checklist of corporate records, contracts, liabilities and approvals to examine before signing.",
+    audience: "Acquirers",
+    image: "/Part-14 .png",
+  },
+  {
+    slug: "selling-your-company-successful-exit",
+    title: "Selling Your Company: How Promoters Should Prepare for a Successful Exit",
+    description: "Prepare ownership records, governance, key contracts and internal teams for a more organised sale process.",
+    audience: "Founders/promoters",
+    image: "/Real Estate & Construction .png",
+  },
+  {
+    slug: "legal-corporate-due-diligence-ma",
+    title: "Legal & Corporate Due Diligence in M&A: What Buyers and Investors Should Examine",
+    description: "Review the corporate, contractual and governance areas that commonly shape transaction diligence.",
+    audience: "M&A/PE",
+    image: "/Part-6 .png",
+  },
+  {
+    slug: "share-purchase-business-transfer-slump-sale",
+    title: "Share Purchase vs Business Transfer vs Slump Sale: Choosing the Right Acquisition Structure",
+    description: "Compare transaction structures by the assets, liabilities and business operations intended to transfer.",
+    audience: "Transaction structuring",
+    image: "/Part-9 .png",
+  },
+  {
+    slug: "demerger-amalgamation-slump-sale",
+    title: "Demerger, Amalgamation or Slump Sale? Comparing Corporate Reorganisation Routes",
+    description: "Understand how common reorganisation routes differ and what to assess before selecting a path.",
+    audience: "Corporate groups",
+    image: "/Part-16 .png",
+  },
+  {
+    slug: "private-equity-investment-india-closing",
+    title: "Private Equity Investment in Indian Companies: From Term Sheet to Closing",
+    description: "Trace the principal legal and corporate workstreams between an investment term sheet and closing.",
+    audience: "PE/founders",
+    image: "/Part-18 .png",
+  },
+  {
+    slug: "shareholders-agreements-minority-protection",
+    title: "Shareholders’ Agreements: Protecting Promoters, Investors and Minority Shareholders",
+    description: "Consider governance, transfer, information and exit provisions when negotiating a shareholders’ agreement.",
+    audience: "Companies/investors",
+    image: "/Part-14 .png",
+  },
+  {
+    slug: "share-subscription-agreements-key-clauses",
+    title: "Share Subscription Agreements: Key Clauses Founders and Investors Should Negotiate",
+    description: "Review the key commercial protections and closing mechanics commonly addressed in a subscription agreement.",
+    audience: "Fund-raising",
+    image: "/Part-6 .png",
+  },
+  {
+    slug: "corporate-governance-framework-india",
+    title: "Corporate Governance Framework: Building Effective Boards, Committees and Internal Policies",
+    description: "Set clear roles, reporting practices and internal policies to support accountable corporate decision-making.",
+    audience: "Companies/groups",
+    image: "/Part-9 .png",
+  },
+  {
+    slug: "related-party-transactions-governance-risks",
+    title: "Related Party Transactions: Governance, Approval and Disclosure Risks for Companies",
+    description: "Identify approval, documentation and disclosure questions when a company transacts with related parties.",
+    audience: "Boards/CFO/CS",
+    image: "/Part-16 .png",
+  },
+  {
+    slug: "founder-shareholder-disputes-protection",
+    title: "Founder and Shareholder Disputes: Deadlock, Exit, Dilution and Minority Protection",
+    description: "Explore practical governance and agreement provisions for addressing common shareholder conflict scenarios.",
+    audience: "Promoters/investors",
+    image: "/Part-18 .png",
+  },
+  {
+    slug: "family-business-succession-planning",
+    title: "Succession Planning for Family Businesses: Ownership, Management and Intergenerational Transition",
+    description: "Plan for continuity by aligning ownership, leadership responsibilities and the next generation’s transition.",
+    audience: "Family enterprises",
+    image: "/Real Estate & Construction .png",
+  },
+  {
+    slug: "corporate-exit-planning-india",
+    title: "Corporate Exit Planning: Buyback, Share Sale, Business Sale, Merger, Strike-Off or Liquidation?",
+    description: "Compare common exit routes and the legal, governance and operational questions each may raise.",
+    audience: "Promoters/business owners",
+    image: "/Part-14 .png",
+  },
+] as const;
+
+export function splitCorporateHeadline(title: string) {
+  const colonIndex = title.indexOf(":");
+  if (colonIndex === -1) return { lead: title, continuation: "" };
+  return {
+    lead: title.slice(0, colonIndex + 1),
+    continuation: title.slice(colonIndex + 1).trimStart(),
+  };
+}

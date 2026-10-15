@@ -5,24 +5,52 @@ import { corporateArticles } from "@/content/corporate-articles";
 import { Action } from "./hub-sections";
 import styles from "./hub.module.css";
 
-type Article = (typeof corporateArticles)[number] & { publishedAt?: string };
+type Article = {
+  slug: string;
+  title: string;
+  category: string;
+  image: string;
+  excerpt?: string;
+  sections?: readonly (readonly string[])[];
+  publishedAt?: string;
+  metaLabel?: string;
+  metaDetail?: string;
+};
 
-export default function RelatedInsights({ articles = corporateArticles.slice(0, 3), title = "Insights Related to Our Services" }: { articles?: Article[]; title?: string }) {
+export default function RelatedInsights({
+  articles = corporateArticles.slice(0, 3),
+  title = "Insights Related to Our Services",
+  eyebrow = "PERSPECTIVES FOR DECISION-MAKERS",
+  intro = "Considered perspectives. Practical guidance. A clearer view of your next business decision.",
+  actionHref = "/insights",
+  actionLabel = "All Insights",
+  showAction = true,
+  sectionClassName = "",
+}: {
+  articles?: readonly Article[];
+  title?: string;
+  eyebrow?: string;
+  intro?: string;
+  actionHref?: string;
+  actionLabel?: string;
+  showAction?: boolean;
+  sectionClassName?: string;
+}) {
   return (
-    <section className={`${styles.section} ${styles.insightsSection}`} aria-labelledby="related-insights-title">
+    <section className={`${styles.section} ${styles.insightsSection} ${sectionClassName}`} aria-labelledby="related-insights-title">
       <div className="container">
         <div className={styles.sectionHeading}>
           <div>
-            <span className={styles.eyebrow}>PERSPECTIVES FOR DECISION-MAKERS</span>
+            <span className={styles.eyebrow}>{eyebrow}</span>
             <h2 id="related-insights-title">{title}</h2>
-            <p className={styles.insightsIntro}>Considered perspectives. Practical guidance. A clearer view of your next business decision.</p>
+            <p className={styles.insightsIntro}>{intro}</p>
           </div>
-          <Action href="/insights" secondary>All Insights</Action>
+          {showAction && <Action href={actionHref} secondary>{actionLabel}</Action>}
         </div>
         {articles.length === 0 && <p>Explore our regulatory updates and resources in the <Link href="/insights/legal-updates">Insights centre</Link>. Browse the available updates and guidance to prepare for your next regulatory discussion.</p>}
         <div className={styles.grid}>
           {articles.map((article, index) => {
-            const words = article.sections.flat().join(" ").trim().split(/\s+/).length;
+            const words = (article.sections?.flat().join(" ") || article.title).trim().split(/\s+/).length;
             const minutes = Math.max(1, Math.ceil(words / 200));
             return (
               <article className={styles.insight} key={article.slug}>
@@ -34,11 +62,11 @@ export default function RelatedInsights({ articles = corporateArticles.slice(0, 
                   </div>
                   <div className={styles.insightBody}>
                     <div className={styles.insightMeta}>
-                      <span>ASTRONIS PERSPECTIVES</span>
-                      <span>{minutes} min read</span>
+                      <span>{article.metaLabel || "ASTRONIS PERSPECTIVES"}</span>
+                      <span>{article.metaDetail || (article.sections ? `${minutes} min read` : "Priority insight")}</span>
                     </div>
                     <h3 id={`insight-title-${article.slug}`}>{article.title}</h3>
-                    <p>{article.excerpt}</p>
+                    {article.excerpt && <p>{article.excerpt}</p>}
                     {article.publishedAt && <time dateTime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" })}</time>}
                     <div className={styles.insightFooter}>
                       <span>Read Article <Icon name="arrow" /></span>

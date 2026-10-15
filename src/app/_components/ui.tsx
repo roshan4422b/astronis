@@ -39,14 +39,16 @@ export function Banner({
   text,
   image = "/Part-6 .png",
   eyebrow,
+  variant,
 }: {
   title: string;
   text?: string;
   image?: string;
   eyebrow?: string;
+  variant?: "insights";
 }) {
   return (
-    <section className="page-banner">
+    <section className={`page-banner${variant ? ` page-banner--${variant}` : ""}`}>
       <Image
         src={image}
         alt=""

@@ -1,6 +1,6 @@
 .page{--gst-pale:#f2f7fd}
 .hero{background:#eaf2fa url("/business-financial-advisory.png") center 48%/cover no-repeat}
-.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.91) 32%,rgba(255,255,255,.68) 50%,rgba(255,255,255,.18) 72%,rgba(255,255,255,0) 100%)}
+.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.55) 32%,rgba(255,255,255,.32) 50%,rgba(255,255,255,.12) 72%,rgba(255,255,255,.04) 100%)}
 .content{width:min(1740px,calc(100% - 64px))}
 .page .sectionSpacing{padding:35px 0 20px}
 .categoryGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -45,7 +45,7 @@
 }
 @media(max-width:700px){
   .hero{background-position:64% center}
-  .heroShade{background:linear-gradient(90deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.9) 48%,rgba(255,255,255,.48) 76%,rgba(255,255,255,.15) 100%)}
+  .heroShade{background:linear-gradient(90deg,rgba(255,255,255,.68) 0%,rgba(255,255,255,.46) 48%,rgba(255,255,255,.2) 76%,rgba(255,255,255,.1) 100%)}
   .content{width:calc(100% - 32px)}
   .featuredLatest{grid-template-columns:1fr}
   .featuredArticle{grid-template-columns:1fr;min-height:0}
