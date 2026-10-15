@@ -1,4 +1,9 @@
-export type EntityFormationPageData = {
+﻿export type EntityFormationPageData = {
+  focusDescription?: string;
+  focusTitle?: string;
+  focusEyebrow?: string;
+  serviceHref?: string;
+  serviceTitle?: string;
   slug: string;
   title: string;
   shortTitle: string;
@@ -134,8 +139,8 @@ export const entityFormationPages: EntityFormationPageData[] = [
     introduction: "The discussion should look beyond the immediate setup. Plans to introduce investors, share ownership or change the management model can affect the longer-term suitability of the structure. Eligibility and current procedural requirements should be reviewed for the particular applicant before proceeding.",
     image: "/business-financial-hero.png",
     imageAlt: "A founder-led business planning its next stage",
-    basicPrice: "₹7,999",
-    comprehensivePrice: "₹14,999",
+    basicPrice: "Ã¢â€šÂ¹7,999",
+    comprehensivePrice: "Ã¢â€šÂ¹14,999",
     benefits: [
       ["person", "Single-owner structure", "Retain a single-member ownership model while formalising the business as a company."],
       ["building", "Separate legal identity", "Consider the company's legal identity separately from the founder's personal affairs."],
@@ -193,8 +198,8 @@ export const entityFormationPages: EntityFormationPageData[] = [
     introduction: "A coherent formation brief explains how programmes will be conducted, who will oversee decisions and how records will be maintained. Incorporation should be considered separately from any tax-related recognition, funding permission or programme-specific registration that may also need review.",
     image: "/images/services/esg-and-sustainability-advisory.webp",
     imageAlt: "Purpose-led sustainability and community initiatives",
-    basicPrice: "₹14,999",
-    comprehensivePrice: "₹29,999",
+    basicPrice: "Ã¢â€šÂ¹14,999",
+    comprehensivePrice: "Ã¢â€šÂ¹29,999",
     benefits: [
       ["target", "Purpose-led formation", "Define the organisation's intended purpose and activities before preparing formation documents."],
       ["building", "Institutional governance", "Set up governance arrangements around oversight, decision-making and record keeping."],
@@ -257,8 +262,8 @@ export const entityFormationPages: EntityFormationPageData[] = [
     introduction: "The partnership arrangements should also anticipate change: admission of a new partner, a change in responsibilities, a funding requirement or a partner wishing to leave. These discussions inform the formation brief and the LLP agreement, helping the structure support the intended working relationship.",
     image: "/images/services/business-advisory-consulting.webp",
     imageAlt: "Business partners discussing an LLP structure and operating agreement",
-    basicPrice: "₹7,999",
-    comprehensivePrice: "₹12,999",
+    basicPrice: "Ã¢â€šÂ¹7,999",
+    comprehensivePrice: "Ã¢â€šÂ¹12,999",
     benefits: [
       ["people", "Partner-led organisation", "Set roles and contributions around the partners' commercial understanding."],
       ["document", "Documented working arrangements", "Use the LLP agreement to record responsibilities, decision-making and sharing arrangements."],
@@ -323,8 +328,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     introduction: "A partnership firm starts with a relationship between people who intend to conduct a business together. Clearly recording their agreement is valuable even when they know one another well: assumptions about authority, contributions and financial arrangements can otherwise remain unresolved.",
     image: "/Part-14 .png",
     imageAlt: "Business partners reviewing and signing a partnership agreement",
-    basicPrice: "₹4,999/-",
-    comprehensivePrice: "₹9,999/-",
+    basicPrice: "Ã¢â€šÂ¹4,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹9,999/-",
     introHeading: "Build a partnership on shared understanding",
     structureHeading: "Business Structure & Taxation Aspects",
     comparisonHeading: "Which Structure is Right for You?",
@@ -385,7 +390,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Name Availability", "Review and reserve a proposed name, subject to availability."],
       ["Drafting of Partnership Deed", "Record partner contributions, authority and business terms."],
       ["Document Preparation", "Prepare the supporting documents for registration."],
-      ["PAN, TAN & GST Registration", "Coordinate relevant registrations (3–5 working days)."],
+      ["PAN, TAN & GST Registration", "Coordinate relevant registrations (3Ã¢â‚¬â€œ5 working days)."],
       ["Bank Account Assistance", "Support the firm's account-opening process."],
       ["Additional Licences", "Coordinate activity-specific licences, if applicable."],
     ],
@@ -438,8 +443,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     introduction: "A proprietorship setup enquiry is centred on an individual and the activity they intend to carry on. The practical work often involves identifying the business's operating requirements, record-keeping needs and relevant registrations rather than preparing a corporate ownership structure.",
     image: "/business-financial-hero.png",
     imageAlt: "An individual entrepreneur managing business paperwork",
-    basicPrice: "₹4,999/-",
-    comprehensivePrice: "₹7,999/-",
+    basicPrice: "Ã¢â€šÂ¹4,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹7,999/-",
     introHeading: "A practical start for an individual business owner",
     structureHeading: "Business Structure & Taxation Aspects",
     comparisonHeading: "Which Structure is Right for You?",
@@ -501,7 +506,7 @@ const businessStructurePages: EntityFormationPageData[] = [
     ],
     process: [
       ["Consultation & Business Planning", "Understand the business activity and the owner's setup needs."],
-      ["Name Finalisation", "Finalise the business name (1–2 working days)."],
+      ["Name Finalisation", "Finalise the business name (1Ã¢â‚¬â€œ2 working days)."],
       ["Document Preparation", "Prepare the documents required for relevant registrations."],
       ["Applicable Registrations", "Coordinate GST, Udyam and licences as applicable."],
       ["Bank Account Assistance", "Support business account opening."],
@@ -555,8 +560,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     introduction: "A wholly owned subsidiary can form part of a group's plan to establish a dedicated operating presence or separate a particular business activity. The formation project should reflect the parent's objectives while setting out how the new entity will be funded, managed and connected to the wider group.",
     image: "/images/services/cross-border-and-international-business-support.webp",
     imageAlt: "International team planning a wholly owned subsidiary in India",
-    basicPrice: "₹24,999/-",
-    comprehensivePrice: "₹44,999/-",
+    basicPrice: "Ã¢â€šÂ¹24,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹44,999/-",
     introHeading: "Expand your global business in India",
     structureHeading: "A wholly owned subsidiary for Indian operations",
     comparisonHeading: "Which Structure is Right for Your Business?",
@@ -616,9 +621,9 @@ const businessStructurePages: EntityFormationPageData[] = [
     ],
     process: [
       ["Consultation & Strategy Planning", "Define objectives, ownership and the India business plan."],
-      ["Name Approval", "Review and reserve an available company name (1–2 working days)."],
+      ["Name Approval", "Review and reserve an available company name (1Ã¢â‚¬â€œ2 working days)."],
       ["Document Preparation", "Prepare incorporation documents and parent-company materials."],
-      ["FDI & ROC Filings", "Coordinate applicable foreign investment and company filings (5–7 working days)."],
+      ["FDI & ROC Filings", "Coordinate applicable foreign investment and company filings (5Ã¢â‚¬â€œ7 working days)."],
       ["Certificate of Incorporation", "Receive the certificate after approval."],
       ["PAN, TAN & Bank Account Opening", "Coordinate tax identifiers and practical banking steps."],
       ["Post-Incorporation Compliances", "Set up governance, reporting and applicable ongoing obligations."],
@@ -639,7 +644,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["people", "Minimum Directors", "2 directors (at least 1 resident of India)"],
       ["percent", "Share Capital", "No minimum (as per business requirement)"],
       ["building", "Registered Office", "In India (residential or commercial address with valid proof)"],
-      ["clock", "Incorporation Timeline", "Generally 7–15 working days (subject to document readiness and RBI/sectoral approvals)"],
+      ["clock", "Incorporation Timeline", "Generally 7Ã¢â‚¬â€œ15 working days (subject to document readiness and RBI/sectoral approvals)"],
     ],
     faqs: [
       ["What is a Wholly Owned Subsidiary?", "A company incorporated in India with 100% ownership by a foreign or domestic parent company."],
@@ -653,12 +658,12 @@ const businessStructurePages: EntityFormationPageData[] = [
     title: "Foreign Company Setup in India",
     shortTitle: "Foreign Company Setup",
     heroStatement: "Global Expertise. Local Execution.",
-    description: "We assist international businesses in establishing and expanding their presence in India through the most suitable structure — Branch Office, Project Office, Liaison Office, Wholly Owned Subsidiary or Joint Venture — with end-to-end regulatory, legal and tax support.",
+    description: "We assist international businesses in establishing and expanding their presence in India through the most suitable structure Ã¢â‚¬â€ Branch Office, Project Office, Liaison Office, Wholly Owned Subsidiary or Joint Venture Ã¢â‚¬â€ with end-to-end regulatory, legal and tax support.",
     introduction: "Foreign company setup begins with the intended India presence: what the business wants to do, who its customers will be and how it expects to deploy people, capital and resources. These facts help frame the comparison between possible establishment structures.",
     image: "/images/services/hero.webp",
     imageAlt: "International executives planning an India market entry",
-    basicPrice: "₹49,999/-",
-    comprehensivePrice: "₹99,999/-",
+    basicPrice: "Ã¢â€šÂ¹49,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹99,999/-",
     introHeading: "India entry strategy with local execution",
     structureHeading: "Global Business Setup in India",
     comparisonHeading: "Which Structure is Right for Your Foreign Business?",
@@ -723,7 +728,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Initial Consultation & Structure Selection", "Assess India objectives and identify a suitable establishment route."],
       ["Documentation & Application Preparation", "Prepare overseas company and application documents."],
       ["RBI / Government Approvals (if required)", "Coordinate approvals and regulatory submissions."],
-      ["Incorporation / Registration", "Complete setup under the selected structure (1–6 weeks)."],
+      ["Incorporation / Registration", "Complete setup under the selected structure (1Ã¢â‚¬â€œ6 weeks)."],
       ["Tax Registrations (PAN, TAN, GST etc.)", "Coordinate applicable tax registrations."],
       ["Bank Account Opening", "Prepare banking requirements and support account opening."],
       ["Commencement of Business Operations", "Coordinate readiness to commence the proposed activities."],
@@ -789,8 +794,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     imageAlt: "India Gate representing a foreign company's business presence in India",
     referenceNavigation: true,
     showIntro: false,
-    basicPrice: "₹39,999/-",
-    comprehensivePrice: "₹59,999/-",
+    basicPrice: "Ã¢â€šÂ¹39,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹59,999/-",
     introHeading: "Establish your global business in India",
     structureHeading: "Operate in India under your global brand",
     comparisonHeading: "Which Structure is Right for Your Foreign Business?",
@@ -849,9 +854,9 @@ const businessStructurePages: EntityFormationPageData[] = [
     ],
     process: [
       ["Initial Consultation & Strategy", "Review the India business plan, proposed activities and suitable establishment route."],
-      ["RBI Approval", "Prepare and submit the application; approval usually takes 2–4 weeks."],
+      ["RBI Approval", "Prepare and submit the application; approval usually takes 2Ã¢â‚¬â€œ4 weeks."],
       ["Document Preparation", "Compile overseas company, board, representative and office documents."],
-      ["Filing with ROC", "Complete the applicable ROC registration and filings, generally in 1–2 weeks."],
+      ["Filing with ROC", "Complete the applicable ROC registration and filings, generally in 1Ã¢â‚¬â€œ2 weeks."],
       ["PAN, TAN & Bank Account Opening", "Coordinate tax identifiers and bank account documentation."],
       ["Statutory Registrations", "Coordinate GST, ESIC, EPFO and other applicable registrations."],
       ["Commencement of Operations", "Confirm readiness to commence the activities permitted for the Branch Office."],
@@ -873,7 +878,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["people", "Authorised Representative", "Required (Indian resident)"],
       ["pin", "Registered Office", "In India (physical address with valid proof)"],
       ["shield", "RBI Approval", "Mandatory before ROC filing"],
-      ["clock", "Incorporation Timeline", "Usually 4–8 weeks (subject to RBI approval and document readiness)"],
+      ["clock", "Incorporation Timeline", "Usually 4Ã¢â‚¬â€œ8 weeks (subject to RBI approval and document readiness)"],
     ],
     faqs: [
       ["What is a Branch Office of a foreign company?", "It is an approved Indian office of a foreign company that operates as an extension of that overseas entity, subject to permitted activities and applicable requirements."],
@@ -889,7 +894,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Excellent advisory support on regulatory, tax and operational matters. Their ongoing compliance support has been invaluable.", "Client", "Professional Services", "UK", 5],
     ],
     insights: [
-      ["Setting Up a Branch Office in India – Key Considerations", "12 Sep 2025", "Foreign Investment"],
+      ["Setting Up a Branch Office in India Ã¢â‚¬â€œ Key Considerations", "12 Sep 2025", "Foreign Investment"],
       ["RBI Guidelines for Foreign Companies in India", "05 Sep 2025", "RBI & Regulatory"],
       ["Taxation and Compliance for Branch Offices", "28 Aug 2025", "Tax & Compliance"],
     ],
@@ -912,8 +917,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     imageAlt: "Infrastructure and construction projects in India",
     referenceNavigation: true,
     showIntro: false,
-    basicPrice: "₹44,999/-",
-    comprehensivePrice: "₹79,999/-",
+    basicPrice: "Ã¢â€šÂ¹44,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹79,999/-",
     introHeading: "A focused presence for defined India projects",
     structureHeading: "Execute specific projects in India",
     comparisonHeading: "Which Structure is Right for Your Foreign Business?",
@@ -1001,7 +1006,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["people", "No Minimum Members", "As it is not a separate legal entity"],
       ["shield", "RBI Approval", "Mandatory before ROC filing"],
       ["document", "Project Specific", "Valid for the tenure of the project"],
-      ["clock", "Incorporation Timeline", "Typically 8–12 weeks (subject to RBI approval and document readiness)"],
+      ["clock", "Incorporation Timeline", "Typically 8Ã¢â‚¬â€œ12 weeks (subject to RBI approval and document readiness)"],
     ],
     faqs: [
       ["What is a Project Office of a foreign company?", "It is an Indian office established by a foreign company to execute a specific project, subject to applicable approvals and requirements."],
@@ -1017,9 +1022,9 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Strong understanding of regulatory and tax aspects. Highly recommended for foreign companies undertaking large infrastructure projects in India.", "Client", "Power Sector", "USA", 5],
     ],
     insights: [
-      ["Setting Up a Project Office in India – Key Considerations", "15 Sep 2025", "Project Setup"],
+      ["Setting Up a Project Office in India Ã¢â‚¬â€œ Key Considerations", "15 Sep 2025", "Project Setup"],
       ["RBI Guidelines for Foreign Companies in India", "05 Sep 2025", "RBI & Regulatory"],
-      ["Taxation of Project Office – Practical Insights", "28 Aug 2025", "Tax & Compliance"],
+      ["Taxation of Project Office Ã¢â‚¬â€œ Practical Insights", "28 Aug 2025", "Tax & Compliance"],
     ],
     resources: [
       ["CHECKLIST", "Project Office Registration (PDF)", "file"],
@@ -1040,8 +1045,8 @@ const businessStructurePages: EntityFormationPageData[] = [
     imageAlt: "Corporate professionals consulting on an Indian market entry",
     referenceNavigation: true,
     showIntro: false,
-    basicPrice: "₹34,999/-",
-    comprehensivePrice: "₹59,999/-",
+    basicPrice: "Ã¢â€šÂ¹34,999/-",
+    comprehensivePrice: "Ã¢â€šÂ¹59,999/-",
     introHeading: "A considered first step into the Indian market",
     structureHeading: "Represent your business and understand the market",
     comparisonHeading: "Which Structure is Right for Your Foreign Business?",
@@ -1105,9 +1110,9 @@ const businessStructurePages: EntityFormationPageData[] = [
     process: [
       ["Initial Consultation & Strategy", "Review India market-entry objectives and permitted representative activities."],
       ["Preparation of Application & Documents", "Compile company, financial, representative and office documentation."],
-      ["Filing with RBI", "Submit the application for review; filing and processing commonly takes 2–4 weeks."],
-      ["RBI Review & Clarifications", "Respond to regulatory queries; review may take a further 2–6 weeks."],
-      ["Approval & Establishment", "Complete the approval-linked establishment steps, typically in 1–2 weeks."],
+      ["Filing with RBI", "Submit the application for review; filing and processing commonly takes 2Ã¢â‚¬â€œ4 weeks."],
+      ["RBI Review & Clarifications", "Respond to regulatory queries; review may take a further 2Ã¢â‚¬â€œ6 weeks."],
+      ["Approval & Establishment", "Complete the approval-linked establishment steps, typically in 1Ã¢â‚¬â€œ2 weeks."],
       ["Bank Account Opening", "Coordinate banking documentation and account opening."],
       ["Commencement of Liaison Activities", "Begin only the representative activities permitted by the approval."],
     ],
@@ -1129,7 +1134,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["people", "No Minimum Members", "As it is not a separate legal entity"],
       ["pin", "Registered Office", "In India (physical address with valid proof)"],
       ["shield", "RBI Approval", "Mandatory prior to setup"],
-      ["clock", "Incorporation Timeline", "Typically 6–12 weeks (subject to RBI approval and document readiness)"],
+      ["clock", "Incorporation Timeline", "Typically 6Ã¢â‚¬â€œ12 weeks (subject to RBI approval and document readiness)"],
     ],
     faqs: [
       ["What is a Liaison Office of a foreign company?", "It is an approved representative office that can undertake permitted liaison and market-research activities in India."],
@@ -1160,3 +1165,5 @@ const businessStructurePages: EntityFormationPageData[] = [
 ];
 
 export const allEntityFormationPages = [...entityFormationPages, ...businessStructurePages];
+
+
