@@ -84,7 +84,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""}`} id="overview">
         <Image
           src={data.image}
           alt={data.imageAlt}

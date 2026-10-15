@@ -159,10 +159,10 @@ export default function PrivateLimitedCompanyPage() {
 
   return (
     <div className={styles.page} data-text-size="plus-two">
-      <section className={styles.hero} id="overview">
+      <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
         <Image
-          src="/corporate-regulatory-hero.png"
-          alt="Corporate professionals discussing a business plan"
+          src="/images/services/corporate-commercial-heroes/private-limited-company.png"
+          alt="Corporate services and compliance advisory"
           fill
           priority
           sizes="100vw"

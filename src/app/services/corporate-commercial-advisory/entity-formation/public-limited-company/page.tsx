@@ -35,8 +35,8 @@ export default function PublicLimitedCompanyPage() {
   const review = testimonials.find((item) => item.status === "approved" && item.publicationConsent && item.service === "Corporate & Commercial Advisory");
   const articles = corporateArticles.slice(0, 3);
   return <div className={styles.page}>
-    <section className={styles.hero} id="overview">
-      <Image src="/corporate-regulatory-hero.png" alt="Corporate professionals reviewing a business strategy" fill priority sizes="(max-width: 850px) 100vw, 50vw" className={styles.heroImage} />
+    <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
+      <Image src="/images/services/corporate-commercial-heroes/public-limited-company.png" alt="Corporate incorporation and company compliance services" fill priority sizes="(max-width: 850px) 100vw, 50vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/corporate-commercial-advisory">Corporate &amp; Commercial</Link><span>/</span><Link href="/services/corporate-commercial-advisory#entity-formation-business-setup">Entity Formation &amp; Business Setup</Link><span>/</span><span aria-current="page">Public Limited Company</span></nav>
         <div className={styles.heroCopy}><span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span><h1>Public Limited Company</h1><h2>Build for Scale. Access Capital. Grow Beyond Borders.</h2><p>Incorporate with end-to-end legal, regulatory and compliance support—building a considered foundation for a broader shareholder base, future fundraising and sustainable growth.</p><div className={styles.actions}><Link className={styles.primary} href="/professionals/enquiry">Get Started <Icon name="arrow" /></Link><Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
