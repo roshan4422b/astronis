@@ -1,7 +1,7 @@
-.heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.82) 31%,rgba(255,255,255,.5) 48%,rgba(255,255,255,.1) 70%,rgba(7,29,73,.08) 100%)}
+.heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.55) 31%,rgba(255,255,255,.32) 48%,rgba(255,255,255,.12) 70%,rgba(7,29,73,.08) 100%)}
 .categoryGrid{align-items:start}
 .categoryGrid :global([class*=categoryCard]){min-height:0;padding-bottom:12px}
-.categoryGrid :global([class*=categoryImage]){height:80px;flex:none}
+.categoryGrid :global([class*=categoryImage]){height:130px;flex:none}
 .categoryGrid :global([class*=categoryIcon]){flex:none;margin:12px 0 10px}
 .categoryGrid :global([class*=categoryCard])>strong{padding:0 8px;font-size: max(var(--font-size-min), 14px);line-height:1.2}
 .monthSection{padding-top:8px}
@@ -40,7 +40,7 @@
   .calendarTable{min-width:0}
 }
 @media(max-width:700px){
-  .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.82) 48%,rgba(255,255,255,.55) 76%,rgba(255,255,255,.25) 100%)}
+  .heroShade.heroShade{background:linear-gradient(90deg,rgba(255,255,255,.68) 0%,rgba(255,255,255,.46) 48%,rgba(255,255,255,.2) 76%,rgba(255,255,255,.12) 100%)}
   .monthToolbar{justify-content:flex-start}
   .monthToolbar button,.monthToolbar a{min-height:36px;font-size: max(var(--font-size-min), 11px)}
   .calendarTable{min-width:490px}

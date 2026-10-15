@@ -16,12 +16,6 @@ import { homeMedia } from "@/content/home-media";
 import { testimonials } from "@/content/testimonials";
 import { globalPresenceInsights } from "@/app/global-presence/ideas-across-borders/ideas-directory";
 import { professionalInsights } from "@/app/professionals/insights-by-professional/page-content";
-import RegulatoryInsightRows from "./regulatory-insight-rows";
-import BusinessInsightCards from "./business-insight-cards";
-import LegalInsightCards from "./legal-insight-cards";
-import RelatedInsights from "../services/related-insights";
-import RbiNbfcInsightCards from "./rbi-nbfc-insight-cards";
-import serviceHubStyles from "../services/hub.module.css";
 import gstStyles from "../insights/gst-updates.module.css";
 import styles from "./insights-events.module.css";
 
@@ -48,6 +42,51 @@ const globalImages: Record<string, string> = {
   eventsImage: "/Part-14 .png",
   publicationsImage: "/Part-6 .png",
 };
+
+const sectionImages = {
+  corporate: [
+    "/Real Estate & Construction .png",
+    "/Part-14 .png",
+    "/Part-18 .png",
+    "/Part-9 .png",
+    "/Part-6 .png",
+  ],
+  regulatory: [
+    "/Banking & Financial Services .png",
+    "/international-network-hero.png",
+    "/international-regions.png",
+    "/Part-10 .png",
+    "/Part-11 .png",
+  ],
+  business: [
+    "/Part-12 .png",
+    "/Part-13 .png",
+    "/Part-15 .png",
+    "/Part-17 .png",
+    "/Part-20 .png",
+  ],
+  legal: [
+    "/Banking & Financial Services1 .png",
+    "/Part-4 .png",
+    "/Part-5 .png",
+    "/Part-7 .png",
+    "/Part-8 .png",
+  ],
+  priority: [
+    "/images/services/regulatory-and-compliance.webp",
+    "/images/services/corporate-and-commercial-advisory.webp",
+    "/images/services/arbitration-and-conciliation.webp",
+    "/images/services/business-advisory-and-consulting.webp",
+    "/images/services/gst-and-indirect-tax-regulatory-support.webp",
+  ],
+  rbi: [
+    "/images/services/banking-nbfc-and-financial-services-advisory.webp",
+    "/images/services/gst-and-indirect-tax-regulatory-support.webp",
+    "/Banking & Financial Services .png",
+    "/Part-10 .png",
+    "/Part-11 .png",
+  ],
+} as const;
 
 const hubInsights: HubInsight[] = [
   ...corporateArticles.map((article) => ({
@@ -283,6 +322,53 @@ function InsightCard({
   );
 }
 
+function createSectionInsights<T extends { slug: string; title: string }>(
+  items: readonly T[],
+  category: string,
+  source: string,
+  images: readonly string[],
+  descriptionFor: (item: T) => string,
+  searchTermsFor: (item: T) => string,
+): HubInsight[] {
+  return items.slice(0, 5).map((item, index) => ({
+    title: item.title,
+    category,
+    description: descriptionFor(item),
+    image: images[index],
+    href: `/insights/${item.slug}`,
+    source,
+    searchTerms: searchTermsFor(item),
+  }));
+}
+
+function FeaturedInsightCards({
+  insights,
+  featuredPosition = "left",
+}: {
+  insights: readonly HubInsight[];
+  featuredPosition?: "left" | "right";
+}) {
+  const cards = insights.slice(0, 5);
+  const supportingCards = cards.slice(1);
+  const supportingGrid = (
+    <div className={styles.supportingGrid}>
+      {supportingCards.map((insight) => (
+        <InsightCard key={`${insight.title}-${insight.source}`} insight={insight} />
+      ))}
+    </div>
+  );
+
+  return cards.length ? (
+    <div className={`${styles.featuredGrid} ${featuredPosition === "right" ? styles.featuredRight : ""}`}>
+      {featuredPosition === "right" && supportingGrid}
+      <InsightCard insight={cards[0]} featured />
+      {featuredPosition === "left" && supportingGrid}
+    </div>
+  ) : (
+    <div className={styles.emptyState} role="status">No insights found.</div>
+  );
+}
+
 export default function InsightsEvents() {
   const [query, setQuery] = useState("");
   const [regulator, setRegulator] = useState<(typeof regulatoryTabs)[number]>("All");
@@ -306,6 +392,50 @@ export default function InsightsEvents() {
   const featuredInsights = normalizedQuery
     ? searchResults.slice(0, 5)
     : deduplicatedInsights.filter((insight) => insight.category === "Corporate Advisory").slice(0, 5);
+  const corporateCards = featuredInsights.map((insight, index) => ({
+    ...insight,
+    image: sectionImages.corporate[index],
+  }));
+  const regulatoryCards = createSectionInsights(
+    regulatoryInsightArticles,
+    "Regulatory Intelligence",
+    "Regulatory Intelligence",
+    sectionImages.regulatory,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const businessCards = createSectionInsights(
+    businessAdvisoryInsights,
+    "Business Advisory",
+    "Business Advisory",
+    sectionImages.business,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const legalCards = createSectionInsights(
+    legalAdvisoryInsights,
+    "Legal Advisory",
+    "Legal Advisory & Dispute Resolution",
+    sectionImages.legal,
+    (insight) => insight.focus,
+    (insight) => insight.focus,
+  );
+  const priorityCards = createSectionInsights(
+    priorityInsights,
+    "Priority Insight",
+    "Priority Insights",
+    sectionImages.priority,
+    (insight) => `${insight.category} priority insight`,
+    (insight) => insight.category,
+  );
+  const rbiCards = createSectionInsights(
+    rbiNbfcInsights,
+    "Banking, RBI & Financial Services",
+    "Banking, RBI & Financial Services",
+    sectionImages.rbi,
+    () => "Banking, RBI & Financial Services insight",
+    () => "banking RBI NBFC FinTech digital lending",
+  );
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -367,16 +497,7 @@ export default function InsightsEvents() {
 
         <section className={styles.section} id="featured-insights">
           <SectionHeading title={normalizedQuery ? "Search Results" : "Corporate Advisory"} href="/insights/corporate-advisory" action="View All 20 Articles" />
-          {featuredInsights.length ? (
-            <div className={styles.featuredGrid}>
-              <InsightCard insight={featuredInsights[0]} featured />
-              <div className={styles.supportingGrid}>
-                {featuredInsights.slice(1, 5).map((insight) => <InsightCard key={`${insight.title}-${insight.source}`} insight={insight} />)}
-              </div>
-            </div>
-          ) : (
-            <div className={styles.emptyState} role="status">No insights found.</div>
-          )}
+          <FeaturedInsightCards insights={corporateCards} />
         </section>
 
         <section className={`${styles.section} ${styles.regulatorySpotlight}`} id="regulatory-editorial">
@@ -387,7 +508,7 @@ export default function InsightsEvents() {
             </div>
             <Link href="/insights/regulatory-intelligence">View all 20 insights<Icon name="arrow" /></Link>
           </div>
-          <RegulatoryInsightRows insights={regulatoryInsightArticles.slice(0, 5)} />
+          <FeaturedInsightCards insights={regulatoryCards} featuredPosition="right" />
         </section>
 
         <section className={`${styles.section} ${styles.businessAdvisorySection}`} id="business-advisory">
@@ -398,7 +519,7 @@ export default function InsightsEvents() {
             </div>
             <Link href="/insights/business-advisory">View all 20 insights<Icon name="arrow" /></Link>
           </div>
-          <BusinessInsightCards insights={businessAdvisoryInsights.slice(0, 6)} />
+          <FeaturedInsightCards insights={businessCards} />
         </section>
 
         <section className={`${styles.section} ${styles.legalInsightSection}`} id="legal-advisory-disputes">
@@ -409,20 +530,13 @@ export default function InsightsEvents() {
             </div>
             <Link href="/insights/legal-advisory-disputes">View all 20 insights<Icon name="arrow" /></Link>
           </div>
-          <LegalInsightCards insights={legalAdvisoryInsights.slice(0, 6)} />
+          <FeaturedInsightCards insights={legalCards} featuredPosition="right" />
         </section>
 
-        <div className={serviceHubStyles.page} id="priority-insights">
-          <RelatedInsights
-            articles={priorityInsights.slice(0, 6)}
-            sectionClassName={styles.priorityRelatedSection}
-            title="Priority Insights"
-            eyebrow="ASTRONIS - 20 PRIORITY INSIGHTS"
-            intro="Publication-ready headlines spanning regulatory, corporate, legal and business priorities."
-            actionHref="/insights/priority-insights"
-            actionLabel="View all 20 insights"
-          />
-        </div>
+        <section className={styles.section} id="priority-insights">
+          <SectionHeading title="Priority Insights" subtitle="Publication-ready headlines spanning regulatory, corporate, legal and business priorities." href="/insights/priority-insights" action="View all 20 insights" />
+          <FeaturedInsightCards insights={priorityCards} />
+        </section>
 
         <section className={`${styles.section} ${styles.rbiInsightsSection}`} id="banking-rbi-insights">
           <div className={styles.rbiEditorialHeading}>
@@ -432,7 +546,7 @@ export default function InsightsEvents() {
             </div>
             <Link href="/insights/banking-rbi-regulatory">View all 13 insights<Icon name="arrow" /></Link>
           </div>
-          <RbiNbfcInsightCards insights={rbiNbfcInsights.slice(0, 6)} />
+          <FeaturedInsightCards insights={rbiCards} featuredPosition="right" />
         </section>
 
         <section className={styles.section} id="regulatory-intelligence">
