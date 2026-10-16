@@ -38,7 +38,7 @@ function Title({ label, children, id }: { label: string; children: React.ReactNo
 }
 
 export default function OurStory() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-our-story-scope`}>
     <section className={styles.hero} aria-labelledby="story-title">
       <div className={styles.heroPhoto}><Image src="/images/our-story/mountain-journey.jpg" alt="A hiker looking out across an alpine mountain range" fill preload sizes="(max-width: 700px) 100vw, 65vw" /></div>
       <div className={`container ${styles.heroInner}`}>
@@ -55,7 +55,7 @@ export default function OurStory() {
 
     <section className={styles.journey} aria-labelledby="milestones-title"><div className="container"><div className={styles.sectionHeading}><div><Title label="OUR JOURNEY" id="milestones-title">Key Milestones<span className={styles.titleDot}>.</span></Title></div><p>Each chapter builds on the last.<br />An evolving journey. A stronger tomorrow.</p></div><ol className={styles.timeline}>{milestones.map(([year, title, text], i) => <li key={year}>
       <span className={styles.timelineDot} aria-hidden="true" />
-      <div className={styles.milestoneTop}><span className={styles.milestoneIcon}><Icon name={["scale", "building", "shield", "people", "globe", "chart", "arrow"][i]} /></span><span className={styles.chapter}>{i === milestones.length - 1 ? "THE NEXT CHAPTER" : `CHAPTER ${String(i + 1).padStart(2, "0")}`}</span></div>
+      <div className={styles.milestoneTop}><span className={styles.milestoneIcon}><Icon name={["scale", "building", "shield", "people", "globe", "chart", "arrow"][i]} /></span></div>
       <div className={styles.milestoneContent}><span className={styles.year}>{year}</span><div><h3>{title}</h3><p>{text}</p></div></div>
     </li>)}</ol><div className={styles.journeyFoot}><span>Rooted in purpose. Always moving forward.</span><span className={styles.journeyLine} aria-hidden="true" /><Icon name="arrow" /></div></div></section>
 

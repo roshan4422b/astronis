@@ -43,7 +43,7 @@ function Action({ href, children, outline = false }: { href: string; children: R
 }
 
 export default function CoreValues() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-core-values-scope`}>
     <section className={styles.hero} aria-labelledby="core-values-title">
       <Image src="/Part-10 .png" alt="A contemporary office overlooking the city" fill preload sizes="100vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>
@@ -58,7 +58,7 @@ export default function CoreValues() {
       <div className={styles.beliefImage}><Image src="/Part-14 .png" alt="Legal reference books and research materials in a professional office" fill sizes="(max-width: 700px) 100vw, 40vw" /><div><ValueIcon name="scale" /><span>Ethics. Integrity.<br />Trust. Excellence.</span></div></div>
     </section>
 
-    <section className={styles.values} aria-labelledby="values-heading"><div className="container"><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>OUR CORE VALUES</span><h2 id="values-heading">Principles That Define Us</h2></div><p>Eight commitments.<br />One enduring standard.</p></div><div className={styles.valueGrid}>{values.map(([icon, title, tagline, text], index) => <article className={styles.valueCard} key={title}><div className={styles.cardTop}><span className={styles.iconBadge}><ValueIcon name={icon} /></span><span className={styles.cardNumber} aria-hidden="true">0{index + 1}</span></div><h3>{title}</h3><p className={styles.tagline}>{tagline}</p><p className={styles.valueDescription}>{text}</p><span className={styles.cardLine} aria-hidden="true" /></article>)}</div></div></section>
+    <section className={styles.values} aria-labelledby="values-heading"><div className="container"><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>OUR CORE VALUES</span><h2 id="values-heading">Principles That Define Us</h2></div><p>Eight commitments.<br />One enduring standard.</p></div><div className={styles.valueGrid}>{values.map(([icon, title, tagline, text]) => <article className={styles.valueCard} key={title}><div className={styles.cardTop}><span className={styles.iconBadge}><ValueIcon name={icon} /></span></div><h3>{title}</h3><p className={styles.tagline}>{tagline}</p><p className={styles.valueDescription}>{text}</p><span className={styles.cardLine} aria-hidden="true" /></article>)}</div></div></section>
 
     <section className={styles.professional} aria-labelledby="professional-title"><div className={`container ${styles.professionalGrid}`}><div className={styles.professionalCopy}><span className={styles.eyebrow}>OUR PROFESSIONAL PRINCIPLES</span><h2 id="professional-title">A Responsible<br />Approach to Advisory</h2><p>We combine legal expertise, regulatory insight and commercial understanding with a strong ethical foundation, ensuring practical, responsible and sustainable solutions.</p><Action href="/about/our-methodology">Our Approach</Action></div><div className={styles.professionalImage}><Image src="/Part-10 .png" alt="Professionals in discussion beside windows overlooking a city" fill sizes="(max-width: 700px) 100vw, 35vw" /></div><ul className={styles.principles}>{principles.map(([icon, title, text]) => <li key={title}><span className={styles.principleIcon}><ValueIcon name={icon} /></span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ul></div></section>
 

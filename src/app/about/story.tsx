@@ -2,7 +2,7 @@ import Image from "@/app/_components/asset-image";
 import { TextLink } from "../_components/ui";
 export default function Story() {
   return (
-    <section className="section">
+    <section className="section about-story-section">
       <div className="container split-section">
         <div>
           <span className="eyebrow">OUR STORY · SINCE 2015</span>

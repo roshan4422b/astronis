@@ -4499,3 +4499,64 @@ textarea::placeholder {
 #main-content .home-page .testimonial-invite :is(h3, p) {
   color: #000;
 }
+
+#main-content .about-page-scope :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #000 !important;
+}
+#main-content .about-page-scope p {
+  font-size: 14px !important;
+}
+#main-content .about-page-scope :is([class*="hero"], [class*="cta"], [class*="tomorrow"], [class*="numbers"], [class*="perspectives"], [class*="cultureCopy"], [class*="hubCore"], [class*="advantageIntro"], [class*="networkVisual"], [class*="valuesVisual"], [class*="compass"], [class*="strategyCopy"], [class*="strategyImage"], [class*="steps"] li:last-child, [class*="impactCopy"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-home-scope :is([class*="numbers"], [class*="perspectives"], [class*="statement"], [class*="tomorrow"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-astronis-global-scope :is([class*="purpose"], [class*="difference"], [class*="cta"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-core-values-scope :is([class*="professional"], [class*="valueCard"]:first-child) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-our-story-scope :is([class*="journey"], [class*="darkCollection"], [class*="impact"], [class*="compass"], [class*="office"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-vision-mission-scope :is([class*="strategyCopy"], [class*="strategyImage"], [class*="quote"], [class*="statementGrid"] article:nth-child(2)) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-difference-scope [class*="commitment"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-why-choose-scope [class*="commitment"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-methodology-scope [class*="differenceImage"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-integrated-model-scope [class*="hubCore"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-international-network-scope [class*="advantageIntro"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-leadership-scope [class*="cultureCopy"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-methodology-scope :is([class*="differenceImage"], [class*="steps"] li:last-child) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-strategic-initiatives-scope [class*="impactCopy"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption),
+#main-content .about-difference-scope [class*="commitment"] :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+#main-content .about-astronis-global-scope [class*="advisory"] a:nth-child(2) p {
+  color: #d6e7f8 !important;
+}
+#main-content .about-difference-scope [class*="astronisModel"] p {
+  color: #0067bd !important;
+}
+#main-content .about-india-presence-scope [class*="expansionQuote"] {
+  color: #174472 !important;
+}
+#main-content .about-why-choose-scope [class*="impact"] :is(h1, h2, h3, h4, h5, h6, p, span, dt, dd, li, a, strong, small) {
+  color: #fff !important;
+}
+#main-content .about-page-scope nav[aria-label="Breadcrumb"] :is(a, span) {
+  color: #fff !important;
+}
+#main-content .about-page-scope [class*="hero"] [class*="eyebrow"] {
+  color: #fff !important;
+}
+#main-content .about-page-scope .about-story-section {
+  background: #042446;
+  color: #fff;
+}
+#main-content .about-page-scope .about-story-section :is(.eyebrow, h2, p) {
+  color: #fff !important;
+}
