@@ -112,11 +112,14 @@
 .detailAside { grid-column:2; grid-row:1; position:sticky; top:var(--service-header-offset); max-height:calc(100dvh - var(--service-header-offset) - 20px); overflow:auto; scrollbar-width:thin; padding:3px; }
 .sidebarNav { border:1px solid #d6e1ef; background:#f5f8fc; }
 .sidebarNav .navTitle { margin:0; padding:22px 20px 17px; font-size: max(var(--font-size-min), 14px); color:#14365c; font-weight:700; border-bottom:1px solid #d6e1ef; }
-.sidebarNav a { display:grid; grid-template-columns:17px 1fr 11px; align-items:center; gap:8px; padding:12px 14px; border-left:2px solid transparent; border-bottom:1px solid #e0e8f0; font-size: max(var(--font-size-min), 11px); line-height:1.5; transition:background .3s,color .3s,border-color .3s; }
-.sidebarNav a>span { color:#758ba2; font-size: max(var(--font-size-min), 9px); }
-.sidebarNav a:hover { background:#e9f0f9; }
-.sidebarNav a[aria-current] { background:#092c51; color:#fff; border-left-color:#e5bd78; }
-.sidebarNav a[aria-current]>span { color:#e5bd78; }
+.sidebarNav .navList { display:block; }
+.sidebarNav .navItem { border-bottom:1px solid #e0e8f0; }
+.sidebarNav .navItemLink { min-height:0; padding:12px 14px; border:0; border-left:2px solid transparent; background:transparent; color:#14365c; font:inherit; font-size:max(var(--font-size-min),11px); line-height:1.5; text-align:left; }
+.sidebarNav .navItemLink>span:first-child { color:#758ba2; font-size:max(var(--font-size-min),9px); }
+.sidebarNav .navItemLink>span:last-child { margin-left:auto; color:#758ba2; }
+.sidebarNav .navItemLink:hover { background:#e9f0f9; }
+.sidebarNav .navItemLink[aria-current] { background:#092c51; color:#fff; border-left-color:#e5bd78; }
+.sidebarNav .navItemLink[aria-current]>span { color:#e5bd78; }
 .sidebarHelp { background:linear-gradient(125deg,#0b2d51,#173d60); color:#fff; padding:23px; margin-top:20px; }
 .sidebarHelp>span { font-size: max(var(--font-size-min), 8px); letter-spacing:1px; color:#e5bd78; }
 .sidebarHelp p { font-size: max(var(--font-size-min), 12px); color:#c1d3e5; }
