@@ -1,6 +1,13 @@
 import hierarchy from "./service-hierarchy.json";
 import { regulatoryContent } from "./regulatory-content";
 import { serviceAnchor, type ServicePractice } from "./service-detail-types";
+import { services } from "./services";
+
+const regulatoryService = services.find((service) => service.canonicalSlug === "regulatory-services");
+
+if (!regulatoryService) {
+  throw new Error("Missing Regulatory Services configuration.");
+}
 
 const metadata = [
   { image: "/corporate-regulatory-hero.png", icon: "building", description: "Manage corporate and statutory obligations throughout the life of your organisation. Connect Companies Act questions, MCA and ROC matters, filings, approvals and beneficial ownership records with a clear approach to corporate compliance and regularisation.", introduction: "Start with the corporate action or compliance concern, establish the factual record and identify the documentation, approvals and follow-up needed to move forward.", badges: ["Companies Act", "MCA / ROC", "Corporate Compliance", "Approvals", "Beneficial Ownership", "Regularisation"], question: "What should we bring to a corporate regulatory discussion?", answer: "Share the entity details, relevant corporate records, proposed action and any authority correspondence. For historical issues, a chronology of events and submissions helps identify the scope of review." },
@@ -12,7 +19,7 @@ const metadata = [
 export const regulatoryServices: ServicePractice = {
   title: hierarchy[1].title,
   slug: "regulatory-services",
-  heroImage: "/images/services/regulatory-and-compliance.webp",
+  heroImage: regulatoryService.heroImage,
   seoTitle: "Regulatory Advisory & Compliance Services | Astronis",
   heroEyebrow: "Regulatory Services",
   heroStatement: "Navigate complex regulations with greater clarity & confidence.",
