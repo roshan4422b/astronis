@@ -1514,12 +1514,24 @@
 
   .pageNavLayout > :global(aside[aria-label="Page sections"]) {
     grid-column: 1;
-    grid-row: auto;
+    grid-row: 1;
+  }
+
+  .pageNavLayout .pageContent {
+    grid-row: 2;
   }
 
   .sectionLayoutWithSidebar {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
+  }
+
+  .sectionLayoutWithSidebar .sectionLayoutSidebar {
+    grid-row: 1;
+  }
+
+  .sectionLayoutWithSidebar .sectionLayoutContent {
+    grid-row: 2;
   }
 
   .pageSectionNavWrap {

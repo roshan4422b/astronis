@@ -44,7 +44,7 @@ export default function PublicLimitedCompanyPage() {
       </div>
     </section>
 
-    <PageSectionLayout variant="full-width">
+    <PageSectionLayout variant="with-sidebar" navItems={navItems}>
     <section className={styles.services}><div className="container"><Heading eyebrow="OUR SERVICES FOR PUBLIC LIMITED COMPANY" title="A coordinated path from incorporation to scale" text="Public Limited Company registration is the starting point. Our team can coordinate the connected legal, governance and regulatory workstreams."/><div className={styles.serviceGrid}>{services.map(([icon, title, text]) => <article className={styles.serviceCard} key={title}><span className={styles.icon}><Icon name={icon}/></span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
     </PageSectionLayout>
 

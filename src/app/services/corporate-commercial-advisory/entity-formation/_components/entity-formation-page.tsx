@@ -121,7 +121,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
-      {data.showIntro !== false && <PageSectionLayout variant="full-width">
+      {data.showIntro !== false && <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
           <div>
@@ -138,7 +138,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>}
 
-      <PageSectionLayout variant="full-width">
+      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
         <section className={styles.services}>
         <div className="container">
           <Heading
