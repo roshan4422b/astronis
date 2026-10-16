@@ -45,6 +45,8 @@ const workplaceComplianceChildRoutes: Record<string, string> = {
     "/services/industrial-employment-forensics-advisory/workplace-compliances/posh-advisory",
   "Workplace Investigations":
     "/services/industrial-employment-forensics-advisory/workplace-compliances/workplace-investigations",
+  "A workplace whistleblower policy":
+    "/services/industrial-employment-forensics-advisory/workplace-compliances/a-workplace-whistleblower-policy",
   "HR Compliance Review":
     "/services/industrial-employment-forensics-advisory/workplace-compliances/hr-compliance-review",
   "Payroll / Statutory Coordination":
@@ -52,6 +54,12 @@ const workplaceComplianceChildRoutes: Record<string, string> = {
 };
 
 const employmentAndLabourChildRoutes: Record<string, string> = {
+  "Employment Advisory":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/employment-advisory",
+  "Employment Contracts":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/employment-contracts",
+  "Labour Law Compliance":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/labour-law-compliance",
   "Employee Handbook":
     "/services/industrial-employment-forensics-advisory/employment-and-labour/employee-handbook",
   "Termination / Separation Advisory":
@@ -71,6 +79,34 @@ const riskForensicsChildRoutes: Record<string, string> = {
     "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/white-collar-advisory",
   "Anti-Bribery / Ethics Framework":
     "/services/industrial-employment-forensics-advisory/risk-forensics-and-investigations/anti-bribery-ethics-framework",
+};
+
+const insolvencyRestructuringChildRoutes: Record<string, string> = {
+  "Debt Restructuring":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/debt-restructuring",
+  "Distressed Business Advisory":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/distressed-business-advisory",
+  "Debt & Restructuring Advisory":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/debt-and-restructuring-advisory",
+  "IBC Strategy & Advisory":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/ibc-strategy-and-advisory",
+  "CIRP-related Advisory":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/cirp-related-advisory",
+  "Resolution Planning Support":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/resolution-planning-support",
+  "NCLT & NCLAT Advisory":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/nclt-and-nclat-advisory",
+  "Liquidation / Closure Support":
+    "/services/banking-insolvency-restructuring-advisory/insolvency-and-restructuring/liquidation-closure-support",
+};
+
+const bankingFinancialServicesChildRoutes: Record<string, string> = {
+  "Financial Services Regulatory":
+    "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-services-regulatory",
+  "Banking - Loan/Security Documentation":
+    "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/banking-loan-security-documentation",
+  "Financial Institution Advisory":
+    "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-institution-advisory",
 };
 
 const descriptions = [
@@ -146,6 +182,12 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "risk-forensics-and-investigations"
       ? { childRoutes: riskForensicsChildRoutes }
+      : {}),
+    ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "insolvency-and-restructuring"
+      ? { childRoutes: insolvencyRestructuringChildRoutes }
+      : {}),
+    ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "banking-and-financial-services"
+      ? { childRoutes: bankingFinancialServicesChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
