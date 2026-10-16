@@ -19,8 +19,8 @@ export default function QuickServices() {
           light
         />
         <div className="quick-grid">
-          {practices.slice(0, 8).map((service, index) => (
-            <ServiceCard service={service} index={index} key={service.slug} />
+          {practices.slice(0, 8).map((service) => (
+            <ServiceCard service={service} key={service.slug} />
           ))}
         </div>
         <div className="quick-extra">

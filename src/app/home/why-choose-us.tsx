@@ -43,7 +43,6 @@ export default function WhyChooseUs() {
       <div className="reasons-grid">
         {reasons.map(([title, text], i) => (
           <article key={title}>
-            <span className="number-badge">{i + 1}</span>
             <Icon name={icons[i] ?? "globe"} />
             <div>
               <h3>{title}</h3>
