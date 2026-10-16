@@ -2684,6 +2684,21 @@ textarea::placeholder {
   color: #dce7fa;
   font-size: max(var(--font-size-min), 16px);
 }
+.industry-route p {
+  font-size: 14px !important;
+}
+.industry-route [class*="__page"] { color: #000; }
+.industry-route .industry-directory .section-heading h2,
+.industry-route .industry-directory-body h3 { color: #000; }
+.industry-route p:not([class*="lead"]):not([class*="tagline"]):not([class*="eyebrow"]) { color: #000; }
+.industry-route section[class*="hero"] :is(h1, h2, h3, p, li),
+.industry-route .page-banner :is(h1, h2, h3, p, .breadcrumb),
+.industry-route [class*="__regulatory"] :is(h2, h3, p, li),
+.industry-route [class*="__approach"] :is(h2, h3, p, li),
+.industry-route [class*="__governance"] :is(h2, h3, p, li),
+.industry-route [class*="__bottomCta"] :is(h2, h3, p, li),
+.industry-route [class*="__contactCopy"] :is(h2, h3, p, li),
+.industry-route [class*="__enquiryCopy"] :is(h2, h3, p, li) { color: #fff !important; }
 .breadcrumb {
   display: flex;
   gap: 13px;
