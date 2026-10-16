@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import RbiNbfcInsightCards from "@/app/insights-events/rbi-nbfc-insight-cards";
+import InsightListing from "@/app/insights-events/insight-listing";
+import { insightListingImages } from "@/app/insights-events/insight-listing-images";
 import { rbiNbfcInsights } from "@/content/rbi-nbfc-insights";
 import styles from "../../insights-events/insights-events.module.css";
 
@@ -10,22 +11,20 @@ export const metadata: Metadata = {
 };
 
 export default function BankingRbiRegulatoryPage() {
+  const insights = rbiNbfcInsights.map((insight, index) => ({
+    slug: insight.slug,
+    title: insight.title,
+    image: insightListingImages.rbi[index],
+    label: "RBI & NBFC",
+  }));
+
   return (
     <main className={styles.page}>
       <div className={styles.content}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>›</span><Link href="/insights-events">Insights &amp; Events</Link><span>›</span><span aria-current="page">Banking, RBI &amp; Financial Services</span>
         </nav>
-        <section className={`${styles.section} ${styles.rbiInsightsSection}`}>
-          <div className={styles.rbiEditorialHeading}>
-            <div>
-              <span className={styles.rbiEditorialEyebrow}>BANKING, RBI &amp; FINANCIAL SERVICES</span>
-              <h1 className={styles.rbiEditorialTitle}>RBI &amp; NBFC Regulatory Insights</h1>
-            </div>
-            <span className={styles.rbiInsightCount}>13 insights</span>
-          </div>
-          <RbiNbfcInsightCards insights={rbiNbfcInsights} />
-        </section>
+        <InsightListing title="RBI & NBFC Regulatory Insights" countLabel="Insights" insights={insights} />
       </div>
     </main>
   );

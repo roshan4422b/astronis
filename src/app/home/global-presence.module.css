@@ -65,3 +65,14 @@
   .presenceItem:first-child { flex-direction: row; align-items: center; }
   .presenceItem h3 { font-size: max(var(--font-size-min), 19px); }
 }
+:global(#main-content .home-page) .copy h2,
+:global(#main-content .home-page) .copy > p,
+:global(#main-content .home-page) .presenceItem h3,
+:global(#main-content .home-page) .presenceItem p {
+  color: #fff;
+}
+:global(#main-content .home-page) .feature h3,
+:global(#main-content .home-page) .feature p,
+:global(#main-content .home-page) .tagline {
+  color: #000;
+}

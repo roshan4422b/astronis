@@ -756,3 +756,12 @@
   }
 }
 
+:global(#main-content .home-page) .hero h2,
+:global(#main-content .home-page) .hero h3,
+:global(#main-content .home-page) .hero p,
+:global(#main-content .home-page) .featuredBody h4,
+:global(#main-content .home-page) .featuredBody p,
+:global(#main-content .home-page) .library h3,
+:global(#main-content .home-page) .library p {
+  color: #fff;
+}

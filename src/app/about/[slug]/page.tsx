@@ -101,7 +101,7 @@ export default async function AboutDetail({
   if (resolvedSlug === "global-perspective-and-international-network") return <InternationalNetwork />;
   if (resolvedSlug === "our-integrated-advisory-model") return <IntegratedAdvisoryModel />;
   return (
-    <>
+    <div className="about-page-scope">
       <Banner title={title} eyebrow="About Us" />
       {resolvedSlug === "global-reach" ? (
         <GlobalPresence />
@@ -123,6 +123,6 @@ export default async function AboutDetail({
         <Story />
       )}
       <AboutResources />
-    </>
+    </div>
   );
 }

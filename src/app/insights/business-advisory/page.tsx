@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import BusinessInsightCards from "@/app/insights-events/business-insight-cards";
+import InsightListing from "@/app/insights-events/insight-listing";
+import { insightListingImages } from "@/app/insights-events/insight-listing-images";
 import { businessAdvisoryInsights } from "@/content/business-advisory-insights";
 import styles from "../../insights-events/insights-events.module.css";
 
@@ -10,22 +11,20 @@ export const metadata: Metadata = {
 };
 
 export default function BusinessAdvisoryPage() {
+  const insights = businessAdvisoryInsights.map((insight, index) => ({
+    slug: insight.slug,
+    title: insight.title,
+    image: insightListingImages.business[index],
+    label: insight.focus,
+  }));
+
   return (
     <main className={styles.page}>
       <div className={styles.content}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>›</span><Link href="/insights-events">Insights &amp; Events</Link><span>›</span><span aria-current="page">Business Advisory</span>
         </nav>
-        <section className={`${styles.section} ${styles.businessAdvisorySection}`}>
-          <div className={styles.businessEditorialHeading}>
-            <div>
-              <h1 className={styles.businessEditorialTitle}>Business Advisory &amp; Growth</h1>
-              <p>Commercial strategy, investment readiness and growth planning for Indian businesses.</p>
-            </div>
-            <span className={styles.businessInsightCount}>20 insights</span>
-          </div>
-          <BusinessInsightCards insights={businessAdvisoryInsights} />
-        </section>
+        <InsightListing title="Business Advisory & Growth" countLabel="Insights" insights={insights} />
       </div>
     </main>
   );

@@ -50,7 +50,7 @@ function Action({ href, children, outline = false }: { href: string; children: R
 }
 
 export default function VisionMission() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-vision-mission-scope`}>
     <section className={styles.hero} aria-labelledby="vision-title">
       <Image src="/images/our-story/mountain-journey.jpg" alt="Mountain ranges stretching towards the horizon" fill preload sizes="100vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>

@@ -68,6 +68,12 @@
   .filters button[aria-pressed="false"]:hover { background: #edf3ff; color: var(--blue); }
   .playButton:hover { background: #d91520; box-shadow: 0 0 0 15px #ffffff20, 0 12px 35px #0004; }
 }
+:global(#main-content .home-page) .intro h3,
+:global(#main-content .home-page) .intro p,
+:global(#main-content .home-page) .screenTitle h3,
+:global(#main-content .home-page) .screenTitle p {
+  color: #fff;
+}
 @media (max-width: 1100px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .spotlight { gap: 28px; padding-inline: 28px; }

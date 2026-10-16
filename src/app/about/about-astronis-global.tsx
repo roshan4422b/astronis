@@ -60,7 +60,7 @@ function Cards({ items, five = false }: { items: VisualCard[]; five?: boolean })
 }
 
 export default function AboutAstronisGlobal() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-astronis-global-scope`}>
     <section className={styles.hero} aria-labelledby="astronis-title">
       <Image src="/Part-9 .png" alt="" fill preload sizes="100vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>
@@ -93,7 +93,7 @@ export default function AboutAstronisGlobal() {
       <div className="container">
         <div className={styles.lifecycleHeading}><div><Title eyebrow="THE BUSINESS LIFECYCLE" id="lifecycle-title">Every Stage. A Clear Direction.</Title></div><p>From your first decision to your next horizon, an advisory partner for the entire journey.</p></div>
         <ol className={styles.stageGrid}>{lifecycle.map((stage, i) => <li key={stage.title} className={styles.stage}>
-          <div className={styles.stageTop}><span className={styles.stageIcon}><Icon name={stage.icon} /></span><span className={styles.stageNumber}>{String(i + 1).padStart(2, "0")}</span></div>
+          <div className={styles.stageTop}><span className={styles.stageIcon}><Icon name={stage.icon} /></span></div>
           <span className={styles.stagePhase}>{stage.phase}</span><h3>{stage.title}</h3><p>{stage.text}</p>
           <div className={styles.stageFoot}><span>{i === lifecycle.length - 1 ? "Your next horizon" : `Next: ${lifecycle[i + 1].title}`}</span><Icon name="arrow" /></div>
         </li>)}</ol>

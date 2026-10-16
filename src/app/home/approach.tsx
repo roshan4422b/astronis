@@ -13,7 +13,6 @@ export default function Approach() {
         <div className="approach-grid">
           {approach.map(([title, text], i) => (
             <article key={title}>
-              <span className="number-badge">0{i + 1}</span>
               <Icon
                 name={
                   ["search", "file", "bulb", "people", "chart", "shield"][i]
