@@ -4,6 +4,7 @@ import AssetImage from "../_components/asset-image";
 import Icon from "../_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
 import { industries } from "@/content/site";
+import professionalsStyles from "../professionals/professional-scope.module.css";
 import styles from "./global-presence.module.css";
 
 export const metadata = {
@@ -162,7 +163,7 @@ const insights = corporateArticles.slice(0, 3);
 
 export default function GlobalPresencePage() {
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${professionalsStyles.scope}`}>
       <section className={styles.hero}>
         <div className={styles.container}>
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
