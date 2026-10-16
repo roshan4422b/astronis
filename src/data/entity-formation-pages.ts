@@ -1,4 +1,9 @@
 export type EntityFormationPageData = {
+  focusDescription?: string;
+  focusTitle?: string;
+  focusEyebrow?: string;
+  serviceHref?: string;
+  serviceTitle?: string;
   slug: string;
   title: string;
   shortTitle: string;

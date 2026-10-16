@@ -129,18 +129,6 @@ export const services = hierarchy.map((service, index) => ({
   category: service.title,
   subServices: service.subServices.map((group) => ({
     ...group,
-    ...(service.slug === "intellectual-property-right-services" && group.slug === "trademark"
-      ? { childRoutes: trademarkChildRoutes }
-      : {}),
-    ...(service.slug === "intellectual-property-right-services" && group.slug === "ip-and-brand-advisory"
-      ? { childRoutes: ipBrandAdvisoryChildRoutes }
-      : {}),
-    ...(service.slug === "litigation-dispute-resolution" && group.slug === "litigation-justice-delivery"
-      ? { childRoutes: litigationChildRoutes }
-      : {}),
-    ...(service.slug === "taxation-compliance" && group.slug === "international-tax"
-      ? { childRoutes: internationalTaxChildRoutes }
-      : {}),
     ...(service.slug === "corporate-commercial-advisory" && group.slug === "mergers-acquisitions-and-transactions"
       ? { childRoutes: corporateTransactionChildRoutes }
       : {}),

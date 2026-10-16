@@ -165,6 +165,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>
 
+      <PageSectionLayout variant="full-width">
       <section className={`${styles.benefits} ${data.benefitCardsStacked ? styles.benefitsStacked : ""}`} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
