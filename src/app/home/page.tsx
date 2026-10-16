@@ -19,7 +19,7 @@ import Connect from "./connect";
 export const metadata = { alternates: { canonical: "/" } };
 export default function HomePage() {
   return (
-    <>
+    <div className="home-page">
       <Hero />
       <QuickServices />
       <WhyChooseUs />
@@ -38,6 +38,6 @@ export default function HomePage() {
       <Consultation />
       <Contact />
       <Connect />
-    </>
+    </div>
   );
 }

@@ -4,7 +4,7 @@ import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
 import { testimonials } from "@/content/testimonials";
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
-import { services } from "@/data/services";
+import { getCorporateChildHeroImage, services } from "@/data/services";
 import PrivateLimitedFaq from "../private-limited/private-limited-faq";
 import PageSectionLayout from "./page-section-layout";
 import styles from "./entity-formation-page.module.css";
@@ -88,12 +88,15 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
   const showFeatures = data.showFeatures ?? true;
+  const heroImage = (!data.serviceHref || data.serviceHref.startsWith("/services/corporate-commercial-advisory"))
+    ? getCorporateChildHeroImage(data.slug) ?? data.image
+    : data.image;
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""}`} id="overview">
         <Image
-          src={data.image}
+          src={heroImage}
           alt={data.imageAlt}
           fill
           priority
@@ -126,7 +129,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
-      {data.showIntro !== false && <PageSectionLayout variant="full-width">
+      {data.showIntro !== false && <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
           <div>
@@ -143,7 +146,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>}
 
-      <PageSectionLayout variant="full-width">
+      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
         <section className={styles.services}>
         <div className="container">
           <Heading

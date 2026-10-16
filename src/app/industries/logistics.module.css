@@ -9,7 +9,8 @@
 .faqList{margin:0}.faqList details{border:0;border-bottom:1px solid #dce5ee;border-radius:0;margin:0}.faqList details:first-child{border-top:1px solid #dce5ee}
 .faqList summary{padding:21px 0;font-size: max(var(--font-size-min), 15px);font-weight:600;color:#0b2d55}.faqList details>p{padding:0 35px 21px 0;font-size: max(var(--font-size-min), 13px);color:#52657a}.faqList details:hover{background:transparent;border-color:#b6cde4}
 .contact{background:#042446;color:#fff;padding:70px 0}.contactGrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.2fr);gap:70px;align-items:start}
-.contact .eyebrow{color:#e6b964}.contactCopy h2{font-size: max(var(--font-size-min), clamp(38px,4vw,55px))}.contactCopy>p{color:#d0ddea;font-size: max(var(--font-size-min), 15px);margin:22px 0}
+.contact .eyebrow{color:#e6b964}.contactCopy h2{font-size: max(var(--font-size-min), clamp(38px,4vw,55px))}.contactCopy>p{color:#fff;font-size: max(var(--font-size-min), 15px);margin:22px 0}
+.regulatory :is(h2,h3,p,li),.contactCopy :is(h2,h3,p,li){color:#fff!important}
 .contactImage{position:relative;aspect-ratio:1.9;border-radius:4px;overflow:hidden;margin:29px 0 22px}.contactImage img{object-fit:cover}
 .contactCopy>a{display:flex;align-items:center;gap:14px;min-height:44px;font-size: max(var(--font-size-min), 14px);overflow-wrap:anywhere}.contactCopy>a:hover{color:#e8bf76}.contactCopy>a svg{width:18px;height:18px;color:#e8bf76}
 .formWrap{min-width:0;color:#082d57}.formWrap :global(.enquiry-form){border:0;border-radius:5px;padding:32px}.formWrap :global(.enquiry-form h3){font-size: max(var(--font-size-min), 28px);margin-bottom:12px}.formWrap :global(.enquiry-intro){margin-bottom:23px}.formWrap :global(.form-grid){gap:17px}

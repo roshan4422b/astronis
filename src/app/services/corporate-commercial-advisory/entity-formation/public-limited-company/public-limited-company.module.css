@@ -308,6 +308,29 @@
   font-size: max(var(--font-size-min), 12px);
 }
 
+.page .hero:after {
+  background: linear-gradient(
+      90deg,
+      rgba(4, 23, 47, 0.48) 2%,
+      rgba(6, 30, 59, 0.3) 46%,
+      rgba(9, 44, 75, 0.2) 72%,
+      rgba(8, 39, 69, 0.18)
+    ),
+    linear-gradient(0deg, rgba(5, 27, 53, 0.2) 0%, transparent 60%);
+}
+
+.page .heroNoOverlay:after {
+  display: block;
+  background: linear-gradient(
+      90deg,
+      rgba(4, 23, 47, 0.35) 2%,
+      rgba(6, 30, 59, 0.22) 46%,
+      rgba(9, 44, 75, 0.15) 72%,
+      rgba(8, 39, 69, 0.14)
+    ),
+    linear-gradient(0deg, rgba(5, 27, 53, 0.16) 0%, transparent 60%);
+}
+
 .page .hero h1 {
   font-size: max(var(--font-size-min), clamp(43px, 5.3vw, 70px));
   margin-bottom: 22px;
@@ -357,4 +380,8 @@
 
 .page .hero {
   min-height: 0;
+}
+
+.heroNoOverlay:after {
+  display: none;
 }

@@ -54,7 +54,7 @@ export default function ServiceHero({ practice, group, title }: { practice: Serv
           <span className={styles.eyebrow}>{group ? practice.title : practice.heroEyebrow || "STRUCTURE. DIRECTION. CONTINUITY."}</span>
           <h1>{group?.title || title || practice.title}</h1>
           {!group && <p className={styles.heroStatement}>{practice.heroStatement}</p>}
-          <p>{group?.description || practice.description}</p>
+          {(group || practice.heroStatement !== practice.description) && <p>{group ? group.description : practice.description}</p>}
           <div className={styles.actions}><ServiceButton href="#enquiry">Speak With an Advisor</ServiceButton><ServiceButton href={group ? `#${group.children[0].slug}` : "#service-groups"} secondary>{group ? "Explore Services" : "Explore Our Capabilities"}</ServiceButton></div>
         </div>
         {!group && <div className={styles.lifecycle} aria-label="Business lifecycle">

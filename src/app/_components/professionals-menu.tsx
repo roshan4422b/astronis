@@ -7,51 +7,43 @@ import { isRouteActive } from "./navigation-state";
 
 const columns = [
   {
-    icon: "people",
     title: "Our People",
-    tagline: "Experienced. Diverse. Committed.",
     links: [
-      ["Our Professionals", "Meet our team", "/professionals"],
-      ["Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
-      ["Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/legal-professionals"],
-      ["Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
-      ["Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
-      ["Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/industry-and-subject-matter-experts"],
+      ["people", "Our Professionals", "Meet our team", "/professionals"],
+      ["award", "Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
+      ["scale", "Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/legal-professionals"],
+      ["building", "Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
+      ["bank", "Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
+      ["target", "Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/industry-and-subject-matter-experts"],
     ],
   },
   {
-    icon: "scale",
     title: "Advisory Expertise",
-    tagline: "Multidisciplinary. Practical. Solutions-focused.",
     links: [
-      ["Expertise Across Practice Areas", "Find the right professional", "/expertise-across-practice-areas"],
-      ["Experts by Industry", "Sector-focused professionals", "/professionals/industry-and-subject-matter-experts"],
-      ["Experts by Service", "Match expertise to your needs", "/professionals/experts-by-service"],
-      ["Experts by Jurisdiction", "India and international experience", "/professionals/experts-by-jurisdiction"],
-      ["Insights by Professional", "Articles, publications and thought leadership", "/professionals/insights-by-professional"],
+      ["scale", "Expertise Across Practice Areas", "Find the right professional", "/expertise-across-practice-areas"],
+      ["building", "Experts by Industry", "Sector-focused professionals", "/professionals/industry-and-subject-matter-experts"],
+      ["checklist", "Experts by Service", "Match expertise to your needs", "/professionals/experts-by-service"],
+      ["globe", "Experts by Jurisdiction", "India and international experience", "/professionals/experts-by-jurisdiction"],
+      ["file", "Insights by Professional", "Articles, publications and thought leadership", "/professionals/insights-by-professional"],
     ],
   },
   {
-    icon: "globe",
     title: "Global & Collaboration",
-    tagline: "Borderless expertise. Shared growth.",
     links: [
-      ["International Professionals & Network", "Our global relationships", "/professionals/international-network"],
-      ["Governance & Secretarial Professionals", "Corporate governance and compliance", "/professionals/governance-secretarial"],
-      ["Professional Collaboration", "Strategic partnerships with firms and professionals", "/professionals/professional-collaboration"],
-      ["Join Our Professional Network", "Be a part of our growing network", "/professionals/join-our-professional-network"],
-      ["Professionals by Location / Jurisdiction", "Find professionals in India and globally", "/global-presence"],
+      ["globe", "International Professionals & Network", "Our global relationships", "/professionals/international-network"],
+      ["document", "Governance & Secretarial Professionals", "Corporate governance and compliance", "/professionals/governance-secretarial"],
+      ["handshake", "Professional Collaboration", "Strategic partnerships with firms and professionals", "/professionals/professional-collaboration"],
+      ["people", "Join Our Professional Network", "Be a part of our growing network", "/professionals/join-our-professional-network"],
+      ["pin", "Professionals by Location / Jurisdiction", "Find professionals in India and globally", "/global-presence"],
     ],
   },
   {
-    icon: "search",
     title: "Find a Professional",
-    tagline: "Right expertise. Right solution.",
     links: [
-      ["Search Professionals", "Find by expertise, service, industry, location and more", "/professionals#leadership"],
-      ["Advanced Search", "Refine your search with multiple filters", "/professionals/corporate-advisory"],
-      ["Professionals by Location", "India and international jurisdictions", "/global-presence"],
-      ["Request an Introduction", "Let us connect you with the right expert", "/professionals/enquiry"],
+      ["search", "Search Professionals", "Find by expertise, service, industry, location and more", "/professionals#leadership"],
+      ["checklist", "Advanced Search", "Refine your search with multiple filters", "/professionals/corporate-advisory"],
+      ["pin", "Professionals by Location", "India and international jurisdictions", "/global-presence"],
+      ["message", "Request an Introduction", "Let us connect you with the right expert", "/professionals/enquiry"],
     ],
   },
 ] as const;
@@ -62,14 +54,8 @@ export default function ProfessionalsMenu({ id, onNavigate }: { id: string; onNa
   return <div className={`mega-menu ${styles.menu}`} id={id}>
     <div className={styles.columns}>
       {columns.map(column => <section className={styles.column} key={column.title} aria-label={column.title}>
-        <div className={styles.columnHeader}>
-          <span className={styles.columnIcon}><Icon name={column.icon} /></span>
-          <h2>{column.title}</h2>
-        </div>
-        <p className={styles.tagline}>{column.tagline}</p>
-        <span className={styles.rule} />
-        <div className={styles.links}>{column.links.map(([title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}>
-          <span><strong>{title}</strong><small>{description}</small></span><Icon name="arrow" />
+        <div className={styles.links}>{column.links.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}>
+          <Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><span className={styles.chevron} aria-hidden="true">›</span>
         </Link>)}</div>
         {column.title === "Find a Professional" && <div className={styles.columnFooter}>
           <Link className={styles.columnCard} href="/professionals/collaborate-with-us" onClick={onNavigate}><Icon name="people" /><span><strong>Collaborate With Us</strong><small>Explore opportunities to work together</small></span><Icon name="arrow" /></Link>

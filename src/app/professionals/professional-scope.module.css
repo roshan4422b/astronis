@@ -1,0 +1,148 @@
+.scope :global(:is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: #000 !important;
+}
+
+.scope :global(p),
+.scope :global(small) {
+  font-size: 14px !important;
+}
+
+.scope :global(a :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)),
+.scope :global(button :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: inherit !important;
+}
+
+.scope :global([class*="heroCopy"] [class*="eyebrow"]),
+.scope :global([class*="hero"] [aria-label="Breadcrumb"]),
+.scope :global([class*="hero"] [aria-label="Breadcrumb"] a),
+.scope :global([class*="hero"] [aria-label="Breadcrumb"] span),
+.scope :global(section[class*="__hero"] [class*="eyebrow"]),
+.scope :global([class*="enquiryCopy"] h2) {
+  color: #fff !important;
+}
+
+.scope :global(section[class*="__hero"]) {
+  position: relative;
+  isolation: isolate;
+  background-color: #062347 !important;
+}
+
+.scope :global(section[class*="__hero"] > img) {
+  z-index: -1 !important;
+}
+
+.scope :global(section[class*="__hero"] > [class*="heroShade"]) {
+  z-index: 0;
+  background: linear-gradient(90deg, rgb(4 24 52 / 97%) 0%, rgb(7 43 83 / 88%) 55%, rgb(7 43 83 / 58%) 100%) !important;
+}
+
+.scope :global(section[class*="__hero"]:not(:has(> [class*="heroShade"]))::after) {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(4 24 52 / 97%) 0%, rgb(7 43 83 / 88%) 55%, rgb(7 43 83 / 58%) 100%) !important;
+  pointer-events: none;
+}
+
+.scope :global(section[class*="__hero"] > :not(img):not([class*="heroShade"])) {
+  position: relative;
+  z-index: 1;
+}
+
+.scope :global(:is(
+  [class*="hero"],
+  [class*="cta"],
+  [class*="Cta"],
+  [class*="dark"],
+  [class*="banner"],
+  [class~="ribbon"],
+  [class*="collaborationBand"],
+  [class*="commitment"],
+  [class*="cultureCopy"],
+  [class*="impact"]
+)) :global(:is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: #fff !important;
+}
+
+.scope :global(:is(
+  [class*="leadership-team-module"][class*="__explore"],
+  [class*="corporate-advisory-module"][class*="__standards"],
+  [class*="advisory-professionals-module"][class*="__standardsCard"],
+  [class*="legal-professionals-module"][class*="__supportGrid"] article:nth-child(2),
+  [class*="knowledgeSection"],
+  [class*="knowledgeLead"],
+  [class*="__enquirySection"]
+)) :global(:is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: #fff !important;
+}
+
+.scope :global(a :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)),
+.scope :global(button :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: inherit !important;
+}
+
+.scope :global(:is(
+  [class*="hero"],
+  [class*="cta"],
+  [class*="Cta"],
+  [class*="dark"],
+  [class*="banner"],
+  [class~="ribbon"],
+  [class*="collaborationBand"],
+  [class*="commitment"],
+  [class*="cultureCopy"],
+  [class*="impact"]
+) a :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)),
+.scope :global(:is(
+  [class*="hero"],
+  [class*="cta"],
+  [class*="Cta"],
+  [class*="dark"],
+  [class*="banner"],
+  [class*="collaborationBand"],
+  [class*="commitment"],
+  [class*="cultureCopy"],
+  [class*="impact"]
+) button :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: inherit !important;
+}
+
+.scope :global(:is(
+  [class*="leadership-team-module"][class*="__explore"],
+  [class*="corporate-advisory-module"][class*="__standards"],
+  [class*="advisory-professionals-module"][class*="__standardsCard"],
+  [class*="legal-professionals-module"][class*="__supportGrid"] article:nth-child(2),
+  [class*="knowledgeSection"],
+  [class*="knowledgeLead"],
+  [class*="__enquirySection"]
+) a :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)),
+.scope :global(:is(
+  [class*="leadership-team-module"][class*="__explore"],
+  [class*="corporate-advisory-module"][class*="__standards"],
+  [class*="advisory-professionals-module"][class*="__standardsCard"],
+  [class*="legal-professionals-module"][class*="__supportGrid"] article:nth-child(2),
+  [class*="knowledgeSection"],
+  [class*="knowledgeLead"],
+  [class*="__enquirySection"]
+) button :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: inherit !important;
+}
+
+.scope :global([class*="stepNumber"]),
+.scope :global([class*="collaborationSteps"] > div > span:first-child),
+.scope :global([class*="processGrid"] ol li > span:first-child),
+.scope :global([class*="cardNumber"]),
+.scope :global([class*="stepCount"]),
+.scope :global([class*="journeyStep"] > span:first-child) {
+  display: none !important;
+}
+
+.scope :global([class*="collaborationSteps"] > div) {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 550px) {
+  .scope :global([class*="processGrid"] ol li) {
+    grid-template-columns: 1fr;
+  }
+}

@@ -17,6 +17,8 @@ import {
   getAdditionalServiceDetailStaticParams,
 } from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
+import SectionNavigation from "../_template/section-navigation";
+import serviceStyles from "../_template/service-template.module.css";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
 import { Banner } from "../../_components/ui";
@@ -178,13 +180,48 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     if (regulatoryDetail && regulatoryGroup) {
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
-    return <>
-      <Banner title={child || group.title} eyebrow={service.title} text={`${child || group.title} support connected to ${service.title.toLowerCase()}.`} />
-      <section className="section"><div className="container">
-        <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}><Link href="/services">Services</Link> <span aria-hidden="true">›</span> <Link href={`/services/${service.canonicalSlug}`}>{service.title}</Link> <span aria-hidden="true">›</span> <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link> <span aria-hidden="true">›</span> <span aria-current="page">{child}</span></nav>
-        <p>{child} sits within <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link>.</p><Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
-      </div></section>
-    </>;
+    const relatedServices = group.children.filter(item => item !== child);
+    return <div className={serviceStyles.page} data-service-template>
+      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} />
+      <div className={`container ${serviceStyles.detailLayout}`}>
+        <aside className={serviceStyles.detailAside}>
+          <SectionNavigation
+            title="On this page"
+            items={[
+              { id: "service-overview", title: "Service overview" },
+              { id: "related-services", title: "Related services" },
+            ]}
+          />
+        </aside>
+        <div className={serviceStyles.detailContent}>
+          <section className={serviceStyles.detailIntro} id="service-overview">
+            <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}>
+              <Link href="/services">Services</Link> <span aria-hidden="true">›</span>{" "}
+              <Link href={`/services/${service.canonicalSlug}`}>{service.title}</Link>{" "}
+              <span aria-hidden="true">›</span>{" "}
+              <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link>{" "}
+              <span aria-hidden="true">›</span> <span aria-current="page">{child}</span>
+            </nav>
+            <h2>{child}</h2>
+            <p>{child} sits within {group.title}. Our team can help assess the requirements and coordinate next steps.</p>
+            <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>Explore {group.title}</Link>
+          </section>
+          <section className={serviceStyles.childSection} id="related-services">
+            <div className={serviceStyles.childHeading}><span>01</span><h2>Related services</h2></div>
+            <ul>
+              {relatedServices.map(item => (
+                <li key={item}>
+                  <Link href={group.childRoutes?.[item] || `/services/${service.canonicalSlug}/${group.slug}/${serviceAnchor(item)}`}>
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
+          </section>
+        </div>
+      </div>
+    </div>;
   }
 
   const practice = slugs.length === 1 ? resolvePractice(slugs)?.practice : undefined;

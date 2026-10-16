@@ -12,6 +12,7 @@ export type EntityFormationPageData = {
   introduction: string;
   image: string;
   imageAlt: string;
+  heroOverlay?: boolean;
   basicPrice: string;
   comprehensivePrice: string;
   benefits: [string, string, string][];

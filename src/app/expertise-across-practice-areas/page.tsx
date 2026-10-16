@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ExpertisePage from "./expertise-page";
+import professionalsStyles from "../professionals/professional-scope.module.css";
 
 export const metadata: Metadata = {
   title: "Expertise Across Practice Areas",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ExpertisePage />;
+  return <div className={professionalsStyles.scope}><ExpertisePage /></div>;
 }

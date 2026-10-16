@@ -137,21 +137,41 @@ const images = [
   "/images/services/esg-and-sustainability-advisory.webp",
 ];
 
-const heroImages = [
-  "/services/Corporate & Commercial Advisory.png",
-  "/services/Regulatory Services.png",
-  "/services/Litigation & Dispute Resolution.png",
-  "/services/Business Advisory & Contracts.png",
-  "/services/Licensing & Registrations.png",
-  "/services/Intellectual Property Right Services.png",
-  "/services/FEMA_FDI_CROSS.png",
-  "/images/services/gst-and-indirect-tax-regulatory-support.webp",
-  "/images/services/banking-nbfc-and-financial-services-advisory.webp",
-  "/images/services/risk-governance-and-forensic-advisory.webp",
-  "/images/services/esg-and-sustainability-advisory.webp",
-];
-
 const icons = ["building", "shield", "scale", "chart", "file", "shield", "globe", "percent", "building", "people", "globe"];
+
+const corporateChildHeroImages: Record<string, string> = {
+  "private-limited-company-incorporation": "1.1.png",
+  opc: "1.2.png",
+  "public-limited-company": "1.3.png",
+  "section-8-company": "1.4.png",
+  "llp-formation": "1.5.png",
+  "partnership-firm": "1.6.png",
+  proprietorship: "1.7.png",
+  "wholly-owned-subsidiary": "1.8.png",
+  "foreign-company-setup": "1.9.png",
+  "branch-office": "1.10.png",
+  "liaison-office": "1.11.png",
+  "project-office": "1.12.png",
+  "entity-structuring": "1.13.png",
+  "group-structuring": "1.14.png",
+  "holding-subsidiary-structures": "1.15.png",
+  "shareholding-structuring": "1.16.png",
+  "capital-structuring": "1.17.png",
+  "business-reorganisation": "1.18.png",
+  "corporate-conversion": "1.19.png",
+  "succession-family-business-structuring": "1.20.png",
+  "corporate-exit-plan": "1.21.png",
+  "demerger-amalgamation": "1.22.png",
+  "slump-sale": "1.23.png",
+  "mergers-acquisitions": "1.24.png",
+};
+
+export function getCorporateChildHeroImage(slug: string) {
+  const filename = corporateChildHeroImages[slug];
+  return filename
+    ? `/services/child page of services/Corporate & Commercial/${filename}`
+    : undefined;
+}
 
 export const services = hierarchy.map((service, index) => ({
   ...service,
@@ -161,7 +181,7 @@ export const services = hierarchy.map((service, index) => ({
   description: descriptions[index],
   icon: icons[index],
   image: images[index],
-  heroImage: heroImages[index],
+  heroImage: `/services/services hero banner/${Number(service.number)}s.png`,
   category: service.title,
   subServices: service.subServices.map((group) => ({
     ...group,

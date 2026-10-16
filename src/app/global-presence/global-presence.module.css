@@ -513,6 +513,10 @@
   line-height: 1.7;
 }
 
+.page .regionInfo :is(h3, p) {
+  color: #fff !important;
+}
+
 .regionGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -957,6 +961,11 @@
   font-size: max(var(--font-size-min), 0.68rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+:global(#main-content) .page .professionalPanel .panelGrid strong,
+:global(#main-content) .page .professionalPanel .panelGrid small {
+  color: #fff !important;
 }
 
 .collaborationGrid {

@@ -9,10 +9,10 @@ import styles from "./industries-menu.module.css";
 import { isRouteActive } from "./navigation-state";
 
 const groups = [
-  { title: "Financial & Professional", caption: "Capital. Trust. Expertise.", icon: "chart", names: ["Financial Services", "FinTech & Digital Finance", "Professional & Business Services", "Real Estate & Construction", "Aviation, Aerospace & Defence"] },
-  { title: "Technology & Innovation", caption: "Ideas. Platforms. Transformation.", icon: "bulb", names: ["IT & ITES", "Artificial Intelligence", "Startups", "Media & Entertainment", "Telecommunications", "Education", "Renewable Energy"] },
-  { title: "Industrial & Infrastructure", caption: "Build. Operate. Sustain.", icon: "building", names: ["Manufacturing", "Automotive & Mobility", "Infrastructure", "Logistics", "Mining, Metals & Natural Resources", "Agriculture & Agri-Business"] },
-  { title: "Consumer & People", caption: "People. Markets. Opportunities.", icon: "people", names: ["Retail & Consumer", "E-Commerce", "Healthcare & Pharma", "Hospitality", "Textiles, Apparel & Lifestyle", "Government & Public Sector"] },
+  { title: "Financial & Professional", icon: "chart", names: ["Financial Services", "FinTech & Digital Finance", "Professional & Business Services", "Real Estate & Construction", "Aviation, Aerospace & Defence"] },
+  { title: "Technology & Innovation", icon: "bulb", names: ["IT & ITES", "Artificial Intelligence", "Startups", "Media & Entertainment", "Telecommunications", "Education", "Renewable Energy"] },
+  { title: "Industrial & Infrastructure", icon: "building", names: ["Manufacturing", "Automotive & Mobility", "Infrastructure", "Logistics", "Mining, Metals & Natural Resources", "Agriculture & Agri-Business"] },
+  { title: "Consumer & People", icon: "people", names: ["Retail & Consumer", "E-Commerce", "Healthcare & Pharma", "Hospitality", "Textiles, Apparel & Lifestyle", "Government & Public Sector"] },
 ] as const;
 
 const descriptions: Record<string, string> = {
@@ -54,14 +54,13 @@ export default function IndustriesMenu({ id, onNavigate }: { id: string; onNavig
       
       <div className={styles.columns}>
         {groups.map((group) => <section className={styles.column} key={group.title} aria-label={group.title}>
-          <div className={styles.groupHeading}><Icon name={group.icon} /><div><h3>{group.title}</h3><p>{group.caption}</p></div></div>
           <div className={styles.links}>
             {group.names.filter(matches).map((name) => {
               const industry = industries.find((item) => item.title === name);
               if (!industry) return null;
               const href = `/industries/${industry.slug}`;
               return <Link href={href} key={industry.slug} onClick={onNavigate} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}>
-                <span><strong>{name}</strong><small>{descriptions[name]}</small></span><Icon name="arrow" />
+                <Icon name={group.icon} /><span><strong>{name}</strong><small>{descriptions[name]}</small></span><Icon name="arrow" />
               </Link>;
             })}
           </div>

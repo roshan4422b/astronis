@@ -26,7 +26,7 @@ function Action({ href, children, outline = false, blue = false }: { href: strin
 }
 
 export default function LeadershipPage() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-leadership-scope`}>
     <section className={styles.hero} aria-labelledby="leadership-title">
       <Image src="/Part-10 .png" alt="A contemporary boardroom overlooking the city" fill preload sizes="100vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>

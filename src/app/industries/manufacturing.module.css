@@ -15,7 +15,7 @@
 .hero .eyebrow, .approach .eyebrow, .contact .eyebrow { color: #e6b964; }
 .hero h1 { font-size: max(var(--font-size-min), clamp(48px, 5.5vw, 80px)); line-height: 1.07; letter-spacing: -1.5px; }
 .hero .tagline { color: #fff; font-size: max(var(--font-size-min), clamp(19px, 1.8vw, 26px)); line-height: 1.45; margin: 18px 0; }
-.hero .heroDescription { color: #dfE8f4; max-width: 570px; font-size: max(var(--font-size-min), 15px); line-height: 1.65; margin-bottom: 27px; }
+.hero .heroDescription { color: #fff; max-width: 570px; font-size: max(var(--font-size-min), 15px); line-height: 1.65; margin-bottom: 27px; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 24px; padding: 13px 23px; min-height: 48px; background: #efc477; color: #06264b; border: 1px solid #efc477; border-radius: 3px; font-size: max(var(--font-size-min), 13px); font-weight: 600; }
 .button:hover { background: #f9d89e; transform: translateY(-2px); }
 .button svg, .textLink svg { width: 17px; height: 17px; }
@@ -71,7 +71,7 @@
 .solutionCard:hover, .insightCard:hover, .expertCard:hover { box-shadow: 0 9px 28px #0a294410; transform: translateY(-3px); border-color: #abc0d4; }
 .approach { background: linear-gradient(120deg, #031e3d, #0b355c); color: white; padding-block: 62px 28px; }
 .approach .sectionHeading > div { max-width: 680px; }
-.approach p { color: #cad9e7; }
+.approach :is(h2,h3,p,li) { color: #fff !important; }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; list-style: none; padding: 0; margin: 40px 0; }
 .steps li { padding-top: 19px; border-top: 1px solid #668099; }
 .steps li > span { color: #e8bf76; font: 28px Georgia, serif; }
@@ -111,7 +111,8 @@
 .relatedGrid a:hover { color: #a46f23; }
 .contact { color: white; background: #042446; }
 .contactGrid { display: grid; grid-template-columns: .85fr 1.2fr; gap: 70px; align-items: start; }
-.contactCopy > p { color: #d0ddea; margin: 22px 0; font-size: max(var(--font-size-min), 15px); }
+.contactCopy > p { color: #fff; margin: 22px 0; font-size: max(var(--font-size-min), 15px); }
+.contactCopy :is(h2,h3,p,li) { color: #fff !important; }
 .contactCopy h2 { font-size: max(var(--font-size-min), clamp(38px, 4vw, 55px)); }
 .contactImage { position: relative; aspect-ratio: 1.9; border-radius: 4px; overflow: hidden; margin: 29px 0 22px; }
 .contactCopy > a { display: flex; gap: 14px; align-items: center; min-height: 44px; font-size: max(var(--font-size-min), 14px); overflow-wrap: anywhere; }
