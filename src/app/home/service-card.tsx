@@ -8,20 +8,13 @@ type Service = {
   icon: string;
 };
 
-export default function ServiceCard({
-  service,
-  index,
-}: {
-  service: Service;
-  index: number;
-}) {
+export default function ServiceCard({ service }: { service: Service }) {
   return (
     <Link
       href={`/services/${service.slug}`}
       className="service-card"
       aria-label={`Explore ${service.title} services`}
     >
-      <span className="service-card-number">{String(index + 1).padStart(2, "0")}</span>
       <span className="service-card-icon">
         <Icon name={service.icon} />
       </span>

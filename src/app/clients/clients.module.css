@@ -1060,3 +1060,15 @@
     transition: none;
   }
 }
+
+.page :is(h1, h2, h3, h4, h5, h6, p, span, strong, small, li, dt, dd, blockquote, figcaption) {
+  color: #fff !important;
+}
+
+.page p {
+  font-size: 14px;
+}
+
+.page .industryCard > span {
+  color: #0d63d9 !important;
+}

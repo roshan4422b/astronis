@@ -9,7 +9,7 @@ export default function IndustryDirectory() {
     i.title.toLowerCase().includes(search.toLowerCase()),
   );
   return (
-    <section className="section">
+    <section className="section industry-directory">
       <div className="container">
         <Heading
           title="Explore 24 Industries"

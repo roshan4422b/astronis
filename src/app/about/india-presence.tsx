@@ -43,7 +43,7 @@ function IndiaMap() {
 }
 
 export default function IndiaPresence() {
-  return <div className={styles.page}>
+  return <div className={`${styles.page} about-page-scope about-india-presence-scope`}>
     <section className={styles.hero} aria-labelledby="india-title"><div className={styles.heroPhoto}><Image src="/images/india-presence/india-gate.jpg" alt="India Gate in New Delhi at sunset" fill preload sizes="(max-width: 700px) 100vw, 65vw" /></div><div className={`container ${styles.heroInner}`}><nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/about">About Us</Link><span aria-hidden="true">›</span><span aria-current="page">India Presence</span></nav><div className={styles.heroContent}><div className={styles.heroCopy}><span className={styles.eyebrow}>INDIA PRESENCE</span><h1 id="india-title">Across India.<br />Closer to You.</h1><p>Local insight, combined with deep sector knowledge, enables us to deliver practical, responsive and regionally relevant solutions for businesses across India.</p><Action href="#our-presence">Explore Our India Presence</Action></div><p className={styles.heroNote}>Local<br />insight.<br />National<br />impact.<span className={styles.rule} /><small>Integrated legal, regulatory and business advisory across India.</small></p></div></div></section>
 
     <section className={`container ${styles.strengths}`} aria-label="Our India capabilities">{strengths.map(([icon, title, text]) => <article key={title}><span className={styles.iconBadge}><Icon name={icon} /></span><h2>{title}</h2><p>{text}</p></article>)}</section>

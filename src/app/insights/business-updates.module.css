@@ -47,7 +47,7 @@
 .heroShade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #fff 0%, #fffffff5 31%, #ffffffcf 47%, #ffffff3b 69%, #071d4920 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.55) 31%, rgba(255,255,255,.32) 47%, rgba(255,255,255,.12) 69%, rgba(7,29,73,.08) 100%);
 }
 
 .heroInner {
@@ -975,7 +975,7 @@
   }
 
   .heroShade {
-    background: linear-gradient(90deg, #fff 0%, #fffffff0 58%, #ffffffad 100%);
+    background: linear-gradient(90deg, rgba(255,255,255,.68) 0%, rgba(255,255,255,.46) 58%, rgba(255,255,255,.2) 100%);
   }
 
   .heroInner,

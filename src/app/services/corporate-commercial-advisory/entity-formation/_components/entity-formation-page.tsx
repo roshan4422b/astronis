@@ -31,18 +31,20 @@ function Heading({
 
 export default function EntityFormationPage({ data }: { data: EntityFormationPageData }) {
   const corporateService = services.find((service) => service.canonicalSlug === "corporate-commercial-advisory");
+  const parentService = services.find((service) => data.serviceHref === `/services/${service.canonicalSlug}`)
+    ?? corporateService;
   const categoryAliases: Record<string, string> = {
     "Corporate Governance": "corporate-governance-and-entity-structuring",
     "Corporate Restructuring": "corporate-governance-and-entity-structuring",
     "Entity Structuring & Group Reorganisation": "corporate-governance-and-entity-structuring",
   };
-  const category = corporateService?.subServices.find((item) => item.title === data.categoryTitle)
-    ?? corporateService?.subServices.find((item) => item.slug === categoryAliases[data.categoryTitle ?? ""])
-    ?? corporateService?.subServices.find((item) => item.slug === "entity-formation-business-setup");
-  const serviceTitle = data.serviceTitle ?? corporateService?.title ?? "Corporate & Commercial";
-  const serviceHref = data.serviceHref ?? `/services/${corporateService?.canonicalSlug ?? "corporate-commercial-advisory"}`;
+  const category = parentService?.subServices.find((item) => item.title === data.categoryTitle)
+    ?? parentService?.subServices.find((item) => item.slug === categoryAliases[data.categoryTitle ?? ""])
+    ?? (parentService?.canonicalSlug === corporateService?.canonicalSlug
+      ? parentService?.subServices.find((item) => item.slug === "entity-formation-business-setup")
+      : undefined);
   const categoryHref = data.categoryHref
-    ?? `${serviceHref}#${category?.slug ?? "entity-formation-business-setup"}`;
+    ?? `${parentService ? `/services/${parentService.canonicalSlug}` : "/services/corporate-commercial-advisory"}#${category?.slug ?? "entity-formation-business-setup"}`;
   const currentTestimonial = data.testimonials ? undefined : testimonials.find(
     (testimonial) =>
       testimonial.status === "approved" &&
@@ -102,7 +104,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <nav className={styles.breadcrumb} aria-label="Breadcrumb">
             <Link href="/">Home</Link><span>/</span>
             <Link href="/services">Services</Link><span>/</span>
-            <Link href={serviceHref}>{serviceTitle}</Link><span>/</span>
+            <Link href={data.serviceHref ?? data.categoryParentHref ?? "/services/corporate-commercial-advisory"}>{data.serviceTitle ?? data.categoryParentTitle ?? parentService?.title ?? "Corporate & Commercial"}</Link><span>/</span>
             <Link href={categoryHref}>{data.categoryTitle ?? category?.title ?? "Entity Formation & Business Setup"}</Link><span>/</span>
             <span aria-current="page">{data.title}</span>
           </nav>
@@ -112,8 +114,8 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <h2>{data.heroStatement}</h2>
             <p>{data.description}</p>
             <div className={styles.actions}>
-              <Link className={styles.primary} href="/professionals/enquiry">Get Started <Icon name="arrow" /></Link>
-              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+              <Link className={styles.primary} href={data.heroPrimaryHref ?? "/professionals/enquiry"}>{data.heroPrimaryAction ?? "Get Started"} <Icon name="arrow" /></Link>
+              <Link className={styles.secondary} href={data.heroSecondaryHref ?? "/contact"}>{data.heroSecondaryAction ?? "Schedule a Consultation"} <Icon name="calendar" /></Link>
             </div>
           </div>
           <div className={styles.heroNote}>
@@ -124,7 +126,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
-      {data.showIntro !== false && <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
+      {data.showIntro !== false && <PageSectionLayout variant="full-width">
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
           <div>
@@ -133,9 +135,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <p>{data.introduction}</p>
           </div>
           <aside className={styles.introPanel}>
-            <span>{data.focusEyebrow ?? "FORMATION PERSPECTIVE"}</span>
-            <h3>{data.focusTitle ?? "Start with the way you intend to work."}</h3>
-            <p>{data.focusDescription ?? "Consider your purpose, participants, responsibilities and plans before settling the formation brief."}</p>
+            <span>{data.introPanelEyebrow ?? "FORMATION PERSPECTIVE"}</span>
+            <h3>{data.introPanelHeading ?? "Start with the way you intend to work."}</h3>
+            <p>{data.introPanelDescription ?? "Consider your purpose, participants, responsibilities and plans before settling the formation brief."}</p>
           </aside>
         </div>
         </section>
@@ -149,7 +151,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             title={data.servicesHeading ?? "Coordinated support from planning to setup"}
             text={data.servicesDescription ?? "Bring the formation steps and connected requirements into one considered plan."}
           />
-          <div className={styles.serviceGrid}>
+          <div className={`${styles.serviceGrid} ${data.serviceCardsThreeColumns ? styles.serviceCardsThreeColumns : ""}`}>
             {data.services.map(([icon, title, description]) => (
               <article className={styles.serviceCard} key={title}>
                 <span className={styles.icon}><Icon name={icon} /></span>
@@ -159,8 +161,8 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             ))}
           </div>
           {data.relatedPages && (
-            <nav className={styles.relatedPages} aria-label="Foreign company office structures">
-              <span>Explore a specific India office structure</span>
+            <nav className={styles.relatedPages} aria-label="Related services">
+              <span>Explore related services</span>
               {data.relatedPages.map(([title, href]) => (
                 <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
               ))}
@@ -168,10 +170,8 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           )}
         </div>
         </section>
-      </PageSectionLayout>
 
-      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
-        <section className={styles.benefits} id="benefits">
+      <section className={`${styles.benefits} ${data.benefitCardsStacked ? styles.benefitsStacked : ""}`} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
             <Heading
@@ -184,7 +184,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
             <figcaption>{data.shortTitle}<br /><strong>Considered for your next chapter.</strong></figcaption>
           </figure>
-          <div className={styles.benefitGrid}>
+          <div className={`${styles.benefitGrid} ${data.benefitCards ? styles.benefitCards : ""} ${data.benefitCardsStacked ? styles.benefitCardsStacked : ""} ${data.benefitCardsThreeColumns ? styles.benefitCardsThreeColumns : ""} ${data.benefitCardsFourColumns ? styles.benefitCardsFourColumns : ""}`}>
             {data.benefits.map(([icon, title, text]) => (
               <article key={title}>
                 <span className={styles.icon}><Icon name={icon} /></span>
@@ -226,15 +226,34 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             title={data.comparisonHeading ?? "Which structure is right for you?"}
             text={data.comparisonDescription ?? "A discussion framework for comparing common entity choices. Requirements and tax treatment depend on the proposed activities and current law."}
           />
-          <div className={styles.tableWrap} role="region" aria-label={`${data.shortTitle} structure comparison`} tabIndex={0}>
-            <table>
-              <thead><tr><th>Features</th>{comparisonHeaders.map((item, index) => <th className={highlightIndex !== null && index === highlightIndex ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
-              <tbody>{data.comparison.map((row) => (
-                <tr key={row[0]}>{row.map((cell, index) => <td className={highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
-              ))}</tbody>
-            </table>
-          </div>
-          <p className={styles.tableNote}>Use this overview as a starting point for advice on the proposed structure and circumstances.</p>
+          {data.comparisonPanels ? (
+            <div className={styles.comparisonPanels}>
+              {data.comparisonPanels.map((panel) => (
+                <article className={styles.comparisonPanel} key={panel.heading}>
+                  <h3>{panel.heading}</h3>
+                  {panel.description && <p>{panel.description}</p>}
+                  <div className={styles.tableWrap} role="region" aria-label={`${panel.heading} comparison`} tabIndex={0}>
+                    <table>
+                      <thead><tr><th>Parameter</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
+                      <tbody>{panel.rows.map((row) => (
+                        <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
+                      ))}</tbody>
+                    </table>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.tableWrap} role="region" aria-label={`${data.shortTitle} structure comparison`} tabIndex={0}>
+              <table>
+                <thead><tr><th>Features</th>{comparisonHeaders.map((item, index) => <th className={highlightIndex !== null && index === highlightIndex ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
+                <tbody>{data.comparison.map((row) => (
+                  <tr key={row[0]}>{row.map((cell, index) => <td className={highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
+                ))}</tbody>
+              </table>
+            </div>
+          )}
+          <p className={styles.tableNote}>{data.comparisonNote ?? "Use this overview as a starting point for advice on the proposed structure and circumstances."}</p>
         </div>
         </section>
 
@@ -392,7 +411,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           {data.insights ? <div className={styles.articleGrid}>{data.insights.map(([title, date, category], index) => (
             <article key={title}>
               <Link href="/insights" className={styles.articleImage}><Image src={data.insightImages?.[index] ?? ["/Part-14 .png", "/Part-18 .png", "/Part-9 .png"][index]} alt="" fill sizes="(max-width: 650px) 100vw, 33vw" /></Link>
-              <div><span>{category} · {date}</span><h3><Link href="/insights">{title}</Link></h3><Link href="/insights" className={styles.readMore}>Read insight <Icon name="arrow" /></Link></div>
+              <div><span>{category}{date ? ` · ${date}` : ""}</span><h3><Link href="/insights">{title}</Link></h3><Link href="/insights" className={styles.readMore}>Read insight <Icon name="arrow" /></Link></div>
             </article>
           ))}</div> : <div className={styles.articleGrid}>{articles.map((article) => (
             <article key={article.slug}>

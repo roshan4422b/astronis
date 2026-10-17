@@ -7,33 +7,50 @@ type TestimonialItem = {
 
 export default function InsightsTestimonials({
   items,
+  autoScroll = false,
 }: {
   items: readonly TestimonialItem[];
+  autoScroll?: boolean;
 }) {
+  function renderItems(duplicate = false) {
+    return items.map((item, index) => {
+      const rating = item.rating ?? 5;
+
+      return (
+        <article
+          className="home-testimonial-card"
+          key={`${duplicate ? "duplicate-" : ""}${item.company}-${index}`}
+        >
+          <div
+            className="testimonial-rating"
+            role="img"
+            aria-label={`${rating} out of 5 stars`}
+          >
+            {"★".repeat(rating)}
+            <span>{"★".repeat(5 - rating)}</span>
+          </div>
+          <blockquote>“{item.quote}”</blockquote>
+          <strong>{item.company}</strong>
+          {item.designation && <small>{item.designation}</small>}
+        </article>
+      );
+    });
+  }
+
+  if (autoScroll) {
+    return (
+      <div className="testimonial-auto-scroll">
+        <div className="testimonial-track">
+          <div className="testimonial-lane">{renderItems()}</div>
+          <div className="testimonial-lane" aria-hidden="true">{renderItems(true)}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="home-testimonial-grid">
-      {items.map((item) => {
-        const rating = item.rating ?? 5;
-
-        return (
-          <article
-            className="home-testimonial-card"
-            key={`${item.company}-${item.quote}`}
-          >
-            <div
-              className="testimonial-rating"
-              role="img"
-              aria-label={`${rating} out of 5 stars`}
-            >
-              {"★".repeat(rating)}
-              <span>{"★".repeat(5 - rating)}</span>
-            </div>
-            <blockquote>“{item.quote}”</blockquote>
-            <strong>{item.company}</strong>
-            {item.designation && <small>{item.designation}</small>}
-          </article>
-        );
-      })}
+      {renderItems()}
     </div>
   );
 }
