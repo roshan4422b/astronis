@@ -31,84 +31,84 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
         slug: "private-limited",
         description:
           "Establish a private limited company with the right ownership, documentation and regulatory foundation.",
-        url: makeUrl("entity-formation", "private-limited"),
+        url: makeUrl("entity-formation-business-setup", "private-limited-company-incorporation"),
       },
       {
         name: "One Person Company (OPC)",
         slug: "opc",
         description:
           "Set up a single-owner structure with the right governance, filings and operational clarity.",
-        url: makeUrl("entity-formation", "opc"),
+        url: makeUrl("entity-formation-business-setup", "one-person-company-opc"),
       },
       {
         name: "Public Limited Company",
         slug: "public-limited-company",
         description:
           "Create a scalable public entity with the governance, shareholding and compliance framework to support growth.",
-        url: makeUrl("entity-formation", "public-limited-company"),
+        url: makeUrl("entity-formation-business-setup", "public-limited-company"),
       },
       {
         name: "Section 8 Company",
         slug: "section-8-company",
         description:
           "Establish a not-for-profit structure aligned with charitable, social or mission-driven objectives.",
-        url: makeUrl("entity-formation", "section-8-company"),
+        url: makeUrl("entity-formation-business-setup", "section-8-company"),
       },
       {
         name: "LLP Formation",
         slug: "llp-formation",
         description:
           "Shape a flexible LLP structure suited to professional or venture-driven business models.",
-        url: makeUrl("entity-formation", "llp-formation"),
+        url: makeUrl("entity-formation-business-setup", "llp-formation"),
       },
       {
         name: "Partnership Firm",
         slug: "partnership-firm",
         description:
           "Design a partnership structure that matches ownership, risk-sharing and commercial realities.",
-        url: makeUrl("entity-formation", "partnership-firm"),
+        url: makeUrl("entity-formation-business-setup", "partnership-firm"),
       },
       {
         name: "Proprietorship",
         slug: "proprietorship",
         description:
           "Set up a sole-owned business with a practical foundation for compliance and day-to-day operations.",
-        url: makeUrl("entity-formation", "proprietorship"),
+        url: makeUrl("entity-formation-business-setup", "sole-proprietorship"),
       },
       {
         name: "Wholly Owned Subsidiary",
         slug: "wholly-owned-subsidiary",
         description:
           "Create a subsidiary structure with the right governance, ownership and control framework for a parent company.",
-        url: makeUrl("entity-formation", "wholly-owned-subsidiary"),
+        url: makeUrl("entity-formation-business-setup", "wholly-owned-subsidiary"),
       },
       {
         name: "Foreign Company Setup",
         slug: "foreign-company-setup",
         description:
           "Assess the best route to establish a foreign company presence and align operational requirements with local laws.",
-        url: makeUrl("entity-formation", "foreign-company-setup"),
+        url: makeUrl("entity-formation-business-setup", "foreign-company-setup"),
       },
       {
         name: "Branch Office",
         slug: "branch-office",
         description:
           "Open a branch office for activities that require a more direct local operating presence.",
-        url: makeUrl("entity-formation", "branch-office"),
+        url: makeUrl("entity-formation-business-setup", "branch-office"),
       },
       {
         name: "Liaison Office",
         slug: "liaison-office",
         description:
           "Establish a liaison office to support market research, coordination and representative activities.",
-        url: makeUrl("entity-formation", "liaison-office"),
+        url: makeUrl("entity-formation-business-setup", "liaison-office"),
       },
       {
         name: "Project Office",
         slug: "project-office",
         description:
           "Create a project-specific office to support temporary or defined business operations in India.",
-        url: makeUrl("entity-formation", "project-office"),
+        url: makeUrl("entity-formation-business-setup", "project-office"),
       },
     ],
   },
@@ -125,56 +125,56 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
         slug: "entity-structuring",
         description:
           "Design and implement a tax-efficient entity structure aligned with commercial goals, regulatory requirements and growth plans.",
-        url: makeUrl("entity-structuring-group-reorganisation", "entity-structuring"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "entity-structuring"),
       },
       {
         name: "Group Structuring",
         slug: "group-structuring",
         description:
           "Align operating entities, shareholdings and governance with a clear group architecture.",
-        url: makeUrl("entity-structuring-group-reorganisation", "group-structuring"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "group-structuring"),
       },
       {
         name: "Holding & Subsidiary Structures",
         slug: "holding-subsidiary-structures",
         description:
           "Review holding-company and subsidiary arrangements to support control, governance and operational clarity.",
-        url: makeUrl("entity-structuring-group-reorganisation", "holding-subsidiary-structures"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "holding-and-subsidiary-structures"),
       },
       {
         name: "Shareholding Structuring",
         slug: "shareholding-structuring",
         description:
           "Shape equity arrangements around investment priorities, control and long-term decision-making.",
-        url: makeUrl("entity-structuring-group-reorganisation", "shareholding-structuring"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "shareholding-structuring"),
       },
       {
         name: "Capital Structuring",
         slug: "capital-structuring",
         description:
           "Balance debt, equity and investor arrangements against the company’s growth and risk profile.",
-        url: makeUrl("entity-structuring-group-reorganisation", "capital-structuring"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "capital-structuring"),
       },
       {
         name: "Business Reorganisation",
         slug: "business-reorganisation",
         description:
           "Reallocate business activities, teams and entities to improve efficiency and strategic focus.",
-        url: makeUrl("entity-structuring-group-reorganisation", "business-reorganisation"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "business-reorganisation"),
       },
       {
         name: "Corporate Conversion",
         slug: "corporate-conversion",
         description:
           "Convert between entity types to suit a new strategy, investor profile or operating model.",
-        url: makeUrl("entity-structuring-group-reorganisation", "corporate-conversion"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "corporate-conversion"),
       },
       {
         name: "Succession & Family Business Structuring",
         slug: "succession-family-business-structuring",
         description:
           "Design a structure that supports continuity, ownership transition and long-term family business objectives.",
-        url: makeUrl("entity-structuring-group-reorganisation", "succession-family-business-structuring"),
+        url: makeUrl("corporate-governance-and-entity-structuring", "succession-and-family-business-structuring"),
       },
     ],
   },
@@ -222,13 +222,6 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
         url: "/services/corporate-commercial-advisory/corporate-due-diligence",
       },
       {
-        name: "Transaction Documentation",
-        slug: "transaction-documentation",
-        description:
-          "Draft and coordinate transaction documents that reflect the agreed business and legal position.",
-        url: makeUrl("mergers-acquisitions-transactions", "transaction-documentation"),
-      },
-      {
         name: "Private Equity Transactions",
         slug: "private-equity-transactions",
         description:
@@ -242,13 +235,6 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
           "Review capital raising, equity investment and strategic investment arrangements around commercial priorities.",
         url: "/services/corporate-commercial-advisory/investment-transactions",
       },
-      {
-        name: "Closing & Post-Closing Support",
-        slug: "closing-post-closing-support",
-        description:
-          "Coordinate closing actions and post-closing steps to ensure a smooth transition and operational continuity.",
-        url: makeUrl("mergers-acquisitions-transactions", "closing-post-closing-support"),
-      },
     ],
   },
   {
@@ -259,13 +245,6 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
       "Establish governance structures that support accountability and long-term decision-making.",
     icon: "shield",
     children: [
-      {
-        name: "Board Advisory",
-        slug: "board-advisory",
-        description:
-          "Support directors and leadership teams in navigating board decisions, obligations and strategic oversight.",
-        url: makeUrl("corporate-governance", "board-advisory"),
-      },
       {
         name: "Governance Framework & Corporate Policies",
         slug: "governance-framework-corporate-policies",
@@ -392,39 +371,11 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
     icon: "chart",
     children: [
       {
-        name: "Merger",
-        slug: "merger",
+        name: "Demerger & Amalgamation",
+        slug: "demerger-amalgamation",
         description:
-          "Combine entities in a way that preserves value, aligns obligations and supports a clean transition.",
-        url: makeUrl("corporate-restructuring", "merger"),
-      },
-      {
-        name: "Demerger",
-        slug: "demerger",
-        description:
-          "Separate business lines or entities to sharpen focus, improve governance and manage operational complexity.",
-        url: makeUrl("corporate-restructuring", "demerger"),
-      },
-      {
-        name: "Amalgamation",
-        slug: "amalgamation",
-        description:
-          "Merge entities into a single structure with a clear legal and commercial implementation plan.",
-        url: makeUrl("corporate-restructuring", "amalgamation"),
-      },
-      {
-        name: "Capital Restructuring",
-        slug: "capital-restructuring",
-        description:
-          "Rebalance capital structures to support investment, liquidity and long-term business strategy.",
-        url: makeUrl("corporate-restructuring", "capital-restructuring"),
-      },
-      {
-        name: "Business Transfer",
-        slug: "business-transfer",
-        description:
-          "Transfer business units or assets while managing legal, operational and stakeholder continuity.",
-        url: makeUrl("corporate-restructuring", "business-transfer"),
+          "Assess and structure a demerger or amalgamation to support business reorganisation and strategic change.",
+        url: "/services/corporate-commercial-advisory/demerger-amalgamation",
       },
       {
         name: "Slump Sale",
@@ -434,25 +385,49 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
         url: "/services/corporate-commercial-advisory/slump-sale",
       },
       {
-        name: "Internal Reorganisation",
-        slug: "internal-reorganisation",
-        description:
-          "Align internal entity structures with operating priorities, ownership and strategic execution needs.",
-        url: makeUrl("corporate-restructuring", "internal-reorganisation"),
-      },
-      {
-        name: "Conversion",
-        slug: "conversion",
-        description:
-          "Convert an entity form as part of a broader restructuring or strategic business plan.",
-        url: makeUrl("corporate-restructuring", "conversion"),
-      },
-      {
         name: "Corporate Closure / Exit",
         slug: "corporate-closure-exit",
         description:
           "Plan an orderly exit or closure process with clear legal, regulatory and stakeholder coordination.",
         url: "/services/corporate-commercial-advisory/corporate-exit-plan",
+      },
+    ],
+  },
+  {
+    category: "Investment & Transaction Advisory",
+    categorySlug: "investment-and-transaction-advisory",
+    categoryNumber: "07",
+    categoryDescription:
+      "Structure investment decisions, market entry and transactions around your business objectives.",
+    icon: "chart",
+    children: [
+      {
+        name: "Commercial Due Diligence",
+        slug: "commercial-due-diligence",
+        description:
+          "Assess commercial, market and operational factors to support an informed investment or transaction decision.",
+        url: "/services/corporate-commercial-advisory/investment-and-transaction-advisory/commercial-due-diligence",
+      },
+      {
+        name: "India Entry Strategy",
+        slug: "india-entry-strategy",
+        description:
+          "Plan a route into the Indian market with a clear view of operating models, partners and business considerations.",
+        url: "/services/corporate-commercial-advisory/investment-and-transaction-advisory/india-entry-strategy",
+      },
+      {
+        name: "Investment Structuring",
+        slug: "investment-structuring",
+        description:
+          "Align investment terms, ownership, governance and commercial objectives in a practical transaction structure.",
+        url: "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investment-structuring",
+      },
+      {
+        name: "Investor Coordination",
+        slug: "investor-coordination",
+        description:
+          "Coordinate investor discussions, information flows and transaction requirements through the investment process.",
+        url: "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
       },
     ],
   },
