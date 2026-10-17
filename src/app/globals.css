@@ -4638,6 +4638,12 @@ textarea::placeholder {
 .insights-route-scope [class*="page"] :is([class*="insightCategory"], [class*="insightAudience"]) {
   color: #000 !important;
 }
+@media (min-width: 1051px) {
+  .site-header .nav-item.is-open .mega-menu {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
 .faq-route-scope,
 .success-stories-route-scope {
   color: #000;
@@ -4684,5 +4690,99 @@ textarea::placeholder {
   color: #fff !important;
 }
 .faq-route-scope [class*="__cta"] [class*="__secondaryButton"] {
+  color: #fff !important;
+}
+
+.global-presence-route-scope :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, .breadcrumb, .eyebrow) {
+  color: #111 !important;
+}
+.global-presence-route-scope :is(
+  p,
+  [class*="description" i],
+  [class*="summary" i],
+  [class*="cardBody"] > span,
+  [class*="cardBody"] > small,
+  [class*="modelBody"] > small,
+  [class*="resourceGrid"] small
+) {
+  font-size: 14px !important;
+}
+.global-presence-route-scope :is(
+  [class*="__darkSection"],
+  [class*="__knowledgeSection"],
+  [class*="__finalCta"],
+  [class*="__professionalPanel"],
+  [class*="__regionInfo"],
+  [class*="__journey"],
+  [class*="__cta"],
+  [class*="__subscribe"],
+  [class*="__enquiryIntro"],
+  [class*="__contactStrip"],
+  [class*="global-presence"][class*="__hero"],
+  .page-banner
+) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
+  color: #fff !important;
+}
+.global-presence-route-scope [class*="__journeyNumber"] {
+  color: #082b53 !important;
+}
+.global-presence-route-scope [class*="__enquiryCopy"] :is(h1, h2, h3, h4, h5, h6, p, span, a) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) {
+  border: 1px solid #0751db !important;
+  background: #0751db !important;
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) :is(span, strong, small, svg) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  a[class*="textLink"],
+  a[class*="inlineLink"],
+  a[class*="cardLink"],
+  a[class*="readLink"],
+  a[class*="viewLink"],
+  [class*="__sectionHeading"] > a,
+  [class*="__industryHeading"] > a
+) {
+  color: #0751db !important;
+}
+.global-presence-route-scope :is(
+  a[class*="primaryButton"],
+  a[class*="secondaryButton"],
+  a[class*="button"],
+  a[class*="Button"],
+  button[type="submit"],
+  [class*="__formActions"] button,
+  [class*="__cta"] a
+) {
+  border-color: #0751db !important;
+  background-color: #0751db !important;
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  a[class*="primaryButton"],
+  a[class*="secondaryButton"],
+  a[class*="button"],
+  a[class*="Button"],
+  button[type="submit"],
+  [class*="__formActions"] button,
+  [class*="__cta"] a
+) :is(span, strong, small, svg) {
   color: #fff !important;
 }
