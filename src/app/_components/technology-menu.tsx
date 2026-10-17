@@ -32,9 +32,10 @@ const allLinks = [
   ...explore.map(([title, href]) => ({ title, href })),
 ];
 const menuColumns = [
-  allLinks.slice(0, 8),
-  allLinks.slice(8, 15),
-  allLinks.slice(15),
+  allLinks.slice(0, 6),
+  allLinks.slice(6, 12),
+  allLinks.slice(12, 17),
+  allLinks.slice(17),
 ];
 
 const shortcuts = [

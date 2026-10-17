@@ -103,7 +103,7 @@ function ClientTextLink({ href, children }: { href: string; children: React.Reac
 }
 
 export default function CloudCollaborationPage() {
-  return <div className={styles.page}>
+  return <div className={`technology-digital-page ${styles.page}`}>
     <section className={styles.hero} aria-labelledby="cloud-title">
       <AssetImage src="/Technology&Digital/Banner- Cloud & Digital Infrastructure .png" alt="Cloud infrastructure supporting a connected enterprise workplace" fill preload sizes="100vw" />
       <div className={`${styles.wrap} ${styles.heroInner}`}>
@@ -117,7 +117,7 @@ export default function CloudCollaborationPage() {
 
     <section className={`${styles.wrap} ${styles.section}`} id="solutions"><div className={styles.sectionHeading}><h2>Our Cloud &amp; Digital Infrastructure Solutions</h2><TextLink href="#enquiry">Explore All Solutions</TextLink></div><div className={styles.solutions}>{solutions.map((solution) => <article className={styles.card} key={solution.title}><div className={styles.solutionImage}><AssetImage src={solution.image} alt="" fill sizes="(max-width: 540px) 90vw, (max-width: 1000px) 30vw, 16vw" /></div><div className={styles.cardBody}><h3>{solution.title}</h3><p>{solution.description}</p><TextLink href="#enquiry">Learn More</TextLink></div></article>)}</div></section>
 
-    <section className={styles.implementation} id="approach"><div className={styles.benefits}><h2>Business Benefits</h2><ul>{benefits.map((benefit) => <li key={benefit}><Icon name="shield" />{benefit}</li>)}</ul></div><div className={styles.steps}><h2>Our Implementation Approach</h2><ol>{steps.map(([title, description, icon], index) => <li key={title}><span className={styles.stepNumber}>0{index + 1}</span><Icon className={styles.stepIcon} name={icon} /><h3>{title}</h3><p>{description}</p></li>)}</ol></div><div className={styles.approachImage}><AssetImage src="/images/india-presence/mumbai.jpg" alt="Modern commercial infrastructure" fill sizes="20vw" /><span>Modern<br />Infrastructure<br />For a Brighter<br />Tomorrow.</span></div></section>
+    <section className={styles.implementation} id="approach"><div className={styles.benefits}><h2>Business Benefits</h2><ul>{benefits.map((benefit) => <li key={benefit}><Icon name="shield" />{benefit}</li>)}</ul></div><div className={styles.steps}><h2>Our Implementation Approach</h2><ol>{steps.map(([title, description, icon]) => <li key={title}><Icon className={styles.stepIcon} name={icon} /><h3>{title}</h3><p>{description}</p></li>)}</ol></div><div className={styles.approachImage}><AssetImage src="/images/india-presence/mumbai.jpg" alt="Modern commercial infrastructure" fill sizes="20vw" /><span>Modern<br />Infrastructure<br />For a Brighter<br />Tomorrow.</span></div></section>
 
     <div className={`${styles.wrap} ${styles.connections}`}><section><div className={styles.sectionHeading}><h2>Industries We Support</h2><TextLink href="/industries">View All Industries</TextLink></div><div className={styles.industries}>{industries.map(([icon, title, href]) => <Link href={href} key={title}><Icon name={icon} /><span>{title}</span></Link>)}</div></section><section><div className={styles.sectionHeading}><h2>Related Solutions</h2><TextLink href="/technology-and-digital-solutions">View All Solutions</TextLink></div><div className={styles.related}>{related.map(([title, href]) => <Link href={href} key={title}><Icon name="arrow" />{title}</Link>)}</div></section></div>
 

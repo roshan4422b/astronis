@@ -61,12 +61,12 @@
 .columns {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: 12px 13px 22px;
+  padding: 12px 13px 12px;
   flex: 1;
 }
 
 .column {
-  padding: 0 14px;
+  padding: 0 12px;
   border-right: 1px solid #dce8f4;
   min-width: 0;
 }
@@ -77,11 +77,11 @@
 
 .links a {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 13px;
+  grid-template-columns: 40px minmax(0, 1fr) 12px;
   align-items: center;
-  gap: 8px;
-  min-height: 64px;
-  padding: 5px 7px;
+  gap: 7px;
+  min-height: 56px;
+  padding: 4px 7px;
   border-bottom: 1px solid #e0eaf5;
   border-radius: 4px;
   color: #092b59;
@@ -100,20 +100,20 @@
 }
 
 .links a > svg:first-child {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   color: #0a3977;
   stroke-width: 2;
 }
 
 .links strong {
-  font: 700 13px/1.2 "Segoe UI", Arial, sans-serif;
+  font: 700 13px/1.18 "Segoe UI", Arial, sans-serif;
   white-space: normal;
 }
 
 .links small {
-  font: 14px/1.25 "Segoe UI", Arial, sans-serif;
-  color: #000;
+  font: clamp(11px, 0.85vw, 13px)/1.18 "Segoe UI", Arial, sans-serif;
+  color: #526785;
   white-space: normal;
 }
 
@@ -192,12 +192,12 @@
 .search input:focus { border-color:#d9bb86; }
 .search>svg { position:absolute; right:12px; top:13px; width:17px; height:17px; color:#e5c18a; pointer-events:none; }
 .quickLinks { display:grid; }
-.quickLinks a,.contact { display:grid; grid-template-columns:23px minmax(0,1fr) 13px; gap:10px; align-items:center; padding:12px 0; border-bottom:1px solid #b1c8df24; color:#f0f5fb; }
+.quickLinks a,.contact { display:grid; grid-template-columns:23px minmax(0,1fr) 13px; gap:9px; align-items:center; padding:9px 0; border-bottom:1px solid #b1c8df24; color:#f0f5fb; }
 .quickLinks a>svg:first-child,.contact>svg:first-child { width:21px; height:21px; color:#d6b87e; }
 .quickLinks a>svg:last-child,.contact>svg:last-child { width:13px; height:13px; color:#9ab5d0; }
-.quickLinks a span,.contact span { display:grid; gap:4px; min-width:0; }
-.quickLinks strong,.contact strong { font:600 12px/1.25 "Segoe UI",Arial,sans-serif; white-space:normal; }
-.quickLinks small,.contact small { font:14px/1.35 "Segoe UI",Arial,sans-serif; color:#fff; white-space:normal; }
+.quickLinks a span,.contact span { display:grid; gap:3px; min-width:0; }
+.quickLinks strong,.contact strong { font:600 12px/1.2 "Segoe UI",Arial,sans-serif; white-space:normal; }
+.quickLinks small,.contact small { font:12px/1.25 "Segoe UI",Arial,sans-serif; color:#d5e2f0; white-space:normal; }
 .sidebar .quickLinks a:global(.active-submenu-item) { color:#fff; background:#ffffff12; }
 .sidebar .quickLinks a:global(.active-submenu-item) small { color:#fff; }
 .quickLinks a:last-child { border-bottom:0; }
@@ -318,7 +318,7 @@
 }
 
 .links strong {
-  font-size: max(var(--font-size-min), 14px);
+  font-size: max(var(--font-size-min), 13px);
 }
 
 .links a > svg {

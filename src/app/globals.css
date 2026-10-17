@@ -4576,3 +4576,25 @@ textarea::placeholder {
 #main-content .about-page-scope .about-story-section :is(.eyebrow, h2, p) {
   color: #fff !important;
 }
+
+.technology-digital-page :is(p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #000 !important;
+}
+.technology-digital-page a :is(span, strong, small) {
+  color: inherit !important;
+}
+.technology-digital-page :is([class*="hero"], [class*="solutionsSection"], [class*="approach"], [class*="teamSection"], [class*="specialistCard"], [class*="extendedTeam"], [class*="enquirySection"], [class*="challengePanel"], [class*="benefitsPanel"], [class*="securityPanel"], [class*="teamProfessional"], [class*="cta"]) :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #fff !important;
+}
+.technology-digital-page:not(.technology-digital-landing-page) [class*="specialistsSection"] :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #fff !important;
+}
+.technology-digital-page [class*="implementation"] [class*="benefits"] :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong) {
+  color: #fff !important;
+}
+.technology-digital-page :is([class*="enquiryPanel"], [class*="formPanel"], [class*="formShell"]) :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #000 !important;
+}
+.technology-digital-page [class*="hero"] a:not([class*="textLink"]):not([class*="arrowLink"]) {
+  color: #fff !important;
+}
