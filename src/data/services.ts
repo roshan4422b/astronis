@@ -183,6 +183,20 @@ const images = [
 
 const icons = ["building", "shield", "scale", "chart", "file", "shield", "globe", "percent", "building", "people", "globe"];
 
+const serviceHeroImages: Record<string, string> = {
+  "corporate-commercial-advisory": "Futuristic Blue Boardroom Skyline.png",
+  "regulatory-services": "Confidential Documents in a Blue Office.png",
+  "litigation-dispute-resolution": "sr Contract Management .png",
+  "business-advisory-contracts": "Corporate Contract Signing in Blue.png",
+  "licensing-registrations": "sr Shareholders' Agreements .png",
+  "intellectual-property-right-services": "sr Share Subscription Agreements .png",
+  "fema-fdi-cross-border": "Global Business Partnership In Blue.png",
+  "taxation-compliance": "Global Finance in Blue Light.png",
+  "banking-insolvency-restructuring-advisory": "sr Investment Agreements .png",
+  "industrial-employment-forensics-advisory": "sr oint Venture Agreements .png",
+  "environmental-technology-sector-specific": "sr .png",
+};
+
 const corporateChildHeroImages: Record<string, string> = {
   "private-limited-company-incorporation": "1.1.png",
   opc: "1.2.png",
@@ -225,7 +239,7 @@ export const services = hierarchy.map((service, index) => ({
   description: descriptions[index],
   icon: icons[index],
   image: images[index],
-  heroImage: `/services/services hero banner/${Number(service.number)}s.png`,
+  heroImage: `/services/services hero banner/${serviceHeroImages[service.slug]}`,
   category: service.title,
   subServices: service.subServices.map((group) => ({
     ...group,
