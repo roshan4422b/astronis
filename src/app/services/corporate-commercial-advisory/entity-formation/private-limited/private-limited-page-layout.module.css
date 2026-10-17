@@ -20,6 +20,9 @@
 .pageContent {
   grid-column: 1;
   min-width: 0;
+  --ink: #000;
+  --muted: #000;
+  color: #000;
 }
 
 .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
@@ -623,4 +626,179 @@
 .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] small),
 .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] p) {
   color: #000;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="benefits"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="comparison"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="process"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="documents"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="requirements"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="pricing"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="faq"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="testimonial"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="insights"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="knowledge"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="experience"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) h3,
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"]) h3,
+.pageContent :global(section[class*="comparison"]) :global([class*="comparisonPanel"]) h3,
+.pageContent :global(section[class*="comparison"]) :global([class*="tableWrap"]) td,
+.pageContent :global(section[class*="process"]) :global([class*="timeline"]) h3,
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"]) h3,
+.pageContent :global(section[class*="pricing"]) :global(strong[class*="price"]),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"]) summary,
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"]) blockquote,
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"]) figcaption strong,
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"]) h3 a,
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"]) h3,
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"]) h3 {
+  color: #000;
+}
+
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:focus-visible) {
+  color: #000;
+}
+
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .nav-link.active),
+:global(body:has([data-text-size="plus-two"])) :global(.skip-link) {
+  color: #000;
+}
+
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible)),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible) strong),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible) small),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__result"]) {
+  color: #000;
+}
+
+:global([data-text-size="plus-two"]) :global(section[class*="hero"]) :global(a[class*="primary"]),
+.pageContent :global(section[class*="final"]) a {
+  color: #000;
+}
+
+.pageContent :global(section[class*="final"]) a,
+.pageContent :global(section[class*="final"]) a:hover,
+.pageContent :global(section[class*="final"]) a:focus-visible {
+  background: #fff !important;
+  border-color: #fff !important;
+  color: #000 !important;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div) {
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global(svg),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="icon"]),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="Icon"]) {
+  color: #0751db !important;
+}
+
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li strong),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li p) {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] a),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article a),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li a),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article a),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article a),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details a),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure a),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article a),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li a),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div a) {
+  color: #000 !important;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div span:not([class*="icon"]):not([class*="Icon"])) {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceAction"]) {
+  color: #000;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover) {
+  color: #fff !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover),
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure:hover),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover),
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover),
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover) {
+    background-color: #0751db !important;
+    background-image: none !important;
+  }
+
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not([class*="priceButton"])),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover li svg) {
+    color: #138073 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"] svg),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover [class*="readMore"] svg),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover [class*="resourceAction"] svg),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover a svg) {
+    color: #000 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"]),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover) {
+    background: #fff !important;
+    border-color: #0751db !important;
+    color: #000 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"] svg),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover svg) {
+    color: #000 !important;
+  }
 }
