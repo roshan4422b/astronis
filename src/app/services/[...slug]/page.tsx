@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ? getAdditionalServiceDetailPage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
       : undefined;
     if (additionalServicePage) {
-      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${additionalServicePage.slug}`;
       return {
         title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
         description: additionalServicePage.description,
