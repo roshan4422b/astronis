@@ -60,6 +60,8 @@ const employmentAndLabourChildRoutes: Record<string, string> = {
     "/services/industrial-employment-forensics-advisory/employment-and-labour/employment-contracts",
   "Labour Law Compliance":
     "/services/industrial-employment-forensics-advisory/employment-and-labour/labour-law-compliance",
+  "Human Resource Policies":
+    "/services/industrial-employment-forensics-advisory/employment-and-labour/human-resource-policies",
   "Employee Handbook":
     "/services/industrial-employment-forensics-advisory/employment-and-labour/employee-handbook",
   "Termination / Separation Advisory":
@@ -107,6 +109,37 @@ const bankingFinancialServicesChildRoutes: Record<string, string> = {
     "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/banking-loan-security-documentation",
   "Financial Institution Advisory":
     "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-institution-advisory",
+};
+
+const technologyPrivacyChildRoutes: Record<string, string> = {
+  "DPDP (Digital Personal Data Protection) Compliance":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/dpdp-compliance",
+  "Data Protection & Privacy":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/data-protection-and-privacy",
+  "Data Processing Agreements":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/data-processing-agreements",
+  "AI Governance & Regulatory Advisory":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/ai-governance-regulatory-advisory",
+  "Technology Contracts":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/technology-contracts",
+  "IT Agreements":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/it-agreements",
+  "Cybersecurity Regulatory Advisory":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/cybersecurity-regulatory-advisory",
+  "E-Commerce Regulatory":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/e-commerce-regulatory",
+  "SaaS (Software as a Service) Agreements":
+    "/services/environmental-technology-sector-specific/technology-privacy-and-digital/saas-software-as-a-service-agreements",
+};
+
+const sustainabilityChildRoutes: Record<string, string> = {
+  "Sustainability Reporting Coordination":
+    "/services/environmental-technology-sector-specific/esg-and-sustainability/sustainability-reporting-coordination",
+};
+
+const ngoInstitutionalChildRoutes: Record<string, string> = {
+  "NGO Registration, Nonprofit Compliance & Institutional Advisory":
+    "/services/licensing-registrations/ngo-institutional/ngo-registration-nonprofit-compliance-institutional-advisory",
 };
 
 const descriptions = [
@@ -208,6 +241,15 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "banking-and-financial-services"
       ? { childRoutes: bankingFinancialServicesChildRoutes }
+      : {}),
+    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
+      ? { childRoutes: technologyPrivacyChildRoutes }
+      : {}),
+    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "esg-and-sustainability"
+      ? { childRoutes: sustainabilityChildRoutes }
+      : {}),
+    ...(service.slug === "licensing-registrations" && group.slug === "ngo-institutional"
+      ? { childRoutes: ngoInstitutionalChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),

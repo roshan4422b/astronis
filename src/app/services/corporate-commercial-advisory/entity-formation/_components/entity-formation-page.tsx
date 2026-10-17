@@ -73,9 +73,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         ["FAQs", "faqs"],
       ];
   const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
-  const benefitsSectionLayout = data.showSectionNavigation
-    ? { variant: "with-sidebar" as const, navItems: sectionNavItems }
-    : { variant: "full-width" as const };
   const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
   const defaultAlternatives = data.slug === "opc"
     ? ["One Person Company", "Private Limited Company", "LLP", "Partnership"]
@@ -129,7 +126,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
-      {data.showIntro !== false && <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
+      {data.showIntro !== false && <PageSectionLayout variant="full-width">
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
           <div>
@@ -173,9 +170,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           )}
         </div>
         </section>
-      </PageSectionLayout>
 
-      <PageSectionLayout {...benefitsSectionLayout}>
       <section className={`${styles.benefits} ${data.benefitCardsStacked ? styles.benefitsStacked : ""}`} id="benefits">
         <div className={`container ${styles.benefitLayout}`}>
           <div>
