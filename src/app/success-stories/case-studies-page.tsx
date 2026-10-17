@@ -250,7 +250,7 @@ export default function CaseStudiesPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={`success-stories-route-scope ${styles.page}`}>
       <section className={styles.hero}>
         <AssetImage
           src="/legal-professionals-hero.png"

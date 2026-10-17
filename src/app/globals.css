@@ -4598,3 +4598,91 @@ textarea::placeholder {
 .technology-digital-page [class*="hero"] a:not([class*="textLink"]):not([class*="arrowLink"]) {
   color: #fff !important;
 }
+.insights-route-scope p,
+.insights-route-scope [class*="description"],
+.insights-route-scope [class*="excerpt"],
+.insights-route-scope [class*="tagline"],
+.insights-route-scope [class*="summary"] {
+  font-size: 15px !important;
+}
+.insights-route-scope p {
+  color: #000 !important;
+}
+.insights-route-scope :is(h1, h2, h3, h4, h5, h6, li, small, time, figcaption, blockquote, label, strong, span, [class*="description"], [class*="excerpt"], [class*="tagline"], [class*="summary"]) {
+  color: #000 !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) {
+  background-color: #082b53 !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="breadcrumb"]) {
+  color: #fff !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) [class*="breadcrumb"] a {
+  color: #fff !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) :is([class*="heroShade"], [class*="heroImageShade"]) {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53a8 100%) !important;
+}
+.insights-route-scope .page-banner--insights:after {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53a8 100%) !important;
+}
+.insights-route-scope :is([class*="cta"], [class*="newsletter"], [class*="promoPanel"], [class*="analysisCard"], [class*="featuredUpdate"], [class*="featuredAnalysis"], [class*="reportCover"], [class*="darkPanel"], [class*="teamSection"]) :is(h1, h2, h3, h4, h5, h6, p, li, small, time, span, strong, label) {
+  color: #fff !important;
+}
+.insights-route-scope :is([class*="cta"], [class*="newsletter"], [class*="promoPanel"], [class*="analysisCard"], [class*="featuredUpdate"], [class*="featuredAnalysis"], [class*="reportCover"], [class*="darkPanel"], [class*="teamSection"]) :is([class*="description"], [class*="excerpt"], [class*="tagline"], [class*="summary"]) {
+  color: #fff !important;
+}
+.insights-route-scope section[class*="hero"] :is([class*="heroCourtNote"], [class*="regulatorShowcase"]) :is(h1, h2, h3, p, small, span, strong, li, time, label) {
+  color: #000 !important;
+}
+.insights-route-scope [class*="page"] :is([class*="insightCategory"], [class*="insightAudience"]) {
+  color: #000 !important;
+}
+.faq-route-scope,
+.success-stories-route-scope {
+  color: #000;
+}
+.faq-route-scope :is(p, h1, h2, h3, h4, h5, h6, li, small, time, strong, span, label),
+.success-stories-route-scope :is(p, h1, h2, h3, h4, h5, h6, li, small, time, strong, span, label) {
+  color: #000 !important;
+}
+.faq-route-scope p,
+.success-stories-route-scope p {
+  font-size: 15px !important;
+}
+.faq-route-scope [class$="__hero"],
+.success-stories-route-scope [class$="__hero"],
+.success-stories-route-scope .page-banner {
+  background-color: #082b53 !important;
+}
+.faq-route-scope [class*="__heroShade"],
+.success-stories-route-scope [class*="__heroShade"],
+.success-stories-route-scope .page-banner::after {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53b8 100%) !important;
+}
+.faq-route-scope [class$="__hero"] :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="__breadcrumb"], [class*="__breadcrumb"] a),
+.success-stories-route-scope [class$="__hero"] :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="__breadcrumb"], [class*="__breadcrumb"] a),
+.success-stories-route-scope .page-banner :is(h1, h2, h3, p, small, span, li, time, strong, label, .breadcrumb, .breadcrumb a) {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__ctaSection"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, strong, label),
+.success-stories-route-scope :is([class*="__promoPanel"], [class*="__subscribe"], [class*="__subscribeInner"]) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, strong, label) {
+  color: #fff !important;
+}
+.success-stories-route-scope [class*="__industryCard"] > span,
+.success-stories-route-scope [class*="__episodeImage"] > small,
+.success-stories-route-scope [class*="__badge"] {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__primaryButton"],
+.faq-route-scope [class*="__secondaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__secondaryButton"], [class*="__readLink"], [class*="__sectionHeading"] > a, [class*="__resourceCard"] em, [class*="__promoPanel"] > a, [class*="__emailRow"] button) {
+  color: var(--blue, #0751db) !important;
+}
+.faq-route-scope [class*="__primaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__emailRow"] button) {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__cta"] [class*="__secondaryButton"] {
+  color: #fff !important;
+}
