@@ -27,7 +27,7 @@ export const contractAndRestructuringPages: EntityFormationPageData[] = [
     basicPrice: "₹59,999/- Onwards",
     comprehensivePrice: "₹1,49,999/- Onwards",
     categoryTitle: "Commercial Contracts",
-    categoryHref: "/services/corporate-commercial-advisory",
+    categoryHref: "/services/business-advisory-contracts#commercial-contracts",
     heroEyebrow: "CORPORATE & COMMERCIAL ADVISORY · FRANCHISE AGREEMENTS",
     servicesHeading: "Support across the franchise lifecycle",
     servicesDescription:
@@ -121,7 +121,7 @@ export const contractAndRestructuringPages: EntityFormationPageData[] = [
     basicPrice: "₹19,999/- Onwards",
     comprehensivePrice: "₹49,999/- Onwards",
     categoryTitle: "Commercial Contracts",
-    categoryHref: "/services/corporate-commercial-advisory",
+    categoryHref: "/services/business-advisory-contracts#commercial-contracts",
     heroEyebrow: "CORPORATE & COMMERCIAL ADVISORY · NDA",
     servicesHeading: "Confidentiality protection that works in real business situations",
     servicesDescription:
@@ -216,7 +216,7 @@ export const contractAndRestructuringPages: EntityFormationPageData[] = [
     basicPrice: "₹19,999/- Onwards",
     comprehensivePrice: "₹49,999/- Onwards",
     categoryTitle: "Commercial Contracts",
-    categoryHref: "/services/corporate-commercial-advisory",
+    categoryHref: "/services/business-advisory-contracts#commercial-contracts",
     heroEyebrow: "CORPORATE & COMMERCIAL ADVISORY · EMPLOYMENT / CONSULTANCY AGREEMENTS",
     servicesHeading: "Support for workforce and consultant arrangements",
     servicesDescription:
@@ -310,7 +310,7 @@ export const contractAndRestructuringPages: EntityFormationPageData[] = [
     basicPrice: "₹49,999/- Onwards",
     comprehensivePrice: "₹99,999/- Onwards",
     categoryTitle: "Commercial Contracts",
-    categoryHref: "/services/corporate-commercial-advisory",
+    categoryHref: "/services/business-advisory-contracts#commercial-contracts",
     heroEyebrow: "CORPORATE & COMMERCIAL ADVISORY · CONTRACT MANAGEMENT",
     servicesHeading: "Contracts managed as part of business operations",
     servicesDescription:

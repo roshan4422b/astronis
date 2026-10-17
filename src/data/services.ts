@@ -27,15 +27,26 @@ const corporateGovernanceChildRoutes: Record<string, string> = {
   "Slump Sale": "/services/corporate-commercial-advisory/slump-sale",
 };
 
-const investmentAndTransactionChildRoutes: Record<string, string> = {
-  "Investor Coordination":
-    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
-  "Commercial Due Diligence":
-    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/commercial-due-diligence",
-  "India Entry Strategy":
-    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/india-entry-strategy",
-  "Investment Structuring":
-    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investment-structuring",
+const commercialContractChildRoutes: Record<string, string> = {
+  "Contract Drafting, Review & Negotiations": "/services/corporate-commercial-advisory/contract-drafting-review-negotiations",
+  "Contract Management": "/services/corporate-commercial-advisory/contract-management",
+  "Shareholders' Agreements": "/services/corporate-commercial-advisory/shareholders-agreements",
+  "Share Subscription Agreements": "/services/corporate-commercial-advisory/share-subscription-agreements",
+  "Joint Venture Agreements": "/services/corporate-commercial-advisory/joint-venture-agreements",
+  "Investment Agreements": "/services/corporate-commercial-advisory/investment-agreements",
+  "Vendor Supply Agreements": "/services/corporate-commercial-advisory/vendor-supply-agreements",
+  "Distribution Agreements": "/services/corporate-commercial-advisory/distribution-agreements",
+  "Franchise Agreements": "/services/corporate-commercial-advisory/franchise-agreements",
+  "Non-Disclosure Agreement": "/services/corporate-commercial-advisory/ndas",
+  "Employment / Consultancy Agreements": "/services/corporate-commercial-advisory/employment-consultancy-agreements",
+};
+
+const trademarkChildRoutes: Record<string, string> = {
+  "Trademark Search & Filing": "/services/intellectual-property-right-services/trademark/trademark-search-filing",
+  Opposition: "/services/intellectual-property-right-services/trademark/opposition",
+  "Reply to Examination Response": "/services/intellectual-property-right-services/trademark/reply-to-examination-response",
+  Renewal: "/services/intellectual-property-right-services/trademark/renewal",
+  "Prosecution & Enforcement": "/services/intellectual-property-right-services/trademark/prosecution-enforcement",
 };
 
 const workplaceComplianceChildRoutes: Record<string, string> = {
@@ -224,32 +235,8 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "corporate-commercial-advisory" && group.slug === "corporate-governance-and-entity-structuring"
       ? { childRoutes: corporateGovernanceChildRoutes }
       : {}),
-    ...(service.slug === "business-advisory-contracts" && group.slug === "investment-and-transaction-advisory"
-      ? { childRoutes: investmentAndTransactionChildRoutes }
-      : {}),
-    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "workplace-compliances"
-      ? { childRoutes: workplaceComplianceChildRoutes }
-      : {}),
-    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "employment-and-labour"
-      ? { childRoutes: employmentAndLabourChildRoutes }
-      : {}),
-    ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "risk-forensics-and-investigations"
-      ? { childRoutes: riskForensicsChildRoutes }
-      : {}),
-    ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "insolvency-and-restructuring"
-      ? { childRoutes: insolvencyRestructuringChildRoutes }
-      : {}),
-    ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "banking-and-financial-services"
-      ? { childRoutes: bankingFinancialServicesChildRoutes }
-      : {}),
-    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
-      ? { childRoutes: technologyPrivacyChildRoutes }
-      : {}),
-    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "esg-and-sustainability"
-      ? { childRoutes: sustainabilityChildRoutes }
-      : {}),
-    ...(service.slug === "licensing-registrations" && group.slug === "ngo-institutional"
-      ? { childRoutes: ngoInstitutionalChildRoutes }
+    ...(service.slug === "business-advisory-contracts" && group.slug === "commercial-contracts"
+      ? { childRoutes: commercialContractChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
