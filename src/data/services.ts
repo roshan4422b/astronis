@@ -27,6 +27,20 @@ const corporateGovernanceChildRoutes: Record<string, string> = {
   "Slump Sale": "/services/corporate-commercial-advisory/slump-sale",
 };
 
+const commercialContractChildRoutes: Record<string, string> = {
+  "Contract Drafting, Review & Negotiations": "/services/corporate-commercial-advisory/contract-drafting-review-negotiations",
+  "Contract Management": "/services/corporate-commercial-advisory/contract-management",
+  "Shareholders' Agreements": "/services/corporate-commercial-advisory/shareholders-agreements",
+  "Share Subscription Agreements": "/services/corporate-commercial-advisory/share-subscription-agreements",
+  "Joint Venture Agreements": "/services/corporate-commercial-advisory/joint-venture-agreements",
+  "Investment Agreements": "/services/corporate-commercial-advisory/investment-agreements",
+  "Vendor Supply Agreements": "/services/corporate-commercial-advisory/vendor-supply-agreements",
+  "Distribution Agreements": "/services/corporate-commercial-advisory/distribution-agreements",
+  "Franchise Agreements": "/services/corporate-commercial-advisory/franchise-agreements",
+  "Non-Disclosure Agreement": "/services/corporate-commercial-advisory/ndas",
+  "Employment / Consultancy Agreements": "/services/corporate-commercial-advisory/employment-consultancy-agreements",
+};
+
 const trademarkChildRoutes: Record<string, string> = {
   "Trademark Search & Filing": "/services/intellectual-property-right-services/trademark/trademark-search-filing",
   Opposition: "/services/intellectual-property-right-services/trademark/opposition",
@@ -147,6 +161,9 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "corporate-commercial-advisory" && group.slug === "corporate-governance-and-entity-structuring"
       ? { childRoutes: corporateGovernanceChildRoutes }
+      : {}),
+    ...(service.slug === "business-advisory-contracts" && group.slug === "commercial-contracts"
+      ? { childRoutes: commercialContractChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
