@@ -334,6 +334,38 @@
   display: none;
 }
 
+.pageSectionNavBack {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: 4px;
+  background: #0644b8;
+  color: #fff;
+  font: inherit;
+  font-size: max(var(--font-size-min), 14px);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pageSectionNavBack:hover,
+.pageSectionNavBack:focus-visible {
+  border-color: #fff;
+  background: #053a9d;
+}
+
+.pageSectionNavBackIcon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  transform: rotate(180deg);
+}
+
 .pageSectionNavBrand {
   display: flex;
   width: 100%;

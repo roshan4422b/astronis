@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useState, type MouseEvent } from "react";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
@@ -34,6 +35,7 @@ export default function PageSectionNav({
   mobileCollapsible?: boolean;
   branded?: boolean;
 }) {
+  const router = useRouter();
   const visibleItems = useMemo(
     () => items.filter(({ id, label }) => id !== "overview" && label.trim().toLowerCase() !== "overview"),
     [items],
@@ -128,9 +130,22 @@ export default function PageSectionNav({
       aria-hidden={isHidden}
     >
       {branded && (
-        <Link className={styles.pageSectionNavBrand} href="/" aria-label="Astronis Global home">
-          <Image src="/astronis_logo.jpeg" alt="Astronis Global" width={250} height={94} />
-        </Link>
+        <>
+          <button
+            className={styles.pageSectionNavBack}
+            type="button"
+            onClick={() => {
+              if (window.history.length > 1) window.history.back();
+              else router.push("/");
+            }}
+          >
+            <Icon className={styles.pageSectionNavBackIcon} name="arrow" />
+            <span>Back</span>
+          </button>
+          <Link className={styles.pageSectionNavBrand} href="/" aria-label="Astronis Global home">
+            <Image src="/astronis_logo.jpeg" alt="Astronis Global" width={250} height={94} />
+          </Link>
+        </>
       )}
       {mobileCollapsible && (
         <button

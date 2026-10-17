@@ -74,11 +74,13 @@ const process = [
   ["Document preparation", "Prepare the incorporation information, declarations and MOA and AOA for review."],
   ["Filing with ROC", "File the incorporation application and supporting documents with the Registrar of Companies."],
   ["Certificate of incorporation", "Receive the certificate after the application is approved."],
-  ["PAN, TAN & bank account", "Coordinate tax identifiers and next steps for the company's bank account."],
+  ["PAN assistance", "Coordinate the company's Permanent Account Number (PAN) application."],
+  ["TAN assistance", "Coordinate the Tax Deduction and Collection Account Number (TAN) application."],
+  ["Bank account assistance", "Support the next steps for opening the company's bank account."],
   ["Post-incorporation compliances", "Set up initial records, governance routines and applicable ongoing filings."],
 ];
 
-const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
+const processIcons = ["people", "search", "document", "file", "award", "file", "percent", "building", "calendar"];
 
 const sampleTestimonials = [
   {
