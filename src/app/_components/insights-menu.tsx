@@ -64,7 +64,6 @@ export default function InsightsMenu({ id, onNavigate }: { id: string; onNavigat
     
     <div className={styles.main}>
       <div className={styles.columns}>{columns.map((column) => <section className={styles.column} key={column.title} aria-label={column.title}>
-        <div className={styles.heading}><Icon name={column.icon} /><span><h3>{column.title}</h3><p>{column.tagline}</p></span></div>
         <div className={styles.links}>{column.links.map(([icon, title, description]) => {
           const href = hrefFor(title);
           return <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><span className={styles.chevron} aria-hidden="true">›</span></Link>;

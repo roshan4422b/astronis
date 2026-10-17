@@ -8,17 +8,20 @@
 .page a:focus-visible, .page summary:focus-visible, .page button:focus-visible { outline: 2px solid #0759ff; outline-offset: 4px; }
 .hero { position: relative; min-height: 355px; overflow: hidden; background: #ddecf6; }
 .hero > img { object-fit: cover; object-position: center 57%; }
-.heroShade { position: absolute; inset: 0; background: linear-gradient(90deg, #f7fbfff5 0%, #e7f4fff0 30%, #d4e9fba6 48%, transparent 69%, #e9f5ffb0 100%); }
+.heroShade { position: absolute; inset: 0; background: linear-gradient(100deg, #062448e8 0%, #073d70d9 48%, #07508ba6 100%); }
 .heroInner { position: relative; display: flex; justify-content: space-between; align-items: center; min-height: 355px; padding-block: 35px; gap: 30px; }
 .eyebrow { display: block; font-size: max(var(--font-size-min), 12px); letter-spacing: 2.4px; text-transform: uppercase; margin-bottom: 15px; }
-.hero h1 { color: #081526; font: 400 clamp(34px, 3.5vw, 57px)/1.02 Georgia, serif; letter-spacing: -2px; }
-.hero p { color: #172139; font-size: max(var(--font-size-min), clamp(17px, 1.5vw, 23px)); margin: 12px 0 16px; }
+.hero h1 { color: #fff; font: 400 clamp(34px, 3.5vw, 57px)/1.02 Georgia, serif; letter-spacing: -2px; }
+.hero p { color: #f1f6fc; font-size: 14px; margin: 12px 0 16px; }
+.hero .eyebrow { color: #f1f6fc; }
 .button, .lightButton { display: inline-flex; align-items: center; justify-content: center; gap: 28px; padding: 12px 28px; background: linear-gradient(110deg, #052653, #064581); border: 1px solid #18467a; border-radius: 3px; color: white; font: 16px Georgia, serif; cursor: pointer; }
+.hero .button { background: #0759d9; border: 1px solid #fff; box-shadow: 0 6px 18px #00152e80; }
+.hero .button:hover { background: #034da8; }
 .button svg, .lightButton svg, .textLink svg { width: 18px; height: 18px; flex: none; }
 .button:hover { background: #07549a; }
 .button:disabled { opacity: .65; cursor: wait; }
-.heroMotto { border-left: 1px solid #294a7e; padding: 8px 0 8px 28px; text-transform: uppercase; letter-spacing: 2px; font-size: max(var(--font-size-min), 12px); line-height: 1.7; color: #091d43; }
-.heroMotto span { display: block; margin-top: 18px; padding-top: 16px; border-top: 1px solid #657b9b; }
+.heroMotto { border-left: 1px solid #ffffff80; padding: 8px 0 8px 28px; text-transform: uppercase; letter-spacing: 2px; font-size: max(var(--font-size-min), 12px); line-height: 1.7; color: #fff; }
+.heroMotto span { display: block; margin-top: 18px; padding-top: 16px; border-top: 1px solid #ffffff80; }
 .pillars { display: grid; grid-template-columns: repeat(4, 1fr); padding: 15px 0; margin-block: 18px; background: linear-gradient(120deg, #f1f9ff, #f9fcff); }
 .pillars > a { display: grid; grid-template-columns: 58px 1fr; gap: 8px 20px; padding: 4px 23px; border-right: 1px solid #bedaff; }
 .pillars > a:last-child { border: 0; }
@@ -113,7 +116,7 @@
 }
 @media (max-width: 800px) {
   .heroMotto { display: none; }
-  .heroShade { background: linear-gradient(90deg, #f1f8fff5, #e6f4ffdb 55%, #deeeff55); }
+  .heroShade { background: linear-gradient(100deg, #062448ed, #073d70db 65%, #07508bb3); }
   .pillars, .solutionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 0; }
   .pillars > a:nth-child(2) { border: 0; }
   .pillars h2 { min-height: 0; }
@@ -128,7 +131,7 @@
 @media (max-width: 520px) {
   .hero h1 { font-size: max(var(--font-size-min), 37px); letter-spacing: -1.3px; }
   .heroInner { min-height: 380px; }
-  .hero p { font-size: max(var(--font-size-min), 18px); }
+  .hero p { font-size: 14px; }
   .desktopBreak { display: none; }
   .eyebrow { font-size: max(var(--font-size-min), 10px); letter-spacing: 1.7px; }
   .pillars { grid-template-columns: 1fr; }
@@ -191,6 +194,8 @@
 .faq summary span { color: #94703a; }
 .faq details[open] { background: white; border-color: #b7cce3; box-shadow: 0 8px 24px #112d5010; }
 .faq details p { padding: 0 20px 20px; line-height: 1.65; }
+.faqSection :is(h2, p, summary, summary span, .eyebrow) { color: #000 !important; }
+.faqSection p { font-size: 14px; }
 .enquirySection { padding-block: 72px; color: white; background: radial-gradient(ellipse at 0% 0%, #164668, transparent 65%), #061a31; }
 .enquiryGrid { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(30px, 6vw, 90px); align-items: start; }
 .enquiryCopy .eyebrow { color: #e9c486; }

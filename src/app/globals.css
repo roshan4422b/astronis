@@ -1212,9 +1212,9 @@ textarea:focus {
   margin-left: 12px;
 }
 .home-contact-section .contact-grid {
-  grid-template-columns: 340px minmax(0, 1fr);
-  gap: 30px;
-  align-items: stretch;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  align-items: start;
 }
 .home-contact-section {
   background: #042446;
@@ -1246,15 +1246,16 @@ textarea:focus {
   flex-direction: column;
 }
 .home-contact-side .contact-details {
-  flex: 1;
-  border-radius: 10px 10px 0 0;
+  height: 100%;
+  border-radius: 10px;
 }
 .home-contact-map {
+  grid-column: 1 / -1;
   position: relative;
   height: 260px;
   overflow: hidden;
   border: 1px solid #0b3477;
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px;
   background: #e8f2fb;
 }
 .home-contact-world-map {
@@ -4084,7 +4085,7 @@ textarea::placeholder {
 @media (max-width: 600px) { .testimonial-columns { grid-template-columns: 1fr; } }
 @media (max-width: 1050px) {
   .home-contact-section .contact-grid {
-    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 760px) {
@@ -4573,5 +4574,215 @@ textarea::placeholder {
   color: #fff;
 }
 #main-content .about-page-scope .about-story-section :is(.eyebrow, h2, p) {
+  color: #fff !important;
+}
+
+.technology-digital-page :is(p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #000 !important;
+}
+.technology-digital-page a :is(span, strong, small) {
+  color: inherit !important;
+}
+.technology-digital-page :is([class*="hero"], [class*="solutionsSection"], [class*="approach"], [class*="teamSection"], [class*="specialistCard"], [class*="extendedTeam"], [class*="enquirySection"], [class*="challengePanel"], [class*="benefitsPanel"], [class*="securityPanel"], [class*="teamProfessional"], [class*="cta"]) :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #fff !important;
+}
+.technology-digital-page:not(.technology-digital-landing-page) [class*="specialistsSection"] :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #fff !important;
+}
+.technology-digital-page [class*="implementation"] [class*="benefits"] :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong) {
+  color: #fff !important;
+}
+.technology-digital-page :is([class*="enquiryPanel"], [class*="formPanel"], [class*="formShell"]) :is(h1, h2, h3, h4, h5, h6, p, li, summary, small, time, figcaption, blockquote, label, span, strong, [class*="description"], [class*="tagline"], [class*="Caption"], [class*="caption"]) {
+  color: #000 !important;
+}
+.technology-digital-page [class*="hero"] a:not([class*="textLink"]):not([class*="arrowLink"]) {
+  color: #fff !important;
+}
+.insights-route-scope p,
+.insights-route-scope [class*="description"],
+.insights-route-scope [class*="excerpt"],
+.insights-route-scope [class*="tagline"],
+.insights-route-scope [class*="summary"] {
+  font-size: 15px !important;
+}
+.insights-route-scope p {
+  color: #000 !important;
+}
+.insights-route-scope :is(h1, h2, h3, h4, h5, h6, li, small, time, figcaption, blockquote, label, strong, span, [class*="description"], [class*="excerpt"], [class*="tagline"], [class*="summary"]) {
+  color: #000 !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) {
+  background-color: #082b53 !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="breadcrumb"]) {
+  color: #fff !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) [class*="breadcrumb"] a {
+  color: #fff !important;
+}
+.insights-route-scope :is(section[class*="hero"], header[class*="hero"], section.page-banner--insights) :is([class*="heroShade"], [class*="heroImageShade"]) {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53a8 100%) !important;
+}
+.insights-route-scope .page-banner--insights:after {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53a8 100%) !important;
+}
+.insights-route-scope :is([class*="cta"], [class*="newsletter"], [class*="promoPanel"], [class*="analysisCard"], [class*="featuredUpdate"], [class*="featuredAnalysis"], [class*="reportCover"], [class*="darkPanel"], [class*="teamSection"]) :is(h1, h2, h3, h4, h5, h6, p, li, small, time, span, strong, label) {
+  color: #fff !important;
+}
+.insights-route-scope :is([class*="cta"], [class*="newsletter"], [class*="promoPanel"], [class*="analysisCard"], [class*="featuredUpdate"], [class*="featuredAnalysis"], [class*="reportCover"], [class*="darkPanel"], [class*="teamSection"]) :is([class*="description"], [class*="excerpt"], [class*="tagline"], [class*="summary"]) {
+  color: #fff !important;
+}
+.insights-route-scope section[class*="hero"] :is([class*="heroCourtNote"], [class*="regulatorShowcase"]) :is(h1, h2, h3, p, small, span, strong, li, time, label) {
+  color: #000 !important;
+}
+.insights-route-scope [class*="page"] :is([class*="insightCategory"], [class*="insightAudience"]) {
+  color: #000 !important;
+}
+@media (min-width: 1051px) {
+  .site-header .nav-item.is-open .mega-menu {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+.faq-route-scope,
+.success-stories-route-scope {
+  color: #000;
+}
+.faq-route-scope :is(p, h1, h2, h3, h4, h5, h6, li, small, time, strong, span, label),
+.success-stories-route-scope :is(p, h1, h2, h3, h4, h5, h6, li, small, time, strong, span, label) {
+  color: #000 !important;
+}
+.faq-route-scope p,
+.success-stories-route-scope p {
+  font-size: 15px !important;
+}
+.faq-route-scope [class$="__hero"],
+.success-stories-route-scope [class$="__hero"],
+.success-stories-route-scope .page-banner {
+  background-color: #082b53 !important;
+}
+.faq-route-scope [class*="__heroShade"],
+.success-stories-route-scope [class*="__heroShade"],
+.success-stories-route-scope .page-banner::after {
+  background: linear-gradient(100deg, #061d43f2 0%, #073d70e8 58%, #082b53b8 100%) !important;
+}
+.faq-route-scope [class$="__hero"] :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="__breadcrumb"], [class*="__breadcrumb"] a),
+.success-stories-route-scope [class$="__hero"] :is(h1, h2, h3, p, small, span, li, time, strong, label, [class*="__breadcrumb"], [class*="__breadcrumb"] a),
+.success-stories-route-scope .page-banner :is(h1, h2, h3, p, small, span, li, time, strong, label, .breadcrumb, .breadcrumb a) {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__ctaSection"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, strong, label),
+.success-stories-route-scope :is([class*="__promoPanel"], [class*="__subscribe"], [class*="__subscribeInner"]) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, strong, label) {
+  color: #fff !important;
+}
+.success-stories-route-scope [class*="__industryCard"] > span,
+.success-stories-route-scope [class*="__episodeImage"] > small,
+.success-stories-route-scope [class*="__badge"] {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__primaryButton"],
+.faq-route-scope [class*="__secondaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__secondaryButton"], [class*="__readLink"], [class*="__sectionHeading"] > a, [class*="__resourceCard"] em, [class*="__promoPanel"] > a, [class*="__emailRow"] button) {
+  color: var(--blue, #0751db) !important;
+}
+.faq-route-scope [class*="__primaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__emailRow"] button) {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__cta"] [class*="__secondaryButton"] {
+  color: #fff !important;
+}
+
+.global-presence-route-scope :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, .breadcrumb, .eyebrow) {
+  color: #111 !important;
+}
+.global-presence-route-scope :is(
+  p,
+  [class*="description" i],
+  [class*="summary" i],
+  [class*="cardBody"] > span,
+  [class*="cardBody"] > small,
+  [class*="modelBody"] > small,
+  [class*="resourceGrid"] small
+) {
+  font-size: 14px !important;
+}
+.global-presence-route-scope :is(
+  [class*="__darkSection"],
+  [class*="__knowledgeSection"],
+  [class*="__finalCta"],
+  [class*="__professionalPanel"],
+  [class*="__regionInfo"],
+  [class*="__journey"],
+  [class*="__cta"],
+  [class*="__subscribe"],
+  [class*="__enquiryIntro"],
+  [class*="__contactStrip"],
+  [class*="global-presence"][class*="__hero"],
+  .page-banner
+) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
+  color: #fff !important;
+}
+.global-presence-route-scope [class*="__journeyNumber"] {
+  color: #082b53 !important;
+}
+.global-presence-route-scope [class*="__enquiryCopy"] :is(h1, h2, h3, h4, h5, h6, p, span, a) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) {
+  border: 1px solid #0751db !important;
+  background: #0751db !important;
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) :is(span, strong, small, svg) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  a[class*="textLink"],
+  a[class*="inlineLink"],
+  a[class*="cardLink"],
+  a[class*="readLink"],
+  a[class*="viewLink"],
+  [class*="__sectionHeading"] > a,
+  [class*="__industryHeading"] > a
+) {
+  color: #0751db !important;
+}
+.global-presence-route-scope :is(
+  a[class*="primaryButton"],
+  a[class*="secondaryButton"],
+  a[class*="button"],
+  a[class*="Button"],
+  button[type="submit"],
+  [class*="__formActions"] button,
+  [class*="__cta"] a
+) {
+  border-color: #0751db !important;
+  background-color: #0751db !important;
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  a[class*="primaryButton"],
+  a[class*="secondaryButton"],
+  a[class*="button"],
+  a[class*="Button"],
+  button[type="submit"],
+  [class*="__formActions"] button,
+  [class*="__cta"] a
+) :is(span, strong, small, svg) {
   color: #fff !important;
 }

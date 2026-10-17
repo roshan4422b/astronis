@@ -18,7 +18,7 @@ const interestOptions = [
   { value: "Other", label: "Other" },
 ];
 
-export default function HomeEnquiryForm() {
+export default function HomeEnquiryForm({ compact = false }: { compact?: boolean }) {
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -105,7 +105,7 @@ export default function HomeEnquiryForm() {
   };
 
   return (
-    <div id="home-enquiry" className={styles.formShell}>
+    <div id="home-enquiry" className={`${styles.formShell} ${compact ? styles.homeCompact : ""}`.trim()}>
       <div className={styles.header}>
         <span className={styles.eyebrow}>Start a conversation</span>
         <h3 className={styles.title}>How Can We Help You?</h3>
