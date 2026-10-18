@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { services } from "@/data/services";
 
 export const runtime = "nodejs";
 
@@ -8,6 +9,7 @@ const validTeams = new Set(["Just me", "2–10", "11–50", "51–200", "201–5
 const validTurnovers = new Set(["Pre-revenue", "Below ₹10 lakh", "₹10 lakh–₹50 lakh", "₹50 lakh–₹1 crore", "₹1 crore–₹10 crore", "₹10 crore–₹50 crore", "Above ₹50 crore", "Prefer not to disclose"]);
 const validModes = new Set(["Video Meeting", "Phone Call", "In-Person Meeting"]);
 const validZones = new Set(["Asia/Kolkata", "Asia/Dubai", "Europe/London", "America/New_York"]);
+const validServices = new Set(services.map((service) => service.title));
 const error = (message: string, status = 400) => Response.json({ success: false, message }, { status });
 
 export async function POST(request: Request) {
@@ -24,6 +26,7 @@ export async function POST(request: Request) {
   const email = clean(raw.email, 254).toLowerCase();
   const phone = clean(raw.phone, 24);
   const organisation = clean(raw.organisation, 160);
+  const service = clean(raw.service, 120);
   const team = clean(raw.team, 32);
   const turnover = clean(raw.turnover, 64);
   const date = clean(raw.date, 10);
@@ -32,7 +35,7 @@ export async function POST(request: Request) {
   const mode = clean(raw.mode, 32);
   const dateValue = new Date(`${date}T12:00:00Z`);
   const weekday = dateValue.getUTCDay();
-  if (name.length < 2 || !emailPattern.test(email) || !/^\+\d{7,18}$/.test(phone) || !organisation || !validTeams.has(team) || !validTurnovers.has(turnover)) return error("Please provide valid contact and organisation details.");
+  if (name.length < 2 || !emailPattern.test(email) || !/^\+\d{7,18}$/.test(phone) || !organisation || !validServices.has(service) || !validTeams.has(team) || !validTurnovers.has(turnover)) return error("Please provide valid contact and organisation details.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
   if (!/^(10|11|12|02|03|04|05):00 (AM|PM)$/.test(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true) return error("Please review your meeting preference and consent.");
 
@@ -43,7 +46,7 @@ export async function POST(request: Request) {
   const reference = `AST-${new Date().toISOString().slice(2, 10).replaceAll("-", "")}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   const text = [
     `Consultation request ${reference} (pending confirmation)`, `Name: ${name}`, `Mobile: ${phone}`, `Email: ${email}`,
-    `Organisation: ${organisation}`, `Team size: ${team}`, `Annual turnover: ${turnover}`,
+    `Organisation: ${organisation}`, `Service required: ${service}`, `Team size: ${team}`, `Annual turnover: ${turnover}`,
     `Preferred date: ${date}`, `Preferred time: ${time} (${timezone})`, `Meeting mode: ${mode}`,
     "This is a requested preference, not a confirmed or reserved appointment.",
   ].join("\n");
