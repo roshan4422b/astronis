@@ -1,0 +1,12 @@
+.backdrop { position: fixed; inset: 0; z-index: 1300; display: grid; place-items: center; padding: 18px; background: #04142dcc; backdrop-filter: blur(6px); animation: fade .16s ease-out; }
+.dialog { position: relative; width: min(880px, 100%); max-height: min(92dvh, 940px); overflow-y: auto; border: 1px solid #d8e1ed; border-radius: 12px; background: #fff; box-shadow: 0 28px 90px #00102d55; outline: none; animation: rise .2s ease-out; }
+.close { position: sticky; z-index: 2; top: 12px; float: right; display: grid; place-items: center; width: 40px; height: 40px; margin: 12px 14px -52px 0; border: 1px solid #d5deea; border-radius: 50%; background: #fff; color: #243756; font-size: 27px; line-height: 1; }
+.form { padding: 25px 26px 0; }
+.form > h2 { padding: 4px 54px 0 0; color: #071c4f; font-size: clamp(23px, 3vw, 30px); }
+.form :global(section.section) { padding: 14px 0 24px; }
+.form :global(section.section > .container) { width: 100%; max-width: none; }
+.form :global(section.section .section-heading) { display: none; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .backdrop,.dialog { animation: none; } }
+@media (max-width: 600px) { .backdrop { padding: 8px; align-items: end; }.dialog { max-height: 95dvh; border-radius: 12px 12px 7px 7px; }.form { padding: 22px 14px 0; }.form :global(.form-grid) { grid-template-columns: 1fr; }.form :global(.form-grid .full) { grid-column: auto; } }

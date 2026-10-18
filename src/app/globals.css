@@ -1759,6 +1759,33 @@ main section[class*="hero"] :is(a, button):is(
   background: #ffffffed;
   box-shadow: 0 12px 28px #010f2c30;
 }
+@media (max-width: 960px) {
+  .home-testimonial-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .home-testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-testimonial-card {
+    min-height: 0;
+    padding: 20px 18px;
+  }
+  .testimonial-invite {
+    padding: 28px 18px;
+  }
+  .testimonial-invite h3 {
+    font-size: clamp(1.7rem, 6vw, 2.1rem);
+    line-height: 1.2;
+  }
+  .testimonial-invite .button-row {
+    flex-direction: column;
+  }
+  .testimonial-invite .button-row > * {
+    width: 100%;
+  }
+}
 .home-testimonial-card blockquote {
   flex: 1;
   margin: 0 0 20px;
@@ -3016,12 +3043,34 @@ textarea::placeholder {
   background: var(--navy);
   margin-block: 15px;
   border-radius: 6px;
+  object-fit: cover;
 }
 .record-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+}
+@media (max-width: 760px) {
+  .enquiry-form {
+    padding: 22px 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .enquiry-form > .button {
+    width: 100%;
+  }
+  .record-controls {
+    flex-direction: column;
+  }
+  .record-controls .button {
+    width: 100%;
+  }
+  .video-preview {
+    max-height: 220px;
+  }
 }
 @media (min-width: 1600px) {
   .hero-grid {
