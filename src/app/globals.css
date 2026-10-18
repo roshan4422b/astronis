@@ -4684,3 +4684,7 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   background: #fff !important;
   color: #000 !important;
 }
+
+/* Homepage hero contrast overlay */
+.home-page > .hero .hero-shade { z-index: 1; background: linear-gradient(90deg, rgba(1, 18, 42, .98) 0%, rgba(1, 20, 46, .9) 42%, rgba(1, 20, 46, .68) 72%, rgba(1, 20, 46, .54) 100%); }
+.home-page > .hero .hero-grid { z-index: 2; }
