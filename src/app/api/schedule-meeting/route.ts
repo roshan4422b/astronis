@@ -10,6 +10,14 @@ const validTurnovers = new Set(["Pre-revenue", "Below ₹10 lakh", "₹10 lakh�
 const validModes = new Set(["Video Meeting", "Phone Call", "In-Person Meeting"]);
 const validZones = new Set(["Asia/Kolkata", "Asia/Dubai", "Europe/London", "America/New_York"]);
 const validServices = new Set(services.map((service) => service.title));
+const isValidMeetingTime = (value: string) => {
+  const match = /^(0?[1-9]|1[0-2]):(00|30) (AM|PM)$/.exec(value);
+  if (!match) return false;
+  let hour = Number(match[1]) % 12;
+  if (match[3] === "PM") hour += 12;
+  const minutesAfterMidnight = hour * 60 + Number(match[2]);
+  return minutesAfterMidnight >= 9 * 60 + 30 && minutesAfterMidnight <= 19 * 60 + 30;
+};
 const error = (message: string, status = 400) => Response.json({ success: false, message }, { status });
 
 export async function POST(request: Request) {
@@ -37,7 +45,7 @@ export async function POST(request: Request) {
   const weekday = dateValue.getUTCDay();
   if (name.length < 2 || !emailPattern.test(email) || !/^\+\d{7,18}$/.test(phone) || !organisation || !validServices.has(service) || !validTeams.has(team) || !validTurnovers.has(turnover)) return error("Please provide valid contact and organisation details.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
-  if (!/^(10|11|12|02|03|04|05):00 (AM|PM)$/.test(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true) return error("Please review your meeting preference and consent.");
+  if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true) return error("Please review your meeting preference and consent.");
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
