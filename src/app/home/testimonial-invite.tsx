@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Icon from "../_components/icon";
 import TestimonialForm from "../testimonials/testimonial-form";
 import styles from "./testimonial-invite.module.css";
@@ -39,7 +40,7 @@ export default function TestimonialInvite() {
         <button type="button" className="button secondary" onClick={() => setFormat("video")}>Record a Video Testimonial <Icon name="arrow" /></button>
       </div>
     </div>
-    {format && <div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) setFormat(null); }}>
+    {format && typeof document !== "undefined" && createPortal(<div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) setFormat(null); }}>
       <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title" tabIndex={-1} ref={modal}>
         <button type="button" className={styles.close} aria-label="Close testimonial form" onClick={() => setFormat(null)}>×</button>
         <div className={styles.form}>
@@ -47,6 +48,6 @@ export default function TestimonialInvite() {
           <TestimonialForm key={format} initialFormat={format} />
         </div>
       </section>
-    </div>}
+    </div>, document.body)}
   </>;
 }
