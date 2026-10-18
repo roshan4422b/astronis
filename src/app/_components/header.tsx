@@ -19,6 +19,7 @@ import GlobalPresenceMenu from "./global-presence-menu";
 import InsightsMenu from "./insights-menu";
 import TechnologyMenu from "./technology-menu";
 import { isRouteActive } from "./navigation-state";
+import ScheduleMeetingModal from "./schedule-meeting-modal";
 
 const navigation = [
   {
@@ -104,6 +105,7 @@ const navigation = [
 export default function Header() {
   const [mobile, setMobile] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
+  const [meetingModalOpen, setMeetingModalOpen] = useState(false);
   const path = usePathname();
   const ref = useRef<HTMLElement>(null);
   const hoverTimer = useRef<number | null>(null);
@@ -168,6 +170,12 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    const openScheduler = () => { closeMenus(); setMeetingModalOpen(true); };
+    window.addEventListener("astronis:open-scheduler", openScheduler);
+    return () => window.removeEventListener("astronis:open-scheduler", openScheduler);
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (hoverTimer.current) {
         window.clearTimeout(hoverTimer.current);
@@ -177,6 +185,7 @@ export default function Header() {
   }, []);
 
   return (
+    <>
     <header ref={ref} className="site-header">
       <div className="utility-bar">
         <div className="container utility-inner">
@@ -298,11 +307,13 @@ export default function Header() {
               </div>
             </Fragment>
           ))}
-          <span className="button nav-cta">
+          <button type="button" className="button nav-cta" onClick={() => { closeMenus(); setMeetingModalOpen(true); }}>
             Schedule Meeting <Icon name="arrow" />
-          </span>
+          </button>
         </nav>
       </div>
     </header>
+    <ScheduleMeetingModal open={meetingModalOpen} onClose={() => setMeetingModalOpen(false)} />
+    </>
   );
 }
