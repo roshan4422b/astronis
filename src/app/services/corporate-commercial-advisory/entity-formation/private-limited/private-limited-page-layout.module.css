@@ -104,6 +104,7 @@
   }
 }
 
+
 .pageContent > :global([class*="sectionLayout"]) {
   max-width: none;
   margin: 0;
@@ -143,6 +144,12 @@
 
 .pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]) {
   margin-bottom: 14px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]:hover) {
+  background: #fff;
+  color: inherit;
+  box-shadow: none;
 }
 
 .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
@@ -292,6 +299,15 @@
     color: #fff;
     transform: none;
   }
+}
+
+.pageContent :global(section[class*="documents"]) {
+  background: #0751db;
+  color: #fff;
+}
+
+.pageContent :global(section[class*="documents"]) :global(*) {
+  color: #fff !important;
 }
 
 .pageContent :global([class*="benefitLayout"]) {
@@ -733,6 +749,30 @@
   color: #fff;
 }
 
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]) {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 8px 13px;
+  border: 1px solid #0751db;
+  border-radius: 4px;
+  background: #fff;
+  color: #0751db !important;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]:hover),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]:focus-visible) {
+  border-color: #0751db;
+  background: #fff;
+  color: #000 !important;
+}
+
 .pageContent :global(section[class*="knowledge"]) :global([class*="resourceAction"]) {
   color: #000;
 }
@@ -770,13 +810,19 @@
   .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not([class*="priceButton"])),
   .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
   .pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
-  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
-  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
-  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a)),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a):not([class*="resourceAction"])),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a)),
   .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
   .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
     color: #fff !important;
     transition: color 0.3s ease;
+  }
+
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover a[class*="readMore"]:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    border-color: #0751db !important;
+    background: #fff !important;
+    color: #000 !important;
   }
 
   .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover li svg) {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function RbiRegulatoryPage() {
+  const heroImage = getServiceChildHeroImage("rbi-regulatory", "banking-insolvency-restructuring-advisory");
   const services = [
     ["file", "RBI Regulatory Interpretation & Advisory", "Interpret RBI acts, regulations and master directions relevant to business models."],
     ["shield", "Licensing, Registration & Approval Advisory", "Support eligibility assessment, application preparation and approvals."],
@@ -21,7 +23,7 @@ export default function RbiRegulatoryPage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/images/services/banking-rbi-financial-services.svg" alt="RBI advisory" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="RBI advisory" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">RBI Regulatory</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · REGULATORY</span><h1>RBI Regulatory</h1><h2>Navigating RBI Regulations. Strengthening Financial Compliance.</h2><p>Expert legal, regulatory and supervisory advisory services on the regulatory framework administered by the Reserve Bank of India.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule an RBI Regulatory Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request RBI Compliance Assistance <Icon name="calendar" /></Link></div></div>

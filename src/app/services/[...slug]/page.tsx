@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { services } from "@/data/services";
+import { getServiceChildHeroImage, services } from "@/data/services";
 import { resolvePractice } from "@/data/service-practices";
 import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
@@ -181,8 +181,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
     const relatedServices = group.children.filter(item => item !== child);
+    const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
-      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} />
+      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} image={childHeroImage} />
       <div className={`container ${serviceStyles.detailLayout}`}>
         <aside className={serviceStyles.detailAside}>
           <SectionNavigation

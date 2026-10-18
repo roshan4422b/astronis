@@ -6,6 +6,7 @@ import PageSectionNav from "../corporate-commercial-advisory/entity-formation/_c
 import pageLayoutStyles from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page.module.css";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 import type { FemaCrossBorderDetail } from "@/data/fema-cross-border-details";
+import { getServiceChildHeroImage } from "@/data/services";
 
 const sectionLinks = [
   ["Overview", "overview"],
@@ -54,6 +55,8 @@ export function femaCrossBorderMetadata(detail: FemaCrossBorderDetail): Metadata
 }
 
 export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCrossBorderDetail }) {
+  const heroImage = getServiceChildHeroImage(detail.slug, "fema-fdi-cross-border")
+    ?? "/images/services/fema-fdi-and-foreign-exchange-advisory.webp";
   const groupTitle = detail.groupSlug === "fema-compliance-and-support"
     ? "FEMA Compliance & Support"
     : "FDI Compliance & Support";
@@ -63,7 +66,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
     <div className={styles.page}>
       <section className={styles.hero} id="hero">
         <Image
-          src="/images/services/fema-fdi-and-foreign-exchange-advisory.webp"
+          src={heroImage}
           alt="FEMA, foreign investment and cross-border advisory"
           fill
           priority

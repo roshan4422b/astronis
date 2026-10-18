@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function NbfcFormationPage() {
+  const heroImage = getServiceChildHeroImage("nbfc-formation-licensing-advisory", "banking-insolvency-restructuring-advisory");
   const services = [
     ["file", "Regulatory Classification & Feasibility", "Assess business model, RBI classification and registration requirements."],
     ["document", "RBI Certificate of Registration Application Support", "Prepare application documents, business plan and declarations."],
@@ -21,7 +23,7 @@ export default function NbfcFormationPage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/services/banking-nbfc-and-financial-services-advisory.webp" alt="NBFC formation" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="NBFC formation" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">NBFC Formation / Licensing Advisory</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC FORMATION</span><h1>NBFC Formation / Licensing Advisory</h1><h2>Establishing financial institutions. Navigating RBI licensing.</h2><p>Practical support for formation, registration, governance and readiness to operate as an NBFC under RBI frameworks.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule a Licensing Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request Registration Assistance <Icon name="calendar" /></Link></div></div>

@@ -113,7 +113,7 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
     ],
   },
   {
-    category: "Entity Structuring & Group Reorganisation",
+    category: "Entity Structuring",
     categorySlug: "entity-structuring-group-reorganisation",
     categoryNumber: "02",
     categoryDescription:
@@ -179,7 +179,7 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
     ],
   },
   {
-    category: "Mergers, Acquisitions & Transactions",
+    category: "Mergers & Acquisitions",
     categorySlug: "mergers-acquisitions-transactions",
     categoryNumber: "03",
     categoryDescription:
@@ -394,7 +394,7 @@ export const corporateCommercialDirectory: CorporateServiceCategory[] = [
     ],
   },
   {
-    category: "Investment & Transaction Advisory",
+    category: "Investment Advisory",
     categorySlug: "investment-and-transaction-advisory",
     categoryNumber: "07",
     categoryDescription:

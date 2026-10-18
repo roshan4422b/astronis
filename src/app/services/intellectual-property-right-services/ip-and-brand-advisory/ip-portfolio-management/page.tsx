@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function IpPortfolioManagementPage() {
+  const heroImage = getServiceChildHeroImage("ip-portfolio-management", "intellectual-property-right-services");
   const services = [
     ["layers", "Portfolio Strategy & Prioritisation", "Align IP filings with business objectives and budget priorities."],
     ["calendar", "Maintenance & Renewals", "Manage renewals, annuities and administrative compliance for registered rights."],
@@ -21,7 +23,7 @@ export default function IpPortfolioManagementPage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/brand-portfolio.png" alt="IP portfolio management" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="IP portfolio management" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/intellectual-property-right-services">Intellectual Property Right Services</Link><span>/</span><Link href="/services/intellectual-property-right-services/ip-and-brand-advisory">IP &amp; Brand Advisory</Link><span>/</span><span aria-current="page">IP Portfolio Management</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>INTELLECTUAL PROPERTY · ADVISORY</span><h1>IP Portfolio Management</h1><h2>Optimise, Maintain and Monetise Your IP Assets</h2><p>End-to-end management of registered and unregistered IP to preserve rights, support growth and maximise value.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Discuss Your Portfolio <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request Portfolio Review <Icon name="calendar" /></Link></div></div>
