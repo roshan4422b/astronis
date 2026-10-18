@@ -134,10 +134,6 @@ export default function Header() {
   };
 
   useEffect(() => {
-    closeMenus();
-  }, [path]);
-
-  useEffect(() => {
     if (mobile) {
       document.body.style.overflow = "hidden";
     } else {
