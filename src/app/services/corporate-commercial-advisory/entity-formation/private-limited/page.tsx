@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
-import { getCorporateChildHeroImage } from "@/data/services";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageSectionLayout from "../_components/page-section-layout";
 import PageSectionNav from "../_components/page-section-nav";
 import styles from "../public-limited-company/public-limited-company.module.css";
@@ -164,7 +164,7 @@ export default function PrivateLimitedCompanyPage() {
     <div className={styles.page} data-text-size="plus-two">
       <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
         <Image
-          src={getCorporateChildHeroImage("private-limited-company-incorporation") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
+          src={getServiceChildHeroImage("private-limited-company-incorporation", "corporate-commercial-advisory") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
           alt="Corporate services and compliance advisory"
           fill
           priority

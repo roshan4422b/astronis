@@ -4,6 +4,7 @@ import Icon from "@/app/_components/icon";
 import type { DetailedServiceGroup, ServicePractice } from "@/data/service-detail-types";
 import type { ConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
 import PageSectionNav from "@/app/services/corporate-commercial-advisory/entity-formation/_components/page-section-nav";
+import { getServiceChildHeroImage } from "@/data/services";
 import styles from "./consumer-regulatory-detail.module.css";
 
 const sectionLinks = [
@@ -46,12 +47,13 @@ export default function ConsumerRegulatoryDetailPage({
   practice: ServicePractice;
 }) {
   const groupHref = `/services/${practice.slug}#${group.slug}`;
+  const heroImage = getServiceChildHeroImage(detail.slug, practice.slug) ?? detail.image;
 
   return (
     <div className={styles.page}>
       <section className={styles.hero} id="service-hero">
         <Image
-          src={detail.image}
+          src={heroImage}
           alt={detail.imageAlt}
           fill
           priority

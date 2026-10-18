@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function BrandProtectionPage() {
+  const heroImage = getServiceChildHeroImage("brand-protection", "intellectual-property-right-services");
   const services = [
     ["shield", "Enforcement & Litigation Support", "Support in trademark infringement, passing off and domain disputes."],
     ["globe", "Online Brand Monitoring & Takedown", "Monitor marketplaces and social platforms and implement takedowns for infringing listings."],
@@ -21,7 +23,7 @@ export default function BrandProtectionPage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/brand-protection-hero.png" alt="Brand protection" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="Brand protection" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/intellectual-property-right-services">Intellectual Property Right Services</Link><span>/</span><Link href="/services/intellectual-property-right-services/ip-and-brand-advisory">IP &amp; Brand Advisory</Link><span>/</span><span aria-current="page">Brand Protection</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>INTELLECTUAL PROPERTY · ADVISORY</span><h1>Brand Protection</h1><h2>Protect reputation, revenue and goodwill</h2><p>Practical enforcement strategies and online monitoring to preserve brand value and reduce counterfeiting risk.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Protect Your Brand <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Report an Infringement <Icon name="calendar" /></Link></div></div>

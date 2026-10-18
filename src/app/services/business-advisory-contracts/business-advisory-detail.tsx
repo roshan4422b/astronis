@@ -6,6 +6,7 @@ import PageSectionNav from "../corporate-commercial-advisory/entity-formation/_c
 import pageLayoutStyles from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page.module.css";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 import type { BusinessAdvisoryDetail } from "@/data/business-advisory-details";
+import { getServiceChildHeroImage } from "@/data/services";
 
 const sections = [
   ["Overview", "overview"],
@@ -49,11 +50,13 @@ export function businessAdvisoryMetadata(detail: BusinessAdvisoryDetail): Metada
 }
 
 export default function BusinessAdvisoryDetailPage({ detail }: { detail: BusinessAdvisoryDetail }) {
+  const heroImage = getServiceChildHeroImage(detail.slug, "business-advisory-contracts") ?? detail.image;
+
   return (
     <div className={styles.page}>
       <section className={styles.hero} id="hero">
         <Image
-          src={detail.image}
+          src={heroImage}
           alt={`${detail.title} advisory`}
           fill
           priority

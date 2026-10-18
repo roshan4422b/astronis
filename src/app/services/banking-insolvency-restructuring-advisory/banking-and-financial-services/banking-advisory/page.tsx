@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function BankingAdvisoryPage() {
+  const heroImage = getServiceChildHeroImage("banking-advisory", "banking-insolvency-restructuring-advisory")
+    ?? "/services/banking-nbfc-and-financial-services-advisory.webp";
   const services = [
     ["building", "Banking Regulatory & Compliance Advisory", "Advise on applicable banking laws, directions and regulatory correspondence."],
     ["document", "Corporate Lending & Credit Facility Advisory", "Support term sheets, facility documents and lending arrangements."],
@@ -21,7 +24,7 @@ export default function BankingAdvisoryPage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/services/banking-nbfc-and-financial-services-advisory.webp" alt="Banking advisory" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="Banking advisory" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">Banking Advisory</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · BANKING ADVISORY</span><h1>Banking Advisory</h1><h2>Navigating Banking Regulations. Securing Financial Transactions.</h2><p>Advisory on banking transactions, lending documentation, secured financing and borrower-lender relationships.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule a Banking Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request Banking Legal Assistance <Icon name="calendar" /></Link></div></div>

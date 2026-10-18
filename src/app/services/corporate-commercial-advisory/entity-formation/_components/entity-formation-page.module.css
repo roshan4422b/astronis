@@ -360,9 +360,9 @@
 }
 
 .pageSectionNavBackIcon {
-  width: 17px;
+  width: 22px;
   height: 17px;
-  flex: 0 0 17px;
+  flex: 0 0 22px;
   transform: rotate(180deg);
 }
 
@@ -1528,12 +1528,27 @@
 
 .readMore {
   display: inline-flex;
+  min-height: 40px;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  margin-top: 14px;
+  padding: 8px 13px;
+  border: 1px solid #0751db;
+  border-radius: 4px;
+  background: #fff;
   color: #0751db;
   font-size: max(var(--font-size-min), 14px);
   font-weight: 700;
   text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.readMore:hover,
+.readMore:focus-visible {
+  border-color: #0751db;
+  background: #0751db;
+  color: #fff;
 }
 
 .readMore svg {

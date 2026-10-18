@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function NbfcCompliancePage() {
+  const heroImage = getServiceChildHeroImage("nbfc-compliance", "banking-insolvency-restructuring-advisory");
   const services = [
     ["file", "RBI Regulatory Compliance & Advisory", "Assess applicable RBI directions, NBFC classification and ongoing obligations."],
     ["shield", "Compliance Calendar & Reporting", "Coordinate periodic returns, reconciliations and regulatory correspondence."],
@@ -21,7 +23,7 @@ export default function NbfcCompliancePage() {
   return (
     <div className={PageStyles.page}>
       <section className={PageStyles.hero} id="overview">
-        <Image src="/services/banking-nbfc-and-financial-services-advisory.webp" alt="Financial compliance" fill priority className={PageStyles.heroImage} />
+        <Image src={heroImage} alt="Financial compliance" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">NBFC Compliance</span></nav>
           <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC</span><h1>NBFC Compliance</h1><h2>Strengthening regulatory governance. Managing RBI obligations.</h2><p>Support for regulated non-banking financial companies to comply with RBI prudential norms, reporting, governance and customer protection requirements.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Request a Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request a Compliance Review <Icon name="calendar" /></Link></div></div>
