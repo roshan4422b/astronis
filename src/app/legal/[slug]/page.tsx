@@ -3,6 +3,7 @@ import { Banner, Button } from "../../_components/ui";
 import PrivacyPolicy from "./privacy-policy";
 import TermsOfUse from "./terms-of-use";
 import WebsiteDisclaimer from "./website-disclaimer";
+import CookiePolicy from "./cookie-policy";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -44,6 +45,7 @@ export default async function Policy({
   if (slug === "privacy-policy") return <PrivacyPolicy />;
   if (slug === "terms-of-use") return <TermsOfUse />;
   if (slug === "disclaimer") return <WebsiteDisclaimer />;
+  if (slug === "cookie-policy") return <CookiePolicy />;
   const p = pages[slug];
   if (!p) notFound();
   return (
