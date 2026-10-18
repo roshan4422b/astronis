@@ -102,7 +102,7 @@ function ClientTextLink({ href, children }: { href: string; children: React.Reac
 }
 
 export default function CybersecurityReadinessPage() {
-  return <div className={styles.page}>
+  return <div className={`technology-digital-page ${styles.page}`}>
     <section className={styles.hero} aria-labelledby="cybersecurity-title">
       <AssetImage src="/Technology, IT & ITES .png" alt="Enterprise cybersecurity dashboard and connected technology environment" fill preload sizes="100vw" />
       <div className={`${styles.wrap} ${styles.heroInner}`}>
@@ -144,7 +144,7 @@ export default function CybersecurityReadinessPage() {
 
     <section className={styles.implementation} id="approach">
       <div className={styles.benefits}><h2>Business Benefits</h2><ul>{benefits.map((benefit) => <li key={benefit}><Icon name="shield" />{benefit}</li>)}</ul></div>
-      <div className={styles.steps}><span className={styles.eyebrow}>From assessment to action</span><h2>Our Cybersecurity Readiness Methodology</h2><ol>{methodology.map(([title, body, icon], index) => <li key={title}><span className={styles.stepNumber}>0{index + 1}</span><Icon className={styles.stepIcon} name={icon} /><h3>{title}</h3><p>{body}</p></li>)}</ol></div>
+      <div className={styles.steps}><span className={styles.eyebrow}>From assessment to action</span><h2>Our Cybersecurity Readiness Methodology</h2><ol>{methodology.map(([title, body, icon]) => <li key={title}><Icon className={styles.stepIcon} name={icon} /><h3>{title}</h3><p>{body}</p></li>)}</ol></div>
       <div className={styles.approachImage}><AssetImage src="/images/india-presence/mumbai.jpg" alt="Modern commercial building representing secure, resilient business operations" fill sizes="20vw" /><span>Secure.<br />Compliant.<br />Resilient.<br />Together.</span></div>
     </section>
 

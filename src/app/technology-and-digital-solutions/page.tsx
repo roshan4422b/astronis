@@ -43,7 +43,7 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
 }
 
 export default function TechnologySolutionsPage() {
-  return <div className={styles.page}>
+  return <div className={`technology-digital-page technology-digital-landing-page ${styles.page}`}>
     <section className={styles.hero} aria-labelledby="technology-title">
       <Image src="/Technology, IT & ITES .png" alt="Connected digital systems and laptop overlooking a city skyline" fill preload sizes="100vw" />
       <div className={styles.heroShade} />
