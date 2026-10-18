@@ -14,6 +14,9 @@
 .section:last-child { border-bottom: 0; }
 .section h2 { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 5px; margin: 0 0 14px; color: #08295a; font: 600 clamp(17px, 2vw, 20px)/1.35 Georgia, "Times New Roman", serif; letter-spacing: -.01em; }
 .section h2 span { color: #0751db; font: 700 13px/1.9 Arial, Helvetica, sans-serif; }
+.numberedParagraph { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 5px; }
+.numberedParagraph > span { color: #0751db; font: 700 13px/1.9 Arial, Helvetica, sans-serif; }
+.numberedParagraph p { margin: 0; }
 .section p,.section li { margin: 0; color: #34445f; font: 400 15px/1.8 Arial, Helvetica, sans-serif; overflow-wrap: anywhere; }
 .section p + p { margin-top: 12px; }
 .section ol { margin: 0; padding-left: 58px; }
@@ -31,6 +34,7 @@
   .document { width: calc(100% - 20px); margin-top: -12px; margin-bottom: 40px; padding: 12px 19px 28px; border-radius: 6px; }
   .section { padding: 21px 0 19px; }
   .section h2 { grid-template-columns: 30px minmax(0, 1fr); font-size: 17px; }
+  .numberedParagraph { grid-template-columns: 30px minmax(0, 1fr); }
   .section p,.section li { font-size: 14px; line-height: 1.75; }
   .section ol { padding-left: 40px; }
 }

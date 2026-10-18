@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Banner, Button } from "../../_components/ui";
 import PrivacyPolicy from "./privacy-policy";
 import TermsOfUse from "./terms-of-use";
+import WebsiteDisclaimer from "./website-disclaimer";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -12,7 +13,7 @@ const pages: Record<string, { title: string; text: string }> = {
     text: "For questions about use of this website or engaging Astronis Global, please contact our team. Engagement scope and terms should be agreed directly with the firm.",
   },
   disclaimer: {
-    title: "Disclaimer",
+    title: "Website Disclaimer",
     text: "The material on this website introduces Astronis Global and its services. Please contact our professionals to discuss your specific circumstances and requirements.",
   },
   "cookie-policy": {
@@ -42,6 +43,7 @@ export default async function Policy({
   const { slug } = await params;
   if (slug === "privacy-policy") return <PrivacyPolicy />;
   if (slug === "terms-of-use") return <TermsOfUse />;
+  if (slug === "disclaimer") return <WebsiteDisclaimer />;
   const p = pages[slug];
   if (!p) notFound();
   return (
