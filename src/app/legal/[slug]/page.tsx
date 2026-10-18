@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Banner, Button } from "../../_components/ui";
 import PrivacyPolicy from "./privacy-policy";
+import TermsOfUse from "./terms-of-use";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -40,6 +41,7 @@ export default async function Policy({
 }) {
   const { slug } = await params;
   if (slug === "privacy-policy") return <PrivacyPolicy />;
+  if (slug === "terms-of-use") return <TermsOfUse />;
   const p = pages[slug];
   if (!p) notFound();
   return (
