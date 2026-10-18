@@ -1,4 +1,5 @@
 import styles from "./privacy-policy.module.css";
+import PdfDownloadButton from "./pdf-download-button";
 
 type TermsSection = {
   title?: string;
@@ -113,7 +114,7 @@ const sections: TermsSection[] = [
 
 export default function TermsOfUse() {
   return (
-    <div className={styles.page}>
+    <div className={styles.page} data-pdf-page="true">
       <header className={styles.masthead}>
         <div className={styles.mastheadInner}>
           <h1>TERMS OF USE</h1>
@@ -121,6 +122,7 @@ export default function TermsOfUse() {
             <p>ASTRONIS GLOBAL PRIVATE LIMITED</p>
             <p>Effective Date: 17 October 2026</p>
           </div>
+          <PdfDownloadButton />
         </div>
       </header>
       <article className={styles.document}>

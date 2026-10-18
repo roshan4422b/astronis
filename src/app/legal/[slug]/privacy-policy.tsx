@@ -1,4 +1,5 @@
 import styles from "./privacy-policy.module.css";
+import PdfDownloadButton from "./pdf-download-button";
 
 const sections = [
   {
@@ -143,7 +144,7 @@ const sections = [
 
 export default function PrivacyPolicy() {
   return (
-    <div className={styles.page}>
+    <div className={styles.page} data-pdf-page="true">
       <header className={styles.masthead}>
         <div className={styles.mastheadInner}>
           <h1>PRIVACY POLICY</h1>
@@ -152,6 +153,7 @@ export default function PrivacyPolicy() {
             <p>WEBSITE: WWW.ASTRONISGLOBAL.COM</p>
             <p>EFFECTIVE DATE: 17 OCTOBER 2026</p>
           </div>
+          <PdfDownloadButton />
         </div>
       </header>
       <article className={styles.document}>
