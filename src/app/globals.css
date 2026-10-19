@@ -2343,7 +2343,8 @@ textarea::placeholder {
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.35fr 0.85fr 1.25fr 1fr 1fr 1.2fr;
+  grid-template-columns: 1.4fr 0.9fr 1.25fr 1fr 1fr;
+  align-items: start;
   gap: 26px;
   padding-bottom: 42px;
 }
@@ -2355,7 +2356,7 @@ textarea::placeholder {
 .footer-grid h3 {
   text-transform: uppercase;
   font-family: Arial, sans-serif;
-  font-size: max(var(--font-size-min), 14px);
+  font-size: max(var(--font-size-min), 16px);
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 23px;
@@ -2365,7 +2366,7 @@ textarea::placeholder {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 9px;
-  font-size: max(var(--font-size-min), 13px);
+  font-size: max(var(--font-size-min), 15px);
   font-weight: 500;
   line-height: 1.6;
   padding: 5px 0;
@@ -2385,6 +2386,9 @@ textarea::placeholder {
   flex-direction: column;
   gap: 8px;
 }
+.footer-contact {
+  margin-top: 20px;
+}
 .footer-contact-list .contact-row {
   display: flex;
   align-items: flex-start;
@@ -2403,7 +2407,7 @@ textarea::placeholder {
   flex: 1;
 }
 .footer-grid p {
-  font-size: max(var(--font-size-min), 12px);
+  font-size: max(var(--font-size-min), 14px);
   font-weight: 500;
   color: #c4d5ed;
   line-height: 1.7;
@@ -2414,7 +2418,7 @@ textarea::placeholder {
   justify-content: space-between;
   gap: 25px;
   padding-block: 20px;
-  font-size: max(var(--font-size-min), 11px);
+  font-size: max(var(--font-size-min), 12px);
   font-weight: 500;
   color: #c4d5ed;
 }
@@ -4038,10 +4042,10 @@ textarea::placeholder {
   }
   .footer-grid a,
   .footer-grid p {
-    font-size: max(var(--font-size-min), 11px);
+    font-size: max(var(--font-size-min), 13px);
   }
   .footer-grid h3 {
-    font-size: max(var(--font-size-min), 11px);
+    font-size: max(var(--font-size-min), 14px);
   }
   .directory-grid {
     grid-template-columns: 1fr;
