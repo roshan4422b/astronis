@@ -11,6 +11,10 @@ import PhoneInput from "@/components/forms/shared/PhoneInput";
 const interestOptions = [
   { value: "Business Advisory", label: "Business Advisory" },
   { value: "Legal & Regulatory Support", label: "Legal & Regulatory Support" },
+  { value: "Corporate Advisory", label: "Corporate Advisory" },
+  { value: "Litigation Support", label: "Litigation Support" },
+  { value: "Arbitration & Conciliation", label: "Arbitration & Conciliation" },
+  { value: "MSME & Startup Advisory", label: "MSME & Startup Advisory" },
   { value: "Industry Advisory", label: "Industry Advisory" },
   { value: "Technology & Digital Solutions", label: "Technology & Digital Solutions" },
   { value: "Compliance & Licensing", label: "Compliance & Licensing" },
