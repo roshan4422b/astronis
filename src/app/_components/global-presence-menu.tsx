@@ -23,15 +23,9 @@ const explore = [
   ["pin", "Enquire About a Jurisdiction", "/contact"],
 ] as const;
 
-const quickLinks = [
-  ["chart", "Our Approach", "Consistent. Collaborative. Global.", "/about/our-methodology"],
-  ["people", "Our Professionals", "A connected global team.", "/professionals"],
-  ["building", "Client Success", "Supporting global ambitions.", "/success-stories"],
-  ["file", "Global Insights", "Global developments. Local impact.", "/global-presence/insights"],
-] as const;
-
 const opportunities = [
   ["globe", "Global Mindset", "Local insight with an international perspective.", "/about/global-perspective-and-international-network"],
+  ["building", "Client Success", "Supporting global ambitions.", "/success-stories"],
   ["message", "Discuss Your Global Requirement", "Talk with our cross-border advisory team.", "/global-presence/discuss-your-global-requirement"],
   ["bulb", "Global Insights", "Perspectives for international growth.", "/global-presence/insights"],
   ["handshake", "Partner With Us", "Build opportunities together.", "/global-presence/partner-with-us"],
@@ -64,6 +58,5 @@ export default function GlobalPresenceMenu({ id, onNavigate }: { id: string; onN
         {opportunities.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={`${styles.opportunity} ${isRouteActive(pathname, href) ? "active-submenu-item" : ""}`.trim()}><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><Icon name="arrow" /></Link>)}
       </section>
     </div>
-    <div className={styles.footer}>{quickLinks.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined} aria-current={isRouteActive(pathname, href) ? "page" : undefined}><span className={styles.quickIcon}><Icon name={icon} /></span><span className={styles.quickCopy}><strong>{title}</strong><small>{description}</small></span><span className={styles.quickArrow} aria-hidden="true"><Icon name="arrow" /></span></Link>)}</div>
   </div>;
 }

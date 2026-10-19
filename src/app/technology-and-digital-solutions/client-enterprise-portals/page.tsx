@@ -118,7 +118,7 @@ function ArrowLink({ href, children }: { href: string; children: React.ReactNode
 
 export default function ClientEnterprisePortalsPage() {
   return (
-    <div className={styles.page}>
+    <div className={`technology-digital-page ${styles.page}`}>
       <section className={styles.hero} aria-labelledby="portals-title">
         <AssetImage src="/Technology, IT & ITES .png" alt="Enterprise dashboard on a laptop overlooking a connected city" fill loading="eager" sizes="100vw" />
         <div className={styles.heroShade} />
@@ -197,7 +197,7 @@ export default function ClientEnterprisePortalsPage() {
         </div>
         <div className={styles.journeyPanel}>
           <h2>Client Journey</h2>
-          <ol className={styles.journey}>{journey.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong></li>)}</ol>
+          <ol className={styles.journey}>{journey.map((step) => <li key={step}><strong>{step}</strong></li>)}</ol>
         </div>
         <div className={styles.implementationPanel}>
           <h2>Implementation Approach</h2>

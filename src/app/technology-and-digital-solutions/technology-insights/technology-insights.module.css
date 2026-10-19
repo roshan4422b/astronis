@@ -5,17 +5,19 @@
 .page a:focus-visible,.page button:focus-visible,.page input:focus-visible,.page select:focus-visible{outline:2px solid #1768ce;outline-offset:2px}
 .hero{position:relative;height:228px;overflow:hidden;background:#eaf4fc}
 .hero>img{object-fit:cover;object-position:center 46%}
-.heroOverlay{position:absolute;inset:0;background:linear-gradient(90deg,#ffffff 0%,#fffffff2 31%,#f0f7fbd1 44%,#dbeafa18 70%,#ffffffa8 100%)}
+.heroOverlay{position:absolute;inset:0;background:linear-gradient(100deg,#062448ed 0%,#073d70db 55%,#07508ba8 100%)}
 .heroContent{position:relative;z-index:1;width:min(94%,1440px);height:100%;margin:auto}
-.breadcrumb{display:flex;align-items:center;gap:7px;padding-top:11px;color:#385574;font-size: max(var(--font-size-min), 10px);white-space:nowrap}
-.breadcrumb span{color:#65798d}
+.breadcrumb{display:flex;align-items:center;gap:7px;padding-top:11px;color:#f1f6fc;font-size: max(var(--font-size-min), 10px);white-space:nowrap}
+.breadcrumb span{color:#f1f6fc}
 .heroCopy{margin-top:19px;max-width:390px}
-.eyebrow{display:block;margin-bottom:5px;color:#193f72;font-size: max(var(--font-size-min), 9px);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
-.hero h1{color:#172541;font-size: max(var(--font-size-min), clamp(27px,3vw,36px));font-weight:400;line-height:.98;letter-spacing:-1.1px}
-.heroCopy p{margin:6px 0 7px;color:#253c5c;font-size: max(var(--font-size-min), 12px);line-height:1.16}
+.eyebrow{display:block;margin-bottom:5px;color:#f1f6fc;font-size: max(var(--font-size-min), 9px);font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hero h1{color:#fff;font-size: max(var(--font-size-min), clamp(27px,3vw,36px));font-weight:400;line-height:.98;letter-spacing:-1.1px}
+.heroCopy p{margin:6px 0 7px;color:#f1f6fc;font-size:14px;line-height:1.4}
 .primaryButton,.ctaButton{display:inline-flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 12px;background:#0c3c7c;color:#fff!important;font-size: max(var(--font-size-min), 10px)}
+.hero .primaryButton{background:#0759d9;border:1px solid #fff;box-shadow:0 6px 18px #00152e80}
+.hero .primaryButton:hover{background:#034da8}
 .primaryButton svg,.ctaButton svg,.arrowLink svg{width:12px;height:12px}
-.heroAside{position:absolute;top:78px;right:2%;padding-left:12px;border-left:1px solid #55718e;color:#1d3655;font-size: max(var(--font-size-min), 9px);font-weight:700;line-height:1.42;letter-spacing:1.4px;text-transform:uppercase}
+.heroAside{position:absolute;top:78px;right:2%;padding-left:12px;border-left:1px solid #ffffff80;color:#fff;font-size: max(var(--font-size-min), 9px);font-weight:700;line-height:1.42;letter-spacing:1.4px;text-transform:uppercase}
 .heroAside i{display:block;width:22px;margin:9px 0;border-top:1px solid #5c7188}
 .categoryBar{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));width:100%;padding:11px max(3%,calc((100% - 1440px)/2));background:#f5faff;border-bottom:1px solid #e0eaf4}
 .categoryBar a{display:flex;min-height:54px;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 5px;border-right:1px solid #d1dfec;color:#123a78;text-align:center;font-size: max(var(--font-size-min), 9px);line-height:1.1}
@@ -87,8 +89,7 @@
 .trendingSection{padding-left:10px;border-left:1px solid #dce6f0}
 .trendingSection>.sectionTitle{margin-bottom:6px}
 .trendingSection ol{display:grid;gap:4px;margin:0;padding:0;list-style:none}
-.trendingSection li{display:grid;grid-template-columns:20px 1fr 12px;align-items:center;gap:5px;min-height:22px;padding:3px;border:1px solid #e0e8f0;border-radius:10px}
-.trendingSection li>span{display:grid;width:18px;height:18px;place-items:center;border-radius:50%;background:#082958;color:#fff;font-size: max(var(--font-size-min), 7px)}
+.trendingSection li{display:grid;grid-template-columns:1fr 12px;align-items:center;gap:5px;min-height:22px;padding:3px;border:1px solid #e0e8f0;border-radius:10px}
 .trendingSection li>a{color:#1b3763;font-size: max(var(--font-size-min), 8px);line-height:1.1}
 .trendingSection li>svg{width:11px;height:11px;color:#164d99}
 .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -110,7 +111,7 @@
   .hero{height:250px}
   .heroContent,.contentWrap{width:calc(100% - 32px)}
   .hero>img{object-position:58% center}
-  .heroOverlay{background:linear-gradient(90deg,#fff 0%,#ffffffed 42%,#f2f7fccc 70%,#ffffff65 100%)}
+  .heroOverlay{background:linear-gradient(100deg,#062448ed 0%,#073d70db 60%,#07508bb3 100%)}
   .heroCopy{margin-top:22px}
   .heroAside{right:0;top:102px;font-size: max(var(--font-size-min), 8px)}
   .categoryBar{display:flex;overflow-x:auto;padding:8px 16px;scrollbar-width:thin}
@@ -135,7 +136,6 @@
   .professionalCard h3{font-size: max(var(--font-size-min), 12px)}
   .professionalCard p,.professionalCard .arrowLink,.trendingSection li>a{font-size: max(var(--font-size-min), 10px)}
   .trendingSection li{min-height:28px}
-  .trendingSection li>span{width:22px;height:22px;font-size: max(var(--font-size-min), 8px)}
   .ctaInner{width:calc(100% - 32px)}
 }
 @media(max-width:520px){
@@ -144,7 +144,7 @@
   .breadcrumb>a:nth-of-type(2){max-width:130px;overflow:hidden;text-overflow:ellipsis}
   .heroCopy{max-width:78%;margin-top:24px}
   .hero h1{font-size: max(var(--font-size-min), 32px)}
-  .heroCopy p{font-size: max(var(--font-size-min), 11px)}
+  .heroCopy p{font-size:14px}
   .heroAside{top:114px;font-size: max(var(--font-size-min), 7px);letter-spacing:1px}
   .featuredLayout{grid-template-columns:1fr}
   .featuredCard{grid-template-columns:35% 1fr;min-height:140px}
@@ -184,7 +184,7 @@
   .heroCopy{max-width:650px;margin-block:auto}
   .eyebrow{font-size: max(var(--font-size-min), 12px);letter-spacing:1.8px}
   .hero h1{font-size: max(var(--font-size-min), clamp(44px,4.2vw,64px));line-height:.98;letter-spacing:-1.8px}
-  .heroCopy p{margin:13px 0 16px;font-size: max(var(--font-size-min), 18px);line-height:1.35}
+  .heroCopy p{margin:13px 0 16px;font-size:14px;line-height:1.4}
   .primaryButton{gap:24px;padding:12px 20px;font-size: max(var(--font-size-min), 15px)}
   .primaryButton svg,.ctaButton svg{width:17px;height:17px}
   .heroAside{top:38%;right:2%;padding-left:22px;font-size: max(var(--font-size-min), 12px);line-height:1.65;letter-spacing:2px}
@@ -259,8 +259,7 @@
   .trendingSection{padding:16px;border:1px solid #dce6f0;background:#f7fbff}
   .trendingSection>.sectionTitle{margin-bottom:11px}
   .trendingSection ol{gap:7px}
-  .trendingSection li{grid-template-columns:30px 1fr 16px;gap:9px;min-height:39px;padding:6px 8px;border-radius:3px;background:#fff}
-  .trendingSection li>span{width:27px;height:27px;font-size: max(var(--font-size-min), 10px)}
+  .trendingSection li{grid-template-columns:1fr 16px;gap:9px;min-height:39px;padding:6px 8px;border-radius:3px;background:#fff}
   .trendingSection li>a{font-size: max(var(--font-size-min), 12px);line-height:1.25}
   .trendingSection li>svg{width:14px;height:14px}
   .cta{min-height:110px}
@@ -275,7 +274,7 @@
   .breadcrumb{font-size: max(var(--font-size-min), 10px);white-space:normal}
   .heroCopy{margin-block:auto;max-width:78%}
   .hero h1{font-size: max(var(--font-size-min), clamp(38px,8vw,48px))}
-  .heroCopy p{font-size: max(var(--font-size-min), 15px);line-height:1.3}
+  .heroCopy p{font-size:14px;line-height:1.4}
   .primaryButton{padding:10px 15px;font-size: max(var(--font-size-min), 13px)}
   .heroAside{top:45%;font-size: max(var(--font-size-min), 8px)}
   .categoryBar{padding-block:10px}
@@ -316,7 +315,7 @@
   .heroContent{min-height:360px}
   .heroCopy{max-width:85%}
   .hero h1{font-size: max(var(--font-size-min), 37px)}
-  .heroCopy p{font-size: max(var(--font-size-min), 13px)}
+  .heroCopy p{font-size:14px}
   .heroAside{right:1%;font-size: max(var(--font-size-min), 7px)}
   .categoryBar a{flex:0 0 100px}
   .sectionTitle{font-size: max(var(--font-size-min), 21px)}
