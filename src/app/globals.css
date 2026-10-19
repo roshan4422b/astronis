@@ -1299,87 +1299,52 @@ main section[class*="hero"] :is(a, button):is(
   height: 100%;
   border-radius: 10px;
 }
-.home-contact-map {
+.home-presence {
   grid-column: 1 / -1;
-  position: relative;
-  height: 260px;
+  display: grid;
+  grid-template-columns: minmax(270px, .78fr) minmax(0, 1.22fr);
+  gap: 16px;
+  min-width: 0;
+  padding: 20px;
   overflow: hidden;
-  border: 1px solid #0b3477;
-  border-radius: 10px;
-  background: #e8f2fb;
-}
-.home-contact-world-map {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 5px 9px #0756a51a);
-}
-.home-contact-location {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.home-contact-location summary {
-  position: absolute;
-  top: 51%;
-  left: 60%;
-  display: flex;
-  min-height: 32px;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 9px 4px 6px;
-  border: 1px solid #fff;
-  border-radius: 18px;
-  background: #0756a5;
-  box-shadow: 0 2px 8px #082b4d55;
-  color: #fff;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
-  list-style: none;
-  pointer-events: auto;
-}
-#main-content .home-page .home-contact-location summary {
+  border: 1px solid #254768;
+  border-radius: 12px;
+  background: linear-gradient(125deg, #061d39, #092b4b 64%, #061b35);
+  box-shadow: 0 18px 40px #03152b33;
   color: #fff;
 }
-.home-contact-location summary::-webkit-details-marker {
-  display: none;
+.home-presence-copy { min-width: 0; padding: 12px 8px 8px 12px; }
+.home-presence-eyebrow { color: #9ed8ff; font: 700 10px/1.2 Arial, sans-serif; letter-spacing: .18em; }
+.home-presence-copy h2 { margin: 7px 0 8px; color: #fff; font: 600 clamp(23px, 2.2vw, 31px)/1.15 Georgia, serif; }
+.home-presence-copy > p { margin: 0; max-width: 36em; color: #d1deed; font-size: 14px; line-height: 1.55; }
+.home-presence-detail { min-height: 125px; margin-top: 19px; padding: 13px 15px; border: 1px solid #315472; border-radius: 9px; background: #ffffff08; }
+.home-presence-detail > span { color: #9ed8ff; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.home-presence-detail h3 { margin: 5px 0; color: #fff; font-size: 16px; }
+.home-presence-detail p { margin: 0 0 8px; color: #d1deed; font-size: 12px; line-height: 1.45; }
+.home-presence-detail a { color: #9ed8ff; font-size: 12px; font-weight: 700; text-underline-offset: 3px; }
+.home-presence-detail a:focus-visible { outline: 2px solid #edcf86; outline-offset: 3px; }
+.home-presence-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+.home-presence-list button { display: flex; width: 100%; min-height: 38px; align-items: center; gap: 7px; padding: 6px 8px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: #e8f2fc; cursor: pointer; text-align: left; }
+.home-presence-list button:hover, .home-presence-list button.is-selected { border-color: #416486; background: #ffffff0c; }
+.home-presence-list button:focus-visible { outline: 2px solid #edcf86; outline-offset: 2px; }
+.home-presence-list button > span:first-child { flex: 0 0 7px; width: 7px; height: 7px; border-radius: 50%; background: #d8b76c; box-shadow: 0 0 8px #d8b76c88; }
+.home-presence-list button > span:nth-child(2) { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.home-presence-list small { margin-left: auto; color: #9fb4ca; font-size: 9px; }
+.home-presence-credit { display: block; margin-top: 12px; color: #9fb4ca; font-size: 9px; line-height: 1.4; }
+.home-presence-stage { position: relative; min-width: 0; min-height: 420px; overflow: hidden; border: 1px solid #244967; border-radius: 10px; background: radial-gradient(ellipse at 52% 46%, #0c3760 0%, #061d38 63%, #04152b 100%); }
+.home-presence-globe-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.home-presence-globe-canvas canvas { display: block; max-width: 100%; outline: none; }
+.home-presence-globe-loading, .home-presence-fallback { display: grid; min-height: 100%; place-items: center; padding: 24px; color: #cddced; font-size: 13px; line-height: 1.5; text-align: center; }
+.home-presence-fallback { min-height: 270px; }
+.home-presence-hint { position: absolute; right: 12px; bottom: 9px; left: 12px; margin: 0; color: #bed0e2; font-size: 10px; text-align: center; text-shadow: 0 1px 3px #001; pointer-events: none; }
+@media (max-width: 760px) {
+  .home-presence { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 12px; }
+  .home-presence-stage { min-height: 340px; }
+  .home-presence-copy { padding: 8px 6px; }
 }
-.home-contact-location summary::before {
-  width: 9px;
-  height: 9px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: #e64a46;
-  content: "";
-}
-.home-contact-location summary:focus-visible {
-  outline: 3px solid #f2b94b;
-  outline-offset: 2px;
-}
-.home-contact-location-popup {
-  position: absolute;
-  z-index: 1;
-  right: 8px;
-  bottom: 8px;
-  left: 8px;
-  padding: 13px 15px;
-  border: 1px solid #c6d9ed;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 5px 18px #082b4d33;
-  color: #142e47;
-  font-size: 12px;
-  pointer-events: auto;
-}
-.home-contact-location-popup p {
-  margin: 6px 0 9px;
-  line-height: 1.5;
-}
-.home-contact-location-popup a {
-  color: #0756a5;
-  font-weight: 700;
+@media (max-width: 420px) {
+  .home-presence-list { grid-template-columns: minmax(0, 1fr); }
+  .home-presence-stage { min-height: 300px; }
 }
 .professionals-section {
   padding-top: 0;
@@ -4636,6 +4601,25 @@ textarea::placeholder {
 #main-content .home-page .testimonial-invite :is(h3, p) {
   color: #000;
 }
+#main-content .home-page .home-presence-copy h2,
+#main-content .home-page .home-presence-detail h3 {
+  color: #fff;
+}
+#main-content .home-page .home-presence-copy > p,
+#main-content .home-page .home-presence-detail p,
+#main-content .home-page .home-presence-credit,
+#main-content .home-page .home-presence-hint {
+  color: #d7e8f8;
+}
+#main-content .home-page .home-presence-copy > p { font-size: 14px; }
+#main-content .home-page .home-presence-detail p { font-size: 13px; }
+#main-content .home-page .home-presence .home-presence-eyebrow,
+#main-content .home-page .home-presence .home-presence-detail > span {
+  color: #9ed8ff;
+}
+#main-content .home-page .home-presence-detail a { color: #a9ddff; }
+#main-content .home-page .home-presence-list small { color: #b7cbe0; }
+#main-content .home-page .home-presence-hint { color: #e0edfa; }
 
 #main-content .about-page-scope :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
   color: #000 !important;
