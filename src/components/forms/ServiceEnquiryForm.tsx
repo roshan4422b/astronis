@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import styles from "@/components/forms/formStyles.module.css";
@@ -235,17 +234,11 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           <FormSelect id="service-preferred-contact" label="Preferred Contact Method" value={form.preferredContact} onChange={(event) => updateField("preferredContact", event.target.value)} options={contactOptions} />
         </div>
 
-        <label className={styles.inline} htmlFor="service-consent">
-          <input id="service-consent" type="checkbox" checked={form.consent} onChange={(event) => updateField("consent", event.target.checked)} aria-invalid={Boolean(errors.consent)} />
-          <span className={styles.inlineText}>I consent to Astronis Global contacting me regarding my enquiry. <Link href="/legal/privacy-policy" className={styles.link}>Privacy Policy</Link></span>
-        </label>
-        {errors.consent ? <div className={styles.errorText}>{errors.consent}</div> : null}
-
         <EnquiryAgreementCheckbox
           accepted={form.enquiryAgreementAccepted}
           error={errors.enquiryAgreementAccepted || ""}
           errorId="service-enquiry-agreement-error"
-          onChange={(accepted) => updateField("enquiryAgreementAccepted", accepted)}
+          onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 

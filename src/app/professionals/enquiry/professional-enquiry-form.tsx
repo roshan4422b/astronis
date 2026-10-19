@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { practices } from "@/content/site";
 import { professionals } from "../leadership";
 import Icon from "@/app/_components/icon";
@@ -25,7 +24,6 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [agreementError, setAgreementError] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
@@ -50,11 +48,6 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     }
     setEnquiryAgreementError("");
     data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
-    if (networkApplication && data.get("careerAgreementAccepted") !== "yes") {
-      setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
-      return;
-    }
-    setAgreementError("");
     if (networkApplication) data.set("message", `Professional network application: ${message}`);
     if (networkApplication) {
       data.set("networkApplication", "yes");
@@ -105,15 +98,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     <label className={styles.messageLabel}>{networkApplication ? "Professional Background & Areas of Expertise" : "Your Enquiry / Requirement"} <em>*</em><textarea name="message" required minLength={10} maxLength={networkApplication ? 960 : 1000} rows={5} value={message} onChange={event => setMessage(event.target.value)} placeholder={networkApplication ? "Tell us about your qualifications, practice, location and the collaboration you are interested in." : "Briefly describe your requirement, timeline and any specific questions."} /><small>{message.length}/{networkApplication ? 960 : 1000} characters</small></label>
     <div className={styles.preferences}><fieldset><legend>Preferred mode of communication</legend><div>{modes.map(([value,label]) => <label key={value} className={mode === value ? styles.activeMode : ""}><input type="radio" name="preferredMode" value={value} checked={mode === value} onChange={() => setMode(value)} />{label}</label>)}</div></fieldset><div className={styles.timeFields}><label>Preferred date<input type="date" name="preferredDate" /></label><label>Preferred time<input type="time" name="preferredTime" /></label></div></div>
     <div className={styles.uploadBlock}><span>Upload relevant documents (optional)</span><label className={styles.dropZone} onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); addFiles(event.dataTransfer.files); }}><Icon name="file" /><span><strong>Click to upload</strong> or drag and drop<small>PDF, DOC, DOCX, JPG, PNG · Max 10 MB each · 3 files</small></span><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onChange={event => { if (event.target.files) addFiles(event.target.files); event.target.value = ""; }} /></label>{files.length > 0 && <ul className={styles.fileList}>{files.map((file,index) => <li key={`${file.name}-${index}`}><span>{file.name}</span><button type="button" onClick={() => setFiles(current => current.filter((_,itemIndex) => itemIndex !== index))} aria-label={`Remove ${file.name}`}>Remove</button></li>)}</ul>}</div>
-    <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my personal data in accordance with the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label>
-    {networkApplication && <>
-      <label className={`${styles.consent} ${styles.agreementConsent}`}>
-        <input name="careerAgreementAccepted" type="checkbox" value="yes" required aria-invalid={Boolean(agreementError)} aria-describedby={agreementError ? "network-agreement-error" : undefined} onInvalid={(event) => { event.preventDefault(); setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application."); }} onChange={() => setAgreementError("")} />
-        <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
-      </label>
-      {agreementError && <p id="network-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
-    </>}
-    <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="professional-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
+    <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="professional-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement={networkApplication} />
     <div className={styles.submitRow}><button type="submit" disabled={busy}>{busy ? "Sending…" : networkApplication ? "Submit Profile" : "Submit Enquiry"}<Icon name="arrow" /></button><p>{networkApplication ? "Our team will review your profile and contact you about suitable collaboration opportunities." : "Our team will review your enquiry and connect you with an appropriate professional."}</p></div>
     {status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <a href="mailto:advisory@astronisglobal.com"> Email our team.</a>}</p>}
   </form>;

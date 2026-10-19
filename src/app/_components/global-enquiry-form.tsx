@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { industries as siteIndustries } from "@/content/site";
@@ -825,25 +824,11 @@ export default function GlobalEnquiryForm({
           )}
         </div>
 
-        <label className={styles.checkRow}>
-          <input
-            type="checkbox"
-            name="consent"
-            checked={detail.consent}
-            onChange={(event) => updateField("consent", event.target.checked)}
-            aria-invalid={Boolean(errors.consent)}
-          />
-          <span>
-            {variant === "market" ? "I agree to be contacted by Astronis Global." : <>I consent to Astronis Global contacting me regarding my enquiry. <span className={styles.privacyLink}><Link href="/legal/privacy-policy">Privacy Policy</Link></span></>}
-          </span>
-        </label>
-        {errors.consent && <small className={styles.error}>{errors.consent}</small>}
-
         <EnquiryAgreementCheckbox
           accepted={detail.enquiryAgreementAccepted}
           error={errors.enquiryAgreementAccepted || ""}
           errorId="global-enquiry-agreement-error"
-          onChange={(accepted) => updateField("enquiryAgreementAccepted", accepted)}
+          onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 

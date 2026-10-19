@@ -104,7 +104,6 @@ export default function CollaborationForm() {
       <label className={styles.messageField}><span>Brief About Collaboration Opportunity *</span><textarea name="message" required minLength={10} maxLength={1000} rows={3} /></label>
       <label className={styles.uploadField}><span>Upload Supporting Document</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => selectFile(event.currentTarget.files?.[0], event.currentTarget)} /><small>PDF, DOC, DOCX, up to 5 MB{file ? ` · ${file.name}` : ""}</small></label>
     </div>
-    <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I consent to Astronis Global processing the information submitted for responding to this enquiry.</span></label>
     <EnquiryAgreementCheckbox accepted={agreementAccepted} error={agreementError} errorId="professional-collaboration-enquiry-agreement-error" onChange={(accepted) => { setAgreementAccepted(accepted); setAgreementError(""); }} onInvalid={() => setAgreementError(enquiryAgreementMessage)} />
     <button className={styles.submitButton} type="submit" disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}

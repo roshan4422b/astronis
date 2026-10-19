@@ -236,7 +236,6 @@ export default function ExpertsByJurisdiction() {
           <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" minLength={10} required /></label>
           <label className={styles.upload}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /></label>
           <small className={styles.uploadNote}>PDF, DOC, DOCX · Max 5 MB</small>
-          <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my personal data in accordance with the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="jurisdiction-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
           <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>

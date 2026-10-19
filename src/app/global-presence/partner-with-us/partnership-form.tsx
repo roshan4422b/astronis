@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Icon from "@/app/_components/icon";
 import styles from "./page.module.css";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
@@ -12,7 +11,6 @@ export default function PartnershipForm() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
-  const [agreementError, setAgreementError] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
@@ -20,11 +18,6 @@ export default function PartnershipForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    if (formData.get("careerAgreementAccepted") !== "yes") {
-      setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
-      return;
-    }
-    setAgreementError("");
     if (formData.get("enquiryAgreementAccepted") !== "yes") {
       setEnquiryAgreementError(enquiryAgreementMessage);
       return;
@@ -38,7 +31,7 @@ export default function PartnershipForm() {
       phone: String(formData.get("phone") || "").trim(),
       service: String(formData.get("service") || "").trim(),
       message: String(formData.get("message") || "").trim(),
-      consent: formData.get("consent") ? "yes" : "",
+      consent: "yes",
       applicationType: "partner",
       careerAgreementAccepted: "yes",
       careerAgreementId: "career-professional-partnership-consent",
@@ -86,12 +79,6 @@ export default function PartnershipForm() {
     <label className={styles.message}><span>Your Message <b>*</b></span><textarea name="message" required minLength={10} maxLength={5000} placeholder="Tell us about your expertise and partnership goals" rows={4} /></label>
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
   </div>
-  <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my information under the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label>
-  <label className={`${styles.consent} ${styles.agreementConsent}`}>
-    <input name="careerAgreementAccepted" type="checkbox" value="yes" required aria-invalid={Boolean(agreementError)} aria-describedby={agreementError ? "partner-agreement-error" : undefined} onInvalid={(event) => { event.preventDefault(); setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application."); }} onChange={() => setAgreementError("")} />
-    <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
-  </label>
-  {agreementError && <p id="partner-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
-  <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
+  <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
   <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

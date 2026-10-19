@@ -10,12 +10,16 @@ export default function EnquiryAgreementCheckbox({
   errorId,
   onChange,
   onInvalid,
+  includeCareerAgreement = false,
+  additionalText,
 }: {
   accepted: boolean;
   error: string;
   errorId: string;
   onChange: (accepted: boolean) => void;
   onInvalid: () => void;
+  includeCareerAgreement?: boolean;
+  additionalText?: string;
 }) {
   return (
     <>
@@ -43,10 +47,15 @@ export default function EnquiryAgreementCheckbox({
             onClick={(event) => event.stopPropagation()}
           >
             {agreementTitle}
-          </Link>{" "}
-          and agree to its applicable terms and conditions.
+          </Link>
+          {includeCareerAgreement && <>{", "}<Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link></>}
+          {", "}<Link href="/legal/privacy-policy" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Privacy Policy</Link>
+          {" and "}<Link href="/legal/terms-of-use" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Terms of Use</Link>{" "}
+          and agree to the applicable terms. I consent to processing my submitted information and being contacted about this enquiry.
+          {additionalText ? ` ${additionalText}` : ""}
         </span>
       </label>
+      {includeCareerAgreement && <input type="hidden" name="careerAgreementAccepted" value={accepted ? "yes" : ""} />}
       {error && <p className="enquiry-agreement-error" id={errorId} role="alert">{error}</p>}
     </>
   );
