@@ -9,6 +9,13 @@
 - `corporate-formation-content.ts` and `corporate-group-content.ts`: descriptive content for all 59 child sections. This is service-scope copy, not a statement of current eligibility rules, fees or statutory timeframes.
 - `services.ts`: the portfolio's `canonicalSlug` tells the menu and hub which URL to use without changing the existing identity keys.
 - The catch-all service route renders the shared main or group template. The two previous Corporate main URLs redirect permanently to `/services/corporate-commercial-advisory`; existing legacy child routes remain available.
+- `service-hierarchy.json` is the route source of truth for 270 child services. Canonical child paths resolve through the catch-all route or their existing dedicated wrappers, which reuse the service detail templates and their shared responsive styling.
+
+## Child-page design system
+
+Service pages use the shared navy, blue, light-blue, white and grey tokens in `src/app/globals.css`. The detail and group templates retain service-specific content and section order while sharing the same hero, card, table, CTA, navigation and responsive patterns. `PageSectionNav` is the shared branded section sidebar for detailed child pages; the service template sidebar follows the same blue palette and sticky/stacked behavior. Child-service pages share three approved, consented testimonials in the Private Limited reference layout and use `#0751DB` for dark structure, feature, document, tax and closing sections, with readable contrast and a Testimonials anchor in the section sidebar.
+
+Where a child page has a pricing or fee section, the shared child-page layout styles its existing fee cards to match the Private Limited reference: three columns on desktop, consistent blue-topped cards and CTA buttons, responsive columns at smaller widths, and a blue/white lift-and-shadow hover state. Page-specific prices, fee descriptions and card counts remain unchanged.
 
 The main page uses six large alternating service sections. Every child row links to its parent group page with a stable hash. No new child-level routes are generated. Group pages are rendered from the same template, with two introductory paragraphs, coverage, use cases, considerations and assistance content for each child.
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { getServiceChildHeroImage } from "@/data/services";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -30,7 +31,8 @@ export default function NbfcFormationPage() {
         </div>
       </section>
 
-      <section className={PageStyles.services}>
+      <ServiceChildPageLayout items={[{ id: "services", label: "Services" }]}>
+      <section className={PageStyles.services} id="services">
         <div className="container">
           <div className={PageStyles.heading}><span className={PageStyles.eyebrow}>OUR NBFC FORMATION SERVICES</span><h2>From classification to registration — end-to-end support</h2><p>Guidance through regulatory classification, application preparation, governance and post-registration compliance.</p></div>
 
@@ -45,6 +47,7 @@ export default function NbfcFormationPage() {
           </div>
         </div>
       </section>
+      </ServiceChildPageLayout>
 
     </div>
   );

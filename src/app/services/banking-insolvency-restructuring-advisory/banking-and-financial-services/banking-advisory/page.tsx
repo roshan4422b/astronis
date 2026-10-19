@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { getServiceChildHeroImage } from "@/data/services";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -31,7 +32,8 @@ export default function BankingAdvisoryPage() {
         </div>
       </section>
 
-      <section className={PageStyles.services}>
+      <ServiceChildPageLayout items={[{ id: "services", label: "Services" }]}>
+      <section className={PageStyles.services} id="services">
         <div className="container">
           <div className={PageStyles.heading}><span className={PageStyles.eyebrow}>OUR BANKING ADVISORY SERVICES</span><h2>Practical legal and regulatory support for banking transactions</h2><p>Support across lending documentation, security structures, dispute resolution and bank regulatory matters.</p></div>
 
@@ -46,6 +48,7 @@ export default function BankingAdvisoryPage() {
           </div>
         </div>
       </section>
+      </ServiceChildPageLayout>
 
     </div>
   );

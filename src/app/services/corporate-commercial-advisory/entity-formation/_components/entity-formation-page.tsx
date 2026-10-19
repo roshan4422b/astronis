@@ -2,11 +2,12 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
-import { testimonials } from "@/content/testimonials";
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { getServiceChildHeroImage, services } from "@/data/services";
 import PrivateLimitedFaq from "../private-limited/private-limited-faq";
 import PageSectionLayout from "./page-section-layout";
+import ServiceChildTestimonial from "@/app/services/_template/service-child-testimonial";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import styles from "./entity-formation-page.module.css";
 
 function Heading({
@@ -45,12 +46,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       : undefined);
   const categoryHref = data.categoryHref
     ?? `${parentService ? `/services/${parentService.canonicalSlug}` : "/services/corporate-commercial-advisory"}#${category?.slug ?? "entity-formation-business-setup"}`;
-  const currentTestimonial = data.testimonials ? undefined : testimonials.find(
-    (testimonial) =>
-      testimonial.status === "approved" &&
-      testimonial.publicationConsent &&
-      testimonial.service === "Corporate & Commercial Advisory",
-  );
   const articles = corporateArticles.slice(0, 3);
   const highlightIndex = data.comparisonFocusIndex === undefined ? 0 : data.comparisonFocusIndex;
   const navItems = data.referenceNavigation
@@ -80,7 +75,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       ? ["Section 8 Company", "Private Limited Company", "LLP", "Partnership"]
       : ["LLP", "Private Limited Company", "One Person Company", "Partnership"];
   const comparisonHeaders = data.comparisonHeaders ?? defaultAlternatives;
-  const showTestimonials = data.showTestimonials ?? true;
   const showInsights = data.showInsights ?? true;
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
@@ -127,6 +121,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </div>
       </section>
 
+      <ServiceChildPageLayout items={sectionNavItems} includeTestimonial={false}>
       {data.showIntro !== false && <PageSectionLayout variant="full-width">
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
@@ -144,7 +139,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>}
 
-      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
+      <PageSectionLayout variant="full-width">
         <section className={styles.services}>
         <div className="container">
           <Heading
@@ -350,7 +345,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <article className={styles.customPrice}>
               <span>FOR COMPLEX REQUIREMENTS</span><h3>{data.customHeading ?? "Customised Quote"}</h3>
               <p>{data.customDescription ?? "For complex ownership, activity-specific permissions, foreign participation or tailored requirements."}</p>
-              <Link href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
+              <Link className={styles.priceButton} href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
             </article>
           </div>
           {data.priceNote !== null && <p className={styles.priceNote}>{data.priceNote ?? "Government charges, applicable taxes and third-party costs are confirmed separately as part of the proposed scope."}</p>}
@@ -381,29 +376,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>
 
-      {showTestimonials && (data.testimonials || currentTestimonial) && (
-        <PageSectionLayout variant="full-width">
-          <section className={styles.testimonial}>
-          <div className="container">
-            <Heading eyebrow="TESTIMONIALS" title="What Our Clients Say" />
-            {data.testimonials ? <div className={styles.testimonialGrid}>
-              {data.testimonials.map(([quote, name, designation, company, rating], index) => (
-                <figure key={`${name}-${company}-${index}`}>
-                  <span className={styles.quoteMark}>“</span>
-                  <span className={styles.testimonialAvatar} aria-hidden="true">{name.slice(0, 1)}</span>
-                  <blockquote>{quote}</blockquote>
-                  <figcaption><strong>{name}</strong><span>{designation}, {company}</span><span className={styles.stars} aria-label={`${rating} out of 5 stars`}>{"★".repeat(rating)}</span></figcaption>
-                </figure>
-              ))}
-            </div> : currentTestimonial && <figure>
-              <span className={styles.quoteMark}>“</span>
-              <blockquote>{currentTestimonial.quote}</blockquote>
-              <figcaption><strong>{currentTestimonial.name}</strong><span>{currentTestimonial.designation}, {currentTestimonial.company}</span><span className={styles.stars} aria-label={`${currentTestimonial.rating} out of 5 stars`}>{"★".repeat(currentTestimonial.rating || 0)}</span></figcaption>
-            </figure>}
-          </div>
-          </section>
-        </PageSectionLayout>
-      )}
+      <ServiceChildTestimonial />
 
       {showInsights && <PageSectionLayout variant="full-width">
         <section className={styles.insights}>
@@ -462,6 +435,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </div>
         </section>
       </PageSectionLayout>
+      </ServiceChildPageLayout>
     </div>
   );
 }

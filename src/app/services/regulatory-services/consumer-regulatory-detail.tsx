@@ -3,7 +3,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import type { DetailedServiceGroup, ServicePractice } from "@/data/service-detail-types";
 import type { ConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
-import PageSectionNav from "@/app/services/corporate-commercial-advisory/entity-formation/_components/page-section-nav";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import { getServiceChildHeroImage } from "@/data/services";
 import styles from "./consumer-regulatory-detail.module.css";
 
@@ -15,8 +15,6 @@ const sectionLinks = [
   ["Our Approach", "process"],
   ["FAQs", "faqs"],
 ];
-const fullWidthSections = ["services", "resources", "faqs", "consultation"];
-
 function Heading({
   label,
   title,
@@ -101,8 +99,9 @@ export default function ConsumerRegulatoryDetailPage({
         </div>
       </section>
 
-      <div className={styles.pageNavLayout}>
-        <div className={styles.pageContent}>
+      <ServiceChildPageLayout
+        items={sectionLinks.map(([label, id]) => ({ id, label }))}
+      >
           <section className={styles.overview} id="overview">
             <div className={`container ${styles.overviewGrid}`}>
               <div>
@@ -293,12 +292,7 @@ export default function ConsumerRegulatoryDetailPage({
               </div>
             </div>
           </section>
-        </div>
-        <PageSectionNav
-          items={sectionLinks.map(([label, id]) => ({ id, label }))}
-          hiddenWhenVisible={fullWidthSections}
-        />
-      </div>
+      </ServiceChildPageLayout>
     </div>
   );
 }

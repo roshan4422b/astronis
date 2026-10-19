@@ -17,7 +17,7 @@ import {
   getAdditionalServiceDetailStaticParams,
 } from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
-import SectionNavigation from "../_template/section-navigation";
+import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import serviceStyles from "../_template/service-template.module.css";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
@@ -184,17 +184,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
       <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} image={childHeroImage} />
-      <div className={`container ${serviceStyles.detailLayout}`}>
-        <aside className={serviceStyles.detailAside}>
-          <SectionNavigation
-            title="On this page"
-            items={[
-              { id: "service-overview", title: "Service overview" },
-              { id: "related-services", title: "Related services" },
-            ]}
-          />
-        </aside>
-        <div className={serviceStyles.detailContent}>
+      <ServiceChildPageLayout
+        items={[
+          { id: "service-overview", label: "Service overview" },
+          { id: "related-services", label: "Related services" },
+        ]}
+      >
           <section className={serviceStyles.detailIntro} id="service-overview">
             <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}>
               <Link href="/services">Services</Link> <span aria-hidden="true">›</span>{" "}
@@ -220,8 +215,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </ul>
             <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
           </section>
-        </div>
-      </div>
+      </ServiceChildPageLayout>
     </div>;
   }
 

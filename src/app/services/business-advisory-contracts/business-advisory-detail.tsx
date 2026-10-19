@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
-import PageSectionNav from "../corporate-commercial-advisory/entity-formation/_components/page-section-nav";
-import pageLayoutStyles from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page.module.css";
+import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 import type { BusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getServiceChildHeroImage } from "@/data/services";
@@ -17,8 +16,6 @@ const sections = [
   ["Documents & Preparation", "documents"],
   ["FAQs", "faqs"],
 ];
-const fullWidthSections = ["services", "features", "faqs", "consultation"];
-
 function Heading({
   eyebrow,
   title,
@@ -93,8 +90,9 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
         </div>
       </section>
 
-      <div className={pageLayoutStyles.pageNavLayout}>
-        <div className={pageLayoutStyles.pageContent}>
+      <ServiceChildPageLayout
+        items={sections.map(([label, id]) => ({ id, label }))}
+      >
           <section className={styles.tax} id="overview">
             <div className={`container ${styles.taxGrid}`}>
               <div>
@@ -266,12 +264,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
               <Link href="/professionals/enquiry">Request a Consultation <Icon name="arrow" /></Link>
             </div>
           </section>
-        </div>
-        <PageSectionNav
-          items={sections.map(([label, id]) => ({ id, label }))}
-          hiddenWhenVisible={fullWidthSections}
-        />
-      </div>
+      </ServiceChildPageLayout>
     </div>
   );
 }

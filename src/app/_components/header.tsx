@@ -122,13 +122,13 @@ export default function Header() {
   };
 
   const scheduleOpen = (label: string) => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(label), 120);
   };
 
   const scheduleClose = () => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(null), 180);
   };
@@ -251,7 +251,7 @@ export default function Header() {
                     aria-haspopup="true"
                     aria-controls={"menu-" + slugify(n.label)}
                     onClick={() => {
-                      if (window.innerWidth > 1050) {
+                      if (window.innerWidth > 1250) {
                         setOpen(n.label);
                       } else {
                         toggleMenu(n.label);

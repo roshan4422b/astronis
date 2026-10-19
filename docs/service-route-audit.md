@@ -1,6 +1,6 @@
 # Service Route Audit
 
-Generated from `src/data/service-hierarchy.json`: 11 main services, 36 sub-services, and 269 child services (316 unique URLs).
+Generated from `src/data/service-hierarchy.json`: 11 main services, 36 sub-services, and 270 child services (317 unique URLs).
 
 All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existing corporate formation and structuring pages have dedicated canonical route wrappers.
 
@@ -27,12 +27,12 @@ All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existi
 - ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Business Reorganisation — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/business-reorganisation`
 - ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Corporate Conversion — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/corporate-conversion`
 - ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Succession & Family Business Structuring — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/succession-and-family-business-structuring`
-- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Corporate Exit plan — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/corporate-exit-plan`
+- ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Corporate Exit Plan — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/corporate-exit-plan`
 - ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Demerger & Amalgamation — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/demerger-and-amalgamation`
 - ✓ Corporate & Commercial → Corporate Governance and Entity Structuring → Slump Sale — `/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/slump-sale`
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions`
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Mergers & Acquisitions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/mergers-and-acquisitions`
-- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Buy or Sell bsuiness entity — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/buy-or-sell-bsuiness-entity`
+- ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Buy or Sell business entity — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/buy-or-sell-business-entity`
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → NGO Registration — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/ngo-registration`
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Transaction Structuring — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/transaction-structuring`
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Private Equity Transactions — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/private-equity-transactions`
@@ -44,7 +44,7 @@ All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existi
 - ✓ Corporate & Commercial → Mergers, Acquisitions & Transactions → Legal Due Diligence — `/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/legal-due-diligence`
 - ✓ Regulatory Services — `/services/regulatory-services`
 - ✓ Regulatory Services → Corporate Regulatory — `/services/regulatory-services/corporate-regulatory`
-- ✓ Regulatory Services → Corporate Regulatory → Insolvency & Banckruptcy — `/services/regulatory-services/corporate-regulatory/insolvency-and-banckruptcy`
+- ✓ Regulatory Services → Corporate Regulatory → Insolvency & Bankruptcy — `/services/regulatory-services/corporate-regulatory/insolvency-and-bankruptcy`
 - ✓ Regulatory Services → Corporate Regulatory → MCA21 / ROC Matters — `/services/regulatory-services/corporate-regulatory/mca21-roc-matters`
 - ✓ Regulatory Services → Corporate Regulatory → Statutory Return Filings — `/services/regulatory-services/corporate-regulatory/statutory-return-filings`
 - ✓ Regulatory Services → Corporate Regulatory → Corporate Compliance — `/services/regulatory-services/corporate-regulatory/corporate-compliance`
@@ -104,14 +104,14 @@ All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existi
 - ✓ Business Advisory & Contracts → Business Strategy → Business Strategy Consultancy — `/services/business-advisory-contracts/business-strategy/business-strategy-consultancy`
 - ✓ Business Advisory & Contracts → Business Strategy → Business Growth & Expansion Advisory — `/services/business-advisory-contracts/business-strategy/business-growth-and-expansion-advisory`
 - ✓ Business Advisory & Contracts → Business Strategy → Business Market Entry Advisory — `/services/business-advisory-contracts/business-strategy/business-market-entry-advisory`
-- ✓ Business Advisory & Contracts → Business Strategy → Business Transformation & Startgic — `/services/business-advisory-contracts/business-strategy/business-transformation-and-startgic`
+- ✓ Business Advisory & Contracts → Business Strategy → Business Transformation & Strategic — `/services/business-advisory-contracts/business-strategy/business-transformation-and-strategic`
 - ✓ Business Advisory & Contracts → Business Strategy → Startup & MSME Structuring Advisory — `/services/business-advisory-contracts/business-strategy/startup-and-msme-structuring-advisory`
 - ✓ Business Advisory & Contracts → Business Strategy → Founder Advisory — `/services/business-advisory-contracts/business-strategy/founder-advisory`
 - ✓ Business Advisory & Contracts → Business Strategy → CDSCO Support Advisory — `/services/business-advisory-contracts/business-strategy/cdsco-support-advisory`
 - ✓ Business Advisory & Contracts → Business Strategy → Investment Readiness — `/services/business-advisory-contracts/business-strategy/investment-readiness`
 - ✓ Business Advisory & Contracts → Business Strategy → ESOP Advisory — `/services/business-advisory-contracts/business-strategy/esop-advisory`
 - ✓ Business Advisory & Contracts → Business Strategy → Fundraising Support — `/services/business-advisory-contracts/business-strategy/fundraising-support`
-- ✓ Business Advisory & Contracts → Business Strategy → DPIIT - Regulatroy & Financial Advisory — `/services/business-advisory-contracts/business-strategy/dpiit-regulatroy-and-financial-advisory`
+- ✓ Business Advisory & Contracts → Business Strategy → DPIIT - Regulatory & Financial Advisory — `/services/business-advisory-contracts/business-strategy/dpiit-regulatory-and-financial-advisory`
 - ✓ Business Advisory & Contracts → Commercial Contracts — `/services/business-advisory-contracts/commercial-contracts`
 - ✓ Business Advisory & Contracts → Commercial Contracts → Contract Drafting, Review & Negotiations — `/services/business-advisory-contracts/commercial-contracts/contract-drafting-review-and-negotiations`
 - ✓ Business Advisory & Contracts → Commercial Contracts → Contract Management — `/services/business-advisory-contracts/commercial-contracts/contract-management`
@@ -155,6 +155,7 @@ All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existi
 - ✓ Licensing & Registrations → Product / Industrial → Pollution / Environmental Permissions — `/services/licensing-registrations/product-industrial/pollution-environmental-permissions`
 - ✓ Licensing & Registrations → Product / Industrial → Factory / Industrial Approvals — `/services/licensing-registrations/product-industrial/factory-industrial-approvals`
 - ✓ Licensing & Registrations → NGO / Institutional — `/services/licensing-registrations/ngo-institutional`
+- ✓ Licensing & Registrations → NGO / Institutional → NGO Registration, Nonprofit Compliance & Institutional Advisory — `/services/licensing-registrations/ngo-institutional/ngo-registration-nonprofit-compliance-and-institutional-advisory`
 - ✓ Licensing & Registrations → NGO / Institutional → Trust — `/services/licensing-registrations/ngo-institutional/trust`
 - ✓ Licensing & Registrations → NGO / Institutional → Society — `/services/licensing-registrations/ngo-institutional/society`
 - ✓ Licensing & Registrations → NGO / Institutional → Section 8 Company — `/services/licensing-registrations/ngo-institutional/section-8-company`
@@ -167,7 +168,7 @@ All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existi
 - ✓ Intellectual Property Right Services → Trademark → Opposition — `/services/intellectual-property-right-services/trademark/opposition`
 - ✓ Intellectual Property Right Services → Trademark → Reply to Examination Response — `/services/intellectual-property-right-services/trademark/reply-to-examination-response`
 - ✓ Intellectual Property Right Services → Trademark → Renewal — `/services/intellectual-property-right-services/trademark/renewal`
-- ✓ Intellectual Property Right Services → Trademark → Prosectuion & Enforcement — `/services/intellectual-property-right-services/trademark/prosectuion-and-enforcement`
+- ✓ Intellectual Property Right Services → Trademark → Prosecution & Enforcement — `/services/intellectual-property-right-services/trademark/prosecution-and-enforcement`
 - ✓ Intellectual Property Right Services → Copyright — `/services/intellectual-property-right-services/copyright`
 - ✓ Intellectual Property Right Services → Copyright → Copyright Registration — `/services/intellectual-property-right-services/copyright/copyright-registration`
 - ✓ Intellectual Property Right Services → Copyright → Assignment — `/services/intellectual-property-right-services/copyright/assignment`
