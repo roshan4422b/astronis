@@ -140,7 +140,7 @@ export default function PrivateLimitedCompanyPage() {
 
   return (
     <div className={styles.page} data-text-size="plus-two">
-      <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
+      <section className={`${styles.hero} ${styles.heroNoOverlay} service-child-page-hero`} id="overview">
         <Image
           src={getServiceChildHeroImage("private-limited-company-incorporation", "corporate-commercial-advisory") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
           alt="Corporate services and compliance advisory"
@@ -164,6 +164,7 @@ export default function PrivateLimitedCompanyPage() {
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span>
             <h1>Private Limited Company Incorporation</h1>
+            <h2 className="service-child-hero-subtitle">A considered company structure for ambitious and growing businesses.</h2>
             <div className={styles.actions}>
               <Link className={styles.secondary} href="/contact">
                 Schedule a Consultation <Icon name="calendar" />

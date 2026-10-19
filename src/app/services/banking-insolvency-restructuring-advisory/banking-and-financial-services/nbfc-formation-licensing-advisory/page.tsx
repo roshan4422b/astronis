@@ -23,11 +23,11 @@ export default function NbfcFormationPage() {
 
   return (
     <div className={PageStyles.page}>
-      <section className={PageStyles.hero} id="overview">
+      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
         <Image src={heroImage} alt="NBFC formation" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">NBFC Formation / Licensing Advisory</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC FORMATION</span><h1>NBFC Formation / Licensing Advisory</h1><h2>Establishing financial institutions. Navigating RBI licensing.</h2><p>Practical support for formation, registration, governance and readiness to operate as an NBFC under RBI frameworks.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule a Licensing Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request Registration Assistance <Icon name="calendar" /></Link></div></div>
+          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC FORMATION</span><h1>NBFC Formation / Licensing Advisory</h1><h2 className="service-child-hero-subtitle">Establishing financial institutions. Navigating RBI licensing.</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
         </div>
       </section>
 

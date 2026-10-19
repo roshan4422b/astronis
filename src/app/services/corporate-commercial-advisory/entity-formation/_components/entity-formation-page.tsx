@@ -86,7 +86,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""}`} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id="overview">
         <Image
           src={heroImage}
           alt={data.imageAlt}
@@ -106,17 +106,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2>{data.heroStatement}</h2>
-            <p>{data.description}</p>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primary} href={data.heroPrimaryHref ?? "/professionals/enquiry"}>{data.heroPrimaryAction ?? "Get Started"} <Icon name="arrow" /></Link>
-              <Link className={styles.secondary} href={data.heroSecondaryHref ?? "/contact"}>{data.heroSecondaryAction ?? "Schedule a Consultation"} <Icon name="calendar" /></Link>
+              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
             </div>
-          </div>
-          <div className={styles.heroNote}>
-            <span>{data.heroNoteEyebrow ?? "FORMATION WITH A LONG VIEW"}</span>
-            <strong>{data.heroNoteTitle ?? <>Structure first.<br />Then move forward with clarity.</>}</strong>
-            <p>{data.heroNoteDescription ?? "Connect formation decisions with the way your organisation will operate."}</p>
           </div>
         </div>
       </section>

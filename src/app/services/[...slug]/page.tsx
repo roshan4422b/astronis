@@ -19,9 +19,9 @@ import {
 import MainServicePage from "../_template/main-service-page";
 import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import serviceStyles from "../_template/service-template.module.css";
+import ServiceChildHero from "../_template/service-child-hero";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
-import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
@@ -183,7 +183,15 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     const relatedServices = group.children.filter(item => item !== child);
     const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
-      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} image={childHeroImage} />
+      <ServiceChildHero
+        serviceTitle={service.title}
+        serviceHref={`/services/${service.canonicalSlug}`}
+        groupTitle={group.title}
+        groupHref={`/services/${service.canonicalSlug}#${group.slug}`}
+        title={child}
+        subtitle={`Practical guidance for ${child}, shaped around your organisation and requirements.`}
+        image={childHeroImage}
+      />
       <ServiceChildPageLayout
         items={[
           { id: "service-overview", label: "Service overview" },

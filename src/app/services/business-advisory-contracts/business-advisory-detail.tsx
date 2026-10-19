@@ -51,7 +51,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="hero">
+      <section className={`${styles.hero} service-child-page-hero`} id="hero">
         <Image
           src={heroImage}
           alt={`${detail.title} advisory`}
@@ -71,22 +71,13 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>BUSINESS ADVISORY &amp; CONTRACTS · BUSINESS STRATEGY</span>
             <h1>{detail.title}</h1>
-            <h2>{detail.subtitle}</h2>
-            <p>{detail.description}</p>
+            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primary} href="/professionals/enquiry">
-                Request a Consultation <Icon name="arrow" />
-              </Link>
-              <Link className={styles.secondary} href="/services/business-advisory-contracts#business-strategy">
-                Explore Our Advisory Services <Icon name="arrow" />
+              <Link className={styles.secondary} href="/contact">
+                Schedule a Consultation <Icon name="calendar" />
               </Link>
             </div>
           </div>
-          <aside className={styles.heroNote}>
-            <span>STRATEGIC BUSINESS ADVISORY</span>
-            <strong>Plan with clarity.<br />Move forward with confidence.</strong>
-            <p>Commercial, financial, legal and regulatory perspectives connected to your business objectives.</p>
-          </aside>
         </div>
       </section>
 

@@ -23,11 +23,11 @@ export default function BrandProtectionPage() {
 
   return (
     <div className={PageStyles.page}>
-      <section className={PageStyles.hero} id="overview">
+      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
         <Image src={heroImage} alt="Brand protection" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/intellectual-property-right-services">Intellectual Property Right Services</Link><span>/</span><Link href="/services/intellectual-property-right-services/ip-and-brand-advisory">IP &amp; Brand Advisory</Link><span>/</span><span aria-current="page">Brand Protection</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>INTELLECTUAL PROPERTY · ADVISORY</span><h1>Brand Protection</h1><h2>Protect reputation, revenue and goodwill</h2><p>Practical enforcement strategies and online monitoring to preserve brand value and reduce counterfeiting risk.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Protect Your Brand <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Report an Infringement <Icon name="calendar" /></Link></div></div>
+          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>INTELLECTUAL PROPERTY · ADVISORY</span><h1>Brand Protection</h1><h2 className="service-child-hero-subtitle">Protect reputation, revenue and goodwill</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
         </div>
       </section>
 

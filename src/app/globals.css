@@ -20,6 +20,36 @@
 * {
   box-sizing: border-box;
 }
+.page-transition section.service-child-page-hero {
+  min-height: 472px;
+}
+@media (max-width: 800px) {
+  .page-transition section.service-child-page-hero {
+    min-height: 494px;
+  }
+  .page-transition section.service-child-page-hero nav[aria-label="Breadcrumb"] {
+    margin-bottom: 12px;
+  }
+}
+.page-transition section.service-child-page-hero h2.service-child-hero-subtitle {
+  display: block;
+  max-width: 850px;
+  margin: 0 0 22px;
+  overflow: hidden;
+  color: #d8e7f5;
+  font: 400 clamp(16px, 1.5vw, 20px) / 1.45 Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .page-transition section.service-child-page-hero h2.service-child-hero-subtitle {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+  }
+}
 [hidden] {
   display: none !important;
 }

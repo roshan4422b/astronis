@@ -23,11 +23,11 @@ export default function NbfcCompliancePage() {
 
   return (
     <div className={PageStyles.page}>
-      <section className={PageStyles.hero} id="overview">
+      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
         <Image src={heroImage} alt="Financial compliance" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">NBFC Compliance</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC</span><h1>NBFC Compliance</h1><h2>Strengthening regulatory governance. Managing RBI obligations.</h2><p>Support for regulated non-banking financial companies to comply with RBI prudential norms, reporting, governance and customer protection requirements.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Request a Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request a Compliance Review <Icon name="calendar" /></Link></div></div>
+          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · NBFC</span><h1>NBFC Compliance</h1><h2 className="service-child-hero-subtitle">Strengthening regulatory governance. Managing RBI obligations.</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
         </div>
       </section>
 

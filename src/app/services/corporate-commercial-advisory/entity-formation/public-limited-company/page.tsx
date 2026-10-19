@@ -36,12 +36,11 @@ function Heading({ eyebrow, title, text, light = false }: { eyebrow: string; tit
 export default function PublicLimitedCompanyPage() {
   const articles = corporateArticles.slice(0, 3);
   return <div className={styles.page}>
-    <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
+    <section className={`${styles.hero} ${styles.heroNoOverlay} service-child-page-hero`} id="overview">
       <Image src={getServiceChildHeroImage("public-limited-company", "corporate-commercial-advisory") ?? "/images/services/corporate-commercial-heroes/public-limited-company.png"} alt="Corporate incorporation and company compliance services" fill priority sizes="(max-width: 850px) 100vw, 50vw" className={styles.heroImage} />
       <div className={`container ${styles.heroInner}`}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/corporate-commercial-advisory">Corporate &amp; Commercial</Link><span>/</span><Link href="/services/corporate-commercial-advisory#entity-formation-business-setup">Entity Formation &amp; Business Setup</Link><span>/</span><span aria-current="page">Public Limited Company</span></nav>
-        <div className={styles.heroCopy}><span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span><h1>Public Limited Company</h1><h2>Build for Scale. Access Capital. Grow Beyond Borders.</h2><p>Incorporate with end-to-end legal, regulatory and compliance support—building a considered foundation for a broader shareholder base, future fundraising and sustainable growth.</p><div className={styles.actions}><Link className={styles.primary} href="/professionals/enquiry">Get Started <Icon name="arrow" /></Link><Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
-        <div className={styles.heroNote}><span>FORMATION WITH A LONG VIEW</span><strong>Structure first.<br />Then scale with clarity.</strong><p>One coordinated view of incorporation, governance and what comes next.</p></div>
+        <div className={styles.heroCopy}><span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span><h1>Public Limited Company</h1><h2 className="service-child-hero-subtitle">Build for Scale. Access Capital. Grow Beyond Borders.</h2><div className={styles.actions}><Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
       </div>
     </section>
 

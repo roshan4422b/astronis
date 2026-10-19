@@ -49,7 +49,7 @@ export default function ConsumerRegulatoryDetailPage({
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="service-hero">
+      <section className={`${styles.hero} service-child-page-hero`} id="service-hero">
         <Image
           src={heroImage}
           alt={detail.imageAlt}
@@ -69,22 +69,13 @@ export default function ConsumerRegulatoryDetailPage({
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{group.title.toUpperCase()} SERVICES</span>
             <h1>{detail.title}</h1>
-            <h2>{detail.subtitle}</h2>
-            <p>{detail.description}</p>
+            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primaryAction} href="/professionals/enquiry">
-                Request a Consultation <Icon name="arrow" />
-              </Link>
-              <Link className={styles.secondaryAction} href={groupHref}>
-                Explore Regulatory Services <Icon name="globe" />
+              <Link className={styles.secondaryAction} href="/contact">
+                Schedule a Consultation <Icon name="calendar" />
               </Link>
             </div>
           </div>
-          <aside className={styles.heroNote}>
-            <span>REGULATORY ADVISORY</span>
-            <strong>Understand the rules.<br />Plan the next step.</strong>
-            <p>Service-specific guidance, coordinated around your organisation and operating context.</p>
-          </aside>
         </div>
       </section>
 
