@@ -187,13 +187,14 @@ export default function Header() {
 
   return (
     <>
+      <div className="site-header-stack">
       <div className="utility-bar">
         <div className="container utility-inner">
           <span>
             CORPORATE <b>•</b> REGULATORY <b>•</b> LEGAL <b>•</b> BUSINESS
             ADVISORY
           </span>
-          <div>
+          <div className="utility-contact">
             <a href="tel:+919311664455">
               <Icon name="phone" />
               +91 9311664455
@@ -203,9 +204,9 @@ export default function Header() {
               advisory@astronisglobal.com
             </a>
           </div>
+          <div className="utility-search"><GlobalSearch /></div>
         </div>
       </div>
-      <GlobalSearch />
     <header ref={ref} className="site-header">
       <div className="container nav-shell">
         <Link
@@ -315,6 +316,7 @@ export default function Header() {
         </nav>
       </div>
     </header>
+      </div>
     <ScheduleMeetingModal open={meetingModalOpen} onClose={() => setMeetingModalOpen(false)} />
     </>
   );
