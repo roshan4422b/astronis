@@ -162,11 +162,11 @@ const faqs = [
 export default function IndiaPage() {
   return (
     <div className={styles.page}>
-      <section className={styles.hero} aria-labelledby="india-title">
+      <section className={`${styles.hero} ${styles.indiaHero}`} aria-labelledby="india-title">
         <div className={styles.heroPhoto}>
           <AssetImage
-            src="/images/india-presence/india-gate.jpg"
-            alt="India Gate in New Delhi"
+            src="/Shri Ram Mandir for India Presentation .png"
+            alt="Shri Ram Mandir in Ayodhya"
             fill
             priority
             sizes="(max-width: 760px) 100vw, 58vw"
