@@ -20,6 +20,7 @@ import InsightsMenu from "./insights-menu";
 import TechnologyMenu from "./technology-menu";
 import { isRouteActive } from "./navigation-state";
 import ScheduleMeetingModal from "./schedule-meeting-modal";
+import GlobalSearch from "./global-search";
 
 const navigation = [
   {
@@ -205,6 +206,7 @@ export default function Header() {
           </div>
         </div>
       </div>
+      <GlobalSearch />
       <div className="container nav-shell">
         <Link
           href="/"
