@@ -3,6 +3,7 @@
 .masthead::after { position: absolute; right: -120px; bottom: -250px; width: 520px; height: 520px; border: 1px solid #ffffff1c; border-radius: 50%; box-shadow: 0 0 0 44px #ffffff08, 0 0 0 90px #ffffff06; content: ""; pointer-events: none; }
 .mastheadInner { position: relative; z-index: 1; width: min(1120px, calc(100% - 56px)); margin-inline: auto; padding: clamp(42px, 7vw, 82px) 0 clamp(37px, 5vw, 62px); }
 .masthead h1 { margin: 0 0 25px; color: #fff; font: 500 clamp(35px, 5vw, 58px)/1.04 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+.mastheadInner .agreementTitle { max-width: 1040px; font-size: clamp(30px, 4vw, 52px); overflow-wrap: anywhere; }
 .metadata { display: flex; flex-wrap: wrap; gap: 8px 28px; padding-top: 18px; border-top: 1px solid #ffffff42; }
 .metadata p { margin: 0; color: #dbe8f8; font: 600 11px/1.5 Arial, Helvetica, sans-serif; letter-spacing: .105em; }
 .downloadButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; margin-top: 22px; padding: 9px 15px; border: 1px solid #b9d3fb; border-radius: 5px; background: #fff; color: #07336e; font: 700 13px/1.3 Arial, Helvetica, sans-serif; cursor: pointer; }

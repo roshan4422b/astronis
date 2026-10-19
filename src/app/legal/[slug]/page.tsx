@@ -5,6 +5,7 @@ import TermsOfUse from "./terms-of-use";
 import WebsiteDisclaimer from "./website-disclaimer";
 import CookiePolicy from "./cookie-policy";
 import AccessibilityStatement from "./accessibility-statement";
+import ClientTestimonialConsent from "./client-testimonial-consent";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -24,6 +25,10 @@ const pages: Record<string, { title: string; text: string }> = {
   },
   accessibility: {
     title: "Accessibility Statement",
+    text: "",
+  },
+  "client-testimonial-consent": {
+    title: "Client Testimonial Consent & Authorisation Agreement",
     text: "",
   },
 };
@@ -48,6 +53,7 @@ export default async function Policy({
   if (slug === "disclaimer") return <WebsiteDisclaimer />;
   if (slug === "cookie-policy") return <CookiePolicy />;
   if (slug === "accessibility") return <AccessibilityStatement />;
+  if (slug === "client-testimonial-consent") return <ClientTestimonialConsent />;
   const p = pages[slug];
   if (!p) notFound();
   return (

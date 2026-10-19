@@ -6,6 +6,11 @@ type PolicySection = {
   contacts?: { text: string }[];
 };
 
+type LegalPolicyPdfOptions = {
+  title: string;
+  metadataLines: string[];
+};
+
 const PAGE_WIDTH = 595.28;
 const PAGE_HEIGHT = 841.89;
 const LEFT = 54;
@@ -67,7 +72,7 @@ function textCommand(text: string, x: number, y: number, size: number, font = "F
   return `BT /${font} ${size} Tf ${color} rg 1 0 0 1 ${x.toFixed(2)} ${y.toFixed(2)} Tm ${pdfText(text)} Tj ET`;
 }
 
-export function generateLegalPolicyPdf(sections: PolicySection[]) {
+export function generateLegalPolicyPdf(sections: PolicySection[], options?: LegalPolicyPdfOptions) {
   const pages: string[][] = [[]];
   let pageIndex = 0;
   let y = TOP;
@@ -91,12 +96,28 @@ export function generateLegalPolicyPdf(sections: PolicySection[]) {
 
   // First page document header.
   page().push(textCommand("ASTRONIS GLOBAL PRIVATE LIMITED", LEFT, y, 9, "F2", "0.04 0.16 0.35"));
-  y -= 32;
-  page().push(textCommand("PRIVACY POLICY", LEFT, y, 20, "F2", "0.04 0.16 0.35"));
-  y -= 22;
-  page().push(textCommand("WEBSITE: WWW.ASTRONISGLOBAL.COM", LEFT, y, 8, "F2", "0.31 0.39 0.52"));
-  page().push(textCommand("EFFECTIVE DATE: 17 OCTOBER 2026", 340, y, 8, "F2", "0.31 0.39 0.52"));
-  y -= 13;
+  if (options) {
+    y -= 30;
+    const titleLines = wrapText(options.title, 15, PAGE_WIDTH - LEFT - RIGHT);
+    for (const line of titleLines) {
+      page().push(textCommand(line, LEFT, y, 15, "F2", "0.04 0.16 0.35"));
+      y -= 18;
+    }
+    options.metadataLines.forEach((metadataLine) => {
+      const metadata = wrapText(metadataLine, 8, PAGE_WIDTH - LEFT - RIGHT);
+      for (const line of metadata) {
+        page().push(textCommand(line, LEFT, y, 8, "F2", "0.31 0.39 0.52"));
+        y -= 11;
+      }
+    });
+  } else {
+    y -= 32;
+    page().push(textCommand("PRIVACY POLICY", LEFT, y, 20, "F2", "0.04 0.16 0.35"));
+    y -= 22;
+    page().push(textCommand("WEBSITE: WWW.ASTRONISGLOBAL.COM", LEFT, y, 8, "F2", "0.31 0.39 0.52"));
+    page().push(textCommand("EFFECTIVE DATE: 17 OCTOBER 2026", 340, y, 8, "F2", "0.31 0.39 0.52"));
+    y -= 13;
+  }
   page().push(`0.78 0.83 0.89 RG 0.7 w ${LEFT} ${y.toFixed(2)} m ${PAGE_WIDTH - RIGHT} ${y.toFixed(2)} l S`);
   y -= 22;
 

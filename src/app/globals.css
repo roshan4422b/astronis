@@ -2184,6 +2184,24 @@ textarea::placeholder {
   font-size: max(var(--font-size-min), 12px);
   font-weight: 400;
 }
+.testimonial-terms-link {
+  margin: 0;
+  color: var(--ink);
+  font-size: max(var(--font-size-min), 13px);
+  line-height: 1.65;
+}
+.testimonial-terms-link a,
+.enquiry-form .consent a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.testimonial-terms-link a:focus-visible,
+.enquiry-form .consent a:focus-visible {
+  outline: 3px solid #1688ff;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 .consent input {
   width: 17px;
   height: 17px;
