@@ -404,6 +404,12 @@ main section[class*="hero"] :is(a, button):is(
   width: 220px;
   display: block;
 }
+.brand-video {
+  display: block;
+  width: 220px;
+  height: 83px;
+  object-fit: contain;
+}
 .navigation {
   display: flex;
   align-items: center;
@@ -1481,8 +1487,8 @@ main section[class*="hero"] :is(a, button):is(
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 112px;
-  padding: 18px 12px;
+  min-height: 124px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1517,8 +1523,8 @@ main section[class*="hero"] :is(a, button):is(
 .client-logo img {
   position: relative;
   z-index: 0;
-  width: min(100%, 190px);
-  height: 70px;
+  width: min(100%, 220px);
+  height: 86px;
   object-fit: contain;
   transition: transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -3082,7 +3088,8 @@ textarea::placeholder {
 @media (min-width: 1251px) and (max-width: 1350px) {
   .nav-shell { gap: 20px; }
   .brand { flex-basis: 180px; }
-  .brand img { width: 180px; }
+  .brand img,
+  .brand-video { width: 180px; }
   .navigation { gap: 12px; font-size: max(var(--font-size-min), 12px); }
   .nav-cta { padding: 12px; font-size: max(var(--font-size-min), 12px); }
 }
@@ -3096,7 +3103,8 @@ textarea::placeholder {
   .brand {
     flex-basis: 180px;
   }
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 180px;
   }
   .navigation {
@@ -3192,7 +3200,8 @@ textarea::placeholder {
   .brand {
     flex-basis: 190px;
   }
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 190px;
   }
   .menu-toggle {
@@ -3474,7 +3483,8 @@ textarea::placeholder {
     border-radius: 0 0 12px 12px;
   }
   .brand,
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 165px;
     flex-basis: 165px;
   }
@@ -4787,15 +4797,82 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   margin: 2px 0 0;
   accent-color: #174fb5;
 }
-.enquiry-agreement-checkbox a {
-  color: #174fb5;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.faq-route-scope [class*="__primaryButton"],
+.faq-route-scope [class*="__secondaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__secondaryButton"], [class*="__readLink"], [class*="__sectionHeading"] > a, [class*="__resourceCard"] em, [class*="__promoPanel"] > a, [class*="__emailRow"] button) {
+  color: var(--blue, #0751db) !important;
 }
-.enquiry-agreement-checkbox a:focus-visible,
-.enquiry-agreement-checkbox input:focus-visible {
-  outline: 3px solid #e4ad27;
-  outline-offset: 3px;
+.faq-route-scope [class*="__primaryButton"],
+.success-stories-route-scope :is([class*="__primaryButton"], [class*="__emailRow"] button) {
+  color: #fff !important;
+}
+.faq-route-scope [class*="__cta"] [class*="__secondaryButton"] {
+  color: #fff !important;
+}
+
+.global-presence-route-scope :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, button, summary, legend, em, .breadcrumb, .eyebrow, [class*="description" i], [class*="summary" i], [class*="tagline" i]) {
+  color: #111 !important;
+}
+.global-presence-route-scope :is(p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, button, summary, legend, em, .breadcrumb, .eyebrow, [class*="description" i], [class*="summary" i], [class*="tagline" i]) {
+  font-size: max(15px, 1em) !important;
+}
+.global-presence-route-scope [class*="__hero"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  p,
+  [class*="description" i],
+  [class*="summary" i],
+  [class*="cardBody"] > span,
+  [class*="cardBody"] > small,
+  [class*="modelBody"] > small,
+  [class*="resourceGrid"] small
+) {
+  font-size: max(15px, 1em) !important;
+}
+.global-presence-route-scope :is(
+  [class*="__darkSection"],
+  [class*="__knowledgeSection"],
+  [class*="__finalCta"],
+  [class*="__professionalPanel"],
+  [class*="__regionInfo"],
+  [class*="__journey"],
+  [class*="__cta"],
+  [class*="__subscribe"],
+  [class*="__enquiryIntro"],
+  [class*="__contactStrip"],
+  [class*="global-presence"][class*="__hero"],
+  .page-banner
+) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
+  color: #fff !important;
+}
+.global-presence-route-scope [class*="__journeyNumber"] {
+  color: #082b53 !important;
+}
+.global-presence-route-scope [class*="__enquiryCopy"] :is(h1, h2, h3, h4, h5, h6, p, span, a) {
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) {
+  border: 1px solid #0751db !important;
+  background: #0751db !important;
+  color: #fff !important;
+}
+.global-presence-route-scope :is(
+  [class*="__heroCopy"] > a,
+  [class*="__hero"] a[class*="primaryButton"],
+  [class*="__hero"] a[class*="secondaryButton"],
+  [class*="__hero"] a[class*="button"],
+  [class*="__hero"] a[class*="Button"],
+  [class*="__heroActions"] > a
+) :is(span, strong, small, svg) {
+  color: #fff !important;
 }
 .enquiry-agreement-error {
   margin: 6px 0 0;

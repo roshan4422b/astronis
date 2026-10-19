@@ -12,7 +12,7 @@ export default function Contact() {
         />
         <div className="contact-grid">
           <div className="home-contact-side">
-            <ContactDetails />
+            <ContactDetails showRegisteredOffice />
           </div>
           <HomeEnquiryForm compact />
           <HomePresenceGlobe />
