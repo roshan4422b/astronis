@@ -187,7 +187,6 @@ export default function Header() {
 
   return (
     <>
-    <header ref={ref} className="site-header">
       <div className="utility-bar">
         <div className="container utility-inner">
           <span>
@@ -207,6 +206,7 @@ export default function Header() {
         </div>
       </div>
       <GlobalSearch />
+    <header ref={ref} className="site-header">
       <div className="container nav-shell">
         <Link
           href="/"
