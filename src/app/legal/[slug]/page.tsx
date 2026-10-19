@@ -4,6 +4,7 @@ import PrivacyPolicy from "./privacy-policy";
 import TermsOfUse from "./terms-of-use";
 import WebsiteDisclaimer from "./website-disclaimer";
 import CookiePolicy from "./cookie-policy";
+import AccessibilityStatement from "./accessibility-statement";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -22,8 +23,8 @@ const pages: Record<string, { title: string; text: string }> = {
     text: "This website does not currently use advertising trackers or analytics cookies. For questions about website technology or privacy, contact our team.",
   },
   accessibility: {
-    title: "Accessibility",
-    text: "This website supports keyboard navigation, responsive layouts, labelled form controls and reduced-motion preferences. If you experience difficulty accessing any content, contact our team for assistance.",
+    title: "Accessibility Statement",
+    text: "",
   },
 };
 export function generateStaticParams() {
@@ -46,6 +47,7 @@ export default async function Policy({
   if (slug === "terms-of-use") return <TermsOfUse />;
   if (slug === "disclaimer") return <WebsiteDisclaimer />;
   if (slug === "cookie-policy") return <CookiePolicy />;
+  if (slug === "accessibility") return <AccessibilityStatement />;
   const p = pages[slug];
   if (!p) notFound();
   return (

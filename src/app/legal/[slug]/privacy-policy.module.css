@@ -23,6 +23,7 @@
 .section p + p { margin-top: 12px; }
 .section ol { margin: 0; padding-left: 58px; }
 .section li { padding-left: 6px; }
+.section li .subsectionHeading { display: inline; margin: 0; color: #08295a; font: 600 15px/1.8 Georgia, "Times New Roman", serif; }
 .section li + li { margin-top: 8px; }
 .section li::marker { color: #0751db; font: 600 13px/1.8 Arial, Helvetica, sans-serif; }
 .section a { color: #064cb7; text-decoration: underline; text-decoration-color: #89aee5; text-underline-offset: 3px; overflow-wrap: anywhere; }
