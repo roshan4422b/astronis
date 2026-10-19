@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import Icon from "@/app/_components/icon";
 import styles from "./collaborate-with-us.module.css";
 
@@ -34,6 +35,7 @@ export default function CollaborateWithUsForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [agreementError, setAgreementError] = useState("");
 
   function handleFile(input: HTMLInputElement) {
     const selected = input.files?.[0];
@@ -57,8 +59,15 @@ export default function CollaborateWithUsForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (data.get("careerAgreementAccepted") !== "yes") {
+      setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
+      return;
+    }
+    setAgreementError("");
     data.set("connectWith", "general");
     data.set("collaborateWithUs", "yes");
+    data.set("applicationType", "professional");
+    data.set("careerAgreementId", "career-professional-partnership-consent");
     if (file) data.append("documents", file);
     setBusy(true);
     setStatus("");
@@ -95,6 +104,11 @@ export default function CollaborateWithUsForm() {
       <label className={styles.uploadField}><span>Upload Profile / Brochure (Optional)</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => handleFile(event.currentTarget)} /><small>PDF, DOC, DOCX (Max 5 MB){file ? ` · ${file.name}` : ""}</small></label>
     </div>
     <label className={styles.consent}><input type="checkbox" name="consent" value="yes" required /><span>I consent to Astronis Global processing the information submitted for responding to this enquiry.</span></label>
+    <label className={`${styles.consent} ${styles.agreementConsent}`}>
+      <input type="checkbox" name="careerAgreementAccepted" value="yes" required aria-invalid={Boolean(agreementError)} aria-describedby={agreementError ? "professional-agreement-error" : undefined} onInvalid={(event) => { event.preventDefault(); setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application."); }} onChange={() => setAgreementError("")} />
+      <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
+    </label>
+    {agreementError && <p id="professional-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
     <button type="submit" className={styles.submitButton} disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;

@@ -6,6 +6,7 @@ import WebsiteDisclaimer from "./website-disclaimer";
 import CookiePolicy from "./cookie-policy";
 import AccessibilityStatement from "./accessibility-statement";
 import ClientTestimonialConsent from "./client-testimonial-consent";
+import CareerProfessionalPartnershipConsent from "./career-professional-partnership-consent";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -31,6 +32,10 @@ const pages: Record<string, { title: string; text: string }> = {
     title: "Client Testimonial Consent & Authorisation Agreement",
     text: "",
   },
+  "career-professional-partnership-consent": {
+    title: "Career, Professional Association & Partnership Application Consent Agreement",
+    text: "",
+  },
 };
 export function generateStaticParams() {
   return Object.keys(pages).map((slug) => ({ slug }));
@@ -54,6 +59,7 @@ export default async function Policy({
   if (slug === "cookie-policy") return <CookiePolicy />;
   if (slug === "accessibility") return <AccessibilityStatement />;
   if (slug === "client-testimonial-consent") return <ClientTestimonialConsent />;
+  if (slug === "career-professional-partnership-consent") return <CareerProfessionalPartnershipConsent />;
   const p = pages[slug];
   if (!p) notFound();
   return (

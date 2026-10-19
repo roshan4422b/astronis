@@ -11,11 +11,17 @@ export default function PartnershipForm() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
+  const [agreementError, setAgreementError] = useState("");
 
   async function submit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+    if (formData.get("careerAgreementAccepted") !== "yes") {
+      setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
+      return;
+    }
+    setAgreementError("");
     const payload = {
       formType: "service",
       name: String(formData.get("name") || "").trim(),
@@ -25,6 +31,9 @@ export default function PartnershipForm() {
       service: String(formData.get("service") || "").trim(),
       message: String(formData.get("message") || "").trim(),
       consent: formData.get("consent") ? "yes" : "",
+      applicationType: "partner",
+      careerAgreementAccepted: "yes",
+      careerAgreementId: "career-professional-partnership-consent",
       website: "",
       pageUrl: window.location.href,
       pageTitle: document.title || "Astronis Global",
@@ -66,5 +75,12 @@ export default function PartnershipForm() {
     <label className={styles.full}><span>Area of Interest <b>*</b></span><select name="service" required defaultValue=""><option value="" disabled>Select a partnership model</option>{interests.map((interest) => <option key={interest}>Global Partnership: {interest}</option>)}</select></label>
     <label className={styles.message}><span>Your Message <b>*</b></span><textarea name="message" required minLength={10} maxLength={5000} placeholder="Tell us about your expertise and partnership goals" rows={4} /></label>
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-  </div><label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my information under the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label><button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
+  </div>
+  <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my information under the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label>
+  <label className={`${styles.consent} ${styles.agreementConsent}`}>
+    <input name="careerAgreementAccepted" type="checkbox" value="yes" required aria-invalid={Boolean(agreementError)} aria-describedby={agreementError ? "partner-agreement-error" : undefined} onInvalid={(event) => { event.preventDefault(); setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application."); }} onChange={() => setAgreementError("")} />
+    <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
+  </label>
+  {agreementError && <p id="partner-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
+  <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

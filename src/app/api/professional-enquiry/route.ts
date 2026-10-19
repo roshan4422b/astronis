@@ -21,7 +21,16 @@ export async function POST(request: Request) {
   };
   const collaborationEnquiry = value("collaborationEnquiry") === "yes";
   const collaborateWithUs = value("collaborateWithUs") === "yes";
+  const networkApplication = value("networkApplication") === "yes";
+  const careerApplication = collaborateWithUs || networkApplication;
   if (value("website")) return Response.json({ message: "Unable to submit this enquiry." }, { status: 400 });
+  if (careerApplication && (
+    value("applicationType") !== "professional" ||
+    value("careerAgreementAccepted") !== "yes" ||
+    value("careerAgreementId") !== "career-professional-partnership-consent"
+  )) {
+    return Response.json({ message: "Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application." }, { status: 400 });
+  }
   if (!(["specific", "practice", "jurisdiction", "general"].includes(fields.connectWith)) ||
       (fields.connectWith === "specific" && !fields.professional) ||
       (fields.connectWith === "practice" && !fields.service) ||
@@ -60,10 +69,20 @@ export async function POST(request: Request) {
       name: file.name.slice(0, 180), type: file.type || "application/octet-stream", size: file.size,
       contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64"),
     })));
+    const acceptedAt = careerApplication ? new Date().toISOString() : undefined;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(process.env.ENQUIRY_WEBHOOK_TOKEN ? { Authorization: `Bearer ${process.env.ENQUIRY_WEBHOOK_TOKEN}` } : {}) },
-      body: JSON.stringify({ kind: "professional-enquiry", ...fields, attachments, submittedAt: new Date().toISOString() }),
+      body: JSON.stringify({
+        kind: "professional-enquiry",
+        ...fields,
+        applicationType: careerApplication ? "professional" : undefined,
+        careerAgreementAccepted: careerApplication ? true : undefined,
+        careerAgreementId: careerApplication ? "career-professional-partnership-consent" : undefined,
+        careerAgreementAcceptedAt: acceptedAt,
+        attachments,
+        submittedAt: acceptedAt ?? new Date().toISOString(),
+      }),
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new Error("Delivery failed");
