@@ -36,6 +36,31 @@ const investmentAndTransactionChildRoutes: Record<string, string> = {
     "/services/corporate-commercial-advisory/investment-and-transaction-advisory/india-entry-strategy",
   "Investment Structuring":
     "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investment-structuring",
+  "Organisational Structuring":
+    "/services/business-advisory-contracts/investment-and-transaction-advisory/organisational-structuring",
+  "Governance & Management Framework":
+    "/services/business-advisory-contracts/investment-and-transaction-advisory/governance-management-framework",
+};
+
+const regulatoryBankingChildRoutes: Record<string, string> = {
+  "RBI Regulatory Advisory":
+    "/services/regulatory-services/banking-nbfc-advisory-services/rbi-regulatory-advisory",
+  "FinTech Regulatory Advisory":
+    "/services/regulatory-services/banking-nbfc-advisory-services/fintech-regulatory-advisory",
+  "Payment & Digital Finance Regulatory Advisory":
+    "/services/regulatory-services/banking-nbfc-advisory-services/payment-digital-finance-regulatory-advisory",
+};
+
+const odiChildRoutes: Record<string, string> = {
+  "Restructuring Tax Coordination":
+    "/services/fema-fdi-cross-border/odi-compliance-and-support/restructuring-tax-coordination",
+  "Overseas Subsidiary":
+    "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-subsidiary",
+};
+
+const ecbChildRoutes: Record<string, string> = {
+  "External Commercial Borrowing":
+    "/services/fema-fdi-cross-border/ecb-compliance-and-support/external-commercial-borrowing",
 };
 
 const workplaceComplianceChildRoutes: Record<string, string> = {
@@ -109,6 +134,11 @@ const bankingFinancialServicesChildRoutes: Record<string, string> = {
     "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/banking-loan-security-documentation",
   "Financial Institution Advisory":
     "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/financial-institution-advisory",
+};
+
+const tribunalsDisputeResolutionChildRoutes: Record<string, string> = {
+  "Mediation & Conciliation Cell":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/mediation-conciliation-cell",
 };
 
 const technologyPrivacyChildRoutes: Record<string, string> = {
@@ -227,6 +257,15 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "business-advisory-contracts" && group.slug === "investment-and-transaction-advisory"
       ? { childRoutes: investmentAndTransactionChildRoutes }
       : {}),
+    ...(service.slug === "regulatory-services" && group.slug === "banking-nbfc-advisory-services"
+      ? { childRoutes: regulatoryBankingChildRoutes }
+      : {}),
+    ...(service.slug === "fema-fdi-cross-border" && group.slug === "odi-compliance-and-support"
+      ? { childRoutes: odiChildRoutes }
+      : {}),
+    ...(service.slug === "fema-fdi-cross-border" && group.slug === "ecb-compliance-and-support"
+      ? { childRoutes: ecbChildRoutes }
+      : {}),
     ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "workplace-compliances"
       ? { childRoutes: workplaceComplianceChildRoutes }
       : {}),
@@ -241,6 +280,9 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "banking-insolvency-restructuring-advisory" && group.slug === "banking-and-financial-services"
       ? { childRoutes: bankingFinancialServicesChildRoutes }
+      : {}),
+    ...(service.slug === "litigation-dispute-resolution" && group.slug === "tribunals-dispute-resolution"
+      ? { childRoutes: tribunalsDisputeResolutionChildRoutes }
       : {}),
     ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
       ? { childRoutes: technologyPrivacyChildRoutes }
