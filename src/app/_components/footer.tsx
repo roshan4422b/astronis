@@ -108,7 +108,7 @@ export default function Footer() {
               {g.links.map(([title, href]) => (
                 <Link key={title} href={href}>
                   <span aria-hidden="true">›</span>
-                  {title}
+                  {g.title === "Our Services" ? title.replace(/\s+(Advisory|Specific)$/i, "") : title}
                 </Link>
               ))}
             </div>
