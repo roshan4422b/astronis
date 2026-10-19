@@ -268,7 +268,7 @@ export default function Header() {
                 ) : n.label === "Global Presence" ? (
                   <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={closeMenus} />
                 ) : n.label === "Insights" ? (
-                  <InsightsMenu id={"menu-" + slugify(n.label)} onNavigate={closeMenus} />
+                  <InsightsMenu id={"menu-" + slugify(n.label)} />
                 ) : (
                   <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                     <div className="mega-intro">

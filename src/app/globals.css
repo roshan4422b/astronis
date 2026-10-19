@@ -4639,7 +4639,7 @@ textarea::placeholder {
   color: #000 !important;
 }
 @media (min-width: 1051px) {
-  .site-header .nav-item.is-open .mega-menu {
+  .site-header .nav-item.is-open .mega-menu:not(.global-presence-menu) {
     max-height: none !important;
     overflow: visible !important;
   }

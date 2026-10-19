@@ -1368,9 +1368,11 @@
 }
 
 .menu {
-  max-height: min(72vh, 680px) !important;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+}
+
+.side {
+  display: block;
 }
 
 @media (min-width: 1051px) {
@@ -1451,6 +1453,109 @@
 .region:is(:hover, :focus-visible) .regionCopy small,
 .region:is(:hover, :focus-visible) .regionArrow {
   color: #fff;
+}
+
+@media (min-width: 1051px) {
+  .menu {
+    box-sizing: border-box;
+    width: min(1604px, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+    max-height: calc(100dvh - 150px) !important;
+    overflow: hidden !important;
+  }
+
+  .main {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
+    height: min(550px, calc(100dvh - 160px));
+    min-height: 0;
+  }
+
+  .regions {
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    padding: 5px 12px;
+  }
+
+  .region {
+    grid-template-columns: 64px minmax(0, 1fr) 12px;
+    gap: 9px;
+    min-height: 0;
+    padding: 3px 7px;
+  }
+
+  .thumbnail {
+    width: 64px;
+    height: 44px;
+  }
+
+  .regionCopy strong {
+    font-size: max(var(--font-size-min), 15px);
+  }
+
+  .regionCopy small {
+    font-size: max(var(--font-size-min), 12px);
+  }
+
+  .footprint {
+    padding: 14px;
+  }
+
+  .map {
+    min-height: 0;
+  }
+
+  .map svg {
+    max-height: 200px;
+  }
+
+  .explore {
+    height: 100%;
+    padding: 16px 12px;
+  }
+
+  .explore a {
+    grid-template-columns: 22px minmax(0, 1fr) 14px;
+    min-height: 48px;
+    gap: 8px;
+    font-size: max(var(--font-size-min), 13px);
+    line-height: 1.25;
+  }
+
+  .opportunities {
+    display: grid;
+    grid-template-rows: auto repeat(8, minmax(0, 1fr));
+    padding: 12px 12px 8px;
+  }
+
+  .opportunities > .sectionLabel {
+    margin-bottom: 4px;
+    font-size: max(var(--font-size-min), 10px);
+    letter-spacing: 1.5px;
+  }
+
+  .opportunity {
+    grid-template-columns: 22px minmax(0, 1fr) 12px;
+    gap: 6px;
+    min-height: 0;
+    padding: 4px 2px;
+  }
+
+  .opportunity strong {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: max(var(--font-size-min), 13px);
+    line-height: 1.15;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .opportunity small {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: max(var(--font-size-min), 11px);
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 }
 
 @media (max-width: 650px) {
