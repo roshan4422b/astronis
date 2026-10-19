@@ -45,15 +45,21 @@ export async function POST(request: Request) {
   const weekday = dateValue.getUTCDay();
   if (name.length < 2 || !emailPattern.test(email) || !/^\+\d{7,18}$/.test(phone) || !organisation || !validServices.has(service) || !validTeams.has(team) || !validTurnovers.has(turnover)) return error("Please provide valid contact and organisation details.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
-  if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true) return error("Please review your meeting preference and consent.");
+  if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true || raw.enquiryAgreementAccepted !== "yes" || raw.enquiryAgreementId !== "enquiry-communication-consultation-consent") return error("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !from) return error("The consultation request service is not configured yet. Please contact advisory@astronisglobal.com.", 503);
 
   const reference = `AST-${new Date().toISOString().slice(2, 10).replaceAll("-", "")}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  const acceptanceTimestamp = new Date().toISOString();
   const text = [
-    `Consultation request ${reference} (pending confirmation)`, `Name: ${name}`, `Mobile: ${phone}`, `Email: ${email}`,
+    `Consultation request ${reference} (pending confirmation)`,
+    "Form type: consultation booking",
+    "Enquiry, Communication & Consultation Consent Agreement accepted: true",
+    "Agreement identifier: enquiry-communication-consultation-consent",
+    `Agreement acceptance timestamp (UTC): ${acceptanceTimestamp}`,
+    `Name: ${name}`, `Mobile: ${phone}`, `Email: ${email}`,
     `Organisation: ${organisation}`, `Service required: ${service}`, `Team size: ${team}`, `Annual turnover: ${turnover}`,
     `Preferred date: ${date}`, `Preferred time: ${time} (${timezone})`, `Meeting mode: ${mode}`,
     "This is a requested preference, not a confirmed or reserved appointment.",

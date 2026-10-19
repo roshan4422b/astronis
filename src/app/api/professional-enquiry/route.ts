@@ -23,7 +23,12 @@ export async function POST(request: Request) {
   const collaborateWithUs = value("collaborateWithUs") === "yes";
   const networkApplication = value("networkApplication") === "yes";
   const careerApplication = collaborateWithUs || networkApplication;
+  const enquiryAgreementAccepted = value("enquiryAgreementAccepted");
+  const enquiryAgreementId = value("enquiryAgreementId");
   if (value("website")) return Response.json({ message: "Unable to submit this enquiry." }, { status: 400 });
+  if (enquiryAgreementAccepted !== "yes" || enquiryAgreementId !== "enquiry-communication-consultation-consent") {
+    return Response.json({ message: "Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry." }, { status: 400 });
+  }
   if (careerApplication && (
     value("applicationType") !== "professional" ||
     value("careerAgreementAccepted") !== "yes" ||
@@ -69,13 +74,20 @@ export async function POST(request: Request) {
       name: file.name.slice(0, 180), type: file.type || "application/octet-stream", size: file.size,
       contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64"),
     })));
-    const acceptedAt = careerApplication ? new Date().toISOString() : undefined;
+    const acceptanceTimestamp = new Date().toISOString();
+    const enquiryReference = crypto.randomUUID();
+    const acceptedAt = careerApplication ? acceptanceTimestamp : undefined;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(process.env.ENQUIRY_WEBHOOK_TOKEN ? { Authorization: `Bearer ${process.env.ENQUIRY_WEBHOOK_TOKEN}` } : {}) },
       body: JSON.stringify({
         kind: "professional-enquiry",
         ...fields,
+        formType: networkApplication ? "professional-network-application" : collaborateWithUs || collaborationEnquiry ? "professional-collaboration-enquiry" : "professional-enquiry",
+        enquiryReference,
+        enquiryAgreementAccepted: true,
+        enquiryAgreementId: "enquiry-communication-consultation-consent",
+        enquiryAgreementAcceptedAt: acceptanceTimestamp,
         applicationType: careerApplication ? "professional" : undefined,
         careerAgreementAccepted: careerApplication ? true : undefined,
         careerAgreementId: careerApplication ? "career-professional-partnership-consent" : undefined,

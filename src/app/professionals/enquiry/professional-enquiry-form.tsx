@@ -5,6 +5,7 @@ import Link from "next/link";
 import { practices } from "@/content/site";
 import { professionals } from "../leadership";
 import Icon from "@/app/_components/icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import styles from "./professional-enquiry.module.css";
 
 const requestTypes = [
@@ -25,6 +26,8 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
   const [agreementError, setAgreementError] = useState("");
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
   function addFiles(incoming: FileList | File[]) {
     const next = [...files, ...Array.from(incoming)];
@@ -41,6 +44,12 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (data.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
+    data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     if (networkApplication && data.get("careerAgreementAccepted") !== "yes") {
       setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
       return;
@@ -63,6 +72,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
       if (response.ok) {
         form.reset();
         setFiles([]);
+        setEnquiryAgreementAccepted(false);
         setMessage("");
         setRequestType("general");
         setMode("email");
@@ -103,6 +113,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
       </label>
       {agreementError && <p id="network-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
     </>}
+    <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="professional-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
     <div className={styles.submitRow}><button type="submit" disabled={busy}>{busy ? "Sending…" : networkApplication ? "Submit Profile" : "Submit Enquiry"}<Icon name="arrow" /></button><p>{networkApplication ? "Our team will review your profile and contact you about suitable collaboration opportunities." : "Our team will review your enquiry and connect you with an appropriate professional."}</p></div>
     {status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <a href="mailto:advisory@astronisglobal.com"> Email our team.</a>}</p>}
   </form>;

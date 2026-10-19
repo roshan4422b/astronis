@@ -12,6 +12,7 @@ import {
   type EnquiryCategory,
 } from "@/content/enquiry-config";
 import Icon from "./icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
 import styles from "./global-enquiry-form.module.css";
 
 const companyTypes = [
@@ -150,6 +151,7 @@ export default function GlobalEnquiryForm({
     ipRequirement: "",
     message: "",
     consent: false,
+    enquiryAgreementAccepted: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState("");
@@ -235,6 +237,7 @@ export default function GlobalEnquiryForm({
     if (variant !== "market" && !detail.country.trim()) nextErrors.country = "Please select your country.";
     if (!detail.message.trim() || detail.message.trim().length < 10) nextErrors.message = "Please describe your requirement in a bit more detail.";
     if (!detail.consent) nextErrors.consent = "Please confirm consent before submitting.";
+    if (!detail.enquiryAgreementAccepted) nextErrors.enquiryAgreementAccepted = enquiryAgreementMessage;
 
     if ((detail.preferredContact === "Phone" || detail.preferredContact === "WhatsApp") && !detail.phone.trim()) {
       nextErrors.phone = "Phone or WhatsApp is required when that is your preferred contact method.";
@@ -290,6 +293,8 @@ export default function GlobalEnquiryForm({
       utmCampaign: new URLSearchParams(window.location.search).get("utm_campaign") || "",
       message,
       consent: detail.consent ? "yes" : "",
+      enquiryAgreementAccepted: detail.enquiryAgreementAccepted ? "yes" : "",
+      enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
     };
 
@@ -337,6 +342,7 @@ export default function GlobalEnquiryForm({
         ipRequirement: "",
         message: "",
         consent: false,
+        enquiryAgreementAccepted: false,
       }));
       setCategory(resolvedCategory);
       setPrimarySelection(startPrimarySelection);
@@ -832,6 +838,14 @@ export default function GlobalEnquiryForm({
           </span>
         </label>
         {errors.consent && <small className={styles.error}>{errors.consent}</small>}
+
+        <EnquiryAgreementCheckbox
+          accepted={detail.enquiryAgreementAccepted}
+          error={errors.enquiryAgreementAccepted || ""}
+          errorId="global-enquiry-agreement-error"
+          onChange={(accepted) => updateField("enquiryAgreementAccepted", accepted)}
+          onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
+        />
 
         <label className={styles.honey} aria-hidden="true">
           Website

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
 import styles from "./schedule-meeting-modal.module.css";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
 
 type Details = { name: string; phone: string; code: string; email: string; organisation: string; service: string; team: string; turnover: string };
 const blank: Details = { name: "", phone: "", code: "+91", email: "", organisation: "", service: "", team: "", turnover: "" };
@@ -28,6 +29,8 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const [mode, setMode] = useState("");
   const [zone, setZone] = useState("Asia/Kolkata");
   const [consent, setConsent] = useState(false);
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [serviceUnavailable, setServiceUnavailable] = useState(false);
@@ -70,9 +73,12 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const validDetails = details.name.trim().length > 1 && /^\+?[\d\s()-]{7,18}$/.test(details.phone) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email) && details.organisation.trim() && details.service && details.team && details.turnover;
 
   async function submit() {
+    if (!enquiryAgreementAccepted) { setEnquiryAgreementError(enquiryAgreementMessage); return; }
+    if (!consent) { setMessage("Please confirm that the information provided is accurate and agree to be contacted regarding this consultation."); return; }
+    setEnquiryAgreementError("");
     setBusy(true); setMessage(""); setServiceUnavailable(false);
     try {
-      const response = await fetch("/api/schedule-meeting", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...details, name: details.name.trim(), phone: `${details.code}${details.phone.replace(/\D/g, "")}`, organisation: details.organisation.trim(), date, time, timezone: zone, mode, consent }) });
+      const response = await fetch("/api/schedule-meeting", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...details, name: details.name.trim(), phone: `${details.code}${details.phone.replace(/\D/g, "")}`, organisation: details.organisation.trim(), date, time, timezone: zone, mode, consent, enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent" }) });
       const result = await response.json();
       if (!response.ok) { setServiceUnavailable(response.status === 503); throw new Error(result.message || "We couldn't send your request. Please try again."); }
       setSent(true);
@@ -116,8 +122,9 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
           <div className={styles.timePanel}><label>Preferred time ({zone}) <b>*</b><select value={time} onChange={(e) => setTime(e.target.value)}><option value="">Choose a time</option>{meetingTimes.map((t) => <option key={t}>{t}</option>)}</select></label><label>Timezone <b>*</b><select value={zone} onChange={(e) => setZone(e.target.value)}>{zones.map((z) => <option key={z}>{z}</option>)}</select></label><p className={styles.note}>Times are shown in the selected timezone. Available preferences run from 9:30 AM to 7:30 PM.</p><fieldset><legend>Preferred meeting mode <b>*</b></legend><div className={styles.modes}>{modes.map((item, i) => <button type="button" key={item} aria-pressed={mode === item} className={mode === item ? styles.modeSelected : ""} onClick={() => setMode(item)}><span>{["◉", "☎", "⌂"][i]}</span>{item}</button>)}</div>{mode === "In-Person Meeting" && <p className={styles.note}>Location details will be shared by our team when your meeting is confirmed.</p>}{mode === "Video Meeting" && <p className={styles.note}>A video link will be shared after your meeting is confirmed.</p>}</fieldset></div>
         </div>}
         {step === 3 && <div className={styles.review}><div><h3>Contact details <button type="button" onClick={() => setStep(1)}>Edit</button></h3><dl>{[["Name", details.name], ["Mobile", `${details.code} ${details.phone}`], ["Email", details.email], ["Organisation", details.organisation], ["Service required", details.service], ["Team size", details.team], ["Annual turnover", details.turnover]].map(([a,b]) => <div key={a}><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div><div><h3>Meeting preference <button type="button" onClick={() => setStep(2)}>Edit</button></h3><dl><div><dt>Date</dt><dd>{new Date(`${date}T12:00:00`).toLocaleDateString("en-IN", { dateStyle: "full" })}</dd></div><div><dt>Time</dt><dd>{time} · {zone}</dd></div><div><dt>Mode</dt><dd>{mode}</dd></div></dl></div><div className={styles.consentGroup}><label className={styles.consent}><input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} /><span>I confirm that the information provided is accurate and agree to be contacted regarding this consultation.</span></label><div className={styles.legalLinks}><Link href="/legal/privacy-policy" target="_blank">Privacy Policy</Link><span aria-hidden="true">·</span><Link href="/legal/terms-of-use" target="_blank">Terms</Link></div></div><p className={styles.note}>Submitting requests a preferred time. The meeting is not booked until Astronis confirms availability.</p></div>}
+        {step === 3 && <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="consultation-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />}
         {message && <p className={styles.error} role="alert">{message}{serviceUnavailable && <> <a href={`mailto:advisory@astronisglobal.com?subject=${encodeURIComponent("Consultation request")}&body=${encodeURIComponent(fallbackBody)}`}>Email your request instead</a></>}</p>}
-        <div className={styles.actions}>{step === 1 ? <><button className={styles.textButton} onClick={close}>Cancel</button><button className={styles.primary} disabled={!validDetails} onClick={() => { setStep(2); setMessage(""); }}>Continue to Date & Time <span>→</span></button></> : step === 2 ? <><button className={styles.textButton} onClick={() => setStep(1)}>← Back to Your Details</button><button className={styles.primary} disabled={!date || !time || !mode} onClick={() => setStep(3)}>Continue to Review <span>→</span></button></> : <><button className={styles.textButton} onClick={() => setStep(2)}>← Back to Meeting</button><button className={styles.primary} disabled={!consent || busy} onClick={submit}>{busy ? "Sending request…" : "Send Consultation Request"}</button></>}</div>
+        <div className={styles.actions}>{step === 1 ? <><button className={styles.textButton} onClick={close}>Cancel</button><button className={styles.primary} disabled={!validDetails} onClick={() => { setStep(2); setMessage(""); }}>Continue to Date & Time <span>→</span></button></> : step === 2 ? <><button className={styles.textButton} onClick={() => setStep(1)}>← Back to Your Details</button><button className={styles.primary} disabled={!date || !time || !mode} onClick={() => setStep(3)}>Continue to Review <span>→</span></button></> : <><button className={styles.textButton} onClick={() => setStep(2)}>← Back to Meeting</button><button className={styles.primary} disabled={busy} onClick={submit}>{busy ? "Sending request…" : "Send Consultation Request"}</button></>}</div>
       </>}
     </section>
   </div>;

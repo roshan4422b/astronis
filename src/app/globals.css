@@ -4759,3 +4759,37 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
 /* Homepage hero contrast overlay */
 .home-page > .hero .hero-shade { z-index: 1; background: linear-gradient(90deg, rgba(1, 18, 42, .98) 0%, rgba(1, 20, 46, .9) 42%, rgba(1, 20, 46, .68) 72%, rgba(1, 20, 46, .54) 100%); }
 .home-page > .hero .hero-grid { z-index: 2; }
+
+.enquiry-agreement-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 0;
+  color: #405674;
+  font-size: max(var(--font-size-min), 13px);
+  line-height: 1.55;
+  text-align: left;
+}
+.enquiry-agreement-checkbox input {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: #174fb5;
+}
+.enquiry-agreement-checkbox a {
+  color: #174fb5;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.enquiry-agreement-checkbox a:focus-visible,
+.enquiry-agreement-checkbox input:focus-visible {
+  outline: 3px solid #e4ad27;
+  outline-offset: 3px;
+}
+.enquiry-agreement-error {
+  margin: 6px 0 0;
+  color: #a32323;
+  font-size: max(var(--font-size-min), 12px);
+  line-height: 1.45;
+}

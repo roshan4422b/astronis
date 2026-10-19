@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
 import styles from "./page.module.css";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 
 const interests = ["Referral Partnership", "Strategic Alliance", "Co-Counsel Arrangement", "Knowledge Collaboration", "Other Partnership Opportunity"];
 
@@ -12,6 +13,8 @@ export default function PartnershipForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [agreementError, setAgreementError] = useState("");
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
   async function submit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,6 +25,11 @@ export default function PartnershipForm() {
       return;
     }
     setAgreementError("");
+    if (formData.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
     const payload = {
       formType: "service",
       name: String(formData.get("name") || "").trim(),
@@ -34,6 +42,8 @@ export default function PartnershipForm() {
       applicationType: "partner",
       careerAgreementAccepted: "yes",
       careerAgreementId: "career-professional-partnership-consent",
+      enquiryAgreementAccepted: "yes",
+      enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
       pageUrl: window.location.href,
       pageTitle: document.title || "Astronis Global",
@@ -82,5 +92,6 @@ export default function PartnershipForm() {
     <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
   </label>
   {agreementError && <p id="partner-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
+  <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
   <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

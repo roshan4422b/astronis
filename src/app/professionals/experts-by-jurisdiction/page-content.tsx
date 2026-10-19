@@ -2,6 +2,7 @@
 
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import { professionals } from "../leadership";
@@ -67,6 +68,8 @@ export default function ExpertsByJurisdiction() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState("");
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
   const filteredJurisdictions = useMemo(() => jurisdictions.filter(item => {
     const content = normalise(`${item.name} ${item.description} ${item.terms}`);
     return [applied.query, applied.jurisdiction, applied.expertise, applied.service, applied.industry, applied.location]
@@ -92,6 +95,11 @@ export default function ExpertsByJurisdiction() {
     if (submitting) return;
     const form = event.currentTarget;
     const values = new FormData(form);
+    if (values.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
     const selectedFile = values.get("upload");
     if (selectedFile instanceof File && selectedFile.size > 5 * 1024 * 1024) {
       setFormStatus("Upload Supporting Document must be 5 MB or smaller.");
@@ -120,6 +128,8 @@ export default function ExpertsByJurisdiction() {
     data.set("message", message);
     data.set("preferredMode", "email");
     data.set("consent", "yes");
+    data.set("enquiryAgreementAccepted", "yes");
+    data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     data.set("website", "");
     if (selectedFile instanceof File && selectedFile.size > 0) data.append("documents", selectedFile);
 
@@ -129,6 +139,7 @@ export default function ExpertsByJurisdiction() {
       if (!response.ok) throw new Error(result.message || "Your enquiry could not be sent. Please try again.");
       setFormStatus(result.message);
       form.reset();
+      setEnquiryAgreementAccepted(false);
     } catch (error) {
       setFormStatus(error instanceof Error ? error.message : "Your enquiry could not be sent. Please try again.");
     } finally {
@@ -226,6 +237,7 @@ export default function ExpertsByJurisdiction() {
           <label className={styles.upload}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /></label>
           <small className={styles.uploadNote}>PDF, DOC, DOCX · Max 5 MB</small>
           <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my personal data in accordance with the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label>
+          <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="jurisdiction-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
           <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>

@@ -9,6 +9,7 @@ import FormSelect from "@/components/forms/shared/FormSelect";
 import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import { industryFormConfig } from "@/data/industryFormConfig";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -52,6 +53,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
     requirementDetails: "",
     preferredContact: "Email",
     consent: false,
+    enquiryAgreementAccepted: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -88,6 +90,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
     if (!form.requirement) nextErrors.requirement = "Please select the support you require.";
     if (!form.requirementDetails.trim()) nextErrors.requirementDetails = "Please describe your requirement.";
     if (!form.consent) nextErrors.consent = "Please confirm consent before submitting.";
+    if (!form.enquiryAgreementAccepted) nextErrors.enquiryAgreementAccepted = enquiryAgreementMessage;
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
@@ -104,7 +107,8 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         message: form.requirementDetails.trim(), preferredContact: form.preferredContact,
         pageUrl: window.location.href, pathname: window.location.pathname,
         pageTitle: document.title || "Astronis Global", referrer: document.referrer || "",
-        consent: "yes", website: "", utmSource: params.get("utm_source") || "",
+        consent: "yes", enquiryAgreementAccepted: "yes",
+        enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", utmSource: params.get("utm_source") || "",
         utmMedium: params.get("utm_medium") || "", utmCampaign: params.get("utm_campaign") || "",
       };
 
@@ -130,6 +134,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         requirementDetails: "",
         preferredContact: "Email",
         consent: false,
+        enquiryAgreementAccepted: false,
       });
     } catch (error) {
       setSuccess(false);
@@ -186,6 +191,14 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           <span className={styles.inlineText}>I consent to Astronis Global contacting me regarding my enquiry. <Link href="/legal/privacy-policy" className={styles.link}>Privacy Policy</Link></span>
         </label>
         {errors.consent ? <div className={styles.errorText}>{errors.consent}</div> : null}
+
+        <EnquiryAgreementCheckbox
+          accepted={form.enquiryAgreementAccepted}
+          error={errors.enquiryAgreementAccepted || ""}
+          errorId="industry-enquiry-agreement-error"
+          onChange={(accepted) => updateField("enquiryAgreementAccepted", accepted)}
+          onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
+        />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}

@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import styles from "./collaborate-with-us.module.css";
 
 const professionalTypes = [
@@ -36,6 +37,8 @@ export default function CollaborateWithUsForm() {
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
   const [agreementError, setAgreementError] = useState("");
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
   function handleFile(input: HTMLInputElement) {
     const selected = input.files?.[0];
@@ -59,6 +62,11 @@ export default function CollaborateWithUsForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (data.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
     if (data.get("careerAgreementAccepted") !== "yes") {
       setAgreementError("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
       return;
@@ -68,6 +76,7 @@ export default function CollaborateWithUsForm() {
     data.set("collaborateWithUs", "yes");
     data.set("applicationType", "professional");
     data.set("careerAgreementId", "career-professional-partnership-consent");
+    data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     if (file) data.append("documents", file);
     setBusy(true);
     setStatus("");
@@ -79,6 +88,7 @@ export default function CollaborateWithUsForm() {
       if (response.ok) {
         form.reset();
         setFile(null);
+        setEnquiryAgreementAccepted(false);
       }
     } catch {
       setSuccess(false);
@@ -109,6 +119,7 @@ export default function CollaborateWithUsForm() {
       <span>I have read and understood the <Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link> and agree to its terms and conditions.</span>
     </label>
     {agreementError && <p id="professional-agreement-error" className={styles.agreementError} role="alert">{agreementError}</p>}
+    <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="collaborate-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
     <button type="submit" className={styles.submitButton} disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;
