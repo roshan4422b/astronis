@@ -2,6 +2,7 @@
 
 import Image from "@/app/_components/asset-image";
 import Link from "next/link";
+import { professionals } from "@/app/professionals/leadership";
 import { useState, type FormEvent } from "react";
 import styles from "./expertise-page.module.css";
 
@@ -24,13 +25,6 @@ const featuredAreas = [
   { title: "Financial Services", description: "Regulatory, investment and compliance expertise.", image: "/Banners-Banking, Financial Services & Insurance .png" },
   { title: "Infrastructure & Energy", description: "Project advisory, regulatory approvals and dispute support.", image: "/Banner-Infrastructure & Projects .png" },
   { title: "Healthcare & Life Sciences", description: "Regulatory, compliance and commercial advisory.", image: "/Banner-Healthcare & Medical Scien .png" },
-];
-
-const professionals = [
-  { name: "Krishna Kumar Mishra", slug: "krishna-kumar-mishra", designation: "Founder Partner", practice: "Corporate, commercial & regulatory advisory", city: "New Delhi", image: "/Professionals/krishna_kumar_mishra.jpeg" },
-  { name: "Priti Mishra", slug: "priti-mishra", designation: "Founder Partner", practice: "Litigation, matrimonial matters & compliance", city: "New Delhi", image: "/Professionals/pritimishra.jpeg" },
-  { name: "Krishna Nand Mishra", slug: "krishna-nand-mishra", designation: "Professional Team", practice: "Legal, regulatory & business advisory", city: "New Delhi", image: "/Professionals/Krishna_nand.jpeg" },
-  { name: "Puneet Kumar Verma", slug: "puneet-kumar-verma", designation: "Professional Team", practice: "Legal, regulatory & business advisory", city: "New Delhi", image: "/Professionals/Puneet_kumar.jpeg" },
 ];
 
 const explorationGroups = [
@@ -155,7 +149,7 @@ export default function ExpertisePage() {
           <div className={styles.professionalHeading}><h2>Our Legal Professionals</h2><span>{professionals.length} profiles</span></div>
           <div className={styles.professionalGrid}>{professionals.map((person) => <article className={styles.professionalCard} key={person.slug}>
             <div className={styles.professionalPhoto}><Image src={person.image} alt={person.name} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 25vw" /></div>
-            <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.designation}</span><p>{person.practice}</p><small><span aria-hidden="true">⌖</span>{person.city}</small><Link className={styles.profileLink} href={`/professionals/${person.slug}`}>View Profile <Arrow /></Link></div>
+            <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><small><span aria-hidden="true">⌖</span>New Delhi</small><Link className={styles.profileLink} href={`/professionals/${person.slug}`}>View Profile <Arrow /></Link></div>
           </article>)}</div>
         </section>
 

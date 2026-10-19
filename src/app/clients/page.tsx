@@ -1,7 +1,7 @@
 import Image from "@/app/_components/asset-image";
 import Link from "next/link";
 import { corporateArticles } from "@/content/corporate-articles";
-import { clients } from "@/content/clients";
+import { homeClients } from "@/content/clients";
 import { industries } from "@/content/site";
 import styles from "./clients.module.css";
 
@@ -129,7 +129,7 @@ export default function ClientsPage() {
           </div>
 
           <div className={styles.logoGrid} aria-label="Selected Astronis client relationships">
-            {clients.map((client) => (
+            {homeClients.map((client) => (
               <div key={client.name} className={styles.logoCard}>
                 <Image src={client.logo} alt={`${client.name} logo`} width={220} height={90} />
               </div>
