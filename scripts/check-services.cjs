@@ -1,4 +1,5 @@
-﻿const assert = require('node:assert/strict');
+﻿/* eslint-disable @typescript-eslint/no-require-imports */
+const assert = require('node:assert/strict');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const fs = require('node:fs');
 (async () => {

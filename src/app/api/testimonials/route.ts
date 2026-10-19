@@ -1,3 +1,5 @@
+import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
+
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin)
@@ -74,6 +76,11 @@ export async function POST(request: Request) {
       { message: "Please use a JPG or PNG photograph under 3 MB." },
       { status: 400 },
     );
+  if (photo instanceof File && photo.size && get("photoPublicationConsent") !== "yes")
+    return Response.json(
+      { message: "Please authorise publication of the submitted photograph or remove it." },
+      { status: 400 },
+    );
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
   if (!webhook)
     return Response.json(
@@ -84,7 +91,15 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   data.set("status", "pending-review");
-  data.set("submittedAt", new Date().toISOString());
+  const consentAcceptedAt = new Date().toISOString();
+  data.set("submittedAt", consentAcceptedAt);
+  data.set("consent", "yes");
+  data.set("consentAcceptedAt", consentAcceptedAt);
+  data.set("agreementVersion", TESTIMONIAL_AGREEMENT_VERSION);
+  data.set("publicationChannel", "website");
+  data.set("materialType", format === "video" ? "video" : "written-testimonial");
+  data.set("photoPublicationConsent", get("photoPublicationConsent") === "yes" ? "yes" : "no");
+  data.set("identityPublicationConsent", "no");
   try {
     if (new URL(webhook).protocol !== "https:")
       throw new Error("HTTPS required");

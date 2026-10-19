@@ -18,10 +18,11 @@ export async function POST(request: Request) {
     location: field("location"), jurisdiction: field("jurisdiction"), interest: field("interest"),
     service: field("service"), sector: field("sector"), timeline: field("timeline"),
     message: field("message"), consent: field("consent"), website: field("website"),
+    enquiryAgreementAccepted: field("enquiryAgreementAccepted"), enquiryAgreementId: field("enquiryAgreementId"),
     communication: data.getAll("communication").map(String).filter(Boolean),
   };
   if (fields.website) return Response.json({ message: "Unable to submit this enquiry." }, { status: 400 });
-  if (fields.name.length < 2 || !/^\S+@\S+\.\S+$/.test(fields.email) || !fields.company || !fields.phone || !fields.interest || fields.message.length < 10 || fields.consent !== "yes" || Object.values(fields).some((value) => typeof value === "string" && value.length > 5000)) {
+  if (fields.name.length < 2 || !/^\S+@\S+\.\S+$/.test(fields.email) || !fields.company || !fields.phone || !fields.interest || fields.message.length < 10 || fields.consent !== "yes" || fields.enquiryAgreementAccepted !== "yes" || fields.enquiryAgreementId !== "enquiry-communication-consultation-consent" || Object.values(fields).some((value) => typeof value === "string" && value.length > 5000)) {
     return Response.json({ message: "Please complete all required fields and provide your consent." }, { status: 400 });
   }
 
@@ -37,10 +38,12 @@ export async function POST(request: Request) {
   try {
     const url = new URL(webhook);
     if (url.protocol !== "https:") throw new Error("HTTPS required");
+    const acceptanceTimestamp = new Date().toISOString();
+    const enquiryReference = crypto.randomUUID();
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(process.env.ENQUIRY_WEBHOOK_TOKEN ? { Authorization: `Bearer ${process.env.ENQUIRY_WEBHOOK_TOKEN}` } : {}) },
-      body: JSON.stringify({ ...fields, website: undefined, type: "global-enquiry", attachment, submittedAt: new Date().toISOString() }),
+      body: JSON.stringify({ ...fields, website: undefined, type: "global-enquiry", formType: "global-enquiry", enquiryReference, agreementAccepted: true, agreementId: "enquiry-communication-consultation-consent", agreementAcceptedAt: acceptanceTimestamp, attachment, submittedAt: acceptanceTimestamp }),
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new Error("Delivery failed");

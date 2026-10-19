@@ -43,6 +43,9 @@
 .consent{display:flex;align-items:flex-start;gap:10px;margin:20px 0 0;color:#465e7d;font:12px/1.45 Arial,sans-serif}
 .consent input{flex:none;width:17px;height:17px;margin:1px 0 0;accent-color:#0758b9}
 .consent a{color:#0a55b0;text-decoration:underline}
+.agreementConsent{margin-top:9px}
+.agreementConsent a{font-weight:700}
+.agreementError{margin:5px 0 0;color:#a32323;font:12px/1.4 Arial,sans-serif}
 .form>button{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-width:195px;min-height:46px;margin-top:22px;padding:11px 18px;border:0;border-radius:4px;background:#0b3974;color:#fff;font:14px Arial,sans-serif}
 .form>button:hover{background:#1456a5}
 .form>button svg{width:17px;height:17px}

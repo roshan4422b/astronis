@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageSectionLayout from "../_components/page-section-layout";
 import PageSectionNav from "../_components/page-section-nav";
 import styles from "../public-limited-company/public-limited-company.module.css";
@@ -73,11 +74,13 @@ const process = [
   ["Document preparation", "Prepare the incorporation information, declarations and MOA and AOA for review."],
   ["Filing with ROC", "File the incorporation application and supporting documents with the Registrar of Companies."],
   ["Certificate of incorporation", "Receive the certificate after the application is approved."],
-  ["PAN, TAN & bank account", "Coordinate tax identifiers and next steps for the company's bank account."],
+  ["PAN assistance", "Coordinate the company's Permanent Account Number (PAN) application."],
+  ["TAN assistance", "Coordinate the Tax Deduction and Collection Account Number (TAN) application."],
+  ["Bank account assistance", "Support the next steps for opening the company's bank account."],
   ["Post-incorporation compliances", "Set up initial records, governance routines and applicable ongoing filings."],
 ];
 
-const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
+const processIcons = ["people", "search", "document", "file", "award", "file", "percent", "building", "calendar"];
 
 const sampleTestimonials = [
   {
@@ -103,16 +106,21 @@ const sampleTestimonials = [
   },
 ];
 
-const documents = [
-  ["search", "Proposed company name(s)"],
-  ["person", "PAN, Aadhaar and address proof of all directors and shareholders"],
-  ["person", "Passport photographs of directors and shareholders"],
-  ["pin", "Address proof for the registered office"],
-  ["file", "Digital Signature Certificate (DSC)"],
-  ["person", "Director Identification Number (DIN), where required"],
-  ["document", "Draft Memorandum of Association (MOA) and Articles of Association (AOA)"],
-  ["people", "Nominee consent, if applicable"],
-  ["file", "Business activity details and sector licences, if applicable"],
+const documentColumns = [
+  [
+    ["search", "Proposed company name(s)"],
+    ["person", "Passport photographs of directors and shareholders"],
+    ["file", "Digital Signature Certificate (DSC)"],
+    ["file", "Business activity details and sector licences, if applicable"],
+    ["person", "PAN, Aadhaar and address proof of all directors and shareholders"],
+  ],
+  [
+    ["pin", "Address proof for the registered office"],
+    ["person", "Director Identification Number (DIN), where required"],
+    ["people", "Nominee consent, if applicable"],
+    ["document", "Memorandum of Association (MOA)"],
+    ["document", "Articles of Association (AOA)"],
+  ],
 ];
 
 const requirements = [
@@ -154,10 +162,10 @@ export default function PrivateLimitedCompanyPage() {
 
   return (
     <div className={styles.page} data-text-size="plus-two">
-      <section className={styles.hero} id="overview">
+      <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
         <Image
-          src="/corporate-regulatory-hero.png"
-          alt="Corporate professionals discussing a business plan"
+          src={getServiceChildHeroImage("private-limited-company-incorporation", "corporate-commercial-advisory") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
+          alt="Corporate services and compliance advisory"
           fill
           priority
           sizes="100vw"
@@ -290,7 +298,6 @@ export default function PrivateLimitedCompanyPage() {
           <ol className={styles.timeline}>
             {process.map(([title, description], index) => (
               <li key={title}>
-                <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.stepIcon}><Icon name={processIcons[index]} /></span>
                 <h3>{title}</h3>
                 <p>{description}</p>
@@ -308,7 +315,13 @@ export default function PrivateLimitedCompanyPage() {
               title="Key documents for incorporation"
               text="We will confirm the documents needed for your circumstances and the current filing process."
             />
-            <ul className={styles.checklist}>{documents.map(([icon, item]) => <li key={item}><Icon name={icon} />{item}</li>)}</ul>
+            <div className={styles.checklist}>
+              {documentColumns.map((column, index) => (
+                <ul key={index}>
+                  {column.map(([icon, item]) => <li key={item}><Icon name={icon} />{item}</li>)}
+                </ul>
+              ))}
+            </div>
           </div>
         </div>
         </section>
@@ -321,10 +334,9 @@ export default function PrivateLimitedCompanyPage() {
             text="A concise view of the core requirements for incorporating a private limited company in India."
           />
           <div className={styles.requirementGrid}>
-            {requirements.map(([icon, title, text], index) => (
+            {requirements.map(([icon, title, text]) => (
               <article key={title}>
                 <span className={styles.requirementIcon}><Icon name={icon} /></span>
-                <small>0{index + 1}</small>
                 <h3>{title}</h3>
                 <p>{text}</p>
               </article>
@@ -416,9 +428,6 @@ export default function PrivateLimitedCompanyPage() {
               title="Clear advice. Practical direction."
               text="A perspective shared with permission by a client of our corporate and commercial advisory team."
             />
-            <p className={layoutStyles.sampleTestimonialNotice} role="note">
-              Sample testimonials for layout purposes only. These are not verified client reviews and must be replaced with approved client feedback before publishing.
-            </p>
             <div className={layoutStyles.testimonialGrid}>
               {sampleTestimonials.map((testimonial) => (
                 <figure key={testimonial.name}>

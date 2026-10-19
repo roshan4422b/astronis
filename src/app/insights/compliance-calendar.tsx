@@ -13,8 +13,8 @@ const quickLinks = ["MCA", "GST", "Income Tax", "RBI", "SEBI", "Labour Laws", "O
 const categories = [
   ["building", "MCA Compliance Dates", "/governance-secretarial-hero.png", "MCA"],
   ["percent", "GST Compliance Dates", "/images/services/gst-and-indirect-tax-regulatory-support.webp", "GST"],
-  ["file", "Income Tax Compliance Dates", "/images/services/taxation-compliance.svg", "Income Tax"],
-  ["database", "RBI Compliance Dates", "/images/services/banking-rbi-financial-services.svg", "RBI"],
+  ["file", "Income Tax Compliance Dates", "/business-financial-advisory.png", "Income Tax"],
+  ["database", "RBI Compliance Dates", "/FinTech & Digital Finance .png", "RBI"],
   ["chart", "SEBI Compliance Dates", "/Part-14 .png", "SEBI"],
   ["people", "Labour Laws Compliance Dates", "/images/services/regulatory-and-compliance.webp", "Labour Laws"],
   ["rocket", "Start-up & MSME Compliance Dates", "/images/services/startup-and-investment-advisory.webp", "Start-up & MSME"],
@@ -77,22 +77,43 @@ const testimonials = [
   ["Clear, concise and reliable guidance on MCA, GST and Income Tax compliances. Highly valuable for our businesses.", "MSME Company (India)"],
 ] as const;
 
+const monthNameFormat = new Intl.DateTimeFormat("en", { month: "long" });
 const monthFormat = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" });
+const weekDays = ["S", "M", "T", "W", "T", "F", "S"];
+
+function getYearMonths(year: number) {
+  return Array.from({ length: 12 }, (_, month) => {
+    const firstWeekday = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells: Array<number | null> = [
+      ...Array.from({ length: firstWeekday }, () => null),
+      ...Array.from({ length: daysInMonth }, (_, day) => day + 1),
+    ];
+    while (cells.length % 7 !== 0) cells.push(null);
+    return {
+      month,
+      title: monthNameFormat.format(new Date(year, month, 1)),
+      weeks: Array.from({ length: cells.length / 7 }, (_, week) => cells.slice(week * 7, week * 7 + 7)),
+    };
+  });
+}
 
 function SectionHeading({ title, href, action, subtitle }: { title: string; href: string; action: string; subtitle?: string }) {
   return <div className={styles.sectionHeading}><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div><Link href={href}>{action}<Icon name="arrow" /></Link></div>;
 }
 
-export default function ComplianceCalendar() {
+export default function ComplianceCalendar({ variant = "insights" }: { variant?: "insights" | "technology" }) {
   const [query, setQuery] = useState("");
   const [selectedArea, setSelectedArea] = useState("");
   const [showMoreLinks, setShowMoreLinks] = useState(false);
+  const [calendarYear, setCalendarYear] = useState(2025);
   const [monthOffset, setMonthOffset] = useState(0);
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const currentMonth = new Date(2025, 9 + monthOffset, 1);
   const isOctober = monthOffset === 0;
   const normalizedQuery = query.trim().toLowerCase();
+  const months = useMemo(() => getYearMonths(calendarYear), [calendarYear]);
   const visibleGroups = useMemo(() => complianceGroups
     .filter((group) => !selectedArea || group.id === selectedArea)
     .map((group) => ({
@@ -123,18 +144,18 @@ export default function ComplianceCalendar() {
     }
   }
 
-  return <div className={styles.page}>
+  return <div className={`${styles.page} ${variant === "technology" ? calendarStyles.technologyCalendar : ""}`}>
     <section className={styles.hero}>
       <AssetImage src="/corporate-regulatory-hero.png" alt="" fill priority sizes="100vw" />
       <div className={`${styles.heroShade} ${calendarStyles.heroShade}`} />
       <div className={styles.heroInner}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span><Link href="/insights-events">Insights &amp; Resources</Link><span>›</span><span>Compliance Calendar</span></nav>
+        <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>›</span>{variant === "technology" ? <Link href="/technology-and-digital-solutions">Technology &amp; Digital</Link> : <Link href="/insights-events">Insights &amp; Resources</Link>}<span>›</span><span>Compliance Calendar</span></nav>
         <div className={styles.heroCopy}>
-          <span className={styles.eyebrow}>Insights &amp; Resources</span>
+          <span className={styles.eyebrow}>{variant === "technology" ? "Technology & Digital" : "Insights & Resources"}</span>
           <h1>Compliance Calendar</h1>
           <h2>Key Compliance Dates.</h2>
           <p>Stay ahead with important compliance deadlines for MCA, GST, Income Tax and other regulatory laws. Never miss a due date with our updated compliance calendar.</p>
-          <div className={styles.heroActions}><Link href="#calendar-tables">View Full Compliance Calendar <Icon name="arrow" /></Link><Link href="#knowledge-centre">Explore Knowledge Centre <Icon name="arrow" /></Link></div>
+          <div className={styles.heroActions}><Link href={variant === "technology" ? "#full-year" : "#calendar-tables"}>{variant === "technology" ? "View Full Year Calendar" : "View Full Compliance Calendar"} <Icon name="arrow" /></Link><Link href="#knowledge-centre">Explore Knowledge Centre <Icon name="arrow" /></Link></div>
         </div>
       </div>
     </section>
@@ -152,26 +173,47 @@ export default function ComplianceCalendar() {
         </button>)}</div>
       </section>
 
+      {variant === "technology" && <section className={`${styles.section} ${styles.shaded} ${calendarStyles.yearSection}`} id="full-year">
+        <div className={`${styles.sectionHeading} ${calendarStyles.monthHeading}`}>
+          <div><h2>Full Year Compliance Calendar</h2><p>Sample compliance dates are shown for October 2025. Confirm applicable due dates with the relevant authority.</p></div>
+          <div className={calendarStyles.monthToolbar}>
+            <button type="button" aria-label="Previous year" onClick={() => setCalendarYear((year) => year - 1)}><Icon name="arrow" className={calendarStyles.previousArrow} /></button>
+            <strong className={calendarStyles.currentMonth}><Icon name="calendar" />{calendarYear}</strong>
+            <button type="button" aria-label="Next year" onClick={() => setCalendarYear((year) => year + 1)}><Icon name="arrow" /></button>
+            <button type="button" onClick={() => window.print()}><Icon name="download" />Print / Save PDF</button>
+          </div>
+        </div>
+        <div className={calendarStyles.yearGrid}>
+          {months.map(({ month, title, weeks }) => <article className={calendarStyles.miniMonth} key={`${calendarYear}-${month}`}>
+            <h3>{title} {calendarYear}</h3>
+            <div className={calendarStyles.miniCalendar}>
+              {weekDays.map((day, index) => <span className={calendarStyles.weekday} key={`${day}-${index}`}>{day}</span>)}
+              {weeks.flatMap((week, weekIndex) => week.map((day, dayIndex) => <span className={calendarStyles.calendarDay} aria-label={day ? `${title} ${day}, ${calendarYear}` : "Blank calendar day"} key={`${weekIndex}-${dayIndex}`}>{day ?? ""}</span>))}
+            </div>
+          </article>)}
+        </div>
+      </section>}
+
       <section className={`${styles.section} ${styles.shaded} ${calendarStyles.monthSection}`} id="calendar-tables">
-        <div className={`${styles.sectionHeading} ${calendarStyles.monthHeading}`}><div><h2>Monthly Compliance Calendar</h2></div>
-        <div className={calendarStyles.monthToolbar}>
-          <button type="button" aria-label="Previous month" onClick={() => setMonthOffset((month) => month - 1)}><Icon name="arrow" className={calendarStyles.previousArrow} /></button>
-          <strong className={calendarStyles.currentMonth}><Icon name="calendar" />{monthFormat.format(currentMonth)}</strong>
-          <button type="button" aria-label="Next month" onClick={() => setMonthOffset((month) => month + 1)}><Icon name="arrow" /></button>
-          <Link href="#calendar-tables">View Full Year Calendar <Icon name="arrow" /></Link>
-        </div>
-        </div>
-        {!isOctober && <p className={calendarStyles.monthMessage}>Showing October 2025 deadlines. More monthly dates will be added to the calendar.</p>}
+        {variant === "technology" ? <div className={`${styles.sectionHeading} ${calendarStyles.monthHeading}`}><div><h2>Key Compliance Dates — October 2025 (Sample View)</h2></div><Link href="#full-year">View Complete Year Details <Icon name="arrow" /></Link></div> : <div className={`${styles.sectionHeading} ${calendarStyles.monthHeading}`}><div><h2>Monthly Compliance Calendar</h2></div>
+          <div className={calendarStyles.monthToolbar}>
+            <button type="button" aria-label="Previous month" onClick={() => setMonthOffset((month) => month - 1)}><Icon name="arrow" className={calendarStyles.previousArrow} /></button>
+            <strong className={calendarStyles.currentMonth}><Icon name="calendar" />{monthFormat.format(currentMonth)}</strong>
+            <button type="button" aria-label="Next month" onClick={() => setMonthOffset((month) => month + 1)}><Icon name="arrow" /></button>
+            <Link href="#calendar-tables">View Full Year Calendar <Icon name="arrow" /></Link>
+          </div>
+        </div>}
+        {variant === "insights" && !isOctober && <p className={calendarStyles.monthMessage}>Showing October 2025 deadlines. More monthly dates will be added to the calendar.</p>}
         <div className={calendarStyles.calendarGrid}>{visibleGroups.map((group) => <article className={calendarStyles.calendarCard} key={group.id}>
           <header className={calendarStyles.calendarCardHeader}><Icon name={group.icon} /><h3>{group.title}</h3><Link href={group.href}>View All <Icon name="arrow" /></Link></header>
           {group.rows.length > 0 ? <div className={calendarStyles.tableScroll}><table className={calendarStyles.calendarTable}><thead><tr><th>Date</th><th>Compliance</th><th>Form / Reference</th></tr></thead><tbody>{group.rows.map((row) => <tr key={`${group.id}-${row.date}-${row.reference}`}><td>{row.date}</td><td>{row.compliance}</td><td>{row.reference}</td></tr>)}</tbody></table></div> : <p className={calendarStyles.noCalendarRows}>No compliance dates match your search.</p>}
           <Link className={calendarStyles.tableCta} href={group.href}>View Complete {group.id} Compliance Calendar <Icon name="arrow" /></Link>
         </article>)}</div>
-        {visibleGroups.length === 0 && <p className={calendarStyles.noCalendarRows}>No compliance dates match your search. Try another keyword.</p>}
+        {visibleGroups.length === 0 && <p className={calendarStyles.noCalendarRows}>{variant === "technology" && !normalizedQuery ? `No sample dates are currently listed for ${selectedArea}.` : "No compliance dates match your search. Try another keyword."}</p>}
       </section>
 
       <section className={`${styles.section} ${styles.shaded}`} id="knowledge-centre">
-        <SectionHeading title="Key Compliance Resources" href="/resources" action="View All Resources" />
+        <SectionHeading title={variant === "technology" ? "Knowledge Centre" : "Key Compliance Resources"} href="/resources" action="View All Resources" />
         <div className={styles.resourceGrid}>{resources.map(([icon, title, description, action, image, href]) => <Link href={href} className={styles.resourceCard} key={title}>
           <span className={styles.resourceImage}><AssetImage src={image} alt="" fill sizes="(max-width: 600px) 90vw, 25vw" /></span><span className={styles.resourceIcon}><Icon name={icon} /></span><span className={styles.resourceBody}><strong>{title}</strong><span>{description}</span><em>{action} <Icon name="arrow" /></em></span>
         </Link>)}</div>
@@ -187,7 +229,9 @@ export default function ComplianceCalendar() {
 
       <section className={`${styles.section} ${styles.shaded} ${styles.testimonials}`} id="client-testimonials">
         <SectionHeading title="Client Testimonials" href="/testimonials" action="View All Testimonials" />
-        <InsightsTestimonials items={testimonials.map(([quote, company]) => ({ quote, company }))} />
+        <div className={variant === "technology" ? calendarStyles.testimonialCarousel : undefined}>
+          <InsightsTestimonials items={testimonials.map(([quote, company]) => ({ quote, company }))} autoScroll={variant === "technology"} />
+        </div>
       </section>
     </div>
 

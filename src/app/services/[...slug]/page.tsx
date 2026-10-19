@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { services } from "@/data/services";
+import { getServiceChildHeroImage, services } from "@/data/services";
 import { resolvePractice } from "@/data/service-practices";
 import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
@@ -8,7 +8,17 @@ import { getCorporateRegulatoryDetail } from "@/data/corporate-regulatory-detail
 import { getBusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getFemaCrossBorderDetail } from "@/data/fema-cross-border-details";
 import { getLicensingRegistrationPage, licensingRegistrationPages } from "@/data/licensing-registration-pages";
+import {
+  getIntellectualPropertyServicePage,
+  getIntellectualPropertyServiceStaticParams,
+} from "@/data/intellectual-property-service-pages";
+import {
+  getAdditionalServiceDetailPage,
+  getAdditionalServiceDetailStaticParams,
+} from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
+import SectionNavigation from "../_template/section-navigation";
+import serviceStyles from "../_template/service-template.module.css";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
 import { Banner } from "../../_components/ui";
@@ -37,6 +47,8 @@ export function generateStaticParams() {
     ...licensingRegistrationPages.map(({ groupSlug, slug }) => ({
       slug: ["licensing-registrations", groupSlug, slug],
     })),
+    ...getIntellectualPropertyServiceStaticParams(),
+    ...getAdditionalServiceDetailStaticParams(),
   ];
 }
 
@@ -45,6 +57,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
+    const additionalServicePage = hierarchy.child
+      ? getAdditionalServiceDetailPage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
+      : undefined;
+    if (additionalServicePage) {
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${additionalServicePage.slug}`;
+      return {
+        title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
+        description: additionalServicePage.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
+          description: additionalServicePage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
+    const intellectualPropertyPage = hierarchy.child
+      && hierarchy.service.canonicalSlug === "intellectual-property-right-services"
+      ? getIntellectualPropertyServicePage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
+      : undefined;
+    if (intellectualPropertyPage) {
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      return {
+        title: `${intellectualPropertyPage.title} | Intellectual Property Right Services | Astronis`,
+        description: intellectualPropertyPage.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${intellectualPropertyPage.title} | Intellectual Property Right Services | Astronis`,
+          description: intellectualPropertyPage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
     const licensingRegistrationPage = hierarchy.child
       && hierarchy.service.canonicalSlug === "licensing-registrations"
       ? getLicensingRegistrationPage(slugs[2])
@@ -106,6 +153,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
+    if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
+    const intellectualPropertyPage = service.canonicalSlug === "intellectual-property-right-services"
+      ? getIntellectualPropertyServicePage(group.slug, serviceAnchor(child))
+      : undefined;
+    if (intellectualPropertyPage) return <EntityFormationPage data={intellectualPropertyPage} />;
     const licensingRegistrationPage = service.canonicalSlug === "licensing-registrations"
       ? getLicensingRegistrationPage(slugs[2])
       : undefined;
@@ -127,13 +180,49 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     if (regulatoryDetail && regulatoryGroup) {
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
-    return <>
-      <Banner title={child || group.title} eyebrow={service.title} text={`${child || group.title} support connected to ${service.title.toLowerCase()}.`} />
-      <section className="section"><div className="container">
-        <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}><Link href="/services">Services</Link> <span aria-hidden="true">›</span> <Link href={`/services/${service.canonicalSlug}`}>{service.title}</Link> <span aria-hidden="true">›</span> <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link> <span aria-hidden="true">›</span> <span aria-current="page">{child}</span></nav>
-        <p>{child} sits within <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link>.</p><Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
-      </div></section>
-    </>;
+    const relatedServices = group.children.filter(item => item !== child);
+    const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
+    return <div className={serviceStyles.page} data-service-template>
+      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} image={childHeroImage} />
+      <div className={`container ${serviceStyles.detailLayout}`}>
+        <aside className={serviceStyles.detailAside}>
+          <SectionNavigation
+            title="On this page"
+            items={[
+              { id: "service-overview", title: "Service overview" },
+              { id: "related-services", title: "Related services" },
+            ]}
+          />
+        </aside>
+        <div className={serviceStyles.detailContent}>
+          <section className={serviceStyles.detailIntro} id="service-overview">
+            <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}>
+              <Link href="/services">Services</Link> <span aria-hidden="true">›</span>{" "}
+              <Link href={`/services/${service.canonicalSlug}`}>{service.title}</Link>{" "}
+              <span aria-hidden="true">›</span>{" "}
+              <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>{group.title}</Link>{" "}
+              <span aria-hidden="true">›</span> <span aria-current="page">{child}</span>
+            </nav>
+            <h2>{child}</h2>
+            <p>{child} sits within {group.title}. Our team can help assess the requirements and coordinate next steps.</p>
+            <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>Explore {group.title}</Link>
+          </section>
+          <section className={serviceStyles.childSection} id="related-services">
+            <div className={serviceStyles.childHeading}><span>01</span><h2>Related services</h2></div>
+            <ul>
+              {relatedServices.map(item => (
+                <li key={item}>
+                  <Link href={group.childRoutes?.[item] || `/services/${service.canonicalSlug}/${group.slug}/${serviceAnchor(item)}`}>
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
+          </section>
+        </div>
+      </div>
+    </div>;
   }
 
   const practice = slugs.length === 1 ? resolvePractice(slugs)?.practice : undefined;

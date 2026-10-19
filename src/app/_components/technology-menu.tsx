@@ -20,7 +20,7 @@ const columns = [
 const explore = [
   ["Explore All Solutions", "/technology-and-digital-solutions"],
   ["Technology Insights", "/technology-and-digital-solutions/technology-insights"],
-  ["Digital Transformation", `${digitalBusinessPath}#digital-transformation`],
+  ["Digital Transformation", digitalBusinessPath],
   ["Global Best Practices", "/global-presence"],
   ["Industries We Serve", "/industries"],
   ["Our Professionals", "/professionals"],
@@ -87,6 +87,7 @@ function solutionIcon(title: string) {
 }
 
 function solutionHref(title: string) {
+  if (title === "Compliance Calendar") return "/technology-and-digital-solutions/compliance-calendar";
   if (title === "Client & Enterprise Portals") return clientEnterprisePortalsPath;
   if (title === "Cloud & Collaboration" || title === "Cloud & Collaboration Solutions") return cloudCollaborationPath;
   if (title === "Cybersecurity Readiness") return cybersecurityReadinessPath;

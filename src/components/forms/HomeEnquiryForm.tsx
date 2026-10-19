@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import styles from "@/components/forms/formStyles.module.css";
 import FormInput from "@/components/forms/shared/FormInput";
 import FormSelect from "@/components/forms/shared/FormSelect";
 import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 
 const interestOptions = [
   { value: "Business Advisory", label: "Business Advisory" },
@@ -31,6 +31,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
     interest: "",
     message: "",
     consent: false,
+    enquiryAgreementAccepted: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState(false);
@@ -52,6 +53,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
     if (!form.phone.trim()) nextErrors.phone = "Please enter your phone or WhatsApp number.";
     if (!form.interest) nextErrors.interest = "Please choose what you are looking for.";
     if (!form.consent) nextErrors.consent = "Please confirm consent before submitting.";
+    if (!form.enquiryAgreementAccepted) nextErrors.enquiryAgreementAccepted = enquiryAgreementMessage;
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
@@ -76,6 +78,8 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         pageTitle: document.title || "Astronis Global",
         referrer: document.referrer || "",
         consent: "yes",
+        enquiryAgreementAccepted: "yes",
+        enquiryAgreementId: "enquiry-communication-consultation-consent",
         website: "",
         utmSource: params.get("utm_source") || "",
         utmMedium: params.get("utm_medium") || "",
@@ -98,6 +102,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         interest: "",
         message: "",
         consent: false,
+        enquiryAgreementAccepted: false,
       });
       setStatus("Thank you for contacting Astronis Global. Your enquiry has been received. Our team will review your requirement and connect you with the appropriate professional.");
     } catch (error) {
@@ -130,11 +135,13 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           </div>
         </div>
 
-        <label className={styles.inline} htmlFor="home-consent">
-          <input id="home-consent" type="checkbox" checked={form.consent} onChange={(event) => updateField("consent", event.target.checked)} aria-invalid={Boolean(errors.consent)} />
-          <span className={styles.inlineText}>I consent to Astronis Global contacting me regarding my enquiry. <Link href="/legal/privacy-policy" className={styles.link}>Privacy Policy</Link></span>
-        </label>
-        {errors.consent ? <div className={styles.errorText}>{errors.consent}</div> : null}
+        <EnquiryAgreementCheckbox
+          accepted={form.enquiryAgreementAccepted}
+          error={errors.enquiryAgreementAccepted || ""}
+          errorId="home-enquiry-agreement-error"
+          onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
+          onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
+        />
 
         <div style={{ width: "100%" }}>
           <button type="submit" className={styles.button} disabled={busy}>
