@@ -346,6 +346,12 @@ textarea:focus {
   width: 220px;
   display: block;
 }
+.brand-video {
+  display: block;
+  width: 220px;
+  height: 83px;
+  object-fit: contain;
+}
 .navigation {
   display: flex;
   align-items: center;
@@ -2988,7 +2994,8 @@ textarea::placeholder {
 @media (min-width: 1251px) and (max-width: 1350px) {
   .nav-shell { gap: 20px; }
   .brand { flex-basis: 180px; }
-  .brand img { width: 180px; }
+  .brand img,
+  .brand-video { width: 180px; }
   .navigation { gap: 12px; font-size: max(var(--font-size-min), 12px); }
   .nav-cta { padding: 12px; font-size: max(var(--font-size-min), 12px); }
 }
@@ -3002,7 +3009,8 @@ textarea::placeholder {
   .brand {
     flex-basis: 180px;
   }
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 180px;
   }
   .navigation {
@@ -3098,7 +3106,8 @@ textarea::placeholder {
   .brand {
     flex-basis: 190px;
   }
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 190px;
   }
   .menu-toggle {
@@ -3380,7 +3389,8 @@ textarea::placeholder {
     border-radius: 0 0 12px 12px;
   }
   .brand,
-  .brand img {
+  .brand img,
+  .brand-video {
     width: 165px;
     flex-basis: 165px;
   }

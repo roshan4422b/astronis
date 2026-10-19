@@ -1,7 +1,6 @@
 "use client";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "@/app/_components/asset-image";
 import { usePathname } from "next/navigation";
 import {
   countries,
@@ -207,12 +206,15 @@ export default function Header() {
           aria-label="Astronis Global home"
           onClick={closeMenus}
         >
-          <Image
-            src="/astronis_logo.jpeg"
-            alt="Astronis"
-            width={300}
-            height={113}
-            preload
+          <video
+            src="/header%20logo%20video.mp4"
+            className="brand-video"
+            aria-hidden="true"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
           />
         </Link>
         <button
