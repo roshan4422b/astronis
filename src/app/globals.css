@@ -4693,8 +4693,14 @@ textarea::placeholder {
   color: #fff !important;
 }
 
-.global-presence-route-scope :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, .breadcrumb, .eyebrow) {
+.global-presence-route-scope :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, button, summary, legend, em, .breadcrumb, .eyebrow, [class*="description" i], [class*="summary" i], [class*="tagline" i]) {
   color: #111 !important;
+}
+.global-presence-route-scope :is(p, li, small, span, time, strong, label, dt, dd, blockquote, figcaption, a, input, textarea, select, button, summary, legend, em, .breadcrumb, .eyebrow, [class*="description" i], [class*="summary" i], [class*="tagline" i]) {
+  font-size: max(15px, 1em) !important;
+}
+.global-presence-route-scope [class*="__hero"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
+  color: #fff !important;
 }
 .global-presence-route-scope :is(
   p,
@@ -4705,7 +4711,7 @@ textarea::placeholder {
   [class*="modelBody"] > small,
   [class*="resourceGrid"] small
 ) {
-  font-size: 14px !important;
+  font-size: max(15px, 1em) !important;
 }
 .global-presence-route-scope :is(
   [class*="__darkSection"],

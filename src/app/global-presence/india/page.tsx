@@ -162,16 +162,6 @@ const faqs = [
 export default function IndiaPage() {
   return (
     <div className={styles.page}>
-      <div className={styles.breadcrumbWrap}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden="true">›</span>
-          <Link href="/global-presence">Global Presence</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">India</span>
-        </nav>
-      </div>
-
       <section className={styles.hero} aria-labelledby="india-title">
         <div className={styles.heroPhoto}>
           <AssetImage
@@ -183,6 +173,13 @@ export default function IndiaPage() {
           />
         </div>
         <div className={styles.heroInner}>
+          <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">›</span>
+            <Link href="/global-presence">Global Presence</Link>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">India</span>
+          </nav>
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>Global Presence</span>
             <h1 id="india-title">India</h1>

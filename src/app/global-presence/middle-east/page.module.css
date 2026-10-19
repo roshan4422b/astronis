@@ -7,7 +7,7 @@
 }
 
 .middleEastHero {
-  background: linear-gradient(90deg, #f9fbfd 0%, #f0f7fb 40%, #dfeaf5 100%);
+  background: linear-gradient(90deg, #041427 0%, #071830 60%, #0b2442 100%);
 }
 
 .middleEastHero .heroPhoto {
@@ -17,11 +17,10 @@
 .middleEastHero .heroPhoto::after {
   background: linear-gradient(
     90deg,
-    rgba(249, 251, 253, 0.96) 0%,
-    rgba(249, 251, 253, 0.88) 22%,
-    rgba(249, 251, 253, 0.5) 42%,
-    rgba(249, 251, 253, 0.12) 58%,
-    rgba(10, 35, 63, 0.18) 100%
+    rgba(4, 20, 39, 0.92) 0%,
+    rgba(7, 24, 48, 0.84) 34%,
+    rgba(7, 24, 48, 0.56) 62%,
+    rgba(7, 24, 48, 0.28) 100%
   );
 }
 
@@ -44,7 +43,7 @@
 }
 
 .heroNote {
-  color: #12355f;
+  color: rgba(255, 255, 255, 0.92);
   max-width: 155px;
   margin-left: auto;
 }
@@ -165,7 +164,7 @@
   }
 
   .middleEastHero .heroPhoto::after {
-    background: linear-gradient(180deg, rgba(249, 251, 253, 0.1) 0%, rgba(249, 251, 253, 0.8) 72%, rgba(249, 251, 253, 1) 100%);
+    background: linear-gradient(180deg, rgba(4, 20, 39, 0.28) 0%, rgba(7, 24, 48, 0.78) 48%, rgba(7, 24, 48, 0.96) 100%);
   }
 
   .heroFlag {

@@ -7,7 +7,7 @@
 }
 
 .heroPhoto::after {
-  background: linear-gradient(90deg, rgba(245, 248, 250, 0.97) 0%, rgba(245, 248, 250, 0.88) 22%, rgba(245, 248, 250, 0.45) 43%, rgba(8, 43, 83, 0.12) 100%);
+  background: linear-gradient(90deg, rgba(4, 20, 39, 0.92) 0%, rgba(7, 24, 48, 0.84) 34%, rgba(7, 24, 48, 0.56) 62%, rgba(7, 24, 48, 0.28) 100%);
 }
 
 .heroPhoto { overflow: hidden; }
