@@ -194,11 +194,11 @@ export default function Header() {
             ADVISORY
           </span>
           <div className="utility-contact">
-            <a href="tel:+919311664455">
+            <a href="tel:+919311664455" aria-label="Call +91 9311664455">
               <Icon name="phone" />
               +91 9311664455
             </a>
-            <a href="mailto:advisory@astronisglobal.com">
+            <a href="mailto:advisory@astronisglobal.com" aria-label="Email advisory@astronisglobal.com">
               <Icon name="mail" />
               advisory@astronisglobal.com
             </a>
