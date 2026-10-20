@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { practices } from "@/content/site";
 import Icon from "../_components/icon";
 export default function TestimonialForm({
@@ -12,7 +13,8 @@ export default function TestimonialForm({
     [busy, setBusy] = useState(false),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
-    [preview, setPreview] = useState("");
+    [preview, setPreview] = useState(""),
+    [photoSelected, setPhotoSelected] = useState(false);
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     live = useRef<HTMLVideoElement>(null);
@@ -67,6 +69,7 @@ export default function TestimonialForm({
   function changeFormat(next: string) {
     if (recorder.current?.state === "recording") recorder.current.stop();
     setFormat(next);
+    setPhotoSelected(false);
     setStatus("");
   }
   async function submit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -105,6 +108,7 @@ export default function TestimonialForm({
         form.reset();
         setVideo(null);
         setPreview("");
+        setPhotoSelected(false);
       }
     } catch {
       setStatus(
@@ -221,8 +225,21 @@ export default function TestimonialForm({
                     name="photo"
                     type="file"
                     accept="image/jpeg,image/png"
+                    onChange={(event) => setPhotoSelected(Boolean(event.target.files?.length))}
                   />
                 </label>
+                {photoSelected && (
+                  <label className="consent full">
+                    <input
+                      name="photoPublicationConsent"
+                      type="checkbox"
+                      value="yes"
+                      required
+                      onInvalid={() => setStatus("Please authorise publication of the submitted photograph or remove the photograph.")}
+                    />
+                    <span>I authorise publication of the photograph I submitted with my testimonial.</span>
+                  </label>
+                )}
               </>
             ) : (
               <div className="full">
@@ -282,10 +299,27 @@ export default function TestimonialForm({
               Website
               <input name="website" tabIndex={-1} autoComplete="off" />
             </label>
+            <p className="full testimonial-terms-link">
+              <strong>Terms and Policy:</strong>{" "}
+              <Link href="/legal/client-testimonial-consent">
+                Read the Client Testimonial Consent &amp; Authorisation Agreement
+              </Link>
+            </p>
             <label className="consent full">
-              <input name="consent" type="checkbox" value="yes" required />I
-              consent to Astronis Global reviewing and publishing my
-              testimonial, name, organisation and any media I submit.
+              <input
+                name="consent"
+                type="checkbox"
+                value="yes"
+                required
+                onInvalid={() => setStatus("Please accept the Client Testimonial Consent and Authorisation Agreement before submitting.")}
+              />
+              <span>
+                “Yes, I have read and understood the{" "}
+                <Link href="/legal/client-testimonial-consent">
+                  Client Testimonial, Review, Image &amp; Logo Publication Consent and Authorisation Agreement
+                </Link>
+                , and I agree to its terms and conditions.”
+              </span>
             </label>
           </div>
           <button className="button" type="submit" disabled={busy || recording}>

@@ -1,5 +1,13 @@
 import { notFound } from "next/navigation";
 import { Banner, Button } from "../../_components/ui";
+import PrivacyPolicy from "./privacy-policy";
+import TermsOfUse from "./terms-of-use";
+import WebsiteDisclaimer from "./website-disclaimer";
+import CookiePolicy from "./cookie-policy";
+import AccessibilityStatement from "./accessibility-statement";
+import ClientTestimonialConsent from "./client-testimonial-consent";
+import CareerProfessionalPartnershipConsent from "./career-professional-partnership-consent";
+import EnquiryConsultationConsent from "./enquiry-communication-consultation-consent";
 const pages: Record<string, { title: string; text: string }> = {
   "privacy-policy": {
     title: "Privacy Policy",
@@ -10,7 +18,7 @@ const pages: Record<string, { title: string; text: string }> = {
     text: "For questions about use of this website or engaging Astronis Global, please contact our team. Engagement scope and terms should be agreed directly with the firm.",
   },
   disclaimer: {
-    title: "Disclaimer",
+    title: "Website Disclaimer",
     text: "The material on this website introduces Astronis Global and its services. Please contact our professionals to discuss your specific circumstances and requirements.",
   },
   "cookie-policy": {
@@ -18,8 +26,20 @@ const pages: Record<string, { title: string; text: string }> = {
     text: "This website does not currently use advertising trackers or analytics cookies. For questions about website technology or privacy, contact our team.",
   },
   accessibility: {
-    title: "Accessibility",
-    text: "This website supports keyboard navigation, responsive layouts, labelled form controls and reduced-motion preferences. If you experience difficulty accessing any content, contact our team for assistance.",
+    title: "Accessibility Statement",
+    text: "",
+  },
+  "client-testimonial-consent": {
+    title: "Client Testimonial Consent & Authorisation Agreement",
+    text: "",
+  },
+  "career-professional-partnership-consent": {
+    title: "Career, Professional Association & Partnership Application Consent Agreement",
+    text: "",
+  },
+  "enquiry-communication-consultation-consent": {
+    title: "Enquiry, Communication & Consultation Consent Agreement",
+    text: "",
   },
 };
 export function generateStaticParams() {
@@ -37,7 +57,16 @@ export default async function Policy({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const p = pages[(await params).slug];
+  const { slug } = await params;
+  if (slug === "privacy-policy") return <PrivacyPolicy />;
+  if (slug === "terms-of-use") return <TermsOfUse />;
+  if (slug === "disclaimer") return <WebsiteDisclaimer />;
+  if (slug === "cookie-policy") return <CookiePolicy />;
+  if (slug === "accessibility") return <AccessibilityStatement />;
+  if (slug === "client-testimonial-consent") return <ClientTestimonialConsent />;
+  if (slug === "career-professional-partnership-consent") return <CareerProfessionalPartnershipConsent />;
+  if (slug === "enquiry-communication-consultation-consent") return <EnquiryConsultationConsent />;
+  const p = pages[slug];
   if (!p) notFound();
   return (
     <>

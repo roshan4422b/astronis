@@ -9,11 +9,38 @@ import styles from "./industries-menu.module.css";
 import { isRouteActive } from "./navigation-state";
 
 const groups = [
-  { title: "Financial & Professional", icon: "chart", names: ["Financial Services", "FinTech & Digital Finance", "Professional & Business Services", "Real Estate & Construction", "Aviation, Aerospace & Defence"] },
-  { title: "Technology & Innovation", icon: "bulb", names: ["IT & ITES", "Artificial Intelligence", "Startups", "Media & Entertainment", "Telecommunications", "Education", "Renewable Energy"] },
-  { title: "Industrial & Infrastructure", icon: "building", names: ["Manufacturing", "Automotive & Mobility", "Infrastructure", "Logistics", "Mining, Metals & Natural Resources", "Agriculture & Agri-Business"] },
-  { title: "Consumer & People", icon: "people", names: ["Retail & Consumer", "E-Commerce", "Healthcare & Pharma", "Hospitality", "Textiles, Apparel & Lifestyle", "Government & Public Sector"] },
+  { title: "Financial & Professional", names: ["Financial Services", "FinTech & Digital Finance", "Professional & Business Services", "Real Estate & Construction", "Aviation, Aerospace & Defence"] },
+  { title: "Technology & Innovation", names: ["IT & ITES", "Artificial Intelligence", "Startups", "Media & Entertainment", "Telecommunications", "Education", "Renewable Energy"] },
+  { title: "Industrial & Infrastructure", names: ["Manufacturing", "Automotive & Mobility", "Infrastructure", "Logistics", "Mining, Metals & Natural Resources", "Agriculture & Agri-Business"] },
+  { title: "Consumer & People", names: ["Retail & Consumer", "E-Commerce", "Healthcare & Pharma", "Hospitality", "Textiles, Apparel & Lifestyle", "Government & Public Sector"] },
 ] as const;
+
+const industryIcons: Record<string, string> = {
+  "Financial Services": "bank",
+  "FinTech & Digital Finance": "rupee",
+  "Professional & Business Services": "handshake",
+  "Real Estate & Construction": "building",
+  "Aviation, Aerospace & Defence": "plane",
+  "IT & ITES": "cpu",
+  "Artificial Intelligence": "bulb",
+  Startups: "rocket",
+  "Media & Entertainment": "play",
+  Telecommunications: "network",
+  Education: "trophy",
+  "Renewable Energy": "leaf",
+  Manufacturing: "gear",
+  "Automotive & Mobility": "compass",
+  Infrastructure: "chart",
+  Logistics: "database",
+  "Mining, Metals & Natural Resources": "gem",
+  "Agriculture & Agri-Business": "target",
+  "Retail & Consumer": "document",
+  "E-Commerce": "laptop",
+  "Healthcare & Pharma": "person",
+  Hospitality: "calendar",
+  "Textiles, Apparel & Lifestyle": "award",
+  "Government & Public Sector": "shield",
+};
 
 const descriptions: Record<string, string> = {
   "Financial Services": "Banking · NBFCs · Insurance",
@@ -60,7 +87,7 @@ export default function IndustriesMenu({ id, onNavigate }: { id: string; onNavig
               if (!industry) return null;
               const href = `/industries/${industry.slug}`;
               return <Link href={href} key={industry.slug} onClick={onNavigate} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}>
-                <Icon name={group.icon} /><span><strong>{name}</strong><small>{descriptions[name]}</small></span><Icon name="arrow" />
+                <Icon name={industryIcons[name]} /><span><strong>{name}</strong><small>{descriptions[name]}</small></span><Icon name="arrow" />
               </Link>;
             })}
           </div>

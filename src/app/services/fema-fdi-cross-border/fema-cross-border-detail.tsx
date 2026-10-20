@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
-import PageSectionNav from "../corporate-commercial-advisory/entity-formation/_components/page-section-nav";
-import pageLayoutStyles from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page.module.css";
+import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 import type { FemaCrossBorderDetail } from "@/data/fema-cross-border-details";
+import { getServiceChildHeroImage } from "@/data/services";
 
 const sectionLinks = [
   ["Overview", "overview"],
@@ -16,8 +16,6 @@ const sectionLinks = [
   ["Documents", "documents"],
   ["FAQs", "faqs"],
 ];
-const fullWidthSections = ["services", "features", "faqs", "consultation"];
-
 function Heading({
   eyebrow,
   title,
@@ -54,6 +52,8 @@ export function femaCrossBorderMetadata(detail: FemaCrossBorderDetail): Metadata
 }
 
 export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCrossBorderDetail }) {
+  const heroImage = getServiceChildHeroImage(detail.slug, "fema-fdi-cross-border")
+    ?? "/images/services/fema-fdi-and-foreign-exchange-advisory.webp";
   const groupTitle = detail.groupSlug === "fema-compliance-and-support"
     ? "FEMA Compliance & Support"
     : "FDI Compliance & Support";
@@ -61,9 +61,9 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="hero">
+      <section className={`${styles.hero} service-child-page-hero`} id="hero">
         <Image
-          src="/images/services/fema-fdi-and-foreign-exchange-advisory.webp"
+          src={heroImage}
           alt="FEMA, foreign investment and cross-border advisory"
           fill
           priority
@@ -81,27 +81,19 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>FEMA, FDI &amp; CROSS-BORDER · {groupTitle.toUpperCase()}</span>
             <h1>{detail.title}</h1>
-            <h2>{detail.subtitle}</h2>
-            <p>{detail.description}</p>
+            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primary} href="/professionals/enquiry">
-                Schedule a Consultation <Icon name="arrow" />
-              </Link>
-              <Link className={styles.secondary} href={groupHref}>
-                Explore {groupTitle} <Icon name="arrow" />
+              <Link className={styles.secondary} href="/contact">
+                Schedule a Consultation <Icon name="calendar" />
               </Link>
             </div>
           </div>
-          <aside className={styles.heroNote}>
-            <span>CROSS-BORDER ADVISORY</span>
-            <strong>Structure transactions.<br />Meet obligations.</strong>
-            <p>FEMA, RBI, FDI and corporate requirements considered together.</p>
-          </aside>
         </div>
       </section>
 
-      <div className={pageLayoutStyles.pageNavLayout}>
-        <div className={pageLayoutStyles.pageContent}>
+      <ServiceChildPageLayout
+        items={sectionLinks.map(([label, id]) => ({ id, label }))}
+      >
           <section className={styles.tax} id="overview">
             <div className={`container ${styles.taxGrid}`}>
               <div>
@@ -331,12 +323,7 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
               <Link href="/professionals/enquiry">Request a Consultation <Icon name="arrow" /></Link>
             </div>
           </section>
-        </div>
-        <PageSectionNav
-          items={sectionLinks.map(([label, id]) => ({ id, label }))}
-          hiddenWhenVisible={fullWidthSections}
-        />
-      </div>
+      </ServiceChildPageLayout>
     </div>
   );
 }

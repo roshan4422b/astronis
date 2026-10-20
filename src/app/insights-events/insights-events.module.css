@@ -7,7 +7,7 @@
 .page a:focus-visible,.page button:focus-visible,.page input:focus-visible{outline:3px solid #1688ff;outline-offset:3px}
 .hero{position:relative;min-height:360px;overflow:hidden;background:#eaf2fa}
 .heroImage{object-fit:cover;object-position:center 48%}
-.heroShade{position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,#fffffff7 34%,#ffffffcf 48%,#ffffff15 72%,#071d4930 100%)}
+.heroShade{position:absolute;inset:0;background:linear-gradient(100deg,#061d43f2 0%,#073d70e8 58%,#082b53a8 100%)}
 .heroInner{position:relative;z-index:1;width:min(1360px,calc(100% - 88px));min-height:360px;margin:auto}
 .breadcrumb{display:flex;align-items:center;gap:9px;padding-top:17px;color:#395777;font-size:13px}
 .breadcrumb a:hover,.sectionHeading>a:hover{color:var(--blue)}
@@ -132,6 +132,8 @@
 .ctaInner h2{color:#fff;font-size: max(var(--font-size-min), clamp(24px,3vw,36px));font-weight:600}
 .ctaInner p{margin-top:4px;color:#e1e9f5;font-size: max(var(--font-size-min), 13px)}
 .ctaInner>a{flex:none;border-color:#fff;background:#fff;color:#0748b8!important}
+.page .hero :is(.breadcrumb, .breadcrumb a, .breadcrumb span, .heroCopy h1, .heroCopy h2, .heroCopy p),
+.page .ctaInner :is(h2, p){color:#fff!important}
 .srOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:1100px){
   .heroInner{width:calc(100% - 56px)}
@@ -152,7 +154,7 @@
 @media(max-width:700px){
   .hero{min-height:410px}
   .heroInner{width:calc(100% - 36px);min-height:410px}
-  .heroShade{background:linear-gradient(90deg,#fff 0%,#fffffff2 52%,#ffffffb8 76%,#ffffff38 100%)}
+  .heroShade{background:linear-gradient(100deg,#061d43f2 0%,#073d70e8 65%,#082b53a8 100%)}
   .breadcrumb{padding-top:13px;font-size: max(var(--font-size-min), 11px)}
   .heroCopy{max-width:510px;padding:38px 0 25px}
   .heroCopy h1{font-size: max(var(--font-size-min), clamp(38px,8vw,52px))}
@@ -196,7 +198,7 @@
 @media(max-width:420px){
   .hero{min-height:420px}
   .heroInner{min-height:420px}
-  .heroShade{background:linear-gradient(90deg,#fff 0%,#fffffff4 62%,#ffffffa8 100%)}
+  .heroShade{background:linear-gradient(100deg,#061d43f5 0%,#073d70eb 72%,#082b53c2 100%)}
   .heroActions{gap:8px}
   .heroActions a{min-height:40px;gap:10px;padding:9px 11px;font-size: max(var(--font-size-min), 11px)}
   .categoryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}

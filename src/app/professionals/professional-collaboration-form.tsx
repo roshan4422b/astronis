@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Icon from "../_components/icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "../_components/enquiry-agreement-checkbox";
 import styles from "./professional-collaboration.module.css";
 
 const professionalTypes = [
@@ -33,6 +34,8 @@ export default function CollaborationForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
+  const [agreementError, setAgreementError] = useState("");
 
   function selectFile(selected: File | undefined, input: HTMLInputElement) {
     if (!selected) {
@@ -55,8 +58,14 @@ export default function CollaborationForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (data.get("enquiryAgreementAccepted") !== "yes") {
+      setAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setAgreementError("");
     data.set("connectWith", "general");
     data.set("collaborationEnquiry", "yes");
+    data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     if (file) data.append("documents", file);
 
     setBusy(true);
@@ -71,6 +80,7 @@ export default function CollaborationForm() {
       if (response.ok) {
         form.reset();
         setFile(null);
+        setAgreementAccepted(false);
       }
     } catch {
       setSuccess(false);
@@ -94,7 +104,7 @@ export default function CollaborationForm() {
       <label className={styles.messageField}><span>Brief About Collaboration Opportunity *</span><textarea name="message" required minLength={10} maxLength={1000} rows={3} /></label>
       <label className={styles.uploadField}><span>Upload Supporting Document</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => selectFile(event.currentTarget.files?.[0], event.currentTarget)} /><small>PDF, DOC, DOCX, up to 5 MB{file ? ` · ${file.name}` : ""}</small></label>
     </div>
-    <label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I consent to Astronis Global processing the information submitted for responding to this enquiry.</span></label>
+    <EnquiryAgreementCheckbox accepted={agreementAccepted} error={agreementError} errorId="professional-collaboration-enquiry-agreement-error" onChange={(accepted) => { setAgreementAccepted(accepted); setAgreementError(""); }} onInvalid={() => setAgreementError(enquiryAgreementMessage)} />
     <button className={styles.submitButton} type="submit" disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;

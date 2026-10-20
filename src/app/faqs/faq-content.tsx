@@ -212,7 +212,7 @@ export default function FAQContent() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={`faq-route-scope ${styles.page}`}>
       <section className={styles.hero}>
         <AssetImage
           src="/corporate-regulatory-hero.png"

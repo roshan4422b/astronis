@@ -3,11 +3,12 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
-import { getCorporateChildHeroImage } from "@/data/services";
+import { getServiceChildHeroImage } from "@/data/services";
 import PageSectionLayout from "../_components/page-section-layout";
 import PageSectionNav from "../_components/page-section-nav";
+import ServiceChildTestimonial from "../../../_template/service-child-testimonial";
 import styles from "../public-limited-company/public-limited-company.module.css";
-import layoutStyles from "./private-limited-page-layout.module.css";
+import layoutStyles from "../../../_template/service-child-page-layout.module.css";
 import PrivateLimitedFaq from "./private-limited-faq";
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ const nav = [
   ["Requirements", "requirements"],
   ["Fees", "fees"],
   ["FAQs", "faqs"],
+  ["Testimonials", "testimonials"],
 ];
 
 const navItems = nav.map(([label, id]) => ({ id, label }));
@@ -74,35 +76,13 @@ const process = [
   ["Document preparation", "Prepare the incorporation information, declarations and MOA and AOA for review."],
   ["Filing with ROC", "File the incorporation application and supporting documents with the Registrar of Companies."],
   ["Certificate of incorporation", "Receive the certificate after the application is approved."],
-  ["PAN, TAN & bank account", "Coordinate tax identifiers and next steps for the company's bank account."],
+  ["PAN assistance", "Coordinate the company's Permanent Account Number (PAN) application."],
+  ["TAN assistance", "Coordinate the Tax Deduction and Collection Account Number (TAN) application."],
+  ["Bank account assistance", "Support the next steps for opening the company's bank account."],
   ["Post-incorporation compliances", "Set up initial records, governance routines and applicable ongoing filings."],
 ];
 
-const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
-
-const sampleTestimonials = [
-  {
-    name: "Ananya Mehta",
-    designation: "Chief Executive Officer",
-    company: "Northstar Manufacturing Pvt. Ltd.",
-    message:
-      "Astronis Global brought clarity and commercial focus to a complex restructuring exercise. Their advice was practical, timely and easy for our leadership team to act on.",
-  },
-  {
-    name: "Rahul Sharma",
-    designation: "Managing Director",
-    company: "Sample Company",
-    message:
-      "The team helped us understand our business requirements and provided clear, structured guidance throughout the process.",
-  },
-  {
-    name: "Priya Kapoor",
-    designation: "Founder",
-    company: "Sample Enterprises",
-    message:
-      "The advice was straightforward, professional and focused on practical next steps for our business.",
-  },
-];
+const processIcons = ["people", "search", "document", "file", "award", "file", "percent", "building", "calendar"];
 
 const documentColumns = [
   [
@@ -160,9 +140,9 @@ export default function PrivateLimitedCompanyPage() {
 
   return (
     <div className={styles.page} data-text-size="plus-two">
-      <section className={`${styles.hero} ${styles.heroNoOverlay}`} id="overview">
+      <section className={`${styles.hero} ${styles.heroNoOverlay} service-child-page-hero`} id="overview">
         <Image
-          src={getCorporateChildHeroImage("private-limited-company-incorporation") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
+          src={getServiceChildHeroImage("private-limited-company-incorporation", "corporate-commercial-advisory") ?? "/images/services/corporate-commercial-heroes/private-limited-company.png"}
           alt="Corporate services and compliance advisory"
           fill
           priority
@@ -184,6 +164,7 @@ export default function PrivateLimitedCompanyPage() {
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION</span>
             <h1>Private Limited Company Incorporation</h1>
+            <h2 className="service-child-hero-subtitle">A considered company structure for ambitious and growing businesses.</h2>
             <div className={styles.actions}>
               <Link className={styles.secondary} href="/contact">
                 Schedule a Consultation <Icon name="calendar" />
@@ -418,30 +399,7 @@ export default function PrivateLimitedCompanyPage() {
         </section>
       </PageSectionLayout>
 
-      <PageSectionLayout variant="full-width">
-        <section className={styles.testimonial}>
-          <div className="container">
-            <Heading
-              eyebrow="CLIENT PERSPECTIVE"
-              title="Clear advice. Practical direction."
-              text="A perspective shared with permission by a client of our corporate and commercial advisory team."
-            />
-            <div className={layoutStyles.testimonialGrid}>
-              {sampleTestimonials.map((testimonial) => (
-                <figure key={testimonial.name}>
-                  <span className={styles.quoteMark}>“</span>
-                  <blockquote>{testimonial.message}</blockquote>
-                  <figcaption>
-                    <strong>{testimonial.name}</strong>
-                    <span>{testimonial.designation}, {testimonial.company}</span>
-                    <span className={styles.stars} aria-label="5 out of 5 stars">{"★".repeat(5)}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        </section>
-      </PageSectionLayout>
+      <ServiceChildTestimonial />
 
       <PageSectionLayout variant="full-width">
         <section className={styles.insights}>

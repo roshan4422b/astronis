@@ -33,8 +33,8 @@ const allLinks = [
 ];
 const menuColumns = [
   allLinks.slice(0, 8),
-  allLinks.slice(8, 15),
-  allLinks.slice(15),
+  allLinks.slice(8, 16),
+  allLinks.slice(16),
 ];
 
 const shortcuts = [

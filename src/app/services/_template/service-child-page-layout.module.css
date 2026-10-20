@@ -1,0 +1,1171 @@
+.page {
+  width: 100%;
+}
+
+.hero {
+  width: 100%;
+}
+
+.pageLayout {
+  --sidebar-width: 280px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+  gap: 12px;
+  align-items: stretch;
+  width: min(100%, 1500px);
+  max-width: 1500px;
+  margin-inline: auto;
+}
+
+.pageContent {
+  grid-column: 1;
+  min-width: 0;
+  --ink: var(--service-ink);
+  --muted: var(--service-muted);
+  color: var(--service-ink);
+}
+
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details),
+.testimonialGrid > figure,
+.pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article) {
+  transition: transform .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) {
+  border: 2px solid #d6e7ff;
+  background: #fff;
+  transition: background-color .2s ease, border-color .2s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details) {
+  padding: 19px 20px;
+}
+
+.pageContent :global(section[id="structure"]),
+.pageContent :global(section[class*="structure"]),
+.pageContent :global(section[class*="tax"]),
+.pageContent :global(section[class*="documents"]),
+.pageContent :global(section[class*="features"]) {
+  background: #0751db !important;
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="final"]),
+.pageContent :global(section[class*="cta"]) {
+  background: #0751db !important;
+  color: #fff !important;
+}
+
+.pageContent :global(section[id="structure"] h2),
+.pageContent :global(section[id="structure"] h3),
+.pageContent :global(section[id="structure"] p),
+.pageContent :global(section[id="structure"] li),
+.pageContent :global(section[id="structure"] strong),
+.pageContent :global(section[class*="structure"] h2),
+.pageContent :global(section[class*="structure"] h3),
+.pageContent :global(section[class*="structure"] p),
+.pageContent :global(section[class*="structure"] li),
+.pageContent :global(section[class*="structure"] strong),
+.pageContent :global(section[class*="tax"] h2),
+.pageContent :global(section[class*="tax"] h3),
+.pageContent :global(section[class*="tax"] p),
+.pageContent :global(section[class*="tax"] li),
+.pageContent :global(section[class*="tax"] strong),
+.pageContent :global(section[class*="documents"] h2),
+.pageContent :global(section[class*="documents"] h3),
+.pageContent :global(section[class*="documents"] p),
+.pageContent :global(section[class*="documents"] li),
+.pageContent :global(section[class*="documents"] strong),
+.pageContent :global(section[class*="features"] h2),
+.pageContent :global(section[class*="features"] h3),
+.pageContent :global(section[class*="features"] p),
+.pageContent :global(section[class*="features"] li),
+.pageContent :global(section[class*="features"] strong),
+.pageContent :global(section[class*="final"] h2),
+.pageContent :global(section[class*="final"] h3),
+.pageContent :global(section[class*="final"] p),
+.pageContent :global(section[class*="final"] strong),
+.pageContent :global(section[class*="cta"] h2),
+.pageContent :global(section[class*="cta"] h3),
+.pageContent :global(section[class*="cta"] p),
+.pageContent :global(section[class*="cta"] strong) {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div) {
+  border-color: #dbe4ef !important;
+  background: #fff !important;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div span) {
+  color: #0a2949 !important;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div svg) {
+  color: #0751db !important;
+}
+
+.pageContent :global([class*="frameworkFeature"]) {
+  border: 1px solid #dbe4ef;
+  background: #0751db !important;
+  color: #fff !important;
+}
+
+.pageContent :global([class*="frameworkFeature"] h2),
+.pageContent :global([class*="frameworkFeature"] p),
+.pageContent :global([class*="frameworkFeature"] .cardLabel) {
+  color: #fff !important;
+}
+
+.pageContent :global([class*="frameworkFeature"] a) {
+  color: #bfdbfe !important;
+}
+
+.pageContent :global([class*="benefitPanel"]),
+.pageContent :global([class*="customPrice"]),
+.pageContent :global([class*="requirementPanel"]),
+.pageContent :global([class*="considerationPanel"]) {
+  background: #0751db !important;
+  color: #fff !important;
+}
+
+.pageContent :global([class*="benefitPanel"] h2),
+.pageContent :global([class*="benefitPanel"] h3),
+.pageContent :global([class*="benefitPanel"] p),
+.pageContent :global([class*="customPrice"] h2),
+.pageContent :global([class*="customPrice"] h3),
+.pageContent :global([class*="customPrice"] p),
+.pageContent :global([class*="requirementPanel"] h2),
+.pageContent :global([class*="requirementPanel"] h3),
+.pageContent :global([class*="requirementPanel"] p),
+.pageContent :global([class*="considerationPanel"] h2),
+.pageContent :global([class*="considerationPanel"] h3),
+.pageContent :global([class*="considerationPanel"] p) {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceButton"]) {
+  background: #0751db;
+  border-color: #0751db;
+  color: #fff;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceButton"]:hover) {
+  background: #0644b8;
+  border-color: #0644b8;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:not([class*="customPrice"]):hover),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover),
+  .testimonialGrid > figure:hover,
+  .pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure:hover),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover) {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+    background-color: #eff6ff;
+    box-shadow: 0 8px 20px rgb(6 30 59 / 10%);
+  }
+
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover) {
+    transform: translateY(-3px);
+    background-color: rgb(255 255 255 / 10%);
+  }
+
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover) {
+    transform: translateY(-3px);
+    background-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 8px 20px rgb(0 25 57 / 16%);
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="customPrice"]:hover) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgb(6 30 59 / 18%);
+  }
+
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
+    border-color: #93c5fd;
+    background: var(--service-blue);
+  }
+
+  .pageLayout .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
+    background: var(--service-blue);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure) {
+    transition: none !important;
+  }
+
+  .pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure:hover) {
+    transform: none !important;
+  }
+}
+
+
+.pageContent > :global([class*="sectionLayout"]) {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) {
+  background: #fff !important;
+  color: #0a2949;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 17px;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article) {
+  display: flex;
+  min-width: 0;
+  min-height: 486px;
+  height: 100%;
+  flex-direction: column;
+  margin: 0;
+  padding: 27px 25px;
+  border: 1px solid #0b4d91;
+  border-top: 4px solid #0b4d91;
+  border-radius: 0;
+  background: #fbfdff !important;
+  background-image: none !important;
+  color: #0a2949;
+  box-shadow: none;
+  transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > span) {
+  color: #111;
+  font-size: max(var(--font-size-min), 14px);
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article h3) {
+  margin: 11px 0 12px;
+  color: #080d14;
+  font: 400 25px / 1.25 Georgia, "Times New Roman", serif;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article strong[class*="price"]) {
+  display: block;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #e0eaf4;
+  color: #080d14;
+  font: 400 36px / 1.2 Georgia, "Times New Roman", serif;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article strong[class*="price"] small) {
+  margin-left: .04em;
+  font-size: 55%;
+  font-weight: 400;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article ul) {
+  display: grid;
+  gap: 13px;
+  margin: 18px 0 24px;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article li) {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #202a36;
+  font-size: max(var(--font-size-min), 16px);
+  line-height: 1.7;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article li svg) {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-top: 3px;
+  color: #138073;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > p) {
+  margin: 18px 0 20px;
+  color: #202a36;
+  font-size: max(var(--font-size-min), 16px);
+  line-height: 1.7;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article[class*="customPrice"] > span),
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article[class*="customPrice"] h3),
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article[class*="customPrice"] > p) {
+  color: #202a36 !important;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > a) {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding: 13px 14px;
+  border: 1px solid #0751db;
+  border-radius: 0;
+  background: #0751db;
+  color: #fff !important;
+  font-size: max(var(--font-size-min), 16px);
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > a svg) {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > a:hover),
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > a:focus-visible) {
+  border-color: #0644b8;
+  background: #0644b8;
+  color: #fff !important;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceNote"]) {
+  margin: 8px 0 0;
+  color: #202a36;
+  font-size: max(var(--font-size-min), 14px);
+  line-height: 1.6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover) {
+    transform: translateY(-4px) !important;
+    border-color: #0751db !important;
+    background: #0751db !important;
+    background-image: none !important;
+    box-shadow: 0 12px 24px rgb(6 30 59 / 16%) !important;
+  }
+
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover *:not(svg):not(svg *):not([class*="priceButton"]):not([class*="priceButton"] *)) {
+    color: #fff !important;
+  }
+
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover li svg) {
+    color: #bfdbfe !important;
+  }
+
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > a),
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > a:hover),
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > a:focus-visible) {
+    border-color: #fff !important;
+    background: #fff !important;
+    color: #0751db !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"]) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article) {
+    min-height: 0;
+    height: auto;
+    padding: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article) {
+    transition: none !important;
+  }
+
+  .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover) {
+    transform: none !important;
+  }
+}
+
+.pageContent :global(.container) {
+  width: calc(100% - 16px);
+  margin-right: 0;
+  margin-left: 16px;
+}
+
+.pageContent :global([class*="comparison"]) :global([class*="tableWrap"]) {
+  margin-inline: 0;
+}
+
+.pageContent :global([class*="heroCopy"]) {
+  max-width: min(770px, calc(100% - 320px));
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) {
+  position: sticky;
+  top: 108px;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  width: var(--sidebar-width);
+  height: calc(100vh - 116px);
+  max-height: none;
+  margin-top: 8px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: #0751db;
+  border: 1px solid #0751db;
+  box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]) {
+  margin-bottom: 14px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(a[class*="pageSectionNavBrand"]:hover) {
+  background: #fff;
+  color: inherit;
+  box-shadow: none;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+  display: none;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) ol {
+  display: block;
+  overflow: visible;
+  border-left-color: #34516d;
+  white-space: normal;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) li {
+  flex: initial;
+  margin-top: 6px;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #c9d7e6;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a :global(svg) {
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  color: #9fb9d2;
+  stroke-width: 1.8;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a:hover,
+.pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible,
+.pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] {
+  background: #0644b8;
+  color: #fff;
+}
+
+.pageLayout > :global(aside[aria-label="Page sections"]) a:hover :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a:focus-visible :global(svg),
+.pageLayout > :global(aside[aria-label="Page sections"]) a[class*="pageSectionNavLinkActive"] :global(svg) {
+  color: #93c5fd;
+}
+
+@media (max-width: 1100px) {
+  .pageLayout {
+    --sidebar-width: 240px;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) {
+    position: sticky;
+    top: 108px;
+    align-self: start;
+    grid-column: 2;
+    grid-row: 1;
+    width: var(--sidebar-width);
+    height: calc(100vh - 116px);
+    margin-top: 8px;
+    padding: 0;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 18%);
+  }
+}
+
+@media (max-width: 760px) {
+  .pageLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .pageContent {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) {
+    position: relative;
+    top: auto;
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    height: auto;
+    max-height: none;
+    margin: 12px 16px 0;
+    padding: 0;
+    overflow: visible;
+    border: 1px solid #0751db;
+    box-shadow: 0 8px 24px rgb(6 30 59 / 12%);
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 0;
+    background: #0751db;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[class*="pageSectionNavMobileToggle"]) span:last-child {
+    color: #93c5fd;
+    font-weight: 600;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(button[aria-expanded="false"]) + :global(nav) {
+    display: none;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) > :global(nav) {
+    position: relative;
+    top: auto;
+    padding: 8px 12px 12px;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    border-left: 0;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) li {
+    margin-top: 0;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 4px;
+    white-space: normal;
+  }
+
+  .pageLayout > :global(aside[aria-label="Page sections"]) a[class*="Active"] {
+    background: #123a61;
+    color: #fff;
+    transform: none;
+  }
+}
+
+.pageContent :global(section[class*="documents"]) {
+  background: #0751db;
+  color: #fff;
+}
+
+.pageContent :global(section[class*="documents"]) :global(*) {
+  color: #fff !important;
+}
+
+.pageContent :global([class*="benefitLayout"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global([class*="benefitGrid"]) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pageContent :global([class*="taxGrid"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global(section[class*="tax"]) {
+  background: hsl(219, 94%, 44%);
+}
+
+.pageContent :global(section[class*="features"]) {
+  background: #0751db;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div > span) {
+  font-size: calc(max(var(--font-size-min), 15px) + 3px);
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] svg) {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) {
+  background: #0751db;
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) > div > span {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) h2 {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="final"]) p {
+  color: #e0e8f1;
+}
+
+.pageContent :global(section[class*="final"]) a {
+  color: #fff;
+  transition: transform .25s ease, background-color .2s ease, border-color .2s ease;
+}
+
+.pageContent :global(section[class*="final"]) a:hover {
+  background: #12375c;
+  border-color: #12375c;
+}
+
+.pageContent :global([class*="taxPoints"]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pageContent :global([class*="timeline"]) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  list-style: none;
+  margin: 42px 0 0;
+  padding: 0;
+}
+
+.pageContent :global([class*="timeline"])::before,
+.pageContent :global([class*="timeline"]) > li::before {
+  display: none;
+}
+
+.pageContent :global([class*="timeline"]) > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: start;
+  min-width: 0;
+  min-height: 220px;
+  padding: 24px;
+  border: 1px solid #dce5ef;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(6 30 59 / 6%);
+}
+
+.pageContent :global([class*="timeline"]) [class*="stepIcon"] {
+  position: static;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border: 1px solid #d7e6f6;
+  border-radius: 12px;
+  background: #edf4fb;
+  color: #0751db;
+}
+
+.pageContent :global([class*="timeline"]) [class*="stepIcon"] :global(.icon) {
+  width: 21px;
+  height: 21px;
+}
+
+.pageContent :global([class*="timeline"]) h3,
+.pageContent :global([class*="timeline"]) p {
+  grid-column: 1 / -1;
+}
+
+.pageContent :global([class*="timeline"]) h3 {
+  margin: 24px 0 10px;
+  color: #0a2949;
+  font-size: 19px;
+}
+
+.pageContent :global([class*="timeline"]) p {
+  margin: 0;
+  color: #586c82;
+  line-height: 1.65;
+}
+
+.pageContent :global([class*="documentGrid"]) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.pageContent :global([class*="checklist"]) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin-top: 30px;
+}
+
+.pageContent :global([class*="checklist"]) > ul {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pageContent :global([class*="checklist"]) li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pageContent :global([class*="checklist"]) :global(.icon) {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  color: #0751db;
+}
+
+.pageContent :global([class*="priceGrid"]) > article {
+  min-width: 0;
+  height: 100%;
+}
+
+.pageContent :global([class*="priceGrid"]) > article > p {
+  margin: 18px 0 20px;
+  color: #435d76;
+  font-size: max(var(--font-size-min), 16px);
+  line-height: 1.7;
+}
+
+.pageContent :global([class*="priceGrid"]) > article > a {
+  margin-top: auto;
+}
+
+.pageContent :global([class*="featureStrip"]) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.pageContent :global([class*="featureStrip"]) > div {
+  min-width: 0;
+  min-height: 125px;
+  border-right: 1px solid #a8c0d52b;
+  border-bottom: 1px solid #a8c0d52b;
+}
+
+.pageContent :global([class*="featureStrip"]) > div:nth-child(4n) {
+  border-right: 0;
+}
+
+.pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 4) {
+  border-bottom: 0;
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.testimonialGrid > figure {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding-bottom: 24px;
+  background: #f3f8fc;
+}
+
+.testimonialGrid blockquote {
+  flex: 1;
+  margin-bottom: 24px;
+  font-size: max(var(--font-size-min), 17px);
+}
+
+.testimonialGrid figcaption {
+  margin-top: auto;
+}
+
+@media (max-width: 1100px) {
+  .pageContent :global([class*="benefitGrid"]),
+  .pageContent :global([class*="taxPoints"]),
+  .pageContent :global([class*="timeline"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonialGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global([class*="featureStrip"]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(4n) {
+    border-right: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 4) {
+    border-bottom: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .pageContent :global([class*="benefitGrid"]),
+  .pageContent :global([class*="taxPoints"]),
+  .pageContent :global([class*="timeline"]),
+  .pageContent :global([class*="checklist"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pageContent :global([class*="timeline"]) > li {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .pageContent :global([class*="featureStrip"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div,
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(4n),
+  .pageContent :global([class*="featureStrip"]) > div:nth-child(2n) {
+    border-right: 0;
+    border-bottom: 1px solid #a8c0d52b;
+  }
+
+  .pageContent :global([class*="featureStrip"]) > div:last-child {
+    border-bottom: 0;
+  }
+
+  .testimonialGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="benefits"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="comparison"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="process"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="documents"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="requirements"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="pricing"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="faq"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="testimonial"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="insights"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="knowledge"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="experience"]) :global([class*="heading"] > p),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] p),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] p),
+.pageContent :global(section[class*="comparison"]) :global([class*="tableNote"]),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] p),
+.pageContent :global(section[class*="documents"]) :global([class*="checklist"]) li,
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] p),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"] > span),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"] li),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceNote"]),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > p),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] details p),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] figcaption > span:not(.stars)),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] article > div > span),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] p),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] small),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] p) {
+  color: #000;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="benefits"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="comparison"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="process"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="documents"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="requirements"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="pricing"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="faq"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="testimonial"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="insights"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="knowledge"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="experience"]) :global([class*="heading"]) h2,
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) h3,
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"]) h3,
+.pageContent :global(section[class*="comparison"]) :global([class*="comparisonPanel"]) h3,
+.pageContent :global(section[class*="comparison"]) :global([class*="tableWrap"]) td,
+.pageContent :global(section[class*="process"]) :global([class*="timeline"]) h3,
+.pageContent :global(section[class*="pricing"]) :global([class*="priceCard"]) h3,
+.pageContent :global(section[class*="pricing"]) :global(strong[class*="price"]),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"]) summary,
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"]) blockquote,
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"]) figcaption strong,
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"]) h3 a,
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"]) h3,
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"]) h3 {
+  color: #000;
+}
+
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:focus-visible) {
+  color: #000;
+}
+
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .nav-link.active),
+:global(body:has([data-text-size="plus-two"])) :global(.skip-link) {
+  color: #000;
+}
+
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible)),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible) strong),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__service"]:not(:hover):not(:focus-visible) small),
+:global(body:has([data-text-size="plus-two"])) :global(.site-header .mega-menu[class*="services-menu-module"] [class*="__result"]) {
+  color: #000;
+}
+
+:global([data-text-size="plus-two"]) :global(section[class*="hero"]) :global(a[class*="primary"]),
+.pageContent :global(section[class*="final"]) a {
+  color: #000;
+}
+
+.pageContent :global(section[class*="final"]) a,
+.pageContent :global(section[class*="final"]) a:hover,
+.pageContent :global(section[class*="final"]) a:focus-visible {
+  background: #fff !important;
+  border-color: #fff !important;
+  color: #000 !important;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div) {
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global(svg),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="icon"]),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="Icon"]) {
+  color: #0751db !important;
+}
+
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li strong),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li p) {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] a),
+.pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article a),
+.pageContent :global(section[class*="process"]) :global([class*="timeline"] > li a),
+.pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article a),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article a),
+.pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details a),
+.pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure a),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a),
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
+.pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article a),
+.pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li a),
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div a) {
+  color: #000 !important;
+}
+
+.pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div span:not([class*="icon"]):not([class*="Icon"])) {
+  color: #fff;
+}
+
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]) {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 8px 13px;
+  border: 1px solid #0751db;
+  border-radius: 4px;
+  background: #fff;
+  color: #0751db !important;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]:hover),
+.pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article a[class*="readMore"]:focus-visible) {
+  border-color: #0751db;
+  background: #fff;
+  color: #000 !important;
+}
+
+.pageContent :global(section[class*="knowledge"]) :global([class*="resourceAction"]) {
+  color: #000;
+}
+
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]),
+.pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover) {
+  color: #fff !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover),
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure:hover),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure:hover),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover),
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover),
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover) {
+    background-color: #0751db !important;
+    background-image: none !important;
+  }
+
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+
+  .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not([class*="priceButton"])),
+  .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="testimonialGrid"] > figure:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="testimonial"]) :global([class*="grid"] > figure:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a)),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a):not([class*="resourceAction"])),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"]):not(a)),
+  .pageContent :global(section[id="structure"]) :global([class*="taxPoints"] > li:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),
+  .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover a[class*="readMore"]:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+    border-color: #0751db !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover li svg) {
+    color: #138073 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"] svg),
+  .pageContent :global(section[class*="insights"]) :global([class*="articleGrid"] > article:hover [class*="readMore"] svg),
+  .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover [class*="resourceAction"] svg),
+  .pageContent :global(section[class*="experience"]) :global([class*="experienceGrid"] > article:hover a svg) {
+    color: #000 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"]),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover) {
+    background: #fff !important;
+    border-color: #0751db !important;
+    color: #000 !important;
+  }
+
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover [class*="priceButton"] svg),
+  .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article [class*="priceButton"]:hover svg) {
+    color: #000 !important;
+  }
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > [class*="priceButton"]),
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > [class*="priceButton"]:hover) {
+  border-color: #0751db !important;
+  background: #fff !important;
+  color: #0751db !important;
+  transition: none !important;
+}
+
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > [class*="priceButton"] *),
+.pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > [class*="priceButton"]:hover *) {
+  color: #0751db !important;
+}

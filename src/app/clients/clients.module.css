@@ -402,8 +402,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 150px;
-  padding: 24px 18px;
+  min-height: 160px;
+  padding: 20px 16px;
   border: 1px solid #dde8f6;
   border-radius: 18px;
   background: linear-gradient(180deg, #fff 0%, #f8fbff 100%);
@@ -419,8 +419,8 @@
 
 .logoCard img {
   width: 100%;
-  max-width: 190px;
-  max-height: 74px;
+  max-width: 230px;
+  max-height: 90px;
   object-fit: contain;
   filter: grayscale(0.15) brightness(0.96);
   transition: filter 0.28s ease, transform 0.28s ease;
