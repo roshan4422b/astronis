@@ -213,7 +213,7 @@ main section[class*="hero"] :is(
 ) {
   color: #fff !important;
 }
-main section[class*="hero"] :is(a, button):is(
+main section[class*="hero"]:not([class*="global-presence-module"]) :is(a, button):is(
   [class*="primary"],
   [class*="button"]:not([class*="secondary"]),
   [class*="action"]:not([class*="secondary"])
