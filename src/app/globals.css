@@ -1315,7 +1315,7 @@ main section[class*="hero"] :is(a, button):is(
 .home-contact-section .contact-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
-  align-items: start;
+  align-items: stretch;
 }
 .home-contact-section {
   background: #042446;
