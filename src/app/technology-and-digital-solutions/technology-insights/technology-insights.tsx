@@ -239,11 +239,11 @@ const professionals = [
     href: "/professionals/priti-mishra",
   },
   {
-    name: "Our Extended Team",
-    role: "Lawyers | CS | CAs",
-    expertise: "Technology & Industry Experts",
-    image: "/professional-collaboration-hero.png",
-    href: "/professionals",
+    name: "Krishna Nand Mishra",
+    role: "Professional Team",
+    expertise: "Legal, regulatory & business advisory",
+    image: "/Professionals/Krishna_nand.jpeg",
+    href: "/professionals/krishna-nand-mishra",
   },
 ] as const;
 
@@ -321,7 +321,7 @@ export default function TechnologyInsights() {
     setActiveFilters(emptyFilters);
   }
 
-  return <div className={styles.page}>
+  return <div className={`technology-digital-page ${styles.page}`}>
     <section className={styles.hero}>
       <Image src="/Technology&Digital/Banner- Client & Enterprise Portals .png" alt="" fill priority sizes="100vw" />
       <div className={styles.heroOverlay} />
@@ -418,7 +418,7 @@ export default function TechnologyInsights() {
 
         <section className={styles.trendingSection}>
           <h2 className={styles.sectionTitle}>Most Read / Trending</h2>
-          <ol>{trending.map((title, index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><Link href="/insights/articles">{title}</Link><Icon name="arrow" /></li>)}</ol>
+          <ol>{trending.map((title) => <li key={title}><Link href="/insights/articles">{title}</Link><Icon name="arrow" /></li>)}</ol>
         </section>
       </section>
     </div>

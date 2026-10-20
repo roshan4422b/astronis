@@ -385,3 +385,68 @@
 .heroNoOverlay:after {
   display: none;
 }
+
+.page {
+  --navy: var(--service-navy);
+  --blue: var(--service-blue);
+  --ink: var(--service-ink);
+  --muted: var(--service-muted);
+  --line: var(--service-border);
+}
+
+.lightHeading > span,
+.hero .eyebrow,
+.heroCopy h2,
+.taxImage figcaption strong,
+.documentImage strong {
+  color: #bfdbfe;
+}
+
+.heroNote,
+.primary,
+.final a {
+  border-color: var(--service-blue);
+}
+
+.heroNote {
+  border-left-color: var(--service-light-blue);
+}
+
+.heroNote > span,
+.quickInner a span,
+.benefitPanel > span,
+.benefitPanel a,
+.sectionTop > a,
+.faqLayout > div:first-child > a,
+.taxPoints li > svg,
+.customPrice > span,
+.featureStrip svg,
+.final > div > span {
+  color: #93c5fd;
+}
+
+.breadcrumb a:hover,
+.quickInner a:hover,
+.quickInner a:focus-visible {
+  color: #bfdbfe;
+}
+
+.quickInner a:hover,
+.quickInner a:focus-visible {
+  border-bottom-color: var(--service-light-blue);
+}
+
+.benefitPanel:after {
+  border-color: #60a5fa30;
+  box-shadow: 0 0 0 32px #60a5fa0b, 0 0 0 64px #60a5fa09;
+}
+
+.primary,
+.final a {
+  background: var(--service-blue);
+  color: #fff;
+}
+
+.final {
+  background: linear-gradient(115deg, #0751db, #0b3e9f);
+}

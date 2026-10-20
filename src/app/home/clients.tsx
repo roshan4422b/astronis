@@ -1,6 +1,7 @@
 import Icon from "../_components/icon";
 import ClientLogoGrid from "../_components/client-logo-grid";
 import { Button, Heading } from "../_components/ui";
+import { homeClients } from "@/content/clients";
 export default function Clients() {
   return (
     <section className="section clients-section">
@@ -10,7 +11,7 @@ export default function Clients() {
           text="Trusted by Businesses & Professionals."
           light
         />
-        <ClientLogoGrid limit={8} />
+        <ClientLogoGrid clients={homeClients} limit={8} />
         <div className="clients-preview-action">
           <Button href="/clients" secondary>
             View all clients

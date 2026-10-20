@@ -162,27 +162,24 @@ const faqs = [
 export default function IndiaPage() {
   return (
     <div className={styles.page}>
-      <div className={styles.breadcrumbWrap}>
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden="true">›</span>
-          <Link href="/global-presence">Global Presence</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">India</span>
-        </nav>
-      </div>
-
-      <section className={styles.hero} aria-labelledby="india-title">
+      <section className={`${styles.hero} ${styles.indiaHero}`} aria-labelledby="india-title">
         <div className={styles.heroPhoto}>
           <AssetImage
-            src="/images/india-presence/india-gate.jpg"
-            alt="India Gate in New Delhi"
+            src="/Shri Ram Mandir for India Presentation .png"
+            alt="Shri Ram Mandir in Ayodhya"
             fill
             priority
             sizes="(max-width: 760px) 100vw, 58vw"
           />
         </div>
         <div className={styles.heroInner}>
+          <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">›</span>
+            <Link href="/global-presence">Global Presence</Link>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">India</span>
+          </nav>
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>Global Presence</span>
             <h1 id="india-title">India</h1>

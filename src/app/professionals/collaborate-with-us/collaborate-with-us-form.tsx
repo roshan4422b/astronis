@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Icon from "@/app/_components/icon";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import styles from "./collaborate-with-us.module.css";
 
 const professionalTypes = [
@@ -34,6 +35,8 @@ export default function CollaborateWithUsForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
   function handleFile(input: HTMLInputElement) {
     const selected = input.files?.[0];
@@ -57,8 +60,16 @@ export default function CollaborateWithUsForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (data.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
     data.set("connectWith", "general");
     data.set("collaborateWithUs", "yes");
+    data.set("applicationType", "professional");
+    data.set("careerAgreementId", "career-professional-partnership-consent");
+    data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     if (file) data.append("documents", file);
     setBusy(true);
     setStatus("");
@@ -70,6 +81,7 @@ export default function CollaborateWithUsForm() {
       if (response.ok) {
         form.reset();
         setFile(null);
+        setEnquiryAgreementAccepted(false);
       }
     } catch {
       setSuccess(false);
@@ -94,7 +106,7 @@ export default function CollaborateWithUsForm() {
       <label className={styles.messageField}><span>Brief About Collaboration Opportunity *</span><textarea name="message" rows={3} placeholder="Please describe how we can collaborate..." required minLength={10} maxLength={1000} /></label>
       <label className={styles.uploadField}><span>Upload Profile / Brochure (Optional)</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => handleFile(event.currentTarget)} /><small>PDF, DOC, DOCX (Max 5 MB){file ? ` · ${file.name}` : ""}</small></label>
     </div>
-    <label className={styles.consent}><input type="checkbox" name="consent" value="yes" required /><span>I consent to Astronis Global processing the information submitted for responding to this enquiry.</span></label>
+    <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="collaborate-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
     <button type="submit" className={styles.submitButton} disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;

@@ -1,12 +1,19 @@
 import { clients } from "@/content/clients";
 import Image from "@/app/_components/asset-image";
 
-type ClientLogoGridProps = {
-  limit?: number;
+type ClientLogo = {
+  name: string;
+  className: string;
+  logo: string;
 };
 
-export default function ClientLogoGrid({ limit }: ClientLogoGridProps) {
-  const visibleClients = limit ? clients.slice(0, limit) : clients;
+type ClientLogoGridProps = {
+  limit?: number;
+  clients?: readonly ClientLogo[];
+};
+
+export default function ClientLogoGrid({ limit, clients: clientList = clients }: ClientLogoGridProps) {
+  const visibleClients = limit ? clientList.slice(0, limit) : clientList;
 
   return (
     <div className="client-logo-grid" aria-label="Our trusted clients">

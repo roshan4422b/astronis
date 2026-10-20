@@ -3,7 +3,8 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import type { DetailedServiceGroup, ServicePractice } from "@/data/service-detail-types";
 import type { ConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
-import PageSectionNav from "@/app/services/corporate-commercial-advisory/entity-formation/_components/page-section-nav";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
+import { getServiceChildHeroImage } from "@/data/services";
 import styles from "./consumer-regulatory-detail.module.css";
 
 const sectionLinks = [
@@ -14,8 +15,6 @@ const sectionLinks = [
   ["Our Approach", "process"],
   ["FAQs", "faqs"],
 ];
-const fullWidthSections = ["services", "resources", "faqs", "consultation"];
-
 function Heading({
   label,
   title,
@@ -46,12 +45,13 @@ export default function ConsumerRegulatoryDetailPage({
   practice: ServicePractice;
 }) {
   const groupHref = `/services/${practice.slug}#${group.slug}`;
+  const heroImage = getServiceChildHeroImage(detail.slug, practice.slug) ?? detail.image;
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero} id="service-hero">
+      <section className={`${styles.hero} service-child-page-hero`} id="service-hero">
         <Image
-          src={detail.image}
+          src={heroImage}
           alt={detail.imageAlt}
           fill
           priority
@@ -69,22 +69,13 @@ export default function ConsumerRegulatoryDetailPage({
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{group.title.toUpperCase()} SERVICES</span>
             <h1>{detail.title}</h1>
-            <h2>{detail.subtitle}</h2>
-            <p>{detail.description}</p>
+            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primaryAction} href="/professionals/enquiry">
-                Request a Consultation <Icon name="arrow" />
-              </Link>
-              <Link className={styles.secondaryAction} href={groupHref}>
-                Explore Regulatory Services <Icon name="globe" />
+              <Link className={styles.secondaryAction} href="/contact">
+                Schedule a Consultation <Icon name="calendar" />
               </Link>
             </div>
           </div>
-          <aside className={styles.heroNote}>
-            <span>REGULATORY ADVISORY</span>
-            <strong>Understand the rules.<br />Plan the next step.</strong>
-            <p>Service-specific guidance, coordinated around your organisation and operating context.</p>
-          </aside>
         </div>
       </section>
 
@@ -99,8 +90,9 @@ export default function ConsumerRegulatoryDetailPage({
         </div>
       </section>
 
-      <div className={styles.pageNavLayout}>
-        <div className={styles.pageContent}>
+      <ServiceChildPageLayout
+        items={sectionLinks.map(([label, id]) => ({ id, label }))}
+      >
           <section className={styles.overview} id="overview">
             <div className={`container ${styles.overviewGrid}`}>
               <div>
@@ -291,12 +283,7 @@ export default function ConsumerRegulatoryDetailPage({
               </div>
             </div>
           </section>
-        </div>
-        <PageSectionNav
-          items={sectionLinks.map(([label, id]) => ({ id, label }))}
-          hiddenWhenVisible={fullWidthSections}
-        />
-      </div>
+      </ServiceChildPageLayout>
     </div>
   );
 }

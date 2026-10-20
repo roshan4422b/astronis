@@ -1,9 +1,5 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { slugify } from "@/content/site";
 import Icon from "./icon";
 import styles from "./insights-menu.module.css";
-import { isRouteActive } from "./navigation-state";
 
 const columns = [
   {
@@ -43,35 +39,23 @@ const columns = [
 ] as const;
 
 const footerLinks = [
-  ["calendar", "Upcoming Events", "Webinars, seminars and industry events.", "/media"],
-  ["people", "Expert Perspectives", "Insights from our professionals.", "/professionals"],
-  ["mail", "Subscribe for Updates", "Get the latest insights in your inbox.", "/contact"],
-  ["play", "Watch on YouTube", "Legal. Regulatory. Business Insights.", "/media"],
+  ["calendar", "Upcoming Events", "Webinars, seminars and industry events."],
+  ["people", "Expert Perspectives", "Insights from our professionals."],
+  ["mail", "Subscribe for Updates", "Get the latest insights in your inbox."],
+  ["play", "Watch on YouTube", "Legal. Regulatory. Business Insights."],
 ] as const;
 
-function hrefFor(title: string) {
-  if (title === "FAQs") return "/faqs";
-  if (title === "Case Studies & Success Stories") return "/success-stories";
-  if (title === "Downloads") return "/insights/download-useful-documents";
-  if (title === "White Papers") return "/insights/white-papers-research";
-  return `/insights/${slugify(title)}`;
-}
-
-export default function InsightsMenu({ id, onNavigate }: { id: string; onNavigate: () => void }) {
-  const pathname = usePathname();
-
+export default function InsightsMenu({ id }: { id: string }) {
   return <div className={`mega-menu ${styles.menu}`} id={id}>
     
     <div className={styles.main}>
       <div className={styles.columns}>{columns.map((column) => <section className={styles.column} key={column.title} aria-label={column.title}>
-        <div className={styles.heading}><Icon name={column.icon} /><span><h3>{column.title}</h3><p>{column.tagline}</p></span></div>
         <div className={styles.links}>{column.links.map(([icon, title, description]) => {
-          const href = hrefFor(title);
-          return <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><span className={styles.chevron} aria-hidden="true">›</span></Link>;
+          return <div className={styles.menuItem} key={title} aria-disabled="true"><Icon name={icon} /><span><strong>{title}</strong><small>{description}</small></span><span className={styles.chevron} aria-hidden="true">›</span></div>;
         })}</div>
       </section>)}</div>
-      <aside className={styles.feature}><div className={styles.featureImage} role="img" aria-label="Legal and business insights workspace" /><div className={styles.featureCopy}><span className={styles.eyebrow}>Knowledge that empowers.</span><h2>From Insight<br />to Impact.</h2><Link href="/insights-events" onClick={onNavigate} className={isRouteActive(pathname, "/insights-events") ? "active-submenu-item" : undefined}>Explore All Insights <Icon name="arrow" /></Link></div></aside>
+      <aside className={styles.feature}><div className={styles.featureImage} role="img" aria-label="Legal and business insights workspace" /><div className={styles.featureCopy}><span className={styles.eyebrow}>Knowledge that empowers.</span><h2>From Insight<br />to Impact.</h2><span className={styles.featureLink} aria-disabled="true">Explore All Insights <Icon name="arrow" /></span></div></aside>
     </div>
-    <div className={styles.footer}>{footerLinks.map(([icon, title, description, href]) => <Link href={href} onClick={onNavigate} key={title} className={isRouteActive(pathname, href) ? "active-submenu-item" : undefined}><span className={styles.quickIcon}><Icon name={icon} /></span><span className={styles.quickCopy}><strong>{title}</strong><small>{description}</small></span><span className={styles.quickArrow} aria-hidden="true"><Icon name="arrow" /></span></Link>)}</div>
+    <div className={styles.footer}>{footerLinks.map(([icon, title, description]) => <div className={styles.menuItem} aria-disabled="true" key={title}><span className={styles.quickIcon}><Icon name={icon} /></span><span className={styles.quickCopy}><strong>{title}</strong><small>{description}</small></span><span className={styles.quickArrow} aria-hidden="true"><Icon name="arrow" /></span></div>)}</div>
   </div>;
 }

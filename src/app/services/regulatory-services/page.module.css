@@ -74,6 +74,9 @@
 }
 
 .serviceDirectory {
+  position: relative;
+  z-index: 2;
+  margin-top: -18px;
   padding-top: 20px;
 }
 

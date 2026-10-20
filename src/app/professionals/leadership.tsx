@@ -47,9 +47,11 @@ export const professionals = [
   },
 ];
 export default function Leadership({ limit }: { limit?: number }) {
+  const visibleProfessionals = limit ? professionals.slice(0, limit) : professionals;
+
   return (
     <div className="leadership-grid">
-      {professionals.slice(0, limit).map((p) => (
+      {visibleProfessionals.map((p) => (
         <article className="leader-card" key={p.slug}>
           <div className="leader-avatar">
             <Image

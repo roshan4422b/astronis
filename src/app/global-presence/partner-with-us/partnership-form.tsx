@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Icon from "@/app/_components/icon";
 import styles from "./page.module.css";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 
 const interests = ["Referral Partnership", "Strategic Alliance", "Co-Counsel Arrangement", "Knowledge Collaboration", "Other Partnership Opportunity"];
 
@@ -11,11 +11,18 @@ export default function PartnershipForm() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
   async function submit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
+    if (formData.get("enquiryAgreementAccepted") !== "yes") {
+      setEnquiryAgreementError(enquiryAgreementMessage);
+      return;
+    }
+    setEnquiryAgreementError("");
     const payload = {
       formType: "service",
       name: String(formData.get("name") || "").trim(),
@@ -24,7 +31,12 @@ export default function PartnershipForm() {
       phone: String(formData.get("phone") || "").trim(),
       service: String(formData.get("service") || "").trim(),
       message: String(formData.get("message") || "").trim(),
-      consent: formData.get("consent") ? "yes" : "",
+      consent: "yes",
+      applicationType: "partner",
+      careerAgreementAccepted: "yes",
+      careerAgreementId: "career-professional-partnership-consent",
+      enquiryAgreementAccepted: "yes",
+      enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
       pageUrl: window.location.href,
       pageTitle: document.title || "Astronis Global",
@@ -66,5 +78,7 @@ export default function PartnershipForm() {
     <label className={styles.full}><span>Area of Interest <b>*</b></span><select name="service" required defaultValue=""><option value="" disabled>Select a partnership model</option>{interests.map((interest) => <option key={interest}>Global Partnership: {interest}</option>)}</select></label>
     <label className={styles.message}><span>Your Message <b>*</b></span><textarea name="message" required minLength={10} maxLength={5000} placeholder="Tell us about your expertise and partnership goals" rows={4} /></label>
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
-  </div><label className={styles.consent}><input name="consent" type="checkbox" value="yes" required /><span>I agree to the processing of my information under the <Link href="/legal/privacy-policy">Privacy Policy</Link>.</span></label><button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
+  </div>
+  <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
+  <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

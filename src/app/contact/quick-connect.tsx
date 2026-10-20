@@ -1,5 +1,6 @@
+"use client";
+
 import Icon from "../_components/icon";
-import Link from "next/link";
 
 export default function QuickConnect() {
   return (
@@ -22,10 +23,10 @@ export default function QuickConnect() {
           <span className="quick-connect-icon"><Icon name="mail" /></span>
           <span><strong>Email Us</strong><small>advisory@astronisglobal.com</small><em>Drop us an email</em></span>
         </a>
-        <Link href="/contact#enquiry-form">
+        <a href="#schedule-meeting" onClick={(event) => { event.preventDefault(); window.dispatchEvent(new Event("astronis:open-scheduler")); }}>
           <span className="quick-connect-icon"><Icon name="calendar" /></span>
           <span><strong>Schedule a Meeting</strong><small>Book a consultation</small><em>at your convenience</em></span>
-        </Link>
+        </a>
       </div>
     </section>
   );

@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "@/app/_components/asset-image";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import Link from "next/link";
+import { professionals } from "@/app/professionals/leadership";
 import { useState, type FormEvent } from "react";
 import styles from "./expertise-page.module.css";
 
@@ -24,13 +26,6 @@ const featuredAreas = [
   { title: "Financial Services", description: "Regulatory, investment and compliance expertise.", image: "/Banners-Banking, Financial Services & Insurance .png" },
   { title: "Infrastructure & Energy", description: "Project advisory, regulatory approvals and dispute support.", image: "/Banner-Infrastructure & Projects .png" },
   { title: "Healthcare & Life Sciences", description: "Regulatory, compliance and commercial advisory.", image: "/Banner-Healthcare & Medical Scien .png" },
-];
-
-const professionals = [
-  { name: "Krishna Kumar Mishra", slug: "krishna-kumar-mishra", designation: "Founder Partner", practice: "Corporate, commercial & regulatory advisory", city: "New Delhi", image: "/Professionals/krishna_kumar_mishra.jpeg" },
-  { name: "Priti Mishra", slug: "priti-mishra", designation: "Founder Partner", practice: "Litigation, matrimonial matters & compliance", city: "New Delhi", image: "/Professionals/pritimishra.jpeg" },
-  { name: "Krishna Nand Mishra", slug: "krishna-nand-mishra", designation: "Professional Team", practice: "Legal, regulatory & business advisory", city: "New Delhi", image: "/Professionals/Krishna_nand.jpeg" },
-  { name: "Puneet Kumar Verma", slug: "puneet-kumar-verma", designation: "Professional Team", practice: "Legal, regulatory & business advisory", city: "New Delhi", image: "/Professionals/Puneet_kumar.jpeg" },
 ];
 
 const explorationGroups = [
@@ -77,6 +72,8 @@ export default function ExpertisePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [formStatus, setFormStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState(false);
   const visibleAreas = practiceAreas.filter((area) => {
     if (!filterApplied) return true;
     const haystack = `${area.title} ${area.description}`.toLowerCase();
@@ -93,6 +90,11 @@ export default function ExpertisePage() {
     if (submitting) return;
     const form = event.currentTarget;
     const values = new FormData(form);
+    if (!enquiryAgreementAccepted) {
+      setEnquiryAgreementError(true);
+      setFormStatus("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
+      return;
+    }
     const file = values.get("upload");
     const message = `Expertise Required: ${String(values.get("expertise") || "")}\n${String(values.get("message") || "")}${file instanceof File && file.name ? `\nSelected file: ${file.name}` : ""}`;
     setSubmitting(true);
@@ -101,12 +103,13 @@ export default function ExpertisePage() {
       const response = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         formType: "service", name: values.get("name"), email: values.get("email"), company: values.get("organisation"), phone: values.get("phone"),
         service: values.get("service"), industry: values.get("industry"), country: values.get("jurisdiction"), location: values.get("jurisdiction"), message,
-        consent: values.get("consent"), website: "", pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
+        consent: "yes", enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
       }) });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.message || "We couldn't submit your enquiry.");
       setFormStatus(result.message);
       form.reset();
+      setEnquiryAgreementAccepted(false);
     } catch (error) {
       setFormStatus(error instanceof Error ? error.message : "We couldn't submit your enquiry. Please try again.");
     } finally {
@@ -155,7 +158,7 @@ export default function ExpertisePage() {
           <div className={styles.professionalHeading}><h2>Our Legal Professionals</h2><span>{professionals.length} profiles</span></div>
           <div className={styles.professionalGrid}>{professionals.map((person) => <article className={styles.professionalCard} key={person.slug}>
             <div className={styles.professionalPhoto}><Image src={person.image} alt={person.name} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 25vw" /></div>
-            <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.designation}</span><p>{person.practice}</p><small><span aria-hidden="true">⌖</span>{person.city}</small><Link className={styles.profileLink} href={`/professionals/${person.slug}`}>View Profile <Arrow /></Link></div>
+            <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><small><span aria-hidden="true">⌖</span>New Delhi</small><Link className={styles.profileLink} href={`/professionals/${person.slug}`}>View Profile <Arrow /></Link></div>
           </article>)}</div>
         </section>
 
@@ -199,7 +202,7 @@ export default function ExpertisePage() {
               <label>Name *<input name="name" autoComplete="name" placeholder="Your Name" required /></label><label>Organisation *<input name="organisation" autoComplete="organization" placeholder="Company / Organisation" required /></label><label>Email *<input name="email" type="email" autoComplete="email" placeholder="Your Email" required /></label><label>Phone *<input name="phone" type="tel" autoComplete="tel" placeholder="Your Phone" required /></label>
               <label>Expertise Required *<select name="expertise" required defaultValue=""><option value="" disabled>Select Expertise</option>{practiceAreas.map((area) => <option key={area.title}>{area.title}</option>)}</select></label><label>Service<select name="service" required defaultValue=""><option value="" disabled>Select Service</option>{serviceOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Industry<select name="industry" defaultValue=""><option value="">Select Industry</option>{industryOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Jurisdiction<select name="jurisdiction" defaultValue=""><option value="" disabled>Select Jurisdiction</option>{jurisdictionOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
               <label className={styles.requirementField}>Brief Description of Requirement *<textarea name="message" placeholder="Tell us about your requirement" required minLength={10} /></label><label className={styles.uploadField}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /><small>PDF, DOC, image · Max 5 MB</small></label>
-              <label className={styles.consent}><input type="checkbox" name="consent" value="yes" required /><span>I consent to Astronis Global processing the information submitted for responding to this enquiry.</span></label><button className={styles.navyButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
+              <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="expertise-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} /><button className={styles.navyButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
               {formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
             </form>
           </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import { services } from "@/data/services";
+import { getServiceChildHeroImage, services } from "@/data/services";
 import { resolvePractice } from "@/data/service-practices";
 import { practicePath, serviceAnchor } from "@/data/service-detail-types";
 import { getConsumerRegulatoryDetail } from "@/data/consumer-regulatory-details";
@@ -17,11 +17,11 @@ import {
   getAdditionalServiceDetailStaticParams,
 } from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
-import SectionNavigation from "../_template/section-navigation";
+import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import serviceStyles from "../_template/service-template.module.css";
+import ServiceChildHero from "../_template/service-child-hero";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
-import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ? getAdditionalServiceDetailPage(hierarchy.group.slug, serviceAnchor(hierarchy.child))
       : undefined;
     if (additionalServicePage) {
-      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${additionalServicePage.slug}`;
       return {
         title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
         description: additionalServicePage.description,
@@ -190,19 +190,23 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
     const relatedServices = group.children.filter(item => item !== child);
+    const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
-      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} />
-      <div className={`container ${serviceStyles.detailLayout}`}>
-        <aside className={serviceStyles.detailAside}>
-          <SectionNavigation
-            title="On this page"
-            items={[
-              { id: "service-overview", title: "Service overview" },
-              { id: "related-services", title: "Related services" },
-            ]}
-          />
-        </aside>
-        <div className={serviceStyles.detailContent}>
+      <ServiceChildHero
+        serviceTitle={service.title}
+        serviceHref={`/services/${service.canonicalSlug}`}
+        groupTitle={group.title}
+        groupHref={`/services/${service.canonicalSlug}#${group.slug}`}
+        title={child}
+        subtitle={`Practical guidance for ${child}, shaped around your organisation and requirements.`}
+        image={childHeroImage}
+      />
+      <ServiceChildPageLayout
+        items={[
+          { id: "service-overview", label: "Service overview" },
+          { id: "related-services", label: "Related services" },
+        ]}
+      >
           <section className={serviceStyles.detailIntro} id="service-overview">
             <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}>
               <Link href="/services">Services</Link> <span aria-hidden="true">›</span>{" "}
@@ -228,8 +232,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </ul>
             <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
           </section>
-        </div>
-      </div>
+      </ServiceChildPageLayout>
     </div>;
   }
 

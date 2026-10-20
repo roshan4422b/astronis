@@ -13,6 +13,8 @@ const fieldNames = [
   "transactionType", "countriesInvolved", "transactionStage", "ipRequirement", "location",
   "message", "consent", "website", "pageUrl", "pageTitle", "pathname", "referrer",
   "utmSource", "utmMedium", "utmCampaign", "formType", "source", "detailAnswer",
+  "applicationType", "careerAgreementAccepted", "careerAgreementId",
+  "enquiryAgreementAccepted", "enquiryAgreementId",
 ] as const;
 
 type EnquiryFieldName = (typeof fieldNames)[number];
@@ -47,6 +49,9 @@ const labels: Partial<Record<keyof EnquiryFields, string>> = {
   country: "Country", state: "State", city: "City", timeline: "Timeline",
   projectTimeline: "Timeline", preferredContact: "Preferred Contact", message: "Requirement Details",
   utmSource: "UTM Source", utmMedium: "UTM Medium", utmCampaign: "UTM Campaign",
+  applicationType: "Application Type", careerAgreementAccepted: "Agreement Accepted",
+  careerAgreementId: "Agreement Identifier",
+  enquiryAgreementAccepted: "Enquiry Agreement Accepted", enquiryAgreementId: "Enquiry Agreement Identifier",
 };
 
 const subjectFor = (fields: EnquiryFields) => {
@@ -79,6 +84,8 @@ export async function POST(request: Request) {
   for (const field of fieldNames) fields[field] = sanitize(raw[field]);
   fields.formType = normalizeFormType(fields.formType);
   fields.consent = normalizeConsent(raw.consent);
+  fields.careerAgreementAccepted = normalizeConsent(raw.careerAgreementAccepted);
+  fields.enquiryAgreementAccepted = normalizeConsent(raw.enquiryAgreementAccepted);
 
   console.log("Enquiry received:", {
     formType: fields.formType,
@@ -105,6 +112,20 @@ export async function POST(request: Request) {
     const message = "Unsupported enquiry type.";
     console.log("Enquiry rejected:", { reason: message, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(message, 400);
+  }
+
+  if (fields.enquiryAgreementAccepted !== "yes" || fields.enquiryAgreementId !== "enquiry-communication-consultation-consent") {
+    return rejectWithMessage("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
+  }
+
+  const partnerApplication = fields.applicationType === "partner" || fields.pathname === "/global-presence/partner-with-us";
+  if (partnerApplication && (
+    fields.formType !== "service" ||
+    fields.applicationType !== "partner" ||
+    fields.careerAgreementAccepted !== "yes" ||
+    fields.careerAgreementId !== "career-professional-partnership-consent"
+  )) {
+    return rejectWithMessage("Please read and accept the Career, Professional Association & Partnership Application Consent Agreement before submitting your application.");
   }
 
   const validateCommon = () => {
@@ -163,9 +184,16 @@ export async function POST(request: Request) {
     return rejectWithMessage(FAILURE_MESSAGE, 503);
   }
 
+  const acceptanceTimestamp = new Date().toISOString();
+  const enquiryReference = crypto.randomUUID();
   const entries = Object.entries(fields)
     .filter(([key, value]) => value && !["website", "consent", "category", "source", "detailAnswer"].includes(key))
     .map(([key, value]) => [labels[key as keyof EnquiryFields] || key, value] as const);
+  entries.push(
+    ["Enquiry Reference", enquiryReference],
+    ["Agreement Accepted", "true"],
+    ["Agreement Acceptance Timestamp (UTC)", acceptanceTimestamp],
+  );
   const text = entries.map(([label, value]) => `${label}: ${value}`).join("\n\n");
   const html = entries.map(([label, value]) => `<p><strong>${escapeHtml(label)}</strong><br />${escapeHtml(value).replace(/\n/g, "<br />")}</p>`).join("");
 

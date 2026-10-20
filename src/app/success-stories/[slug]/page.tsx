@@ -33,7 +33,7 @@ export default async function StoryPage({
   const featured = featuredCaseStudies.find((s) => s.slug === slug);
   if (featured) {
     return (
-      <>
+      <div className="success-stories-route-scope">
         <Banner
           title={featured.title}
           text={featured.category}
@@ -45,12 +45,12 @@ export default async function StoryPage({
             <p>{featured.description}</p>
           </div>
         </section>
-      </>
+      </div>
     );
   }
   if (!story) notFound();
   return (
-    <>
+    <div className="success-stories-route-scope">
       <Banner
         title={story.title}
         text={story.category}
@@ -58,6 +58,6 @@ export default async function StoryPage({
         eyebrow="Success Stories"
       />
       <CaseStudy story={story} />
-    </>
+    </div>
   );
 }

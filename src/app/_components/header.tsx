@@ -1,7 +1,6 @@
 "use client";
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "@/app/_components/asset-image";
 import { usePathname } from "next/navigation";
 import {
   countries,
@@ -19,6 +18,8 @@ import GlobalPresenceMenu from "./global-presence-menu";
 import InsightsMenu from "./insights-menu";
 import TechnologyMenu from "./technology-menu";
 import { isRouteActive } from "./navigation-state";
+import ScheduleMeetingModal from "./schedule-meeting-modal";
+import GlobalSearch from "./global-search";
 
 const navigation = [
   {
@@ -104,6 +105,7 @@ const navigation = [
 export default function Header() {
   const [mobile, setMobile] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
+  const [meetingModalOpen, setMeetingModalOpen] = useState(false);
   const path = usePathname();
   const ref = useRef<HTMLElement>(null);
   const hoverTimer = useRef<number | null>(null);
@@ -122,20 +124,16 @@ export default function Header() {
   };
 
   const scheduleOpen = (label: string) => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(label), 120);
   };
 
   const scheduleClose = () => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(null), 180);
   };
-
-  useEffect(() => {
-    closeMenus();
-  }, [path]);
 
   useEffect(() => {
     if (mobile) {
@@ -172,6 +170,12 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    const openScheduler = () => { closeMenus(); setMeetingModalOpen(true); };
+    window.addEventListener("astronis:open-scheduler", openScheduler);
+    return () => window.removeEventListener("astronis:open-scheduler", openScheduler);
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (hoverTimer.current) {
         window.clearTimeout(hoverTimer.current);
@@ -181,14 +185,15 @@ export default function Header() {
   }, []);
 
   return (
-    <header ref={ref} className="site-header">
+    <>
+      <div className="site-header-stack">
       <div className="utility-bar">
         <div className="container utility-inner">
           <span>
             CORPORATE <b>•</b> REGULATORY <b>•</b> LEGAL <b>•</b> BUSINESS
             ADVISORY
           </span>
-          <div>
+          <div className="utility-contact">
             <a href="tel:+919311664455">
               <Icon name="phone" />
               +91 9311664455
@@ -198,8 +203,10 @@ export default function Header() {
               advisory@astronisglobal.com
             </a>
           </div>
+          <div className="utility-search"><GlobalSearch /></div>
         </div>
       </div>
+    <header ref={ref} className="site-header">
       <div className="container nav-shell">
         <Link
           href="/"
@@ -207,12 +214,15 @@ export default function Header() {
           aria-label="Astronis Global home"
           onClick={closeMenus}
         >
-          <Image
-            src="/astronis_logo.jpeg"
-            alt="Astronis"
-            width={300}
-            height={113}
-            preload
+          <video
+            src="/header%20logo%20video.mp4"
+            className="brand-video"
+            aria-hidden="true"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
           />
         </Link>
         <button
@@ -251,7 +261,7 @@ export default function Header() {
                     aria-haspopup="true"
                     aria-controls={"menu-" + slugify(n.label)}
                     onClick={() => {
-                      if (window.innerWidth > 1050) {
+                      if (window.innerWidth > 1250) {
                         setOpen(n.label);
                       } else {
                         toggleMenu(n.label);
@@ -274,7 +284,7 @@ export default function Header() {
                 ) : n.label === "Global Presence" ? (
                   <GlobalPresenceMenu id={"menu-" + slugify(n.label)} onNavigate={closeMenus} />
                 ) : n.label === "Insights" ? (
-                  <InsightsMenu id={"menu-" + slugify(n.label)} onNavigate={closeMenus} />
+                  <InsightsMenu id={"menu-" + slugify(n.label)} />
                 ) : (
                   <div className="mega-menu" id={"menu-" + slugify(n.label)}>
                     <div className="mega-intro">
@@ -302,11 +312,14 @@ export default function Header() {
               </div>
             </Fragment>
           ))}
-          <span className="button nav-cta">
+          <button type="button" className="button nav-cta" onClick={() => { closeMenus(); setMeetingModalOpen(true); }}>
             Schedule Meeting <Icon name="arrow" />
-          </span>
+          </button>
         </nav>
       </div>
     </header>
+      </div>
+    <ScheduleMeetingModal open={meetingModalOpen} onClose={() => setMeetingModalOpen(false)} />
+    </>
   );
 }

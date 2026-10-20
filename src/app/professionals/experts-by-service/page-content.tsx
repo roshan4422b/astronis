@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "@/app/_components/asset-image";
+import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import Icon from "@/app/_components/icon";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
@@ -84,6 +85,8 @@ export default function ExpertsByService() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState("");
+  const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
+  const [enquiryAgreementError, setEnquiryAgreementError] = useState(false);
   const visibleServices = useMemo(() => serviceCards.filter((card) => {
     const haystack = normalise(`${card.title.replace("\n", " ")} ${card.tags}`);
     return [applied.query, applied.service, applied.expertise, applied.industry, applied.jurisdiction, applied.location]
@@ -105,6 +108,11 @@ export default function ExpertsByService() {
     if (submitting) return;
     const form = event.currentTarget;
     const values = new FormData(form);
+    if (!enquiryAgreementAccepted) {
+      setEnquiryAgreementError(true);
+      setFormStatus("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
+      return;
+    }
     const file = values.get("upload");
     const details = `${String(values.get("message") || "")}${file instanceof File && file.name ? `\nSelected file: ${file.name}` : ""}`;
     setSubmitting(true);
@@ -124,6 +132,8 @@ export default function ExpertsByService() {
           country: values.get("jurisdiction"),
           message: details,
           consent: "yes",
+          enquiryAgreementAccepted: "yes",
+          enquiryAgreementId: "enquiry-communication-consultation-consent",
           website: "",
           pageUrl: window.location.href,
           pathname: window.location.pathname,
@@ -135,6 +145,7 @@ export default function ExpertsByService() {
       if (!response.ok || !result.success) throw new Error(result.message || "We couldn't submit your enquiry.");
       setFormStatus(result.message);
       form.reset();
+      setEnquiryAgreementAccepted(false);
     } catch (error) {
       setFormStatus(error instanceof Error ? error.message : "We couldn't submit your enquiry. Please try again.");
     } finally {
@@ -248,6 +259,7 @@ export default function ExpertsByService() {
           <label>Jurisdiction<select name="jurisdiction" defaultValue=""><option value="">Select</option>{jurisdictionOptions.map(item => <option key={item}>{item}</option>)}</select></label>
           <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" required /></label>
           <label className={styles.upload}><span className={styles.srOnly}>Choose File</span><input name="upload" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" /></label>
+          <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="experts-by-service-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} />
           <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>
