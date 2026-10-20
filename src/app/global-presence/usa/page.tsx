@@ -185,16 +185,6 @@ const faqs = [
 export default function UsaPage() {
   return (
     <div className={`${indiaStyles.page} ${styles.usaPage}`}>
-      <div className={indiaStyles.breadcrumbWrap}>
-        <nav className={indiaStyles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden="true">›</span>
-          <Link href="/global-presence">Global Presence</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">USA</span>
-        </nav>
-      </div>
-
       <section className={indiaStyles.hero} aria-labelledby="usa-title">
         <div className={`${indiaStyles.heroPhoto} ${styles.heroPhoto}`}>
           <AssetImage
@@ -207,6 +197,13 @@ export default function UsaPage() {
           />
         </div>
         <div className={indiaStyles.heroInner}>
+          <nav className={indiaStyles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">›</span>
+            <Link href="/global-presence">Global Presence</Link>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">USA</span>
+          </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
             <h1 id="usa-title">USA</h1>

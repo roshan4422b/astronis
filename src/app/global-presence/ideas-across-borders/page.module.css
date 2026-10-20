@@ -10,6 +10,12 @@
 @media(max-width:700px){.heroInner{width:calc(100% - 36px)}.hero{background-position:58% center}.heroAside{display:none}.hero h1{font-size: max(var(--font-size-min), 37px)}.heroCopy p{font-size: max(var(--font-size-min), 14px)}.toolbarInner{display:block;width:calc(100% - 28px);padding-bottom:10px}.tabs{width:100%}.search{width:100%}.featured,.lowerGrid,.publications,.subscribeInner{width:calc(100% - 28px)}.cardGrid{grid-template-columns:1fr 1fr}.topicGrid{grid-template-columns:repeat(2,1fr)}.resourceGrid{grid-template-columns:1fr}.subscribeInner{grid-template-columns:1fr;gap:15px}}
 @media(max-width:480px){.hero{background-image:linear-gradient(90deg,#fffffff2,#f4faffd9),url('/about-menu-global-presence.png')}.hero h1{font-size: max(var(--font-size-min), 33px)}.heroCopy{margin-top:19px}.sectionHeading h2{font-size: max(var(--font-size-min), 24px)}.sectionHeading>a{font-size: max(var(--font-size-min), 12px);gap:6px}.cardGrid{grid-template-columns:1fr}.cardImage{height:180px}.subscribeForm>div:first-child{grid-template-columns:1fr}.subscribeForm button{height:38px}.resourceGrid>a{grid-template-columns:82px 1fr}}
 @media(prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+
+.page .hero{background-image:linear-gradient(90deg,rgba(4,20,39,.92) 0%,rgba(7,24,48,.84) 34%,rgba(7,24,48,.56) 62%,rgba(7,24,48,.28) 100%),url('/about-menu-global-presence.png')}
+.page .hero .breadcrumb,.page .hero .breadcrumb a,.page .hero .breadcrumb span,.page .hero .eyebrow,.page .hero h1,.page .heroAside{color:#fff}
+.page .hero .heroCopy p{color:rgba(255,255,255,.92)}
+.page .hero .heroCopy i,.page .hero .heroAside i{background:rgba(255,255,255,.7)}
+.page .hero .heroAside{border-color:rgba(255,255,255,.55)}
 @media(min-width:701px){
   .lowerGrid{grid-template-columns:1fr}
   .topicGrid{grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}

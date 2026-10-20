@@ -421,6 +421,23 @@
   min-width: 0;
 }
 
+.agreementConsent {
+  margin-top: 8px;
+}
+
+.agreementConsent a {
+  color: #174fb5;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.agreementError {
+  margin: 5px 0 0;
+  color: #a32323;
+  font-size: max(var(--font-size-min), 12px);
+  line-height: 1.4;
+}
+
 .submitButton {
   display: flex;
   width: 100%;

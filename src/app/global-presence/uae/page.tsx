@@ -186,16 +186,6 @@ const faqs = [
 export default function UaePage() {
   return (
     <div className={`${indiaStyles.page} ${styles.uaePage}`}>
-      <div className={indiaStyles.breadcrumbWrap}>
-        <nav className={indiaStyles.breadcrumb} aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden="true">›</span>
-          <Link href="/global-presence">Global Presence</Link>
-          <span aria-hidden="true">›</span>
-          <span aria-current="page">UAE</span>
-        </nav>
-      </div>
-
       <section className={indiaStyles.hero} aria-labelledby="uae-title">
         <div className={indiaStyles.heroPhoto}>
           <AssetImage
@@ -207,6 +197,13 @@ export default function UaePage() {
           />
         </div>
         <div className={indiaStyles.heroInner}>
+          <nav className={indiaStyles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">›</span>
+            <Link href="/global-presence">Global Presence</Link>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">UAE</span>
+          </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
             <h1 id="uae-title">UAE</h1>

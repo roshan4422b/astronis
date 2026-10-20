@@ -8,7 +8,7 @@ export default function ContactPage() {
   return (
     <>
       <Hero />
-      <section className="contact-main section">
+      <section className="contact-main section" id="enquiry-form">
         <div className="container contact-grid">
           <ContactDetails showMap />
           <EnquiryForm />

@@ -11,32 +11,40 @@
   background: #fff;
 }
 
-.container,
-.breadcrumb {
+.container {
   width: min(1360px, calc(100% - 64px));
   margin-inline: auto;
 }
 
-.breadcrumbWrap {
-  background: #fff;
-}
-
 .breadcrumb {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 0;
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   min-height: 32px;
-  color: #4c6174;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
   font-size: max(var(--font-size-min), 11px);
 }
 
-.breadcrumb a:hover { color: var(--india-blue); }
+.breadcrumb a,
+.breadcrumb span { color: inherit; }
+.breadcrumb a:hover { color: #fff; text-decoration: underline; }
 
 .hero {
   position: relative;
   min-height: 340px;
   isolation: isolate;
   background: linear-gradient(110deg, #f5f8fa 0%, #f5f8fa 37%, #e9f0f5 70%, #dce6ed 100%);
+}
+
+.indiaHero,
+.indiaHero .heroInner {
+  min-height: 460px;
 }
 
 .heroPhoto {
@@ -50,12 +58,13 @@
   position: absolute;
   inset: 0;
   content: "";
-  background: linear-gradient(90deg, rgba(245, 248, 250, 0.97) 0%, rgba(245, 248, 250, 0.9) 22%, rgba(245, 248, 250, 0.48) 43%, rgba(8, 43, 83, 0.18) 100%);
+  background: linear-gradient(90deg, rgba(4, 20, 39, 0.92) 0%, rgba(7, 24, 48, 0.84) 34%, rgba(7, 24, 48, 0.56) 62%, rgba(7, 24, 48, 0.28) 100%);
 }
 
 .heroPhoto img { object-fit: cover; object-position: 50% 47%; }
 
 .heroInner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,7 +77,7 @@
 .heroCopy { max-width: 560px; }
 .eyebrow {
   display: block;
-  color: var(--india-navy);
+  color: #fff;
   font-size: max(var(--font-size-min), 10px);
   font-weight: 700;
   letter-spacing: 1.45px;
@@ -78,7 +87,7 @@
 
 .hero h1 {
   margin-top: 6px;
-  color: #101c2b;
+  color: #fff;
   font-size: max(var(--font-size-min), clamp(52px, 6vw, 76px));
   font-weight: 500;
   line-height: .95;
@@ -86,7 +95,7 @@
 
 .hero h2 {
   margin-top: 8px;
-  color: #182b40;
+  color: #fff;
   font-size: max(var(--font-size-min), clamp(20px, 2.3vw, 29px));
   font-weight: 500;
 }
@@ -94,7 +103,7 @@
 .heroCopy > p {
   max-width: 435px;
   margin-top: 8px;
-  color: #435566;
+  color: rgba(255, 255, 255, 0.92);
   font-size: max(var(--font-size-min), 14px);
   line-height: 1.5;
 }
@@ -126,8 +135,8 @@
   align-self: flex-start;
   margin: 6px 0 0 auto;
   padding-left: 12px;
-  border-left: 1px solid #34536c;
-  color: #23445e;
+  border-left: 1px solid rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.92);
   font-size: max(var(--font-size-min), 9px);
   font-weight: 700;
   letter-spacing: 1.2px;
@@ -135,7 +144,7 @@
   text-transform: uppercase;
 }
 
-.heroNote span { display: block; width: 25px; height: 1px; margin: 12px 0; background: #34536c; }
+.heroNote span { display: block; width: 25px; height: 1px; margin: 12px 0; background: rgba(255, 255, 255, 0.7); }
 .heroNote br:last-of-type { display: none; }
 
 .quickNav {
@@ -340,14 +349,16 @@
 }
 
 @media (max-width: 760px) {
-  .container,
-  .breadcrumb { width: min(100% - 36px, 620px); }
-  .breadcrumb { min-height: 34px; font-size: max(var(--font-size-min), 10px); }
+  .container { width: min(100% - 36px, 620px); }
+  .breadcrumb { min-height: 34px; }
   .hero { min-height: 0; }
+  .indiaHero { min-height: 500px; }
   .heroPhoto { inset: 0 0 auto; height: 235px; opacity: .56; }
-  .heroPhoto::after { background: linear-gradient(180deg, #f5f8fa24 0%, #f5f8faad 68%, #f5f8fa 100%); }
+  .indiaHero .heroPhoto { height: 100%; opacity: .72; }
+  .heroPhoto::after { background: linear-gradient(180deg, rgba(4, 20, 39, 0.28) 0%, rgba(7, 24, 48, 0.78) 48%, rgba(7, 24, 48, 0.96) 100%); }
   .heroPhoto img { object-position: center 42%; }
   .heroInner { width: min(100% - 36px, 620px); min-height: 330px; align-items: flex-end; padding-block: 35px 24px; }
+  .indiaHero .heroInner { min-height: 500px; }
   .heroCopy { max-width: 500px; }
   .hero h1 { font-size: max(var(--font-size-min), 55px); }
   .hero h2 { max-width: 390px; font-size: max(var(--font-size-min), 22px); }
@@ -427,8 +438,7 @@
 }
 
 @media (max-width: 420px) {
-  .container,
-  .breadcrumb { width: calc(100% - 30px); }
+  .container { width: calc(100% - 30px); }
   .heroInner { width: calc(100% - 30px); }
   .hero h1 { font-size: max(var(--font-size-min), 50px); }
   .hero h2 { font-size: max(var(--font-size-min), 20px); }

@@ -71,13 +71,36 @@ export default function Footer() {
               Your trusted partner for legal, regulatory and business advisory
               services.
             </p>
-            <span className="heading-line" />
-            <p>
-              Clarity. Confidence.
-              <br />
-              Lasting business impact.
-            </p>
             <SocialLinks compact />
+            <div className="footer-contact">
+              <div className="footer-contact-list">
+                <Link href="/contact" className="contact-row">
+                  <Icon name="pin" />
+                  <span>
+                    Astronis Global Pvt Ltd
+                    <br />
+                    C-10/1, FF, Dwarka Mor, New Delhi-110059.
+                  </span>
+                </Link>
+                <a href="tel:+919311664455" className="contact-row">
+                  <Icon name="phone" />
+                  <span>+91 9311664455 / 01146574455</span>
+                </a>
+                <a href="mailto:advisory@astronisglobal.com" className="contact-row">
+                  <Icon name="mail" />
+                  <span>advisory@astronisglobal.com</span>
+                </a>
+                <a
+                  href="https://www.astronisglobal.com"
+                  className="contact-row"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon name="globe" />
+                  <span>www.astronisglobal.com</span>
+                </a>
+              </div>
+            </div>
           </div>
           {groups.map((g) => (
             <div key={g.title}>
@@ -85,36 +108,11 @@ export default function Footer() {
               {g.links.map(([title, href]) => (
                 <Link key={title} href={href}>
                   <span aria-hidden="true">›</span>
-                  {title}
+                  {g.title === "Our Services" ? title.replace(/\s+(Advisory|Specific)$/i, "") : title}
                 </Link>
               ))}
             </div>
           ))}
-          <div>
-            <h3>Contact Us</h3>
-            <div className="footer-contact-list">
-              <Link href="/contact" className="contact-row">
-                <Icon name="pin" />
-                <span>
-                  Astronis Global Pvt Ltd
-                  <br />
-                  C-10/1, FF, Dwarka Mor, New Delhi-110059.
-                </span>
-              </Link>
-              <a href="tel:+919311664455" className="contact-row">
-                <Icon name="phone" />
-                <span>+91 9311664455 / 01146574455</span>
-              </a>
-              <a href="mailto:advisory@astronisglobal.com" className="contact-row">
-                <Icon name="mail" />
-                <span>advisory@astronisglobal.com</span>
-              </a>
-              <a href="https://www.astronisglobal.com" className="contact-row" target="_blank" rel="noreferrer">
-                <Icon name="globe" />
-                <span>www.astronisglobal.com</span>
-              </a>
-            </div>
-          </div>
         </div>
         <div className="container footer-bottom">
           <span>

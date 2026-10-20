@@ -33,6 +33,7 @@ type DetailPageConfig = {
   processHeading: string;
   processDescription: string;
   process: [string, string][];
+  processNumbers?: boolean;
   documents: string[];
   requirements: [string, string, string][];
   faqs: [string, string][];
@@ -40,6 +41,22 @@ type DetailPageConfig = {
   finalDescription: string;
   insightCategory: string;
   relatedPages?: [string, string][];
+  basicPackageName?: string;
+  comprehensivePackageName?: string;
+  basicPackageEyebrow?: string;
+  comprehensivePackageEyebrow?: string;
+  basicPrice?: string;
+  comprehensivePrice?: string;
+  customHeading?: string;
+  customDescription?: string;
+  basicFeatures?: string[];
+  comprehensiveFeatures?: string[];
+  frameworkHeading?: string;
+  frameworkHeaders?: [string, string, string];
+  requirementsEyebrow?: string;
+  requirementsHeading?: string;
+  insights?: [string, string, string][];
+  resources?: [string, string, string][];
 };
 
 const technologyPath =
@@ -206,6 +223,7 @@ const configs: DetailPageConfig[] = [
     ],
     processHeading: "A seven-stage DPDP compliance process",
     processDescription: "Map personal data and roles, prioritise gaps, implement practical controls and establish continuing oversight.",
+    processNumbers: false,
     process: [
       ["Initial Consultation & Profiling", "Understand business activities, products, data use and operating jurisdictions."],
       ["Regulatory Applicability & Assessment", "Review applicable provisions, roles, processing purposes and obligations."],
@@ -691,38 +709,44 @@ const configs: DetailPageConfig[] = [
     introduction:
       "The right nonprofit structure depends on purpose, founder objectives, governance, funding plans and operating geography. Establishment is only the first step: sound records, statutory filings, responsible use of funds and clear accountability support long-term institutional credibility.",
     image: "/images/services/corporate-commercial-heroes/section-8-company.png",
-    imageAlt: "Nonprofit founders reviewing institutional registration and governance documents",
+    imageAlt: "Nonprofit team reviewing registration and governance documents",
     consultation: "Schedule an NGO Registration Consultation",
     review: "Request a Nonprofit Compliance Assessment",
     noteTitle: "Build a credible institution.",
     noteDescription: "Connect purpose, governance, registrations and sustainable funding.",
-    benefitsHeading: "Why NGO Registration & Compliance Matters",
+    benefitsHeading: "Key Benefits",
     benefits: [
-      ["shield", "Legal clarity and an appropriate structure", "Choose a structure aligned with charitable purpose, membership and governance."],
-      ["checklist", "Regulatory readiness", "Identify registrations, approvals and ongoing requirements for intended activities."],
-      ["chart", "Funding preparedness", "Plan eligibility and documentation for grants, donations, CSR and foreign contributions."],
-      ["building", "Institutional credibility", "Maintain governance records and transparent decision-making."],
-      ["scale", "Governance accountability", "Define board, trustee, member and management responsibilities."],
-      ["calendar", "Long-term continuity", "Establish compliance calendars, records and succession arrangements."],
+      ["shield", "Legal clarity", "Establish a suitable structure and clear legal identity."],
+      ["checklist", "Regulatory readiness", "Identify formation, tax, funding and ongoing requirements."],
+      ["chart", "Funding preparedness", "Prepare for eligible grants, CSR and foreign contributions."],
+      ["building", "Institutional credibility", "Maintain reliable governance and statutory records."],
+      ["scale", "Governance accountability", "Clarify trustee, board, member and management responsibilities."],
+      ["calendar", "Long-term continuity", "Plan for ongoing compliance and responsible institutional growth."],
     ],
     servicesHeading: "Our NGO Registration & Compliance Services",
-    servicesDescription: "Formation, registrations, governance and continuing advisory for nonprofits and institutions.",
+    servicesDescription: "Formation, registrations, funding readiness, governance and continuing advisory for nonprofits and institutions.",
     services: [
-      ["building", "NGO Formation & Legal Structuring", "Assess and establish an appropriate trust, society or Section 8 company structure."],
-      ["document", "Trust, Society & Section 8 Documentation", "Prepare formation documents, rules, constitutional records and governance policies."],
-      ["scale", "NGO Darpan & Government Registrations", "Coordinate applicable registrations, portal profiles and institutional filings."],
-      ["percent", "Charitable Tax Registration & Advisory", "Support tax registration and exemption applications, subject to eligibility and law."],
-      ["globe", "FCRA & Foreign Funding Advisory", "Assess foreign contribution requirements, permitted use, records and reporting."],
-      ["shield", "Annual Compliance & Governance Support", "Coordinate filings, board records, financial controls, CSR matters and regulatory response."],
+      ["building", "NGO Formation & Legal Structuring", "Select and establish a trust, society or Section 8 company structure suited to the organisation's objects and governance."],
+      ["document", "Trust, Society & Section 8 Documentation", "Prepare formation documents, rules, bye-laws and constitutional records for the chosen structure."],
+      ["scale", "NGO Darpan Registration", "Coordinate registration and profile documentation for eligible organisations."],
+      ["percent", "Charitable Tax Registration", "Support applications for applicable charitable tax registrations and approvals."],
+      ["shield", "80G Donor Deduction Advisory", "Assess eligibility, application requirements and continuing conditions for donor deduction approval."],
+      ["checklist", "CSR-1 Registration Advisory", "Coordinate eligibility review and CSR-1 filing readiness for eligible implementing agencies."],
+      ["globe", "FCRA & Foreign Funding Advisory", "Assess FCRA eligibility, prior permission or registration and continuing obligations."],
+      ["calendar", "Annual Compliance & Returns", "Plan recurring entity, tax, funding and regulatory filings and records."],
+      ["people", "Trustee / Board Governance", "Establish governance responsibilities, meeting records and decision-making processes."],
+      ["file", "Grant Agreements & Documentation", "Review grant terms, utilisation conditions, reporting and supporting documentation."],
+      ["search", "NGO Due Diligence", "Review governance, registrations, filings, funding records and compliance status."],
+      ["scale", "Notices, Disputes & Legal Remedies", "Assist with regulatory notices, disputes and proportionate legal response."],
     ],
-    audienceHeading: "Who Needs NGO & Institutional Services?",
+    audienceHeading: "NGO Structures (Illustrative)",
     audiences: [
-      ["people", "Founders and social entrepreneurs", "Individuals establishing a mission-led organisation or charitable initiative."],
-      ["building", "Public charitable trusts", "Trustees planning formation, governance and charitable operations."],
-      ["network", "Registered societies", "Members coordinating institutional governance and statutory records."],
-      ["shield", "Section 8 companies", "Nonprofit companies pursuing charitable or public-benefit objectives."],
-      ["bank", "Educational and healthcare institutions", "Organisations managing registrations, funding and ongoing requirements."],
-      ["globe", "Grantmakers and international partners", "Organisations assessing funding, FCRA and institutional due diligence."],
+      ["leaf", "Public Charitable Trusts", "Trustee-led organisations pursuing public-benefit and charitable objects."],
+      ["people", "Registered Societies", "Member-governed institutions formed for eligible social, educational or cultural purposes."],
+      ["building", "Section 8 Companies", "Nonprofit companies established under the Companies Act for permitted objects."],
+      ["people", "Educational NGOs", "Organisations supporting learning, access and community education."],
+      ["shield", "Healthcare NGOs", "Institutions supporting health, care and community wellbeing."],
+      ["leaf", "Environmental NGOs", "Organisations pursuing conservation and environmental initiatives."],
     ],
     comparisonHeading: "Trust vs Society vs Section 8 Company",
     comparisonOptions: ["Public Charitable Trust", "Registered Society", "Section 8 Company"],
@@ -736,27 +760,28 @@ const configs: DetailPageConfig[] = [
     processHeading: "A structured NGO registration and compliance process",
     processDescription: "Clarify mission and structure, complete registrations, establish governance and plan for sustainable operations.",
     process: [
-      ["Consultation & Needs Assessment", "Understand purpose, founders, beneficiaries, activities and funding plans."],
-      ["Structure Selection", "Compare trust, society and Section 8 structures for the intended institution."],
-      ["Documentation Preparation", "Prepare deed, memorandum, rules, declarations and governance documents."],
-      ["Registration & Applications", "Coordinate applicable registration filings and authority processes."],
-      ["Tax, CSR & Funding Readiness", "Assess tax approvals, NGO Darpan, CSR and foreign contribution requirements."],
-      ["Governance & Record Setup", "Establish decision records, accounting practices and compliance responsibilities."],
-      ["Ongoing Compliance & Advisory", "Monitor filings, renewals, funding conditions and regulatory changes."],
+      ["Initial Consultation & Needs Assessment", "Understand the mission, beneficiaries, founders, activities and funding plans."],
+      ["Structure Selection", "Compare trust, society and Section 8 company structures for the proposed institution."],
+      ["Documentation Preparation", "Prepare the deed, memorandum, rules, declarations and governance documents."],
+      ["Registration & Applications", "Coordinate formation filings and eligible registration applications."],
+      ["Tax, CSR & Funding Readiness", "Assess 12AB, 80G, NGO Darpan, CSR-1 and FCRA requirements."],
+      ["Governance & Ongoing Compliance", "Set up records, responsibilities and a compliance calendar for continuing operations."],
     ],
-    documents: ["Founder, trustee, member or director identity details", "Proposed name and charitable objects", "Registered office proof and owner consent", "Draft trust deed, memorandum or rules", "Governance and management details", "Activity plan, budget and beneficiary profile", "Banking and financial information", "Funding, CSR and foreign contribution plans"],
+    documents: ["Founder, trustee, member or director PAN and identity/address proofs", "Proposed organisation name and charitable objects", "Registered office address proof and owner consent", "Trust deed, memorandum, articles or society rules, as applicable", "Trustee, member or director details and photographs", "Activity plan, project details and proposed budget", "Bank account and financial information, where available", "Funding, CSR and foreign contribution plans"],
     requirements: [
-      ["document", "Entity registration", "Timelines depend on structure, completeness and the registering authority."],
-      ["percent", "Tax approvals", "Apply and renew as required, subject to eligibility and current law."],
-      ["globe", "FCRA approval", "Prior permission or registration is required before covered foreign contributions."],
-      ["calendar", "Annual filings", "Meet entity, tax, funding and state-specific due dates."],
+      ["document", "Minimum structure", "Founder, trustee, member or director requirements depend on the selected entity type and applicable law."],
+      ["scale", "Governance", "Define decision-making authority, meetings, records and responsible office-bearers."],
+      ["percent", "Tax and CSR approvals", "Eligibility, application and continuing conditions vary by registration and organisation."],
+      ["globe", "Foreign contributions", "Obtain applicable FCRA registration or prior permission before receiving covered funds."],
     ],
     faqs: [
       ["Which structure is best for an NGO?", "The choice between a trust, society and Section 8 company depends on purpose, governance, location, membership and funding plans."],
-      ["How long does NGO registration take?", "Timing varies by structure, document readiness, jurisdiction and authority processing."],
-      ["Is NGO Darpan registration mandatory?", "Requirements depend on the institution and the government schemes or benefits it seeks to access."],
-      ["Can a new NGO receive foreign donations?", "Foreign contributions are regulated under FCRA. The organisation must meet applicable eligibility and approval requirements before receiving them."],
-      ["Can an NGO obtain tax exemptions?", "Tax benefits are subject to eligibility, application, approval and continuing compliance under current law."],
+      ["How long does NGO registration take?", "The timeline depends on the structure, completeness of documents and processing by the relevant authority."],
+      ["What is NGO Darpan registration?", "NGO Darpan is a government portal profile used by eligible voluntary organisations in connection with certain schemes and processes."],
+      ["Can a new NGO receive foreign donations?", "Foreign contributions are regulated under FCRA. The organisation must obtain the applicable registration or prior permission before receiving covered funds."],
+      ["Can an NGO obtain 12AB and 80G approval?", "Eligible organisations may apply for applicable charitable tax registrations and approvals and must meet continuing conditions."],
+      ["Is CSR-1 registration required?", "Eligible implementing agencies may need to register through CSR-1 to undertake CSR activities; applicability should be assessed for the organisation."],
+      ["What documents are required to register an NGO?", "Requirements vary by structure and jurisdiction, but commonly include identity details, office proof, proposed objects and constitutional documents."],
       ["How can Astronis Global assist?", "We support structure selection, formation, registrations, tax and funding readiness, governance and ongoing compliance."],
     ],
     finalHeading: "Build a Strong Institution. Strengthen Accountability. Enable Sustainable Social Impact.",
@@ -768,6 +793,31 @@ const configs: DetailPageConfig[] = [
       ["Section 8 Company", "/services/licensing-registrations/ngo-institutional/section-8-company"],
       ["FCRA Advisory", "/services/licensing-registrations/ngo-institutional/fcra"],
       ["CSR Registration", "/services/licensing-registrations/ngo-institutional/csr-related-registrations"],
+    ],
+    basicPackageEyebrow: "FORMATION & REGISTRATION",
+    comprehensivePackageEyebrow: "ONGOING COMPLIANCE",
+    basicPackageName: "NGO Registration Support",
+    comprehensivePackageName: "Integrated Compliance Support",
+    basicPrice: "Fee on Request",
+    comprehensivePrice: "Custom Quote",
+    customHeading: "Tailored Institutional Advisory",
+    customDescription: "For multi-location programmes, complex funding structures, grant management or end-to-end governance support.",
+    basicFeatures: ["Structure suitability assessment", "Formation document preparation", "Registration application coordination", "Initial registration checklist"],
+    comprehensiveFeatures: ["Formation and eligible registration support", "Tax, CSR and funding-readiness assessment", "Governance documentation and compliance calendar", "Ongoing filings and advisory as agreed"],
+    requirementsEyebrow: "MINIMUM REQUIREMENTS & COMPLIANCE",
+    requirementsHeading: "Plan the structure and approvals",
+    insights: [
+      ["Trust, Society or Section 8 Company: Choosing an NGO Structure", "", "NGO Formation"],
+      ["12AB, 80G and CSR-1: A Practical Registration Overview", "", "NGO Compliance"],
+      ["FCRA Readiness: Governance and Foreign Funding Controls", "", "Funding & Governance"],
+    ],
+    resources: [
+      ["GUIDE", "NGO Formation & Structure Selection Guide", "document"],
+      ["CHECKLIST", "Trust, Society & Section 8 Registration Checklist", "checklist"],
+      ["GUIDE", "12AB and 80G Application Readiness Guide", "scale"],
+      ["CHECKLIST", "NGO Darpan & CSR-1 Readiness Checklist", "shield"],
+      ["GUIDE", "FCRA and Foreign Contribution Compliance Guide", "globe"],
+      ["CHECKLIST", "Annual NGO Compliance Calendar", "calendar"],
     ],
   },
 ];
@@ -794,8 +844,8 @@ function createPageData(config: DetailPageConfig): EntityFormationPageData {
     heroNoteEyebrow: config.shortTitle.toUpperCase(),
     heroNoteTitle: config.noteTitle,
     heroNoteDescription: config.noteDescription,
-    basicPrice: "By scope",
-    comprehensivePrice: "Tailored",
+    basicPrice: config.basicPrice ?? "By scope",
+    comprehensivePrice: config.comprehensivePrice ?? "Tailored",
     showSectionNavigation: true,
     showIntro: false,
     showTestimonials: false,
@@ -829,35 +879,37 @@ function createPageData(config: DetailPageConfig): EntityFormationPageData {
     processEyebrow: `${config.shortTitle.toUpperCase()} ADVISORY PROCESS`,
     processHeading: config.processHeading,
     processDescription: config.processDescription,
-    processNumbers: true,
+    processNumbers: config.processNumbers ?? true,
     process: config.process,
     documentsHeading: "Documents Required (Illustrative)",
     documentsDescription: "The final checklist depends on the organisation, activities, data or service model and applicable jurisdictions.",
     documents: config.documents,
-    requirementsEyebrow: "STATUTORY TIMELINES (EXAMPLES)",
-    requirementsHeading: "Timelines depend on activity and applicable requirements",
+    requirementsEyebrow: config.requirementsEyebrow ?? "STATUTORY TIMELINES (EXAMPLES)",
+    requirementsHeading: config.requirementsHeading ?? "Timelines depend on activity and applicable requirements",
     requirements: config.requirements,
     pricingEyebrow: "GOVERNMENT & STATUTORY FEES (EXAMPLES)",
     pricingHeading: "Fees vary by matter, scope and jurisdiction",
     pricingDescription: "Professional fees depend on scope, complexity, number of stakeholders, jurisdictions and review requirements. Government fees, stamp duty and third-party charges are separate and confirmed against applicable requirements.",
-    basicPackageEyebrow: "INITIAL REVIEW",
-    comprehensivePackageEyebrow: "IMPLEMENTATION & ONGOING SUPPORT",
-    basicPackageName: `${config.shortTitle} Assessment`,
-    comprehensivePackageName: `${config.shortTitle} Advisory`,
-    basicFeatures: ["Initial consultation and scope review", "Applicability and risk assessment", "Review of available records or agreements", "Recommended action plan"],
-    comprehensiveFeatures: ["Detailed advisory and documentation support", "Implementation and stakeholder coordination", "Regulatory and vendor support", "Ongoing monitoring as agreed"],
+    basicPackageEyebrow: config.basicPackageEyebrow ?? "INITIAL REVIEW",
+    comprehensivePackageEyebrow: config.comprehensivePackageEyebrow ?? "IMPLEMENTATION & ONGOING SUPPORT",
+    basicPackageName: config.basicPackageName ?? `${config.shortTitle} Assessment`,
+    comprehensivePackageName: config.comprehensivePackageName ?? `${config.shortTitle} Advisory`,
+    basicFeatures: config.basicFeatures ?? ["Initial consultation and scope review", "Applicability and risk assessment", "Review of available records or agreements", "Recommended action plan"],
+    comprehensiveFeatures: config.comprehensiveFeatures ?? ["Detailed advisory and documentation support", "Implementation and stakeholder coordination", "Regulatory and vendor support", "Ongoing monitoring as agreed"],
+    customHeading: config.customHeading,
+    customDescription: config.customDescription,
     advantages: config.services.map(([, title]) => title),
     challenges: config.benefits.map(([, title]) => title),
     faqDescription: `Answers to common questions about ${config.title.toLowerCase()}, legal requirements and advisory support.`,
     faqs: config.faqs,
-    insights: [
+    insights: config.insights ?? [
       [`${config.title}: Key Requirements and Practical Considerations`, "", config.insightCategory],
       [`${config.title}: Governance, Risk and Compliance Priorities`, "", config.insightCategory],
       [`${config.title}: Building an Effective Implementation Roadmap`, "", config.insightCategory],
     ],
     insightImages: [config.image, config.image, config.image],
     resourcesDescription: `Guides and checklists for ${config.title.toLowerCase()}, governance and implementation planning.`,
-    resources: [
+    resources: config.resources ?? [
       ["GUIDE", `${config.shortTitle} Guide`, "document"],
       ["CHECKLIST", `${config.shortTitle} Readiness Checklist`, "checklist"],
       ["GUIDE", "Governance & Responsibilities Guide", "scale"],

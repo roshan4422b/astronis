@@ -1,5 +1,11 @@
 import Icon from "../_components/icon";
-export default function ContactDetails({ showMap = false }: { showMap?: boolean }) {
+export default function ContactDetails({
+  showMap = false,
+  showRegisteredOffice = false,
+}: {
+  showMap?: boolean;
+  showRegisteredOffice?: boolean;
+}) {
   return (
     <aside className="contact-details">
       <h3>Get in Touch</h3>
@@ -9,6 +15,7 @@ export default function ContactDetails({ showMap = false }: { showMap?: boolean 
         <section>
           <h4>Phone</h4>
           <a href="tel:01146574455">01146574455 / 9311664455</a>
+          {showRegisteredOffice ? <a href="tel:+918010891388">8010891388</a> : null}
         </section>
       </div>
       <div>
@@ -18,6 +25,15 @@ export default function ContactDetails({ showMap = false }: { showMap?: boolean 
           <a href="mailto:advisory@astronisglobal.com">advisory@astronisglobal.com</a>
         </section>
       </div>
+      {showRegisteredOffice ? (
+        <div>
+          <Icon name="building" />
+          <section>
+            <h4>Registered Office</h4>
+            <p>E-111-B, NHC, Uttam Nagar, Dwarka Mor, New Delhi-110059</p>
+          </section>
+        </div>
+      ) : null}
       <div>
         <Icon name="phone" />
         <section>

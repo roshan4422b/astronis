@@ -13,6 +13,11 @@
 @media(max-width:520px){.hero{background-image:linear-gradient(90deg,#fffffff2,#f6fbffe0),url('/join-professional-network-hero.png')}.hero h1{font-size: max(var(--font-size-min), 37px)}.hero h2{font-size: max(var(--font-size-min), 20px)}.overview{display:block}.overviewTiles{margin-top:16px}.models,.process,.cta{padding-inline:16px}.modelGrid{gap:8px}.modelImage{height:100px}.modelBody{min-height:120px;padding:9px}.modelBody strong{font-size: max(var(--font-size-min), 15px)}.modelBody small{font-size: max(var(--font-size-min), 11px)}.benefits{grid-template-columns:repeat(2,1fr)}.benefits>div:nth-child(3){border-right:1px solid #d6e2f1}.benefits>div:nth-child(even){border-right:0}.process ol{grid-template-columns:repeat(2,1fr)}.process li:nth-child(3):after{display:block}.process li:nth-child(even):after{display:none}.process h3{font-size: max(var(--font-size-min), 14px)}.process p{font-size: max(var(--font-size-min), 11px)}.details{display:block}.details>div+div{margin-top:20px}.cta{display:block}.cta h2{font-size: max(var(--font-size-min), 25px)}.cta>a{width:100%;margin-top:15px}.fields{grid-template-columns:1fr 1fr}.fields label:nth-child(3){grid-column:1/-1}.fields .message{grid-column:1/-1;grid-row:auto}.fields textarea{height:85px}}
 @media(prefers-reduced-motion:reduce){.modelCard{transition:none}.modelCard:hover{transform:none}}
 
+.page .hero{background-image:linear-gradient(90deg,rgba(4,20,39,.92) 0%,rgba(7,24,48,.84) 34%,rgba(7,24,48,.56) 62%,rgba(7,24,48,.28) 100%),url('/join-professional-network-hero.png')}
+.page .hero .breadcrumb,.page .hero .breadcrumb a,.page .hero .breadcrumb span,.page .hero .eyebrow,.page .hero h1,.page .hero h2,.page .hero p,.page .heroAside{color:#fff}
+.page .hero .heroAside{border-color:rgba(255,255,255,.55)}
+.page .hero .heroAside i{background:rgba(255,255,255,.55)}
+
 /* Match the Industries contact section: navy introduction and a spacious form card. */
 .enquiry{display:block;width:100%;margin:0;padding:68px 0 72px;background:#042446;color:#fff}
 .enquiryInner{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.2fr);align-items:start;gap:70px;width:min(1360px,calc(100% - 88px));margin:0 auto}
@@ -38,6 +43,9 @@
 .consent{display:flex;align-items:flex-start;gap:10px;margin:20px 0 0;color:#465e7d;font:12px/1.45 Arial,sans-serif}
 .consent input{flex:none;width:17px;height:17px;margin:1px 0 0;accent-color:#0758b9}
 .consent a{color:#0a55b0;text-decoration:underline}
+.agreementConsent{margin-top:9px}
+.agreementConsent a{font-weight:700}
+.agreementError{margin:5px 0 0;color:#a32323;font:12px/1.4 Arial,sans-serif}
 .form>button{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-width:195px;min-height:46px;margin-top:22px;padding:11px 18px;border:0;border-radius:4px;background:#0b3974;color:#fff;font:14px Arial,sans-serif}
 .form>button:hover{background:#1456a5}
 .form>button svg{width:17px;height:17px}

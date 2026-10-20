@@ -239,11 +239,11 @@ const professionals = [
     href: "/professionals/priti-mishra",
   },
   {
-    name: "Our Extended Team",
-    role: "Lawyers | CS | CAs",
-    expertise: "Technology & Industry Experts",
-    image: "/professional-collaboration-hero.png",
-    href: "/professionals",
+    name: "Krishna Nand Mishra",
+    role: "Professional Team",
+    expertise: "Legal, regulatory & business advisory",
+    image: "/Professionals/Krishna_nand.jpeg",
+    href: "/professionals/krishna-nand-mishra",
   },
 ] as const;
 
