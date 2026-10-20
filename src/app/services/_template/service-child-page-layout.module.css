@@ -40,7 +40,7 @@
   transition: transform .2s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
 }
 
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) {
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])) {
   border: 2px solid #d6e7ff;
   background: #fff;
   transition: background-color .2s ease, border-color .2s ease, transform .25s ease, box-shadow .25s ease;
@@ -198,12 +198,12 @@
     box-shadow: 0 8px 20px rgb(6 30 59 / 18%);
   }
 
-  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]):hover) {
     border-color: #93c5fd;
     background: var(--service-blue);
   }
 
-  .pageLayout .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
+  .pageLayout .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]):hover) {
     background: var(--service-blue);
   }
 }
@@ -931,7 +931,7 @@
 .pageContent :global(section[class*="insights"]) :global([class*="heading"] > p),
 .pageContent :global(section[class*="knowledge"]) :global([class*="heading"] > p),
 .pageContent :global(section[class*="experience"]) :global([class*="heading"] > p),
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] p),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]) p),
 .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] p),
 .pageContent :global(section[class*="comparison"]) :global([class*="tableNote"]),
 .pageContent :global(section[class*="process"]) :global([class*="timeline"] p),
@@ -962,7 +962,7 @@
 .pageContent :global(section[class*="insights"]) :global([class*="heading"]) h2,
 .pageContent :global(section[class*="knowledge"]) :global([class*="heading"]) h2,
 .pageContent :global(section[class*="experience"]) :global([class*="heading"]) h2,
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) h3,
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])) h3,
 .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"]) h3,
 .pageContent :global(section[class*="comparison"]) :global([class*="comparisonPanel"]) h3,
 .pageContent :global(section[class*="comparison"]) :global([class*="tableWrap"]) td,
@@ -1009,7 +1009,7 @@
   color: #000 !important;
 }
 
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])),
 .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article),
 .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li),
 .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article),
@@ -1025,9 +1025,9 @@
   transition-timing-function: ease;
 }
 
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global(svg),
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="icon"]),
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]) :global([class*="Icon"]) {
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])) :global(svg),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])) :global([class*="icon"]),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"])) :global([class*="Icon"]) {
   color: #0751db !important;
 }
 
@@ -1036,7 +1036,7 @@
   color: #fff !important;
 }
 
-.pageContent :global(section[class*="services"]) :global([class*="serviceCard"] a),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]) a),
 .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article a),
 .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li a),
 .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article a),
@@ -1089,7 +1089,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover),
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]):hover),
   .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
   .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
   .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
@@ -1106,7 +1106,7 @@
     background-image: none !important;
   }
 
-  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
+  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:not([class*="serviceCards"]):hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
     color: #fff !important;
     transition: color 0.3s ease;
   }

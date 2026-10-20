@@ -153,6 +153,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const childRoute = group.childRoutes?.[child];
+    if (childRoute && childRoute.split("/").at(-1) !== slugs[2]) permanentRedirect(childRoute);
     const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
     if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
     const intellectualPropertyPage = service.canonicalSlug === "intellectual-property-right-services"
@@ -180,7 +182,6 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     if (regulatoryDetail && regulatoryGroup) {
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
-    const relatedServices = group.children.filter(item => item !== child);
     const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
       <ServiceChildHero
@@ -195,7 +196,6 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       <ServiceChildPageLayout
         items={[
           { id: "service-overview", label: "Service overview" },
-          { id: "related-services", label: "Related services" },
         ]}
       >
           <section className={serviceStyles.detailIntro} id="service-overview">
@@ -209,19 +209,6 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <h2>{child}</h2>
             <p>{child} sits within {group.title}. Our team can help assess the requirements and coordinate next steps.</p>
             <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>Explore {group.title}</Link>
-          </section>
-          <section className={serviceStyles.childSection} id="related-services">
-            <div className={serviceStyles.childHeading}><span>01</span><h2>Related services</h2></div>
-            <ul>
-              {relatedServices.map(item => (
-                <li key={item}>
-                  <Link href={group.childRoutes?.[item] || `/services/${service.canonicalSlug}/${group.slug}/${serviceAnchor(item)}`}>
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
           </section>
       </ServiceChildPageLayout>
     </div>;

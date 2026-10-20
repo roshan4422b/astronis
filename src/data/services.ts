@@ -345,6 +345,9 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "business-advisory-contracts" && group.slug === "commercial-contracts"
       ? { childRoutes: commercialContractChildRoutes }
       : {}),
+    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
+      ? { childRoutes: technologyPrivacyChildRoutes }
+      : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
 }));
