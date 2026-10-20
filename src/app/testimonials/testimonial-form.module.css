@@ -1,0 +1,14 @@
+.fieldHint {
+  color: #68758a;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.uploadSuccess {
+  display: block;
+  margin-top: 5px;
+  color: #168044;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}

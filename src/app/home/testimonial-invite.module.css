@@ -10,3 +10,49 @@
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .backdrop,.dialog { animation: none; } }
 @media (max-width: 640px) { .backdrop { padding: 8px; align-items: end; }.dialog { max-height: 94dvh; border-radius: 13px 13px 8px 8px; }.form { padding: 22px 14px 0; }.form :global(.form-grid) { grid-template-columns: 1fr; }.form :global(.form-grid .full) { grid-column: auto; } }
+@media (min-width: 641px) {
+  .writtenDialog { width: min(900px, 100%); max-height: calc(100dvh - 24px); }
+  .writtenForm { padding: 16px 28px 14px; }
+  .writtenForm > h2 { margin: 0 0 8px; }
+  .writtenForm :global(section.section) { padding: 0; }
+  .writtenForm :global(section.section > .container) { padding: 0; }
+  .writtenForm :global(.filter-tabs) { gap: 8px; margin-bottom: 10px; }
+  .writtenForm :global(.filter-tabs button) { padding: 7px 12px; }
+  .writtenForm :global(.enquiry-form) { padding: 0; border: 0; box-shadow: none; }
+  .writtenForm :global(.form-grid) { gap: 8px 16px; }
+  .writtenForm :global(.form-grid label) { gap: 3px; font-size: 12px; }
+  .writtenForm :global(.form-grid input:not([type="checkbox"])),
+  .writtenForm :global(.form-grid select) { height: 36px; padding: 7px 10px; font-size: 13px; }
+  .writtenForm :global(.form-grid textarea) { height: 58px; min-height: 58px; padding: 7px 10px; font-size: 13px; }
+  .writtenForm :global(.testimonial-terms-link) { font-size: 11px; line-height: 1.35; }
+  .writtenForm :global(.form-grid .consent) { gap: 7px; font-size: 11px; line-height: 1.35; }
+  .writtenForm :global(.enquiry-form > .button) { min-height: 40px; margin-top: 10px; padding: 8px 14px; }
+}
+@media (min-width: 641px) {
+  .videoDialog { width: min(960px, 100%); max-height: calc(100dvh - 24px); }
+  .videoForm { padding: 16px 28px 14px; }
+  .videoForm > h2 { margin: 0 0 8px; }
+  .videoForm :global(section.section) { padding: 0; }
+  .videoForm :global(section.section > .container) { padding: 0; }
+  .videoForm :global(.filter-tabs) { gap: 8px; margin-bottom: 10px; }
+  .videoForm :global(.filter-tabs button) { padding: 7px 12px; }
+  .videoForm :global(.enquiry-form) { padding: 0; border: 0; box-shadow: none; }
+  .videoForm :global(.form-grid) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; }
+  .videoForm :global(.form-grid label) { gap: 3px; font-size: 12px; }
+  .videoForm :global(.form-grid input:not([type="checkbox"]):not([type="file"])),
+  .videoForm :global(.form-grid select) { height: 36px; padding: 7px 10px; font-size: 13px; }
+  .videoForm :global(.form-grid input[type="file"]) { padding: 5px 8px; font-size: 12px; }
+  .videoForm :global(.form-grid > .full) { grid-column: 1 / -1; }
+  .videoForm :global(.record-controls) { gap: 8px; margin-bottom: 8px; }
+  .videoForm :global(.record-controls .button),
+  .videoForm :global(.enquiry-form > .button) { min-height: 40px; padding: 8px 14px; }
+  .videoForm :global(.video-preview) { max-height: 120px; margin-block: 6px; }
+  .videoForm :global(.testimonial-terms-link) { font-size: 11px; line-height: 1.35; }
+  .videoForm :global(.form-grid .consent) { gap: 7px; font-size: 11px; line-height: 1.35; }
+  .videoForm :global(.enquiry-form > .button) { margin-top: 10px; }
+}
+@media (min-width: 641px) and (max-width: 800px) {
+  .videoDialog { width: min(720px, 100%); }
+  .videoForm { padding-inline: 20px; }
+  .videoForm :global(.form-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
