@@ -30,6 +30,7 @@ export type EntityFormationPageData = {
   comparisonPanels?: {
     heading: string;
     description?: string;
+    rowHeader?: string;
     headers: string[];
     rows: string[][];
   }[];

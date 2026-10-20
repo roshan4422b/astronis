@@ -223,7 +223,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
                   {panel.description && <p>{panel.description}</p>}
                   <div className={styles.tableWrap} role="region" aria-label={`${panel.heading} comparison`} tabIndex={0}>
                     <table>
-                      <thead><tr><th>Parameter</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
+                      <thead><tr><th>{panel.rowHeader ?? "Parameter"}</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
                       <tbody>{panel.rows.map((row) => (
                         <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                       ))}</tbody>
