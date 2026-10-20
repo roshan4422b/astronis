@@ -12,7 +12,7 @@ const slugify = value => value.toLowerCase().replace(/&/g, "and").replace(/[^a-z
 
 assert.equal(hierarchy.length, 11, "Expected exactly 11 approved main services");
 assert.equal(hierarchy.reduce((count, service) => count + service.subServices.length, 0), 36, "Expected exactly 36 sub-services");
-assert.equal(hierarchy.reduce((count, service) => count + service.subServices.reduce((total, group) => total + group.children.length, 0), 0), 269, "Expected exactly 269 child services");
+assert.equal(hierarchy.reduce((count, service) => count + service.subServices.reduce((total, group) => total + group.children.length, 0), 0), 270, "Expected exactly 270 child services");
 assert.match(source, /canonicalSlug:\s*service\.slug/, "Main canonical slugs must come from the centralized hierarchy");
 assert.match(routeFile, /resolveHierarchy/, "Canonical service routes must resolve from the central hierarchy");
 assert.match(routeFile, /generateStaticParams/, "Service routes must expose the approved main services");
@@ -33,7 +33,7 @@ assert.equal(new Set(urls.map(([, url]) => url)).size, urls.length, "Canonical s
 const audit = [
   "# Service Route Audit",
   "",
-  `Generated from \`src/data/service-hierarchy.json\`: ${hierarchy.length} main services, 36 sub-services, and 269 child services (${urls.length} unique URLs).`,
+  `Generated from \`src/data/service-hierarchy.json\`: ${hierarchy.length} main services, 36 sub-services, and 270 child services (${urls.length} unique URLs).`,
   "",
   "All canonical URLs resolve through `src/app/services/[...slug]/page.tsx`; existing corporate formation and structuring pages have dedicated canonical route wrappers.",
   "",
@@ -41,5 +41,5 @@ const audit = [
   "",
 ];
 writeFileSync(path.join(root, "docs/service-route-audit.md"), audit.join("\n"));
-console.log(`PASS: ${hierarchy.length} main services, 36 sub-services, 269 child services and ${urls.length} unique canonical URLs.`);
+console.log(`PASS: ${hierarchy.length} main services, 36 sub-services, 270 child services and ${urls.length} unique canonical URLs.`);
 console.log("Wrote docs/service-route-audit.md");

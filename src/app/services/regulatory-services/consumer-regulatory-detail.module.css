@@ -1,12 +1,12 @@
 .page {
-  --navy: #071b2d;
+  --navy: var(--service-navy);
   --navy-deep: #081d34;
-  --ink: #102b49;
-  --muted: #55677d;
-  --blue: #0751db;
-  --blue-soft: #edf6ff;
-  --gold: #d7b475;
-  --line: #dce5ef;
+  --ink: var(--service-ink);
+  --muted: var(--service-muted);
+  --blue: var(--service-blue);
+  --blue-soft: var(--service-pale-blue);
+  --gold: var(--service-light-blue);
+  --line: var(--service-border);
   color: var(--ink);
   background: #fff;
 }
@@ -111,7 +111,7 @@
 .eyebrow,
 .heroNote > span,
 .finalCta .cardLabel {
-  color: #e5bd78;
+  color: #93c5fd;
 }
 
 .hero h1 {
@@ -275,10 +275,10 @@
 }
 
 .pageNavLayout {
-  --page-nav-width: 220px;
+  --page-nav-width: 280px;
   --page-nav-gap: 12px;
   --navy: #061e3b;
-  --gold: #e4bf80;
+  --gold: var(--service-light-blue);
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--page-nav-width);
   align-items: start;
@@ -335,7 +335,7 @@
 }
 
 .lightHeading > span {
-  color: #e5bd78;
+  color: #93c5fd;
 }
 
 .lightHeading > p {
@@ -441,14 +441,14 @@
   right: -155px;
   width: 330px;
   height: 330px;
-  border: 1px solid #d8bc8130;
+  border: 1px solid #60a5fa30;
   border-radius: 50%;
-  box-shadow: 0 0 0 32px #d8bc810b, 0 0 0 64px #d8bc8109;
+  box-shadow: 0 0 0 32px #60a5fa0b, 0 0 0 64px #60a5fa09;
   content: "";
 }
 
 .frameworkFeature .cardLabel {
-  color: #e5bd78;
+  color: #93c5fd;
 }
 
 .frameworkFeature h2 {
@@ -473,7 +473,7 @@
   margin-top: 14px;
   padding: 0;
   border: 0;
-  color: #e5bd78;
+  color: #93c5fd;
   background: transparent;
 }
 
@@ -673,7 +673,7 @@
 }
 
 .considerationPanel .cardLabel {
-  color: #e5bd78;
+  color: #93c5fd;
 }
 
 .considerationPanel h3 {
@@ -693,7 +693,7 @@
   margin-top: 7px;
   padding: 0;
   border: 0;
-  color: #e5bd78;
+  color: #93c5fd;
   background: transparent;
 }
 
@@ -922,7 +922,7 @@
 .finalContact svg {
   width: 17px;
   height: 17px;
-  color: #e5bd78;
+  color: #93c5fd;
 }
 
 @media (max-width: 1050px) {
@@ -1118,3 +1118,9 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.heroCopy h2 { color:#bfdbfe; }
+.heroNote { border-left-color:var(--service-light-blue); }
+.heroNote > span,.finalCta .cardLabel { color:#93c5fd; }
+.primaryAction { color:#fff; background:var(--service-blue); border-color:var(--service-blue); }
+.primaryAction:hover { background:#0645b5; border-color:#0645b5; }

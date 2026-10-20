@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { getServiceChildHeroImage } from "@/data/services";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -22,15 +23,16 @@ export default function RbiRegulatoryPage() {
 
   return (
     <div className={PageStyles.page}>
-      <section className={PageStyles.hero} id="overview">
+      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
         <Image src={heroImage} alt="RBI advisory" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">RBI Regulatory</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · REGULATORY</span><h1>RBI Regulatory</h1><h2>Navigating RBI Regulations. Strengthening Financial Compliance.</h2><p>Expert legal, regulatory and supervisory advisory services on the regulatory framework administered by the Reserve Bank of India.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule an RBI Regulatory Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request RBI Compliance Assistance <Icon name="calendar" /></Link></div></div>
+          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · REGULATORY</span><h1>RBI Regulatory</h1><h2 className="service-child-hero-subtitle">Navigating RBI Regulations. Strengthening Financial Compliance.</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
         </div>
       </section>
 
-      <section className={PageStyles.services}>
+      <ServiceChildPageLayout items={[{ id: "services", label: "Services" }]}>
+      <section className={PageStyles.services} id="services">
         <div className="container">
           <div className={PageStyles.heading}><span className={PageStyles.eyebrow}>OUR RBI REGULATORY SERVICES</span><h2>Interpretation and supervisory response</h2><p>Practical regulatory mapping and support for licensing, reporting, governance and supervisory engagement with RBI frameworks.</p></div>
 
@@ -45,6 +47,7 @@ export default function RbiRegulatoryPage() {
           </div>
         </div>
       </section>
+      </ServiceChildPageLayout>
 
     </div>
   );
