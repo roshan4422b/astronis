@@ -46,11 +46,12 @@
   box-shadow: none;
   border-radius: 2px;
 }
-.feature { display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; background: linear-gradient(125deg, #d8effff5, #cbe9ff91 50%, #3c88c324), url('/images/india-presence/mumbai.jpg') center/cover; }
+.feature { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; border-left: 1px solid #9fb9d330; background: radial-gradient(ellipse at top right, #284c6c70, transparent 65%), #0b233d; color: #f4f7fc; }
+.feature::before { content: ""; position: absolute; z-index: -1; width: 230px; height: 230px; border: 1px solid #d8b77918; border-radius: 50%; top: -120px; right: -110px; box-shadow: 0 0 0 26px #d8b77908, 0 0 0 52px #d8b77905; pointer-events: none; }
 .featureCopy { display: flex; flex-direction: column; gap: 12px; }
-.feature p { font-size: max(var(--font-size-min), 14px); line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
-.feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #2852af; margin-top: 16px; }
-.feature > span { font-size: max(var(--font-size-min), 12px); letter-spacing: 1.8px; text-transform: uppercase; }
+.feature p { color: #f4f7fc; font-size: max(var(--font-size-min), 14px); line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
+.feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #d9bb86; margin-top: 16px; }
+.feature > span { color: #d9bb86; font-size: max(var(--font-size-min), 12px); letter-spacing: 1.8px; text-transform: uppercase; }
 .footer { display: none; }
 .search { display: none; }
 .searchField { display: none; }
@@ -81,7 +82,7 @@
   .heading h3 { font-size: max(var(--font-size-min), 18px); }
   .links { gap: 0; }
   .links a { font-size: max(var(--font-size-min), 15px); padding-block: 9px; }
-  .feature { min-height: 230px; background-position: center 55%; }
+  .feature { min-height: 230px; }
   .footer { grid-template-columns: 1fr; gap: 24px; padding: 22px 15px; }
   .search { padding: 0; }
   .signature { display: none; }
