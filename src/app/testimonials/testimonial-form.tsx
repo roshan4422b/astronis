@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
 import Icon from "../_components/icon";
+import styles from "./testimonial-form.module.css";
 export default function TestimonialForm({
   initialFormat = "written",
 }: {
@@ -14,7 +15,10 @@ export default function TestimonialForm({
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [preview, setPreview] = useState(""),
-    [photoSelected, setPhotoSelected] = useState(false);
+    [photoSelected, setPhotoSelected] = useState(false),
+    [photoName, setPhotoName] = useState(""),
+    [videoName, setVideoName] = useState(""),
+    [testimonialText, setTestimonialText] = useState("");
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     live = useRef<HTMLVideoElement>(null);
@@ -70,6 +74,9 @@ export default function TestimonialForm({
     if (recorder.current?.state === "recording") recorder.current.stop();
     setFormat(next);
     setPhotoSelected(false);
+    setPhotoName("");
+    setVideoName("");
+    setTestimonialText("");
     setStatus("");
   }
   async function submit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -109,6 +116,9 @@ export default function TestimonialForm({
         setVideo(null);
         setPreview("");
         setPhotoSelected(false);
+        setPhotoName("");
+        setVideoName("");
+        setTestimonialText("");
       }
     } catch {
       setStatus(
@@ -216,17 +226,38 @@ export default function TestimonialForm({
                     rows={5}
                     required
                     minLength={20}
-                    maxLength={5000}
+                    maxLength={180}
+                    value={testimonialText}
+                    onChange={(event) => setTestimonialText(event.target.value)}
                   />
+                  <small className={styles.fieldHint}>20–180 characters · {testimonialText.length}/180</small>
                 </label>
                 <label className="full">
-                  Photograph (optional, JPG or PNG, up to 3 MB)
+                  Photograph (optional · JPG/PNG · maximum 3 MB)
                   <input
                     name="photo"
                     type="file"
                     accept="image/jpeg,image/png"
-                    onChange={(event) => setPhotoSelected(Boolean(event.target.files?.length))}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (!file) {
+                        setPhotoSelected(false);
+                        setPhotoName("");
+                        return;
+                      }
+                      if (!["image/jpeg", "image/png"].includes(file.type) || file.size > 3 * 1024 * 1024) {
+                        event.target.value = "";
+                        setPhotoSelected(false);
+                        setPhotoName("");
+                        setStatus("Please choose a JPG or PNG photograph up to 3 MB.");
+                        return;
+                      }
+                      setPhotoSelected(true);
+                      setPhotoName(file.name);
+                      setStatus("");
+                    }}
                   />
+                  {photoName && <span className={styles.uploadSuccess} role="status">✓ {photoName} uploaded</span>}
                 </label>
                 {photoSelected && (
                   <label className="consent full">
@@ -282,16 +313,30 @@ export default function TestimonialForm({
                   />
                 )}
                 <label>
-                  Or upload an existing video (up to 20 MB)
+                  Or upload an existing video (any duration · maximum 20 MB · MP4, MOV or WebM)
                   <input
                     name="video"
                     type="file"
                     accept="video/mp4,video/webm,video/quicktime"
-                    onChange={() => {
+                    onChange={(event) => {
                       setVideo(null);
                       setPreview("");
+                      const file = event.target.files?.[0];
+                      if (!file) {
+                        setVideoName("");
+                        return;
+                      }
+                      if (!["video/mp4", "video/webm", "video/quicktime"].includes(file.type) || file.size > 20 * 1024 * 1024) {
+                        event.target.value = "";
+                        setVideoName("");
+                        setStatus("Please choose an MP4, MOV or WebM video up to 20 MB.");
+                        return;
+                      }
+                      setVideoName(file.name);
+                      setStatus("");
                     }}
                   />
+                  {videoName && <span className={styles.uploadSuccess} role="status">✓ {videoName} uploaded</span>}
                 </label>
               </div>
             )}

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     ["name", "email", "company", "designation", "phone", "service"].some(
       (k) => get(k).length > 200,
     ) ||
-    get("message").length > 5000
+    get("message").length > 180
   )
     return Response.json(
       {

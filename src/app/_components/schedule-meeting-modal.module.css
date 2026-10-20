@@ -17,3 +17,16 @@
 .error a { display: inline-block; margin-left: 5px; color: #0751db; font-weight: 700; text-decoration: underline; }
 @media (max-width: 640px) { .backdrop { padding: 8px; align-items: end; }.dialog { max-height: 94dvh; padding: 27px 19px 19px; border-radius: 13px 13px 8px 8px; }.heading { padding-right: 28px; }.progress { margin: 20px 0; }.progress li { gap: 5px; font-size: 10px; }.progress li span { width: 22px; height: 22px; }.formGrid,.schedule { grid-template-columns: 1fr; gap: 13px; }.datePanel { max-width: 340px; width: 100%; margin-inline: auto; }.timePanel { grid-template-columns: 1fr 1fr; }.timePanel fieldset { grid-column: 1 / -1; }.modes { grid-template-columns: repeat(3,1fr); }.modes button { display: grid; gap: 2px; padding: 7px; font-size: 11px; }.review dl { gap: 9px 12px; }.actions { margin-top: 18px; }.primary { padding-inline: 12px; font-size: 12px; }.textButton { font-size: 12px; } }
 @media (max-width: 640px) { .consentGroup { align-items: flex-start; flex-direction: column; gap: 7px; }.legalLinks { padding-left: 25px; } }
+.formGrid b,.timePanel b { display: none; }
+@media (min-width: 641px) {
+  .backdrop { padding: 12px; }
+  .dialog { max-height: calc(100dvh - 24px); padding: 20px 34px 18px; }
+  .heading h2 { margin: 3px 0 6px; }
+  .heading > p:last-child { font-size: 13px; line-height: 1.4; }
+  .progress { margin: 15px 0 14px; }
+  .progress li { padding-bottom: 8px; }
+  .formGrid { gap: 10px 16px; }
+  .formGrid label { gap: 4px; font-size: 12px; }
+  .formGrid input,.formGrid select { height: 40px; font-size: 13px; }
+  .actions { margin-top: 15px; padding-top: 12px; }
+}
