@@ -498,43 +498,6 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.relatedPages {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 22px;
-  margin-top: 26px;
-  padding: 18px 20px;
-  border-left: 3px solid var(--gold);
-  background: #f3f7fb;
-}
-
-.relatedPages > span {
-  color: var(--navy);
-  font-size: max(var(--font-size-min), 13px);
-  font-weight: 700;
-}
-
-.relatedPages a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--blue);
-  font-size: max(var(--font-size-min), 13px);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.relatedPages a svg {
-  width: 15px;
-  height: 15px;
-  transition: transform 0.2s;
-}
-
-.relatedPages a:hover svg {
-  transform: translateX(3px);
-}
-
 .serviceCard {
   min-height: 190px;
   padding: 21px;
@@ -1892,11 +1855,6 @@
 
   .serviceGrid.serviceCardsThreeColumns {
     grid-template-columns: 1fr;
-  }
-
-  .relatedPages {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .serviceCard {

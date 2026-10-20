@@ -30,7 +30,6 @@ type DetailPageConfig = {
   comparisonHeading: string;
   comparisonOptions: [string, string, string];
   comparisonRows: [string, string, string, string][];
-  frameworkRows: [string, string, string][];
   processHeading: string;
   processDescription: string;
   process: [string, string][];
@@ -135,13 +134,6 @@ const configs: DetailPageConfig[] = [
       ["Typical activities", "Policies, incident reporting and governance", "Security tools and monitoring", "DPA, privacy notice and consent"],
       ["Key laws / standards", "IT Act, CERT-In and sectoral rules", "ISO 27001, NIST and related standards", "DPDP Act, GDPR, as applicable"],
     ],
-    frameworkRows: [
-      ["Core law", "IT Act, 2000; applicable directions", "EU GDPR / NIS2; US and local laws"],
-      ["Incident reporting", "CERT-In directions, as applicable", "Jurisdiction-specific reporting duties"],
-      ["Sectoral regulation", "RBI, SEBI, IRDAI and other rules", "Financial and critical-infrastructure rules"],
-      ["Data protection", "DPDP Act and rules, as applicable", "GDPR / UK GDPR and local laws"],
-      ["Enforcement", "Indian authorities and sector regulators", "Relevant national regulators"],
-    ],
     processHeading: "A structured seven-stage cybersecurity advisory process",
     processDescription: "Assess obligations and exposure, strengthen governance and incident readiness, then monitor regulatory and operational changes.",
     process: [
@@ -228,13 +220,6 @@ const configs: DetailPageConfig[] = [
       ["Focus area", "Statutory DPDP framework", "Multiple privacy and sectoral laws", "Security controls and reporting"],
       ["Typical output", "Compliance roadmap and records", "Privacy governance framework", "Cybersecurity compliance plan"],
       ["Typical users", "Data fiduciaries and processors", "Legal, compliance and business teams", "IT, security and risk teams"],
-    ],
-    frameworkRows: [
-      ["Core legislation", "Digital Personal Data Protection Act, 2023", "GDPR / UK GDPR and local laws"],
-      ["Regulatory framework", "Applicable rules and commencement notifications", "Jurisdiction-specific privacy regimes"],
-      ["Data subjects", "Data principals under the Act", "Data subjects under local laws"],
-      ["Enforcement", "Indian authorities, as established under law", "Relevant national supervisory authorities"],
-      ["Cross-border data", "As provided by applicable law and rules", "Applicable transfer restrictions and mechanisms"],
     ],
     processHeading: "A seven-stage DPDP compliance process",
     processDescription: "Map personal data and roles, prioritise gaps, implement practical controls and establish continuing oversight.",
@@ -323,13 +308,6 @@ const configs: DetailPageConfig[] = [
       ["Focus area", "Data, formats and disclosure controls", "Statutes, permissions and filings", "Risks, likelihood and mitigation"],
       ["Output", "Sustainability report and evidence trail", "Compliance matrix", "Risk register and action plan"],
       ["Typical users", "Board, ESG and reporting teams", "Legal and compliance functions", "Management and risk teams"],
-    ],
-    frameworkRows: [
-      ["BRSR", "SEBI requirements for applicable listed entities", "Comparable local reporting requirements"],
-      ["BRSR Core", "Applicable assurance / assessment requirements", "Framework-specific assurance rules"],
-      ["Global frameworks", "Framework alignment based on reporting choice", "GRI, ISSB / IFRS and local standards"],
-      ["Governance", "Board and management oversight", "Entity-specific governance expectations"],
-      ["Assurance", "As required by applicable rules", "Based on jurisdiction and reporting framework"],
     ],
     processHeading: "A seven-stage sustainability reporting process",
     processDescription: "Confirm reporting scope, establish data ownership, prepare disclosures and coordinate review and assurance readiness.",
@@ -424,13 +402,6 @@ const configs: DetailPageConfig[] = [
       ["Commercial model", "Project or ongoing services", "Subscription or usage-based", "Service-based"],
       ["Service availability", "Contractually defined SLAs", "Platform uptime commitments", "Operational performance standards"],
     ],
-    frameworkRows: [
-      ["Contract law", "Indian Contract Act, 1872", "Applicable local contract law"],
-      ["Data protection", "DPDP Act, 2023, as applicable", "GDPR / CCPA and local laws"],
-      ["IP rights", "Copyright Act and related laws", "Applicable international IP laws"],
-      ["Cybersecurity", "IT Act and CERT-In directions", "NIS2 and sectoral rules"],
-      ["Sectoral rules", "RBI, SEBI and other directions", "Applicable local requirements"],
-    ],
     processHeading: "A seven-stage IT agreement process",
     processDescription: "Define service scope, assess risks, negotiate balanced terms and support implementation and lifecycle management.",
     process: [
@@ -517,13 +488,6 @@ const configs: DetailPageConfig[] = [
       ["Focus area", "Data handling, policies and contracts", "Statutory DPDP requirements", "Security controls and reporting"],
       ["Scope", "Multiple laws and frameworks", "DPDP-specific", "IT Act, CERT-In and sectoral rules"],
       ["Output", "Privacy governance framework", "DPDP compliance plan", "Cybersecurity compliance plan"],
-    ],
-    frameworkRows: [
-      ["Data protection", "DPDP Act, 2023, as applicable", "GDPR / UK GDPR"],
-      ["Cybersecurity", "IT Act, 2000 and applicable directions", "NIS2 and local requirements"],
-      ["Sectoral laws", "Applicable Indian sectoral rules", "Local sectoral requirements"],
-      ["Cross-border", "Applicable law and transfer requirements", "Restricted transfers and lawful mechanisms"],
-      ["Enforcement", "Relevant Indian authorities", "National supervisory authorities"],
     ],
     processHeading: "A seven-stage data protection advisory process",
     processDescription: "Understand processing, identify obligations, strengthen controls and establish ongoing privacy governance.",
@@ -612,13 +576,6 @@ const configs: DetailPageConfig[] = [
       ["Output", "Comprehensive agreements", "Licence and service terms", "Master services and SLAs"],
       ["Typical parties", "Vendors and purchasers across industries", "SaaS providers and customers", "IT service providers and enterprises"],
     ],
-    frameworkRows: [
-      ["Contract law", "Indian Contract Act, 1872", "Applicable local contract law"],
-      ["Data protection", "DPDP Act, as applicable", "GDPR / CCPA and local rules"],
-      ["IP rights", "Copyright Act, Patents Act and related laws", "Applicable international IP laws"],
-      ["Cybersecurity", "IT Act and CERT-In directions", "NIS2 and sectoral rules"],
-      ["Tax and foreign exchange", "Income tax, GST and FEMA, as applicable", "Applicable local laws"],
-    ],
     processHeading: "A seven-stage technology contract process",
     processDescription: "Define requirements, structure risk allocation, negotiate clear terms and support performance through contract exit.",
     process: [
@@ -705,13 +662,6 @@ const configs: DetailPageConfig[] = [
       ["Focus area", "Ethics, legal risk and accountability", "Consent, notices and data rights", "Security controls and reporting"],
       ["Output", "AI governance framework", "DPDP compliance plan", "Cybersecurity compliance plan"],
       ["Typical users", "Board, legal, product and risk teams", "Data fiduciaries and compliance teams", "IT, security and risk teams"],
-    ],
-    frameworkRows: [
-      ["India", "Applicable IT, privacy and sectoral laws and guidance", "Government advisories and sector rules"],
-      ["EU", "EU AI Act obligations by system and role", "GDPR and related digital regulations"],
-      ["United States", "Federal and state-specific requirements", "Sector and regulator guidance"],
-      ["Voluntary standards", "Risk-based governance and recognised standards", "OECD AI Principles and relevant frameworks"],
-      ["Accountability", "Documented oversight and risk management", "Jurisdiction-specific governance requirements"],
     ],
     processHeading: "A seven-stage AI governance advisory process",
     processDescription: "Understand AI use, map legal and operational risks, implement proportionate controls and maintain ongoing oversight.",
@@ -806,15 +756,6 @@ const configs: DetailPageConfig[] = [
       ["Typical use", "Charitable and public-benefit purposes", "Member-led educational or social bodies", "Formal nonprofit corporate governance"],
       ["Compliance", "Trust and tax requirements vary by state", "State-specific registration and filings", "ROC and company-law filings"],
       ["Funding readiness", "Depends on approvals and eligibility", "Depends on purpose and registrations", "Depends on approvals and eligibility"],
-    ],
-    frameworkHeading: "Key NGO Registrations & Approvals",
-    frameworkHeaders: ["Registration / approval", "Purpose and applicability", "Key considerations"],
-    frameworkRows: [
-      ["NGO Darpan", "Profile registration for eligible organisations and relevant government schemes", "Requirements depend on scheme and funding context"],
-      ["12AB / charitable tax registration", "Eligibility-based application and ongoing conditions under applicable tax law", "Tax treatment depends on jurisdiction"],
-      ["80G approval", "Eligibility-based approval for qualifying donor deductions", "Donation deductibility varies by jurisdiction"],
-      ["CSR-1", "Registration requirements for eligible CSR implementing agencies", "CSR rules depend on applicable law"],
-      ["FCRA", "Registration or prior permission before receiving covered foreign contributions", "Foreign funding restrictions vary by jurisdiction"],
     ],
     processHeading: "A structured NGO registration and compliance process",
     processDescription: "Clarify mission and structure, complete registrations, establish governance and plan for sustainable operations.",
@@ -931,13 +872,8 @@ function createPageData(config: DetailPageConfig): EntityFormationPageData {
     comparisonPanels: [
       {
         heading: config.comparisonHeading,
-        headers: ["Parameter", ...config.comparisonOptions],
+        headers: config.comparisonOptions,
         rows: config.comparisonRows,
-      },
-      {
-        heading: config.frameworkHeading ?? "Indian Laws vs International Frameworks",
-        headers: config.frameworkHeaders ?? ["Parameter", "India (Key Laws)", "International (Selected)"],
-        rows: config.frameworkRows,
       },
     ],
     processEyebrow: `${config.shortTitle.toUpperCase()} ADVISORY PROCESS`,

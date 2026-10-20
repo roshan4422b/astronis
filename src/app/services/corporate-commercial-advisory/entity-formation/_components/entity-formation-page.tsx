@@ -149,14 +149,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               </article>
             ))}
           </div>
-          {data.relatedPages && (
-            <nav className={styles.relatedPages} aria-label="Related services">
-              <span>Explore related services</span>
-              {data.relatedPages.map(([title, href]) => (
-                <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
-              ))}
-            </nav>
-          )}
         </div>
         </section>
 
