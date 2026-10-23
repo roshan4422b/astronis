@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import { MailtrapClient } from "mailtrap";
 
 export const runtime = "nodejs";
 
@@ -177,8 +177,8 @@ export async function POST(request: Request) {
     return rejectWithMessage(typeError, 400);
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
+  const apiKey = process.env.MAILTRAP_API_KEY;
+  const from = process.env.MAILTRAP_FROM_EMAIL;
   if (!apiKey || !from) {
     console.error("Enquiry submission failed: email provider is not configured");
     return rejectWithMessage(FAILURE_MESSAGE, 503);
@@ -198,19 +198,18 @@ export async function POST(request: Request) {
   const html = entries.map(([label, value]) => `<p><strong>${escapeHtml(label)}</strong><br />${escapeHtml(value).replace(/\n/g, "<br />")}</p>`).join("");
 
   try {
-    const resend = new Resend(apiKey);
-    const result = await resend.emails.send({
-      from,
-      to: ["advisory@astronisglobal.com"],
-      replyTo: fields.email,
+    const mailtrap = new MailtrapClient({ token: apiKey });
+    await mailtrap.send({
+      from: { name: "Astronis Global Website", email: from },
+      to: [{ email: "advisory@astronisglobal.com" }],
+      reply_to: { email: fields.email },
       subject: subjectFor(fields),
       text,
       html,
     });
-    if (result.error) throw new Error(result.error.message);
     return Response.json({ success: true, message: SUCCESS_MESSAGE });
-  } catch (error) {
-    console.error("Enquiry submission failed:", error instanceof Error ? error.message : "Unknown email provider error");
+  } catch {
+    console.error("Enquiry submission failed: Mailtrap email provider error");
     return rejectWithMessage(FAILURE_MESSAGE, 502);
   }
 }
