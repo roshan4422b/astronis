@@ -101,8 +101,11 @@ export const professionals = [
   },
 ];
 
-export default function Leadership({ limit, variant }: { limit?: number; variant?: "premium" }) {
-  const visibleProfessionals = limit ? professionals.slice(0, limit) : professionals;
+export type ProfessionalRecord = (typeof professionals)[number];
+
+export default function Leadership({ limit, variant, people }: { limit?: number; variant?: "premium"; people?: readonly ProfessionalRecord[] }) {
+  const records = people ?? professionals;
+  const visibleProfessionals = limit ? records.slice(0, limit) : records;
 
   return (
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
