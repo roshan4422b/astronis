@@ -1,5 +1,5 @@
 import { MailtrapClient } from "mailtrap";
-import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -179,10 +179,8 @@ export async function POST(request: Request) {
   }
 
   const verificationResponse = verificationFailure(
-    await consumeFormVerification(
-      request,
+    await consumeEmailVerification(
       fields.email,
-      sanitize(raw.captchaToken),
       sanitize(raw.emailVerificationToken),
     ),
   );

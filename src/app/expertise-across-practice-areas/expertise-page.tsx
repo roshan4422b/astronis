@@ -105,7 +105,7 @@ export default function ExpertisePage() {
       const response = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         formType: "service", name: values.get("name"), email: values.get("email"), company: values.get("organisation"), phone: values.get("phone"),
         service: values.get("service"), industry: values.get("industry"), country: values.get("jurisdiction"), location: values.get("jurisdiction"), message,
-        consent: "yes", enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", ...getFormVerification(form), pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
+        consent: "yes", enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", ...getFormVerification(form, false), pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
       }) });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.message || "We couldn't submit your enquiry.");

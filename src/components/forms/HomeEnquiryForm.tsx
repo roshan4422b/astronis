@@ -84,7 +84,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent",
         website: "",
-        ...getFormVerification(event.currentTarget),
+        ...getFormVerification(event.currentTarget, false),
         utmSource: params.get("utm_source") || "",
         utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
@@ -148,7 +148,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification />
+        <EmailOtpVerification requireCaptcha={false} />
 
         <div style={{ width: "100%" }}>
           <button type="submit" className={styles.button} disabled={busy}>

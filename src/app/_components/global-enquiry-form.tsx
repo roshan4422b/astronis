@@ -254,7 +254,7 @@ export default function GlobalEnquiryForm({
     const form = event.currentTarget;
     let formVerification: ReturnType<typeof getFormVerification>;
     try {
-      formVerification = getFormVerification(form);
+      formVerification = getFormVerification(form, false);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
       return;
@@ -843,7 +843,7 @@ export default function GlobalEnquiryForm({
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification />
+        <EmailOtpVerification requireCaptcha={false} />
 
         <label className={styles.honey} aria-hidden="true">
           Website

@@ -57,7 +57,7 @@ These endpoints are integration adapters, not a database, CMS, inbox or moderati
 
 ## Public form verification
 
-All public enquiry, professional, meeting, testimonial and subscription submissions require both a verified email address and a successful Cloudflare Turnstile check. A 6-digit one-time code is delivered using the existing Mailtrap configuration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Successful verification is stored as a short-lived, single-use proof in Redis and is checked again by each submission API.
+Public enquiries, global enquiries and professional enquiries require verified email OTP and a server-checked, short-lived, single-use proof. A 6-digit one-time code is delivered with the existing Mailtrap transactional email API integration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Meeting requests, testimonials and subscriptions continue to require both email verification and Cloudflare Turnstile.
 
 Turnstile error `110200` means the current page hostname is not authorized for the configured site key; it is not an OTP or SMTP failure. In Cloudflare Turnstile Hostname Management, add the deployed website hostname and, for local testing, `localhost` and `127.0.0.1` (hostnames only, without protocol or port). Next.js embeds `NEXT_PUBLIC_TURNSTILE_SITE_KEY` into client code, so restart the dev server or rebuild/redeploy after changing it. Keep the matching Turnstile secret server-side.
 
@@ -86,9 +86,9 @@ npm run start -- --hostname 127.0.0.1 --port 3123
 npm run test:form-apis
 ```
 
-For a live email check, configure the variables above, start the app with `npm run dev`, open a public form, complete the CAPTCHA, request the code and confirm that the message arrives through the existing Mailtrap account. Verify the code, complete a fresh CAPTCHA and submit. Also try a wrong code five times, wait five minutes to test expiry and submit without either verification step.
+For a live email check, configure the variables above, start the app with `npm run dev`, open an enquiry form, request a code and confirm that the message arrives through the existing Mailtrap account. Verify the code and submit. Meeting, testimonial and subscription forms still require completing Turnstile before requesting an OTP and again before submission. Also try a wrong code five times, wait five minutes to test expiry and submit without email verification.
 
-The automated verification suite simulates Mailtrap delivery failure; do not change working Mailtrap credentials to run that test. For local browser testing, make sure the Turnstile site key allows the local hostname or use Cloudflare's test keys. The browser challenge cannot be completed if Cloudflare rejects the configured site key or hostname.
+The automated verification suite injects a mock OTP delivery function and does not send real email; do not change working Mailtrap credentials to run it. Turnstile keys remain necessary for meeting, testimonial and subscription forms. For local browser testing of those forms, make sure the Turnstile site key allows the local hostname or use Cloudflare's test keys.
 
 ## Content and integrations still needed
 

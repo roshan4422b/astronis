@@ -27,12 +27,13 @@ export async function POST(request: Request) {
         invalid: "That code is incorrect. You have a maximum of 5 attempts.",
         locked: "The maximum number of attempts has been reached. Request a new code after the resend cooldown.",
         expired: "That code has expired. Please request a new code.",
+        used: "That code has already been used. Request a new code.",
       };
       return Response.json({ message: messages[result.reason] }, { status: 400 });
     }
     return Response.json({ message: "Your email address is verified.", verificationToken: result.proof });
-  } catch (error) {
-    console.error("Email OTP verification failed:", error instanceof Error ? error.message : "Unknown error");
+  } catch {
+    console.error("Email OTP verification failed.");
     return Response.json({ message: "Email verification is temporarily unavailable. Please try again." }, { status: 503 });
   }
 }
