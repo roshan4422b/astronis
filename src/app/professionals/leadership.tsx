@@ -1,5 +1,6 @@
 import Image from "../_components/asset-image";
 import { TextLink } from "../_components/ui";
+import styles from "./professionals-page.module.css";
 
 export const professionals = [
   {
@@ -100,20 +101,20 @@ export const professionals = [
   },
 ];
 
-export default function Leadership({ limit }: { limit?: number }) {
+export default function Leadership({ limit, variant }: { limit?: number; variant?: "premium" }) {
   const visibleProfessionals = limit ? professionals.slice(0, limit) : professionals;
 
   return (
-    <div className="leadership-grid">
+    <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
       {visibleProfessionals.map((p) => (
-        <article className="leader-card" key={p.slug}>
-          <div className="leader-avatar">
+        <article className={variant === "premium" ? styles.personCard : "leader-card"} key={p.slug}>
+          <div className={variant === "premium" ? styles.portrait : "leader-avatar"}>
             {p.image ? (
               <Image
                 src={p.image}
                 alt={p.name}
                 fill
-                sizes="(max-width: 760px) 35vw, 155px"
+                sizes={variant === "premium" ? "(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" : "(max-width: 760px) 35vw, 155px"}
               />
             ) : (
               <span className="professional-photo-placeholder" role="img" aria-label={`${p.name} photo coming soon`}>
@@ -125,10 +126,11 @@ export default function Leadership({ limit }: { limit?: number }) {
               </span>
             )}
           </div>
-          <div>
+          <div className={variant === "premium" ? styles.personBody : undefined}>
             <h3>{p.name}</h3>
-            <span className="eyebrow">{p.role}</span>
-            <p>{p.expertise}</p>
+            <span className={variant === "premium" ? styles.role : "eyebrow"}>{p.role}</span>
+            <p>{variant === "premium" ? p.description : p.expertise}</p>
+            {variant === "premium" && <span className={styles.expertise}>{p.expertise}</span>}
             <TextLink href={"/professionals/" + p.slug}>View Profile</TextLink>
           </div>
         </article>
