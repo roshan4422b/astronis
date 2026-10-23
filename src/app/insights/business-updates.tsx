@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import styles from "./business-updates.module.css";
 
@@ -684,6 +685,7 @@ export default function BusinessUpdates() {
               <input type="checkbox" name="consent" value="yes" required />
               I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </label>
+            <EmailOtpVerification />
             {subscribeStatus && <p role="status">{subscribeStatus}</p>}
           </form>
         </div>

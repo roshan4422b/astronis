@@ -1,4 +1,5 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -81,6 +82,10 @@ export async function POST(request: Request) {
       { message: "Please authorise publication of the submitted photograph or remove it." },
       { status: 400 },
     );
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(request, get("email"), get("captchaToken"), get("emailVerificationToken")),
+  );
+  if (verificationResponse) return verificationResponse;
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
   if (!webhook)
     return Response.json(
@@ -100,6 +105,8 @@ export async function POST(request: Request) {
   data.set("materialType", format === "video" ? "video" : "written-testimonial");
   data.set("photoPublicationConsent", get("photoPublicationConsent") === "yes" ? "yes" : "no");
   data.set("identityPublicationConsent", "no");
+  data.delete("captchaToken");
+  data.delete("emailVerificationToken");
   try {
     if (new URL(webhook).protocol !== "https:")
       throw new Error("HTTPS required");

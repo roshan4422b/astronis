@@ -1,4 +1,5 @@
 import { MailtrapClient } from "mailtrap";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -176,6 +177,16 @@ export async function POST(request: Request) {
     console.log("Enquiry rejected:", { reason: typeError, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(typeError, 400);
   }
+
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(
+      request,
+      fields.email,
+      sanitize(raw.captchaToken),
+      sanitize(raw.emailVerificationToken),
+    ),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const apiKey = process.env.MAILTRAP_API_KEY;
   const from = process.env.MAILTRAP_FROM_EMAIL;

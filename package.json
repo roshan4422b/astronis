@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:verification": "node --experimental-strip-types --test scripts/form-verification.test.mjs",
+    "test:form-apis": "node scripts/public-form-smoke.mjs"
   },
   "dependencies": {
     "mailtrap": "^5.0.0",

@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { services } from "@/data/services";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -46,6 +47,11 @@ export async function POST(request: Request) {
   if (name.length < 2 || !emailPattern.test(email) || !/^\+\d{7,18}$/.test(phone) || !organisation || !validServices.has(service) || !validTeams.has(team) || !validTurnovers.has(turnover)) return error("Please provide valid contact and organisation details.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
   if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true || raw.enquiryAgreementAccepted !== "yes" || raw.enquiryAgreementId !== "enquiry-communication-consultation-consent") return error("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
+
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(request, email, clean(raw.captchaToken, 2048), clean(raw.emailVerificationToken, 128)),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
