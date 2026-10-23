@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import styles from "../gst-updates.module.css";
 
 export default function SubscribeForm() {
@@ -52,6 +53,7 @@ export default function SubscribeForm() {
         <input type="checkbox" name="consent" value="yes" required />
         I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
       </label>
+      <EmailOtpVerification />
       {status && <p role="status">{status}</p>}
     </form>
   );

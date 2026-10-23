@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import base from "./gst-updates.module.css";
 import styles from "./sebi-updates.module.css";
@@ -204,7 +205,7 @@ export default function SebiUpdates() {
     <section className={`${base.cta} ${styles.cta}`}>
       <AssetImage src="/corporate-regulatory-hero.png" alt="" fill sizes="100vw" />
       <div className={base.ctaShade} /><div className={base.ctaInner}><div><h2>Stay Informed. Stay Ahead.</h2><p>Get the latest SEBI updates, market insights and expert analysis from Astronis Global.</p></div>
-        <form onSubmit={subscribe}><div><label className={base.srOnly} htmlFor="sebi-subscribe-email">Email address</label><input id="sebi-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={base.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label>{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
+        <form onSubmit={subscribe}><div><label className={base.srOnly} htmlFor="sebi-subscribe-email">Email address</label><input id="sebi-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={base.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
       </div>
     </section>
   </div>;

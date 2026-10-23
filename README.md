@@ -55,6 +55,41 @@ TESTIMONIAL_WEBHOOK_TOKEN=your-optional-bearer-token
 
 These endpoints are integration adapters, not a database, CMS, inbox or moderation dashboard. Configure durable storage, upload scanning, rate limiting and reviewer access in the receiving backend before enabling public submissions. Configure your hosting request-size limits for video uploads. Test with the chosen backend before launch.
 
+## Public form verification
+
+All public enquiry, professional, meeting, testimonial and subscription submissions require both a verified email address and a successful Cloudflare Turnstile check. A 6-digit one-time code is delivered using the existing Mailtrap configuration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Successful verification is stored as a short-lived, single-use proof in Redis and is checked again by each submission API.
+
+Turnstile error `110200` means the current page hostname is not authorized for the configured site key; it is not an OTP or SMTP failure. In Cloudflare Turnstile Hostname Management, add the deployed website hostname and, for local testing, `localhost` and `127.0.0.1` (hostnames only, without protocol or port). Next.js embeds `NEXT_PUBLIC_TURNSTILE_SITE_KEY` into client code, so restart the dev server or rebuild/redeploy after changing it. Keep the matching Turnstile secret server-side.
+
+Set the existing `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, `MAILTRAP_API_KEY` and `MAILTRAP_FROM_EMAIL` values, plus these server-only production variables:
+
+```dotenv
+UPSTASH_REDIS_REST_URL=https://your-database.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-upstash-rest-token
+EMAIL_OTP_SECRET=at-least-32-random-characters
+```
+
+Create a persistent Upstash Redis database for OTP and proof storage. The verification flow deliberately fails closed if Redis or the OTP signing secret is missing; it does not fall back to process memory. Keep the Redis token, Turnstile secret, Mailtrap credentials and OTP signing secret out of browser code and source control. The public Turnstile site key is the only verification key intended for the browser.
+
+Run the automated verification tests:
+
+```sh
+npm run test:verification
+npx tsc --noEmit
+npm run build
+```
+
+To test rendered form pages and direct API rejection locally, start the built site in one terminal and run the smoke test in another:
+
+```sh
+npm run start -- --hostname 127.0.0.1 --port 3123
+npm run test:form-apis
+```
+
+For a live email check, configure the variables above, start the app with `npm run dev`, open a public form, complete the CAPTCHA, request the code and confirm that the message arrives through the existing Mailtrap account. Verify the code, complete a fresh CAPTCHA and submit. Also try a wrong code five times, wait five minutes to test expiry and submit without either verification step.
+
+The automated verification suite simulates Mailtrap delivery failure; do not change working Mailtrap credentials to run that test. For local browser testing, make sure the Turnstile site key allows the local hostname or use Cloudflare's test keys. The browser challenge cannot be completed if Cloudflare rejects the configured site key or hostname.
+
 ## Content and integrations still needed
 
 - Approved article bodies, dates, downloadable resources, event details and expanded service/case-study copy. Current resource categories show honest empty states.

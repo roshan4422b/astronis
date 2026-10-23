@@ -3,6 +3,8 @@
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import { professionals } from "../leadership";
@@ -131,6 +133,9 @@ export default function ExpertsByJurisdiction() {
     data.set("enquiryAgreementAccepted", "yes");
     data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     data.set("website", "");
+    const verification = getFormVerification(form);
+    data.set("captchaToken", verification.captchaToken);
+    data.set("emailVerificationToken", verification.emailVerificationToken);
     if (selectedFile instanceof File && selectedFile.size > 0) data.append("documents", selectedFile);
 
     try {
@@ -237,6 +242,7 @@ export default function ExpertsByJurisdiction() {
           <label className={styles.upload}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /></label>
           <small className={styles.uploadNote}>PDF, DOC, DOCX · Max 5 MB</small>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="jurisdiction-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
+          <EmailOtpVerification />
           <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>
