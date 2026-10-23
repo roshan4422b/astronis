@@ -79,6 +79,9 @@ globalThis.fetch = async (input, init = {}) => {
 };
 
 const {
+  emailOtpFailureResponse,
+  EmailOtpFailure,
+  logEmailOtpFailure,
   consumeEmailVerification,
   consumeFormVerification,
   sendEmailOtp,
@@ -211,4 +214,26 @@ test("enforces resend cooldown and clears the cooldown after delivery failure", 
   );
   const retry = await sendEmailOtp(email, deliver);
   assert.equal(retry.ok, true);
+});
+
+test("logs useful provider failure diagnostics without exposing email, OTP, or credentials", () => {
+  const originalError = console.error;
+  const output = [];
+  console.error = (...args) => output.push(args);
+  try {
+    const failure = new EmailOtpFailure(
+      "provider",
+      "Mailtrap could not deliver the verification code.",
+      { cause: new Error(`Unauthorized for ${email}: code 123456 token=private-token ${process.env.MAILTRAP_API_KEY}`) },
+    );
+    logEmailOtpFailure(failure);
+    const serialized = JSON.stringify(output);
+    assert.match(serialized, /provider/);
+    assert.match(serialized, /Unauthorized/);
+    assert.doesNotMatch(serialized, /person@example\.com|123456|private-token|test-turnstile-secret/);
+    assert.equal(emailOtpFailureResponse(failure).status, 502);
+    assert.match(emailOtpFailureResponse(failure).message, /email provider/i);
+  } finally {
+    console.error = originalError;
+  }
 });

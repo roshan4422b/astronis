@@ -1,4 +1,9 @@
-import { isValidVerificationEmail, sendEmailOtp } from "@/lib/form-verification.server";
+import {
+  emailOtpFailureResponse,
+  isValidVerificationEmail,
+  logEmailOtpFailure,
+  sendEmailOtp,
+} from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -32,11 +37,9 @@ export async function POST(request: Request) {
       message: "A 6-digit verification code has been sent to your email address.",
       retryAfter: result.retryAfter,
     });
-  } catch {
-    console.error("Email OTP delivery failed.");
-    return Response.json(
-      { message: "We could not send your verification code. Please try again later." },
-      { status: 502 },
-    );
+  } catch (error) {
+    logEmailOtpFailure(error);
+    const failure = emailOtpFailureResponse(error);
+    return Response.json({ message: failure.message }, { status: failure.status });
   }
 }

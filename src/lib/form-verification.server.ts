@@ -9,6 +9,110 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type RedisResponse = { result?: unknown; error?: string };
 type VerificationResult = { ok: true } | { ok: false; status: number; message: string };
+type EmailOtpFailureStage = "configuration" | "storage" | "provider";
+
+export class EmailOtpFailure extends Error {
+  readonly stage: EmailOtpFailureStage;
+
+  constructor(
+    stage: EmailOtpFailureStage,
+    message: string,
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+    this.name = "EmailOtpFailure";
+    this.stage = stage;
+  }
+}
+
+function redactEmailOtpDiagnostic(message: string) {
+  let safeMessage = message
+    .replace(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, "[email]")
+    .replace(/\b\d{6}\b/g, "[redacted]")
+    .replace(/\bBearer\s+\S+/gi, "Bearer [redacted]")
+    .replace(/\b(authorization|token|secret|password)(\s*[:=]\s*)[^\s,;]+/gi, "$1$2[redacted]");
+
+  for (const secret of [
+    process.env.MAILTRAP_API_KEY,
+    process.env.UPSTASH_REDIS_REST_TOKEN,
+    process.env.EMAIL_OTP_SECRET,
+    process.env.TURNSTILE_SECRET_KEY,
+  ]) {
+    if (secret) safeMessage = safeMessage.replaceAll(secret, "[redacted]");
+  }
+
+  return safeMessage.slice(0, 500);
+}
+
+function getFailureStatus(error: unknown) {
+  if (typeof error !== "object" || error === null) return undefined;
+  const value = error as { status?: unknown; statusCode?: unknown; response?: { status?: unknown } };
+  const status = value.response?.status ?? value.status ?? value.statusCode;
+  return typeof status === "number" ? status : undefined;
+}
+
+export function logEmailOtpFailure(error: unknown) {
+  const details = error instanceof EmailOtpFailure
+    ? error
+    : new EmailOtpFailure("storage", "Unexpected OTP service failure.", { cause: error });
+  const causes: Array<{ name: string; reason: string; providerStatus?: number }> = [];
+  const collectCauses = (cause: unknown, depth = 0) => {
+    if (cause === undefined || cause === null || depth >= 4 || causes.length >= 6) return;
+    if (cause instanceof AggregateError) {
+      causes.push({
+        name: cause.name,
+        reason: redactEmailOtpDiagnostic(cause.message),
+      });
+      for (const nested of cause.errors) collectCauses(nested, depth + 1);
+      return;
+    }
+    if (cause instanceof Error) {
+      causes.push({
+        name: cause.name,
+        reason: redactEmailOtpDiagnostic(cause.message),
+        providerStatus: getFailureStatus(cause),
+      });
+      collectCauses(cause.cause, depth + 1);
+      return;
+    }
+    causes.push({
+      name: typeof cause,
+      reason: redactEmailOtpDiagnostic(String(cause)),
+      providerStatus: getFailureStatus(cause),
+    });
+  };
+  collectCauses(details.cause);
+  console.error("Email OTP request failed:", {
+    stage: details.stage,
+    error: redactEmailOtpDiagnostic(details.message),
+    causes,
+  });
+}
+
+export function emailOtpFailureResponse(error: unknown) {
+  if (error instanceof EmailOtpFailure) {
+    if (error.stage === "configuration") {
+      return {
+        status: 503,
+        message: "Email delivery is not configured. Please contact the website administrator.",
+      };
+    }
+    if (error.stage === "storage") {
+      return {
+        status: 503,
+        message: "Email verification is temporarily unavailable. Please try again later.",
+      };
+    }
+    return {
+      status: 502,
+      message: "We couldn't deliver the code through our email provider. Please try again later.",
+    };
+  }
+  return {
+    status: 503,
+    message: "Email verification is temporarily unavailable. Please try again later.",
+  };
+}
 
 function getRedisConfig() {
   const url = process.env.UPSTASH_REDIS_REST_URL;
@@ -62,7 +166,9 @@ export function isValidVerificationEmail(email: string) {
 async function sendOtpWithMailtrap(email: string, code: string) {
   const apiKey = process.env.MAILTRAP_API_KEY;
   const from = process.env.MAILTRAP_FROM_EMAIL;
-  if (!apiKey || !from) throw new Error("Mailtrap email delivery is not configured.");
+  if (!apiKey || !from) {
+    throw new EmailOtpFailure("configuration", "Mailtrap API credentials or sender address are missing.");
+  }
   const mailtrap = new MailtrapClient({ token: apiKey });
   await mailtrap.send({
     from: { name: "Astronis Global", email: from },
@@ -101,33 +207,53 @@ export async function sendEmailOtp(
   const emailDigest = digestEmail(email);
   const otpKey = `astronis:email-otp:${emailDigest}`;
   const cooldownKey = `astronis:email-otp-cooldown:${emailDigest}`;
-  const cooldown = await redisCommand<string | null>([
-    "SET",
-    cooldownKey,
-    "1",
-    "EX",
-    OTP_COOLDOWN_SECONDS,
-    "NX",
-  ]);
+  let cooldown: string | null;
+  try {
+    cooldown = await redisCommand<string | null>([
+      "SET",
+      cooldownKey,
+      "1",
+      "EX",
+      OTP_COOLDOWN_SECONDS,
+      "NX",
+    ]);
+  } catch (error) {
+    throw new EmailOtpFailure("storage", "Could not reserve an OTP request.", { cause: error });
+  }
   if (cooldown !== "OK") {
-    const remaining = await redisCommand<number>(["TTL", cooldownKey]);
+    let remaining: number;
+    try {
+      remaining = await redisCommand<number>(["TTL", cooldownKey]);
+    } catch (error) {
+      throw new EmailOtpFailure("storage", "Could not read the OTP resend cooldown.", { cause: error });
+    }
     return { ok: false as const, retryAfter: Math.max(1, remaining) };
   }
 
   const code = String(randomInt(0, 1_000_000)).padStart(6, "0");
-  await redisCommand<string>([
-    "SET",
-    otpKey,
-    JSON.stringify({ digest: digestOtp(email, code), attempts: 0 }),
-    "EX",
-    OTP_TTL_SECONDS,
-  ]);
+  try {
+    await redisCommand<string>([
+      "SET",
+      otpKey,
+      JSON.stringify({ digest: digestOtp(email, code), attempts: 0 }),
+      "EX",
+      OTP_TTL_SECONDS,
+    ]);
+  } catch (error) {
+    throw new EmailOtpFailure("storage", "Could not persist the OTP challenge.", { cause: error });
+  }
 
   try {
     await deliverOtp(email, code);
-  } catch {
-    await redisCommand<number>(["DEL", otpKey, cooldownKey]);
-    throw new Error("Mailtrap could not deliver the verification code.");
+  } catch (error) {
+    let deliveryError: unknown = error;
+    try {
+      await redisCommand<number>(["DEL", otpKey, cooldownKey]);
+    } catch (cleanupError) {
+      deliveryError = new AggregateError([error, cleanupError], "Email delivery and OTP cleanup failed.");
+    }
+    if (error instanceof EmailOtpFailure) throw error;
+    throw new EmailOtpFailure("provider", "Mailtrap could not deliver the verification code.", { cause: deliveryError });
   }
 
   return { ok: true as const, retryAfter: OTP_COOLDOWN_SECONDS };
