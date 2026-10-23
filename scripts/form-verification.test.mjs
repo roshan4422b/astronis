@@ -43,7 +43,7 @@ globalThis.fetch = async (input, init = {}) => {
       const args = command.slice(3 + keyCount);
       if (command[1].includes("record.digest")) {
         const otp = entry(keys[0]);
-        if (!otp) result = "expired";
+        if (!otp) result = entry(keys[2])?.value === args[0] ? "used" : "expired";
         else {
           const record = JSON.parse(otp.value);
           if (record.attempts >= Number(args[1])) result = "locked";
@@ -55,6 +55,7 @@ globalThis.fetch = async (input, init = {}) => {
           } else {
             entries.delete(keys[0]);
             save(keys[1], args[2], args[3], true);
+            save(keys[2], args[0], args[4]);
             result = "verified";
           }
         }
@@ -78,6 +79,7 @@ globalThis.fetch = async (input, init = {}) => {
 };
 
 const {
+  consumeEmailVerification,
   consumeFormVerification,
   sendEmailOtp,
   verifyEmailOtp,
@@ -107,6 +109,27 @@ test("sends a 6-digit OTP and consumes the email proof once after CAPTCHA succee
   if (!replay.ok) assert.equal(replay.message, "Please verify this email address before submitting.");
 });
 
+test("accepts email-bound OTP proof without CAPTCHA and rejects reuse or a different email", async () => {
+  entries.clear();
+  deliver.code = "";
+  const sent = await sendEmailOtp(email, deliver);
+  assert.equal(sent.ok, true);
+
+  const verified = await verifyEmailOtp(email, deliver.code);
+  assert.equal(verified.ok, true);
+  if (!verified.ok) return;
+
+  const wrongEmail = await consumeEmailVerification("other@example.com", verified.proof);
+  assert.equal(wrongEmail.ok, false);
+  const accepted = await consumeEmailVerification(email, verified.proof);
+  assert.equal(accepted.ok, true);
+  const replay = await consumeEmailVerification(email, verified.proof);
+  assert.equal(replay.ok, false);
+
+  const reusedCode = await verifyEmailOtp(email, deliver.code);
+  assert.deepEqual(reusedCode, { ok: false, reason: "used" });
+});
+
 test("rejects invalid CAPTCHA and missing email proof at the form submission boundary", async () => {
   entries.clear();
   assert.equal(await verifyTurnstile("invalid-captcha", request), false);
@@ -117,6 +140,24 @@ test("rejects invalid CAPTCHA and missing email proof at the form submission bou
 
   const missingProof = await consumeFormVerification(request, email, "valid-captcha", "");
   assert.equal(missingProof.ok, false);
+});
+
+test("expires the server-side email verification proof", async () => {
+  entries.clear();
+  deliver.code = "";
+  await sendEmailOtp(email, deliver);
+  const verified = await verifyEmailOtp(email, deliver.code);
+  assert.equal(verified.ok, true);
+  if (!verified.ok) return;
+
+  const start = Date.now();
+  Date.now = () => start + 600_001;
+  try {
+    const result = await consumeEmailVerification(email, verified.proof);
+    assert.equal(result.ok, false);
+  } finally {
+    Date.now = realNow;
+  }
 });
 
 test("locks OTP verification after five incorrect attempts", async () => {

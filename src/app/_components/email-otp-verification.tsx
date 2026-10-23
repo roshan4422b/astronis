@@ -25,7 +25,13 @@ declare global {
   }
 }
 
-export default function EmailOtpVerification({ emailAddress }: { emailAddress?: string } = {}) {
+export default function EmailOtpVerification({
+  emailAddress,
+  requireCaptcha = true,
+}: {
+  emailAddress?: string;
+  requireCaptcha?: boolean;
+} = {}) {
   const container = useRef<HTMLDivElement>(null);
   const widget = useRef<string | null>(null);
   const codeInputId = useId();
@@ -38,11 +44,11 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
   const [status, setStatus] = useState("");
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(0);
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const siteKey = requireCaptcha ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY : undefined;
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
 
   useEffect(() => {
-    if (!siteKey || !container.current) return;
+    if (!requireCaptcha || !siteKey || !container.current) return;
     let cancelled = false;
     const renderWidget = () => {
       if (cancelled || !window.turnstile || !container.current || widget.current) return;
@@ -88,7 +94,7 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
         widget.current = null;
       }
     };
-  }, [siteKey]);
+  }, [requireCaptcha, siteKey]);
 
   useEffect(() => {
     if (!cooldownUntil) return;
@@ -113,7 +119,7 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
       setStatus("");
       setCooldownUntil(0);
       setNow(0);
-      if (widget.current && window.turnstile) window.turnstile.reset(widget.current);
+      if (requireCaptcha && widget.current && window.turnstile) window.turnstile.reset(widget.current);
     };
     form.addEventListener("reset", resetVerification);
     if (!emailInput) return () => form.removeEventListener("reset", resetVerification);
@@ -130,7 +136,7 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
       form.removeEventListener("reset", resetVerification);
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
-  }, [email]);
+  }, [email, requireCaptcha]);
 
   const resetCaptcha = () => {
     setCaptchaToken("");
@@ -146,7 +152,7 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
       emailInput?.focus();
       return;
     }
-    if (!captchaToken) {
+    if (requireCaptcha && !captchaToken) {
       setStatus("Complete the CAPTCHA before requesting a verification code.");
       return;
     }
@@ -155,10 +161,10 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
     setStatus("");
     setEmail(nextEmail);
     try {
-      const response = await fetch("/api/verification/send-otp", {
+      const response = await fetch(requireCaptcha ? "/api/verification/send-otp" : "/api/verification/send-enquiry-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nextEmail, captchaToken }),
+        body: JSON.stringify({ email: nextEmail, ...(requireCaptcha ? { captchaToken } : {}) }),
       });
       const result = (await response.json()) as { message?: string; retryAfter?: number };
       if (!response.ok) throw new Error(result.message || "We could not send your verification code.");
@@ -202,12 +208,12 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
   }
 
   return (
-    <section className={styles.panel} aria-label="Email and CAPTCHA verification">
+    <section className={styles.panel} aria-label="Email verification">
       <p className={styles.heading}>Verify your email to continue</p>
-      <div className={styles.captcha} ref={container} />
-      {!siteKey && <p className={styles.error}>CAPTCHA verification is not configured.</p>}
+      <div className={requireCaptcha ? styles.captcha : undefined} ref={container} />
+      {requireCaptcha && !siteKey && <p className={styles.error}>CAPTCHA verification is not configured.</p>}
       <div className={styles.actions}>
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || !siteKey}>
+        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (requireCaptcha && !siteKey)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
         {codeSent && !verificationToken && (
@@ -226,14 +232,14 @@ export default function EmailOtpVerification({ emailAddress }: { emailAddress?: 
               placeholder="6-digit code"
             />
             <button type="button" className={styles.secondary} onClick={verifyCode} disabled={busy || code.length !== 6}>
-              Verify code
+              Verify OTP
             </button>
           </div>
         )}
       </div>
-      {verificationToken && <p className={styles.success}>Email verified. Complete the CAPTCHA above before submitting.</p>}
+      {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
+      {requireCaptcha && <input type="hidden" name="captchaToken" value={captchaToken} readOnly />}
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );

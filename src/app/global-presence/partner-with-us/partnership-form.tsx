@@ -27,7 +27,7 @@ export default function PartnershipForm() {
     setEnquiryAgreementError("");
     let formVerification: ReturnType<typeof getFormVerification>;
     try {
-      formVerification = getFormVerification(form);
+      formVerification = getFormVerification(form, false);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
       return;
@@ -90,6 +90,6 @@ export default function PartnershipForm() {
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
   </div>
   <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
-  <EmailOtpVerification />
+  <EmailOtpVerification requireCaptcha={false} />
   <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

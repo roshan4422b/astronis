@@ -133,8 +133,7 @@ export default function ExpertsByJurisdiction() {
     data.set("enquiryAgreementAccepted", "yes");
     data.set("enquiryAgreementId", "enquiry-communication-consultation-consent");
     data.set("website", "");
-    const verification = getFormVerification(form);
-    data.set("captchaToken", verification.captchaToken);
+    const verification = getFormVerification(form, false);
     data.set("emailVerificationToken", verification.emailVerificationToken);
     if (selectedFile instanceof File && selectedFile.size > 0) data.append("documents", selectedFile);
 

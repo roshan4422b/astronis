@@ -136,7 +136,7 @@ export default function ExpertsByService() {
           consent: "yes",
           enquiryAgreementAccepted: "yes",
           enquiryAgreementId: "enquiry-communication-consultation-consent",
-          ...getFormVerification(form),
+          ...getFormVerification(form, false),
           website: "",
           pageUrl: window.location.href,
           pathname: window.location.pathname,

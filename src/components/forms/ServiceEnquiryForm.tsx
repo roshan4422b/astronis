@@ -151,7 +151,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
         pathname: window.location.pathname, pageTitle: document.title || "Astronis Global",
         referrer: document.referrer || "", consent: "yes", enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent", website: "",
-        ...getFormVerification(event.currentTarget),
+        ...getFormVerification(event.currentTarget, false),
         utmSource: params.get("utm_source") || "", utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
       };
@@ -247,7 +247,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification />
+        <EmailOtpVerification requireCaptcha={false} />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Requirement"}

@@ -111,7 +111,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         pageTitle: document.title || "Astronis Global", referrer: document.referrer || "",
         consent: "yes", enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", utmSource: params.get("utm_source") || "",
-        ...getFormVerification(event.currentTarget),
+        ...getFormVerification(event.currentTarget, false),
         utmMedium: params.get("utm_medium") || "", utmCampaign: params.get("utm_campaign") || "",
       };
 
@@ -198,7 +198,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification />
+        <EmailOtpVerification requireCaptcha={false} />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}

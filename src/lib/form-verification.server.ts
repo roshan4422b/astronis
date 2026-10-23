@@ -135,7 +135,10 @@ export async function sendEmailOtp(
 
 const verifyOtpScript = `
 local current = redis.call("GET", KEYS[1])
-if not current then return "expired" end
+if not current then
+  if redis.call("GET", KEYS[3]) == ARGV[1] then return "used" end
+  return "expired"
+end
 local record = cjson.decode(current)
 if record.attempts >= tonumber(ARGV[2]) then return "locked" end
 if record.digest ~= ARGV[1] then
@@ -148,12 +151,13 @@ if record.digest ~= ARGV[1] then
 end
 redis.call("DEL", KEYS[1])
 redis.call("SET", KEYS[2], ARGV[3], "EX", ARGV[4], "NX")
+redis.call("SET", KEYS[3], ARGV[1], "EX", ARGV[5])
 return "verified"
 `;
 
 type OtpVerificationResult =
   | { ok: true; proof: string }
-  | { ok: false; reason: "invalid" | "locked" | "expired" };
+  | { ok: false; reason: "invalid" | "locked" | "expired" | "used" };
 
 export async function verifyEmailOtp(emailValue: string, code: string): Promise<OtpVerificationResult> {
   const email = normalizeEmail(emailValue);
@@ -162,17 +166,20 @@ export async function verifyEmailOtp(emailValue: string, code: string): Promise<
   const result = await redisCommand<string>([
     "EVAL",
     verifyOtpScript,
-    "2",
+    "3",
     `astronis:email-otp:${emailDigest}`,
     `astronis:email-proof:${digestEmail(proof)}`,
+    `astronis:email-otp-used:${emailDigest}`,
     digestOtp(email, code),
     String(MAX_OTP_ATTEMPTS),
     email,
     String(PROOF_TTL_SECONDS),
+    String(OTP_TTL_SECONDS),
   ]);
   if (result === "verified") return { ok: true as const, proof };
   if (result === "invalid") return { ok: false as const, reason: "invalid" };
   if (result === "locked") return { ok: false as const, reason: "locked" };
+  if (result === "used") return { ok: false as const, reason: "used" };
   return { ok: false as const, reason: "expired" };
 }
 
@@ -182,21 +189,10 @@ if not email or email ~= ARGV[1] then return 0 end
 return redis.call("DEL", KEYS[1])
 `;
 
-export async function consumeFormVerification(
-  request: Request,
+export async function consumeEmailVerification(
   emailValue: string,
-  captchaToken: string,
   verificationToken: string,
 ): Promise<VerificationResult> {
-  let captchaValid: boolean;
-  try {
-    captchaValid = await verifyTurnstile(captchaToken, request);
-  } catch {
-    return { ok: false, status: 503, message: "Verification is temporarily unavailable. Please try again." };
-  }
-  if (!captchaValid) {
-    return { ok: false, status: 400, message: "Please complete the CAPTCHA verification and try again." };
-  }
   if (!verificationToken || verificationToken.length > 128) {
     return { ok: false, status: 400, message: "Please verify your email address before submitting." };
   }
@@ -216,6 +212,24 @@ export async function consumeFormVerification(
     return { ok: false, status: 503, message: "Email verification is temporarily unavailable. Please try again." };
   }
   return { ok: true };
+}
+
+export async function consumeFormVerification(
+  request: Request,
+  emailValue: string,
+  captchaToken: string,
+  verificationToken: string,
+): Promise<VerificationResult> {
+  let captchaValid: boolean;
+  try {
+    captchaValid = await verifyTurnstile(captchaToken, request);
+  } catch {
+    return { ok: false, status: 503, message: "Verification is temporarily unavailable. Please try again." };
+  }
+  if (!captchaValid) {
+    return { ok: false, status: 400, message: "Please complete the CAPTCHA verification and try again." };
+  }
+  return consumeEmailVerification(emailValue, verificationToken);
 }
 
 export function verificationFailure(result: VerificationResult) {

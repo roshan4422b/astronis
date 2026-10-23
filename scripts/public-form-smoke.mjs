@@ -177,8 +177,11 @@ const directSubmissions = [
 for (const [label, path, options] of directSubmissions) {
   const response = await fetch(new URL(path, baseUrl), options);
   const result = await response.json();
-  if (response.ok || !result.message?.includes("CAPTCHA")) {
-    throw new Error(`Direct ${label} submission did not reach the CAPTCHA rejection (HTTP ${response.status}).`);
+  const expectedRejection = ["enquiry", "global enquiry", "professional enquiry"].includes(label)
+    ? "verify your email"
+    : "captcha";
+  if (response.ok || !result.message?.toLowerCase().includes(expectedRejection)) {
+    throw new Error(`Direct ${label} submission did not reach the ${expectedRejection} rejection (HTTP ${response.status}).`);
   }
 }
 
