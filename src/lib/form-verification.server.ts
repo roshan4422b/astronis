@@ -11,6 +11,16 @@ type RedisResponse = { result?: unknown; error?: string };
 type VerificationResult = { ok: true } | { ok: false; status: number; message: string };
 type EmailOtpFailureStage = "configuration" | "storage" | "provider";
 
+class RedisStorageError extends Error {
+  readonly status?: number;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.name = "RedisStorageError";
+    this.status = status;
+  }
+}
+
 export class EmailOtpFailure extends Error {
   readonly stage: EmailOtpFailureStage;
 
@@ -119,11 +129,19 @@ function getRedisConfig() {
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   const secret = process.env.EMAIL_OTP_SECRET;
   if (!url || !token || !secret || secret.length < 32) {
-    throw new Error("Email verification storage or signing configuration is missing.");
+    throw new EmailOtpFailure(
+      "configuration",
+      "Required Upstash Redis REST or OTP signing configuration is missing.",
+    );
   }
-  const parsedUrl = new URL(url);
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(url);
+  } catch (error) {
+    throw new EmailOtpFailure("configuration", "Upstash Redis REST URL is invalid.", { cause: error });
+  }
   if (parsedUrl.protocol !== "https:") {
-    throw new Error("Email verification storage must use HTTPS.");
+    throw new EmailOtpFailure("configuration", "Upstash Redis REST URL must use HTTPS.");
   }
   return { url: parsedUrl.toString().replace(/\/$/, ""), token, secret };
 }
@@ -140,9 +158,22 @@ async function redisCommand<T>(command: unknown[]): Promise<T> {
     cache: "no-store",
     signal: AbortSignal.timeout(5000),
   });
-  if (!response.ok) throw new Error("Email verification storage request failed.");
+  if (!response.ok) {
+    const responseText = await response.text();
+    let providerReason = "";
+    try {
+      const payload = JSON.parse(responseText) as { error?: unknown };
+      if (typeof payload.error === "string") providerReason = payload.error;
+    } catch {
+      providerReason = "";
+    }
+    throw new RedisStorageError(
+      providerReason || "Upstash Redis REST request failed.",
+      response.status,
+    );
+  }
   const payload = (await response.json()) as RedisResponse;
-  if (payload.error) throw new Error("Email verification storage command failed.");
+  if (payload.error) throw new RedisStorageError(payload.error);
   return payload.result as T;
 }
 
@@ -218,6 +249,7 @@ export async function sendEmailOtp(
       "NX",
     ]);
   } catch (error) {
+    if (error instanceof EmailOtpFailure) throw error;
     throw new EmailOtpFailure("storage", "Could not reserve an OTP request.", { cause: error });
   }
   if (cooldown !== "OK") {

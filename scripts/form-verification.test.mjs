@@ -89,6 +89,31 @@ const {
   verifyTurnstile,
 } = await import("../src/lib/form-verification.server.ts");
 
+test("classifies missing Upstash configuration without attempting a storage request", async () => {
+  const saved = {
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    secret: process.env.EMAIL_OTP_SECRET,
+  };
+  delete process.env.UPSTASH_REDIS_REST_URL;
+  try {
+    await assert.rejects(
+      sendEmailOtp(email),
+      (error) => {
+        assert.ok(error instanceof EmailOtpFailure);
+        assert.equal(error.stage, "configuration");
+        assert.equal(emailOtpFailureResponse(error).status, 503);
+        assert.match(emailOtpFailureResponse(error).message, /not configured/i);
+        return true;
+      },
+    );
+  } finally {
+    process.env.UPSTASH_REDIS_REST_URL = saved.url;
+    process.env.UPSTASH_REDIS_REST_TOKEN = saved.token;
+    process.env.EMAIL_OTP_SECRET = saved.secret;
+  }
+});
+
 const deliver = async (_email, code) => {
   deliver.code = code;
 };
@@ -234,6 +259,32 @@ test("logs useful provider failure diagnostics without exposing email, OTP, or c
     assert.equal(emailOtpFailureResponse(failure).status, 502);
     assert.match(emailOtpFailureResponse(failure).message, /email provider/i);
   } finally {
+    console.error = originalError;
+  }
+});
+
+test("retains Upstash HTTP status and a redacted provider error in server diagnostics", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalError = console.error;
+  const output = [];
+  globalThis.fetch = async () => Response.json({ error: "permission denied for person@example.com" }, { status: 401 });
+  console.error = (...args) => output.push(args);
+  try {
+    await assert.rejects(
+      sendEmailOtp(email),
+      (error) => {
+        assert.ok(error instanceof EmailOtpFailure);
+        assert.equal(error.stage, "storage");
+        logEmailOtpFailure(error);
+        return true;
+      },
+    );
+    const serialized = JSON.stringify(output);
+    assert.match(serialized, /401/);
+    assert.match(serialized, /permission denied/);
+    assert.doesNotMatch(serialized, /person@example\.com|123456|test-token/);
+  } finally {
+    globalThis.fetch = originalFetch;
     console.error = originalError;
   }
 });
