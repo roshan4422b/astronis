@@ -344,6 +344,16 @@ export default function TestimonialForm({
               Website
               <input name="website" tabIndex={-1} autoComplete="off" />
             </label>
+            <label className="consent full">
+              <input
+                name="identityPublicationConsent"
+                type="checkbox"
+                value="yes"
+                required
+                onInvalid={() => setStatus("Please authorise publication of your name and organisation with your testimonial.")}
+              />
+              <span>I authorise Astronis Global to publish my name, designation, and organisation with this testimonial on its website.</span>
+            </label>
             <p className="full testimonial-terms-link">
               <strong>Terms and Policy:</strong>{" "}
               <Link href="/legal/client-testimonial-consent">

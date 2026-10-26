@@ -3,11 +3,17 @@ import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import Enquiry from "./enquiry";
 import styles from "./technology.module.css";
+import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
+import CmsPageRoute from "@/app/_components/cms-page-route";
 
-export const metadata = {
+export const dynamic = "force-dynamic";
+const fallbackMetadata = {
   title: "Technology & Digital Solutions",
   description: "Integrated technology, legal, regulatory and business expertise. Explore digital business solutions, RegTech, legal technology, data and automation.",
 };
+export async function generateMetadata() {
+  return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/technology-and-digital-solutions")) };
+}
 
 const solutions = [
   { id: "digital-business", icon: "gear", title: "Digital Business Solutions", intro: "Streamline operations, enhance efficiency and enable growth through technology.", text: "Digital transformation, process automation and enterprise solutions.", image: "/Technology, IT & ITES .png" },
@@ -42,8 +48,33 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
   return <Link className={styles.textLink} href={href}>{children}<Icon name="arrow" /></Link>;
 }
 
-export default function TechnologySolutionsPage() {
-  return <div className={`technology-digital-page technology-digital-landing-page ${styles.page}`}>
+export default async function TechnologySolutionsPage() {
+  const cmsSolutions = (await getPublishedContent("technology")).map((item) => ({
+    slug: item.slug,
+    title: String(item.data.title || ""),
+    category: String(item.data.category || ""),
+    description: String(item.data.description || ""),
+    content: String(item.data.content || ""),
+    featuredImage: String(item.data.featuredImage || ""),
+  })).filter((item) => item.title);
+  const solutionSlugs: Record<string, string> = {
+    "digital-business": "digital-business-solutions",
+    regtech: "regtech-and-compliance-technology",
+    "legal-technology": "legal-technology",
+    "data-ai": "data-ai-and-automation",
+  };
+  const displaySolutions = solutions.map((solution) => {
+    const cms = cmsSolutions.find((item) => item.slug === solutionSlugs[solution.id]);
+    return cms ? {
+      ...solution,
+      title: cms.title,
+      intro: cms.description || solution.intro,
+      text: cms.content || cms.description || solution.text,
+      image: cms.featuredImage || solution.image,
+    } : solution;
+  });
+  const additionalSolutions = cmsSolutions.filter((item) => !Object.values(solutionSlugs).includes(item.slug));
+  return <CmsPageRoute path="/technology-and-digital-solutions" eyebrow="Technology"><div className={`technology-digital-page technology-digital-landing-page ${styles.page}`}>
     <section className={styles.hero} aria-labelledby="technology-title">
       <Image src="/Technology, IT & ITES .png" alt="Connected digital systems and laptop overlooking a city skyline" fill preload sizes="100vw" />
       <div className={styles.heroShade} />
@@ -53,13 +84,14 @@ export default function TechnologySolutionsPage() {
       </div>
     </section>
 
-    <nav className={`${styles.wrap} ${styles.pillars}`} aria-label="Technology solution areas">{solutions.map((solution) => <Link key={solution.id} href={`#${solution.id}`}><Icon name={solution.icon} /><div><h2>{solution.title}</h2><p>{solution.intro}</p></div><Icon name="arrow" /></Link>)}</nav>
+    <nav className={`${styles.wrap} ${styles.pillars}`} aria-label="Technology solution areas">{displaySolutions.map((solution) => <Link key={solution.id} href={`#${solution.id}`}><Icon name={solution.icon} /><div><h2>{solution.title}</h2><p>{solution.intro}</p></div><Icon name="arrow" /></Link>)}</nav>
 
     <section className={styles.pale}>
       <div className={`${styles.wrap} ${styles.overview}`}><div><h2>Turning Complex<br />Challenges into<br />Smarter Solutions.</h2><p>We understand the evolving needs of modern businesses and help you use technology with legal and regulatory insight to achieve practical, sustainable outcomes.</p><TextLink href="#approach">Learn More About Our Approach</TextLink></div><div className={styles.building}><Image src="/images/india-presence/mumbai.jpg" alt="Modern commercial buildings" fill sizes="(max-width: 760px) 90vw, 45vw" /><span>Ideas.<br />Solutions.<br />Progress.</span></div><ul className={styles.benefits}>{[["gear", "Greater Efficiency"], ["shield", "Stronger Compliance"], ["target", "Reduced Risk"], ["network", "Better Decision-Making"], ["chart", "Scalable Growth"]].map(([icon, title]) => <li key={title}><Icon name={icon} />{title}</li>)}</ul></div>
     </section>
 
-    <section className={styles.solutionsSection} id="solutions"><div className={styles.wrap}><div className={styles.sectionHeading}><h2>Our Technology Solutions</h2><TextLink href="#enquiry">Discuss Your Solution</TextLink></div><div className={styles.solutionGrid}>{solutions.map((solution) => <article className={styles.card} key={solution.id} id={solution.id}><div className={styles.cardImage}><Image src={solution.image} alt="" fill sizes="(max-width: 600px) 90vw, (max-width: 1000px) 45vw, 23vw" /></div><div className={styles.cardBody}><h3>{solution.title}</h3><p>{solution.text}</p><TextLink href={solution.id === "digital-business" ? "/technology-and-digital-solutions/digital-business-solutions" : solution.id === "regtech" ? "/technology-and-digital-solutions/regtech-and-compliance-technology" : solution.id === "legal-technology" ? "/technology-and-digital-solutions/legal-technology" : solution.id === "data-ai" ? "/technology-and-digital-solutions/data-ai-and-automation" : `?solution=${encodeURIComponent(solution.title)}#enquiry`}>Explore</TextLink></div></article>)}</div></div></section>
+    <section className={styles.solutionsSection} id="solutions"><div className={styles.wrap}><div className={styles.sectionHeading}><h2>Our Technology Solutions</h2><TextLink href="#enquiry">Discuss Your Solution</TextLink></div><div className={styles.solutionGrid}>{displaySolutions.map((solution) => <article className={styles.card} key={solution.id} id={solution.id}><div className={styles.cardImage}><Image src={solution.image} alt="" fill sizes="(max-width: 600px) 90vw, (max-width: 1000px) 45vw, 23vw" /></div><div className={styles.cardBody}><h3>{solution.title}</h3><p>{solution.text}</p><TextLink href={solution.id === "digital-business" ? "/technology-and-digital-solutions/digital-business-solutions" : solution.id === "regtech" ? "/technology-and-digital-solutions/regtech-and-compliance-technology" : solution.id === "legal-technology" ? "/technology-and-digital-solutions/legal-technology" : solution.id === "data-ai" ? "/technology-and-digital-solutions/data-ai-and-automation" : `?solution=${encodeURIComponent(solution.title)}#enquiry`}>Explore</TextLink></div></article>)}</div></div></section>
+    {additionalSolutions.length ? <section className={styles.solutionsSection}><div className={styles.wrap}><div className={styles.sectionHeading}><h2>Published Technology Content</h2></div><div className={styles.solutionGrid}>{additionalSolutions.map((item) => <article className={styles.card} key={item.slug}><div className={styles.cardBody}><span className={styles.eyebrow}>{item.category || "Technology"}</span><h3>{item.title}</h3><p>{item.description}</p><TextLink href={`/technology-and-digital-solutions/${item.slug}`}>Explore</TextLink></div></article>)}</div></div></section> : null}
 
     <section className={`${styles.pale} ${styles.section}`}><div className={styles.wrap}><div className={styles.sectionHeading}><h2>Industries We Support</h2><TextLink href="/industries">Explore All Industries</TextLink></div><div className={styles.sectors}>{sectors.map(([icon, title, slug]) => <Link key={slug} href={`/industries/${slug}`}><Icon name={icon} /><span>{title}</span></Link>)}<Link href="/industries"><Icon name="network" /><span>More<br />Industries</span></Link></div></div></section>
 
@@ -88,5 +120,5 @@ export default function TechnologySolutionsPage() {
         <div className={styles.enquiryPanel}><span className={styles.eyebrow}>Start a conversation</span><h3>Tell us what you have in mind.</h3><p>Share a few details and our team will get in touch to discuss your requirements.</p><Enquiry /></div>
       </div>
     </section>
-  </div>;
+  </div></CmsPageRoute>;
 }

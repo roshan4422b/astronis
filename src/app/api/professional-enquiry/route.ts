@@ -1,3 +1,5 @@
+import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
+
 const allowedExtensions = new Set(["pdf", "doc", "docx", "jpg", "jpeg", "png"]);
 const jurisdictionDocumentExtensions = new Set(["pdf", "doc", "docx"]);
 
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
       (fields.connectWith === "jurisdiction" && !fields.location) ||
       (collaborationEnquiry && (!fields.company || !fields.professionalType || !fields.service || !fields.location)) ||
       (collaborateWithUs && (!fields.company || !fields.professionalType || !fields.service || !fields.collaborationInterest)) ||
-      fields.name.length < 2 || !/^\S+@\S+\.\S+$/.test(fields.email) ||
+      fields.name.length < 2 || fields.name.length > 120 || !/^\S+@\S+\.\S+$/.test(fields.email) || fields.email.length > 254 ||
       fields.phone.length < 7 || fields.message.length < 10 || fields.message.length > 1000 ||
       value("consent") !== "yes" || Object.values(fields).some(field => field.length > 1000)) {
     return Response.json({ message: "Please check the required fields and provide your consent." }, { status: 400 });
@@ -64,8 +66,37 @@ export async function POST(request: Request) {
     return Response.json({ message: "Add up to three PDF, DOC, DOCX, JPG or PNG files under 10 MB each and 20 MB total." }, { status: 400 });
   }
 
+  const acceptanceTimestamp = new Date().toISOString();
+  const enquiryReference = crypto.randomUUID();
+  const formType = networkApplication ? "professional-network-application" : collaborateWithUs || collaborationEnquiry ? "professional-collaboration-enquiry" : "professional-enquiry";
+  const acceptedAt = careerApplication ? acceptanceTimestamp : undefined;
+  const persistedId = await persistPublicEnquiry({
+    name: fields.name,
+    email: fields.email,
+    company: fields.company,
+    subject: fields.collaborationInterest || fields.service || fields.connectWith,
+    message: fields.message,
+    formType,
+    data: {
+      ...fields,
+      collaborationEnquiry,
+      collaborateWithUs,
+      networkApplication,
+      enquiryAgreementAccepted: true,
+      enquiryAgreementAcceptedAt: acceptanceTimestamp,
+      careerAgreementAccepted: careerApplication,
+      careerAgreementAcceptedAt: acceptedAt || null,
+      enquiryReference,
+      attachments: documents.map((file) => ({ name: file.name.slice(0, 180), type: file.type || "application/octet-stream", size: file.size })),
+    },
+  });
+  if (!persistedId) return Response.json({ success: false, message: "We couldn't save your enquiry. Please try again." }, { status: 503 });
+
+  const savedMessage = documents.length
+    ? `Your enquiry details were saved, but the attachments were not received. Please contact advisory@astronisglobal.com and quote reference ${persistedId}.`
+    : "Your enquiry has been received and saved. Our team will contact you shortly.";
   const webhook = process.env.ENQUIRY_WEBHOOK_URL;
-  if (!webhook) return Response.json({ success: false, message: "We couldn't submit your enquiry. Please try again." }, { status: 503 });
+  if (!webhook) return Response.json({ message: savedMessage, reference: persistedId }, { status: 202 });
 
   try {
     const url = new URL(webhook);
@@ -74,16 +105,13 @@ export async function POST(request: Request) {
       name: file.name.slice(0, 180), type: file.type || "application/octet-stream", size: file.size,
       contentBase64: Buffer.from(await file.arrayBuffer()).toString("base64"),
     })));
-    const acceptanceTimestamp = new Date().toISOString();
-    const enquiryReference = crypto.randomUUID();
-    const acceptedAt = careerApplication ? acceptanceTimestamp : undefined;
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(process.env.ENQUIRY_WEBHOOK_TOKEN ? { Authorization: `Bearer ${process.env.ENQUIRY_WEBHOOK_TOKEN}` } : {}) },
       body: JSON.stringify({
         kind: "professional-enquiry",
         ...fields,
-        formType: networkApplication ? "professional-network-application" : collaborateWithUs || collaborationEnquiry ? "professional-collaboration-enquiry" : "professional-enquiry",
+        formType,
         enquiryReference,
         enquiryAgreementAccepted: true,
         enquiryAgreementId: "enquiry-communication-consultation-consent",
@@ -98,8 +126,12 @@ export async function POST(request: Request) {
       signal: AbortSignal.timeout(15000),
     });
     if (!response.ok) throw new Error("Delivery failed");
-    return Response.json({ message: "Thank you. Your enquiry has been received. Our team will connect you with the right professional shortly." });
+    return Response.json({ message: "Thank you. Your enquiry has been received. Our team will connect you with the right professional shortly.", reference: persistedId });
   } catch {
-    return Response.json({ message: "We could not deliver your enquiry. Please try again or contact our team directly." }, { status: 502 });
+    console.error("[cms] Professional enquiry webhook delivery failed after CMS persistence");
+    const message = documents.length
+      ? `Your enquiry details were saved, but the attachments could not be delivered. Please contact advisory@astronisglobal.com and quote reference ${persistedId}.`
+      : "Your enquiry has been saved. Please do not submit it again; our team will follow up.";
+    return Response.json({ message, reference: persistedId }, { status: 202 });
   }
 }

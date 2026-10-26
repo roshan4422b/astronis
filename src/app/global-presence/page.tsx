@@ -6,12 +6,17 @@ import { corporateArticles } from "@/content/corporate-articles";
 import { industries } from "@/content/site";
 import professionalsStyles from "../professionals/professional-scope.module.css";
 import styles from "./global-presence.module.css";
+import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
+import CmsPageRoute from "@/app/_components/cms-page-route";
 
-export const metadata = {
+const fallbackMetadata = {
   title: "Global Presence & International Advisory Network | Astronis",
   description:
     "Explore Astronis Global's international advisory network across India, UAE, Singapore, UK, USA, Europe and the Middle East, supporting cross-border investment, India entry, overseas expansion and international business requirements.",
 };
+export async function generateMetadata() {
+  return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/global-presence")) };
+}
 
 const metrics = [
   { value: "7+", label: "Key Regions" },
@@ -161,8 +166,27 @@ const knowledgeCategories = [
 
 const insights = corporateArticles.slice(0, 3);
 
-export default function GlobalPresencePage() {
+export const dynamic = "force-dynamic";
+export default async function GlobalPresencePage() {
+  const cmsJurisdictions = (await getPublishedContent("global-presence")).map((item) => ({
+    slug: item.slug,
+    title: String(item.data.title || ""),
+    description: String(item.data.description || ""),
+    featuredImage: String(item.data.featuredImage || ""),
+  })).filter((item) => item.title);
+  const displayRegions = regionCards.map((region) => {
+    const slug = region.href.split("/").pop();
+    const cmsRegion = cmsJurisdictions.find((item) => item.slug === slug);
+    return cmsRegion ? {
+      ...region,
+      name: cmsRegion.title,
+      description: cmsRegion.description || region.description,
+      image: cmsRegion.featuredImage || region.image,
+    } : region;
+  });
+  const additionalJurisdictions = cmsJurisdictions.filter((item) => !displayRegions.some((region) => region.href.endsWith(`/${item.slug}`)));
   return (
+    <CmsPageRoute path="/global-presence" eyebrow="Global">
     <main className={`${styles.page} ${professionalsStyles.scope}`}>
       <section className={styles.hero}>
         <div className={styles.container}>
@@ -245,7 +269,7 @@ export default function GlobalPresencePage() {
             </div>
 
             <div className={styles.mapInfo}>
-              {regionCards.map((region) => (
+              {displayRegions.map((region) => (
                 <article key={region.name} className={styles.regionInfo}>
                   <div className={styles.regionInfoHeader}>
                     <AssetImage className={styles.countryFlag} src={region.flag} alt={`${region.name} flag`} width={36} height={24} />
@@ -253,6 +277,15 @@ export default function GlobalPresencePage() {
                   </div>
                   <p>{region.description}</p>
                 </article>
+              ))}
+              {additionalJurisdictions.map((item) => (
+                <Link key={item.slug} href={`/global-presence/${item.slug}`} className={styles.regionCard}>
+                  <div className={styles.regionBody}>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                    <span className={styles.cardLink}>Explore {item.title}<Icon name="arrow" /></span>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -269,7 +302,7 @@ export default function GlobalPresencePage() {
           </div>
 
           <div className={styles.regionGrid}>
-            {regionCards.map((region) => (
+            {displayRegions.map((region) => (
               <Link key={region.name} href={region.href} className={styles.regionCard}>
                 <div className={styles.regionImage}>
                   <Image src={region.image} alt={region.name} fill sizes="(max-width: 768px) 100vw, 33vw" />
@@ -596,5 +629,6 @@ export default function GlobalPresencePage() {
         </div>
       </section>
     </main>
+    </CmsPageRoute>
   );
 }

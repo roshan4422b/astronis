@@ -46,20 +46,22 @@ export const professionals = [
     enrolment: "Astronis Global professional team",
   },
 ];
-export default function Leadership({ limit }: { limit?: number }) {
-  const visibleProfessionals = limit ? professionals.slice(0, limit) : professionals;
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string };
+export default function Leadership({ limit, cmsProfessionals = [] }: { limit?: number; cmsProfessionals?: CmsProfessional[] }) {
+  const merged = [...cmsProfessionals, ...professionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
+  const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (
     <div className="leadership-grid">
       {visibleProfessionals.map((p) => (
         <article className="leader-card" key={p.slug}>
           <div className="leader-avatar">
-            <Image
+            {p.image ? <Image
               src={p.image}
               alt={p.name}
               fill
               sizes="(max-width: 760px) 35vw, 155px"
-            />
+            /> : <span aria-hidden="true">{p.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</span>}
           </div>
           <div>
             <h3>{p.name}</h3>

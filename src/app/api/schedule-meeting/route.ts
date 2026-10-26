@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { services } from "@/data/services";
+import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
 
 export const runtime = "nodejs";
 
@@ -47,12 +48,43 @@ export async function POST(request: Request) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
   if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true || raw.enquiryAgreementAccepted !== "yes" || raw.enquiryAgreementId !== "enquiry-communication-consultation-consent") return error("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
-  if (!apiKey || !from) return error("The consultation request service is not configured yet. Please contact advisory@astronisglobal.com.", 503);
-
   const reference = `AST-${new Date().toISOString().slice(2, 10).replaceAll("-", "")}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   const acceptanceTimestamp = new Date().toISOString();
+  const persistedId = await persistPublicEnquiry({
+    name,
+    email,
+    company: organisation,
+    subject: `Consultation request ${reference}`,
+    message: `Requested ${date} at ${time} (${timezone}), ${mode}. Service: ${service}. Team size: ${team}.`,
+    formType: "consultation-booking",
+    data: {
+      name,
+      email,
+      phone,
+      organisation,
+      service,
+      team,
+      turnover,
+      date,
+      time,
+      timezone,
+      mode,
+      consent: true,
+      enquiryAgreementAccepted: true,
+      enquiryAgreementId: "enquiry-communication-consultation-consent",
+      enquiryAgreementAcceptedAt: acceptanceTimestamp,
+      reference,
+    },
+  });
+  if (!persistedId) return error("We couldn't save your consultation request. Please try again.", 503);
+
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!apiKey || !from) {
+    console.error("[cms] Consultation confirmation email is not configured; request remains in CMS");
+    return Response.json({ success: true, status: "pending", reference, message: "Your request was received and saved. Our team will contact you to confirm availability." }, { status: 202 });
+  }
+
   const text = [
     `Consultation request ${reference} (pending confirmation)`,
     "Form type: consultation booking",
@@ -70,9 +102,9 @@ export async function POST(request: Request) {
     if (internal.error) throw new Error(internal.error.message);
     const customer = await resend.emails.send({ from, to: [email], subject: "Astronis has received your consultation request", text: `Hello ${name},\n\nWe have received your consultation request (${reference}). Your preferred date and time are not reserved yet. Our team will contact you to confirm availability.\n\nRequested date: ${date}\nRequested time: ${time} (${timezone})\nMeeting mode: ${mode}\n\nAstronis Global\nadvisory@astronisglobal.com` });
     if (customer.error) console.error("Customer request receipt email failed:", customer.error.message);
-    return Response.json({ success: true, status: "pending", reference });
+    return Response.json({ success: true, status: "pending", reference, message: "Your request was received. Our team will contact you to confirm availability." });
   } catch (reason) {
     console.error("Meeting request email failed:", reason instanceof Error ? reason.message : "Unknown provider error");
-    return error("We couldn't send your request. Please try again or email advisory@astronisglobal.com.", 502);
+    return Response.json({ success: true, status: "pending", reference, message: "Your request was saved, but confirmation is delayed. Our team will contact you to confirm availability." }, { status: 202 });
   }
 }

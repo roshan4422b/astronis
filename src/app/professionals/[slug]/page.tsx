@@ -5,6 +5,9 @@ import Icon from "@/app/_components/icon";
 import { professionals } from "../leadership";
 import ProfessionalCollaboration from "../professional-collaboration";
 import styles from "./profile.module.css";
+import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import CmsContentPage from "@/app/_components/cms-content-page";
+export const dynamic = "force-dynamic";
 
 type Professional = (typeof professionals)[number];
 const focusBySlug: Record<string, string[]> = {
@@ -25,6 +28,8 @@ export function generateStaticParams() {
 }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const cmsPerson = (await getPublishedContent("professionals")).find((item) => item.slug === slug);
+  if (cmsPerson) return getPublishedContentMetadata(cmsPerson, `/professionals/${cmsPerson.slug}`);
   const person = professionals.find((p) => p.slug === slug);
   return { title: slug === "partner-with-us" ? "Professional Collaboration" : person?.name, description: person ? `Learn about ${person.name} at Astronis Global.` : "Explore professional collaboration, strategic partnerships and international professional networks with Astronis Global." };
 }
@@ -56,6 +61,24 @@ function ProfilePage({ person }: { person: Professional }) {
 }
 export default async function Profile({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const cmsPerson = (await getPublishedContent("professionals")).find((item) => item.slug === slug);
+  if (cmsPerson?.data.sourceDefined === true) {
+    const sourcePerson = professionals.find((item) => item.slug === slug);
+    if (sourcePerson) {
+      const person: Professional = {
+        ...sourcePerson,
+        name: typeof cmsPerson.data.title === "string" && cmsPerson.data.title ? cmsPerson.data.title : sourcePerson.name,
+        role: typeof cmsPerson.data.designation === "string" && cmsPerson.data.designation ? cmsPerson.data.designation : sourcePerson.role,
+        expertise: typeof cmsPerson.data.expertise === "string" && cmsPerson.data.expertise ? cmsPerson.data.expertise : sourcePerson.expertise,
+        description: typeof cmsPerson.data.content === "string" && cmsPerson.data.content ? cmsPerson.data.content : sourcePerson.description,
+        image: typeof cmsPerson.data.featuredImage === "string" && cmsPerson.data.featuredImage ? cmsPerson.data.featuredImage : sourcePerson.image,
+        education: typeof cmsPerson.data.education === "string" && cmsPerson.data.education ? cmsPerson.data.education : sourcePerson.education,
+        enrolment: typeof cmsPerson.data.enrolment === "string" && cmsPerson.data.enrolment ? cmsPerson.data.enrolment : sourcePerson.enrolment,
+      };
+      return <ProfilePage person={person} />;
+    }
+  }
+  if (cmsPerson) return <CmsContentPage record={cmsPerson} eyebrow="Professionals" />;
   if (slug === "partner-with-us") return <ProfessionalCollaboration />;
   const person = professionals.find((p) => p.slug === slug);
   if (!person) notFound();

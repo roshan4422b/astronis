@@ -16,10 +16,12 @@ const entries = siteMenu.insights.map((title) => ({
         ? "/success-stories"
         : "/insights/" + slugify(title),
 }));
-export default function InsightDirectory() {
+export default function InsightDirectory({ cmsEntries = [] }: { cmsEntries?: { title: string; slug: string; category: string }[] }) {
   const [search, setSearch] = useState(""),
     [category, setCategory] = useState("All");
-  const filtered = entries.filter(
+  const cmsResources = cmsEntries.map((item) => ({ title: item.title, category: item.category, href: `/insights/${item.slug}` }));
+  const allEntries = [...entries, ...cmsResources.filter((item) => !entries.some((existing) => existing.href === item.href))];
+  const filtered = allEntries.filter(
     (e) =>
       (category === "All" || e.category === category) &&
       e.title.toLowerCase().includes(search.toLowerCase()),

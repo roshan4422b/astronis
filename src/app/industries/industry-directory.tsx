@@ -3,16 +3,16 @@ import { useState } from "react";
 import Image from "@/app/_components/asset-image";
 import { industries } from "@/content/site";
 import { Heading, TextLink } from "../_components/ui";
-export default function IndustryDirectory() {
+type DirectoryIndustry = { slug: string; title: string; image: string };
+export default function IndustryDirectory({ cmsIndustries = [] }: { cmsIndustries?: DirectoryIndustry[] }) {
   const [search, setSearch] = useState("");
-  const results = industries.filter((i) =>
-    i.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const merged = [...cmsIndustries, ...industries.filter((industry) => !cmsIndustries.some((item) => item.slug === industry.slug))];
+  const results = merged.filter((industry) => industry.title.toLowerCase().includes(search.toLowerCase()));
   return (
     <section className="section industry-directory">
       <div className="container">
         <Heading
-          title="Explore 24 Industries"
+          title={`Explore ${merged.length} Industries`}
           text="Sector-focused legal, regulatory and business advisory for the markets and environments in which your organisation operates."
         />
         <div className="search-toolbar">
@@ -25,22 +25,22 @@ export default function IndustryDirectory() {
           />
         </div>
         <p className="industry-results-count" role="status">
-          Showing {results.length} of {industries.length} industries
+          Showing {results.length} of {merged.length} industries
         </p>
         <div className="industry-directory-grid">
           {results.map((i) => (
             <article className="industry-directory-card" key={i.slug}>
-              <div className="industry-directory-image">
+              {i.image ? <div className="industry-directory-image">
                 <Image
                   src={i.image}
                   alt={i.title}
                   fill
                   sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 25vw"
                 />
-              </div>
+              </div> : null}
               <div className="industry-directory-body">
                 <span className="industry-directory-number">
-                  {String(industries.indexOf(i) + 1).padStart(2, "0")}
+                  {String(merged.indexOf(i) + 1).padStart(2, "0")}
                 </span>
                 <h3>{i.title}</h3>
                 <TextLink href={"/industries/" + i.slug}>
