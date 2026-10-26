@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import InsightsEvents from "./insights-events";
+import { getPublishedPageMetadata } from "@/lib/supabase/server";
+import CmsPageRoute from "@/app/_components/cms-page-route";
 
-export const metadata: Metadata = {
+const fallbackMetadata: Metadata = {
   title: "Insights & Events",
   description:
     "Explore the latest legal, regulatory, corporate, industry and business insights, publications, case law updates and events from Astronis Global.",
@@ -16,7 +18,10 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/insights-events")) };
+}
 
 export default function InsightsEventsPage() {
-  return <InsightsEvents />;
+  return <CmsPageRoute path="/insights-events" eyebrow="Insights & Events"><InsightsEvents /></CmsPageRoute>;
 }

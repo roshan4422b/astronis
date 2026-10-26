@@ -25,10 +25,9 @@ import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
-import {
-  getReferenceServicePageData,
-  getReferenceServicePageMetadata,
-} from "@/data/reference-service-pages";
+import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import CmsContentPage from "@/app/_components/cms-content-page";
+export const dynamic = "force-dynamic";
 
 function resolveHierarchy(slugs: string[]) {
   const service = services.find(item => item.canonicalSlug === slugs[0]);
@@ -58,9 +57,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
-  const referenceRoute = `/services/${slugs.join("/")}`;
-  const referenceMetadata = getReferenceServicePageMetadata(referenceRoute);
-  if (referenceMetadata) return referenceMetadata;
+  const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
+  if (cmsService) return getPublishedContentMetadata(cmsService, `/services/${cmsService.slug}`);
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
@@ -156,8 +154,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
-  const referencePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
-  if (referencePage) return <EntityFormationPage data={referencePage} />;
+  const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
+  if (cmsService?.data.sourceDefined === true) {
+    const sourcePractice = resolvePractice(slugs)?.practice;
+    if (sourcePractice) {
+      return <MainServicePage practice={{
+        ...sourcePractice,
+        title: typeof cmsService.data.title === "string" && cmsService.data.title ? cmsService.data.title : sourcePractice.title,
+        description: typeof cmsService.data.content === "string" && cmsService.data.content ? cmsService.data.content : sourcePractice.description,
+        seoTitle: typeof cmsService.data.seoTitle === "string" && cmsService.data.seoTitle ? cmsService.data.seoTitle : sourcePractice.seoTitle,
+        heroImage: typeof cmsService.data.featuredImage === "string" && cmsService.data.featuredImage ? cmsService.data.featuredImage : sourcePractice.heroImage,
+      }} />;
+    }
+  }
+  if (cmsService) return <CmsContentPage record={cmsService} eyebrow="Services" />;
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const { service, group, child } = hierarchy;

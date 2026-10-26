@@ -1,0 +1,141 @@
+.professionalDirectory {
+  --card-ink: #102d50;
+  --card-muted: #52677d;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leadership-grid) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+  margin: 40px 0 34px;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card) {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid #dce6ef;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(16 45 80 / 8%);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-avatar) {
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #edf2f6;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-avatar img) {
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 350ms ease;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card > div:last-child) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 23px 24px 22px;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card h3) {
+  min-height: 2.45em;
+  margin: 0 0 7px;
+  color: var(--card-ink);
+  font-size: 23px;
+  line-height: 1.22;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card .eyebrow) {
+  min-height: 2.8em;
+  color: #38638a;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card p) {
+  display: -webkit-box;
+  min-height: 6em;
+  overflow: hidden;
+  margin: 13px 0 18px;
+  color: var(--card-muted);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card .text-link) {
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid #e6edf3;
+  border-bottom: 0;
+  color: #16558b;
+  font-size: 14px;
+}
+
+:global(#main-content .home-page) .professionalDirectory :global(.leader-card .text-link:hover) {
+  color: #0879c9;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card:hover),
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card:focus-within) {
+    transform: translateY(-5px);
+    border-color: #a7c4dc;
+    box-shadow: 0 18px 36px rgb(16 45 80 / 16%);
+  }
+
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card:hover .leader-avatar img),
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card:focus-within .leader-avatar img) {
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 900px) {
+  :global(#main-content .home-page) .professionalDirectory :global(.leadership-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  :global(#main-content .home-page) .professionalDirectory :global(.leadership-grid) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin: 30px 0;
+  }
+
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-avatar) {
+    aspect-ratio: 16 / 10;
+  }
+
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card h3) {
+    min-height: 0;
+    font-size: 22px;
+  }
+
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card .eyebrow) {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-card),
+  :global(#main-content .home-page) .professionalDirectory :global(.leader-avatar img) {
+    transition: none;
+  }
+}

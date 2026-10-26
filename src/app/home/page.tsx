@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "./hero";
 import QuickServices from "./quick-services";
 import WhyChooseUs from "./why-choose-us";
@@ -16,9 +17,17 @@ import KnowledgeCentre from "./knowledge-centre";
 import Consultation from "./consultation";
 import Contact from "./contact";
 import Connect from "./connect";
-export const metadata = { alternates: { canonical: "/" } };
+import { getPublishedPageMetadata } from "@/lib/supabase/server";
+import CmsPageRoute from "@/app/_components/cms-page-route";
+
+const fallbackMetadata = { alternates: { canonical: "/" } };
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/")) };
+}
+
 export default function HomePage() {
   return (
+    <CmsPageRoute path="/" eyebrow="Main website">
     <div className="home-page">
       <Hero />
       <QuickServices />
@@ -39,5 +48,6 @@ export default function HomePage() {
       <Contact />
       <Connect />
     </div>
+    </CmsPageRoute>
   );
 }

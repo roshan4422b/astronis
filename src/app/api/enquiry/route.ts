@@ -1,5 +1,5 @@
-import { MailtrapClient } from "mailtrap";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { Resend } from "resend";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
@@ -88,30 +88,12 @@ export async function POST(request: Request) {
   fields.careerAgreementAccepted = normalizeConsent(raw.careerAgreementAccepted);
   fields.enquiryAgreementAccepted = normalizeConsent(raw.enquiryAgreementAccepted);
 
-  console.log("Enquiry received:", {
-    formType: fields.formType,
-    name: fields.name,
-    email: fields.email,
-    phone: fields.phone,
-    company: fields.company,
-    service: fields.service,
-    industry: fields.industry,
-    technology: fields.technology,
-    solution: fields.solution,
-    country: fields.country,
-    consent: fields.consent,
-    honeypotFilled: Boolean(fields.website),
-    pageUrl: fields.pageUrl,
-  });
-
   if (fields.website) {
-    console.log("Enquiry rejected: honeypot filled.", { formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage("Your submission could not be processed.", 400);
   }
 
   if (!allowedFormTypes.has(fields.formType)) {
     const message = "Unsupported enquiry type.";
-    console.log("Enquiry rejected:", { reason: message, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(message, 400);
   }
 
@@ -168,29 +150,39 @@ export async function POST(request: Request) {
 
   const commonError = validateCommon();
   if (commonError) {
-    console.log("Enquiry rejected:", { reason: commonError, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(commonError, 400);
   }
 
   const typeError = validateForType();
   if (typeError) {
-    console.log("Enquiry rejected:", { reason: typeError, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(typeError, 400);
   }
 
-  const verificationResponse = verificationFailure(
-    await consumeEmailVerification(
-      fields.email,
-      sanitize(raw.emailVerificationToken),
-    ),
-  );
-  if (verificationResponse) return verificationResponse;
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    console.error("Enquiry submission failed: Supabase is not configured");
+    return rejectWithMessage("Enquiry submission is not configured yet. Please try again later.", 503);
+  }
+  const enquiryId = crypto.randomUUID();
+  const { error: saveError } = await supabase.from("cms_enquiries").insert({
+    id: enquiryId,
+    name: fields.name.trim(),
+    email: fields.email.trim(),
+    company: fields.company,
+    subject: subjectFor(fields),
+    message: fields.message,
+    form_type: fields.formType,
+    data: fields,
+  });
+  if (saveError) {
+    console.error("Enquiry submission failed: database persistence failed", saveError?.code || "unknown");
+    return rejectWithMessage("We couldn't submit your enquiry. Please try again.", 503);
+  }
 
-  const apiKey = process.env.MAILTRAP_API_KEY;
-  const from = process.env.MAILTRAP_FROM_EMAIL;
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !from) {
-    console.error("Enquiry submission failed: email provider is not configured");
-    return rejectWithMessage(FAILURE_MESSAGE, 503);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
   }
 
   const acceptanceTimestamp = new Date().toISOString();
@@ -216,9 +208,10 @@ export async function POST(request: Request) {
       text,
       html,
     });
-    return Response.json({ success: true, message: SUCCESS_MESSAGE });
-  } catch {
-    console.error("Enquiry submission failed: Mailtrap email provider error");
-    return rejectWithMessage(FAILURE_MESSAGE, 502);
+    if (result.error) throw new Error(result.error.message);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
+  } catch (error) {
+    console.error("Enquiry submission failed:", error instanceof Error ? error.message : "Unknown email provider error");
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
   }
 }

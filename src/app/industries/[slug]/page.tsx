@@ -27,6 +27,9 @@ import Aviation from "../aviation";
 import RetailConsumer from "../retail-consumer";
 import RenewableEnergy from "../renewable-energy";
 import Agriculture from "../agriculture";
+import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import CmsContentPage from "@/app/_components/cms-content-page";
+export const dynamic = "force-dynamic";
 export function generateStaticParams() {
   return industries.map((i) => ({ slug: i.slug }));
 }
@@ -36,6 +39,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const cmsIndustry = (await getPublishedContent("industries")).find((item) => item.slug === slug);
+  if (cmsIndustry) return getPublishedContentMetadata(cmsIndustry, `/industries/${cmsIndustry.slug}`);
   return { title: industries.find((i) => i.slug === slug)?.title };
 }
 export default async function IndustryPage({
@@ -44,6 +49,11 @@ export default async function IndustryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const cmsIndustry = (await getPublishedContent("industries")).find((item) => item.slug === slug);
+  if (cmsIndustry && (
+    cmsIndustry.data.sourceDefined !== true ||
+    (typeof cmsIndustry.data.content === "string" && cmsIndustry.data.content.trim())
+  )) return <CmsContentPage record={cmsIndustry} eyebrow="Industries" />;
   const item = industries.find((i) => i.slug === slug);
   if (!item) notFound();
   if (slug === "manufacturing") return <Manufacturing />;

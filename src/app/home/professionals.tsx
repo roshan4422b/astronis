@@ -1,6 +1,8 @@
 import Image from "@/app/_components/asset-image";
 import { Heading, TextLink } from "../_components/ui";
 import Leadership from "../professionals/leadership";
+import styles from "./professionals.module.css";
+
 export default function Professionals() {
   return (
     <section className="section professionals-section">
@@ -21,7 +23,9 @@ export default function Professionals() {
         </div>
       </div>
       <div className="container">
-        <Leadership limit={3} />
+        <div className={styles.professionalDirectory}>
+          <Leadership limit={3} />
+        </div>
         <div className="center">
           <TextLink href="/professionals">View All Professionals</TextLink>
         </div>

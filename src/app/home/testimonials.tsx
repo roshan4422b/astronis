@@ -2,7 +2,28 @@ import { Heading, TextLink } from "../_components/ui";
 import Image from "@/app/_components/asset-image";
 import { testimonials } from "@/content/testimonials";
 import TestimonialInvite from "./testimonial-invite";
-export default function Testimonials() {
+import { getPublicTestimonials, getSourceTestimonialSlugs } from "@/lib/supabase/server";
+export default async function Testimonials() {
+  const [published, sourceSlugs] = await Promise.all([
+    getPublicTestimonials(),
+    getSourceTestimonialSlugs(),
+  ]);
+  const cmsTestimonials = published.map((item) => ({
+    id: item.slug,
+    name: item.name,
+    company: item.company,
+    designation: item.designation,
+    service: item.service,
+    quote: item.testimonial_text,
+    rating: 5,
+    publicationConsent: true,
+    status: "approved" as const,
+  }));
+  const cmsIds = new Set(cmsTestimonials.map((testimonial) => testimonial.id));
+  const displayTestimonials = [
+    ...testimonials.filter((testimonial) => !cmsIds.has(testimonial.id) && !sourceSlugs.has(testimonial.id)),
+    ...cmsTestimonials,
+  ];
   return (
     <section className="section testimonials-section">
       <Image
@@ -19,7 +40,7 @@ export default function Testimonials() {
           light
         />
         <div className="home-testimonial-grid">
-          {testimonials.map((testimonial) => (
+          {displayTestimonials.map((testimonial) => (
             <article className="home-testimonial-card" key={testimonial.id}>
               <div className="testimonial-rating" role="img" aria-label={`${testimonial.rating ?? 0} out of 5 stars`}>
                 {"★".repeat(testimonial.rating ?? 0)}
