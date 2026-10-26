@@ -1,4 +1,5 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {

@@ -2,7 +2,24 @@ import Image from "../_components/asset-image";
 import { TextLink } from "../_components/ui";
 import styles from "./professionals-page.module.css";
 
-export const professionals = [
+export type ProfessionalRecord = {
+  name: string;
+  slug: string;
+  image: string;
+  code: string;
+  hierarchy: string;
+  role: string;
+  location: string;
+  phones: string[];
+  email: string;
+  linkedinProfile?: string;
+  expertise: string;
+  description: string;
+  education?: string;
+  enrolment?: string;
+};
+
+export const professionals: ProfessionalRecord[] = [
   {
     name: "Krishna Kumar Mishra",
     slug: "krishna-kumar-mishra",
@@ -100,16 +117,24 @@ export const professionals = [
       "Supports clients with licensing, business acquisitions, corporate due diligence, and BIS and ISI compliance.",
   },
 ];
-type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string };
-export default function Leadership({ limit, cmsProfessionals = [] }: { limit?: number; cmsProfessionals?: CmsProfessional[] }) {
-  const merged = [...cmsProfessionals, ...professionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string; description?: string };
+type LeadershipProps = {
+  limit?: number;
+  cmsProfessionals?: CmsProfessional[];
+  variant?: "default" | "premium";
+  people?: ProfessionalRecord[];
+};
+
+export default function Leadership({ limit, cmsProfessionals = [], variant = "default", people }: LeadershipProps) {
+  const sourceProfessionals = people ?? professionals;
+  const merged = [...cmsProfessionals, ...sourceProfessionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
   const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
       {visibleProfessionals.map((p) => (
-        <article className="leader-card" key={p.slug}>
-          <div className="leader-avatar">
+        <article className={variant === "premium" ? styles.personCard : "leader-card"} key={p.slug}>
+          <div className={variant === "premium" ? styles.portrait : "leader-avatar"}>
             {p.image ? <Image
               src={p.image}
               alt={p.name}
@@ -120,7 +145,7 @@ export default function Leadership({ limit, cmsProfessionals = [] }: { limit?: n
           <div className={variant === "premium" ? styles.personBody : undefined}>
             <h3>{p.name}</h3>
             <span className={variant === "premium" ? styles.role : "eyebrow"}>{p.role}</span>
-            <p>{variant === "premium" ? p.description : p.expertise}</p>
+            <p>{variant === "premium" ? p.description || p.expertise : p.expertise}</p>
             {variant === "premium" && <span className={styles.expertise}>{p.expertise}</span>}
             <TextLink href={"/professionals/" + p.slug}>View Profile</TextLink>
           </div>

@@ -199,11 +199,11 @@ export async function POST(request: Request) {
   const html = entries.map(([label, value]) => `<p><strong>${escapeHtml(label)}</strong><br />${escapeHtml(value).replace(/\n/g, "<br />")}</p>`).join("");
 
   try {
-    const mailtrap = new MailtrapClient({ token: apiKey });
-    await mailtrap.send({
-      from: { name: "Astronis Global Website", email: from },
-      to: [{ email: "advisory@astronisglobal.com" }],
-      reply_to: { email: fields.email },
+    const resend = new Resend(apiKey);
+    const result = await resend.emails.send({
+      from,
+      to: ["advisory@astronisglobal.com"],
+      replyTo: fields.email,
       subject: subjectFor(fields),
       text,
       html,
