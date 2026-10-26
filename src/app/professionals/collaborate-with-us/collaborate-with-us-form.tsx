@@ -36,6 +36,7 @@ export default function CollaborateWithUsForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
@@ -108,8 +109,8 @@ export default function CollaborateWithUsForm() {
       <label className={styles.uploadField}><span>Upload Profile / Brochure (Optional)</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => handleFile(event.currentTarget)} /><small>PDF, DOC, DOCX (Max 5 MB){file ? ` · ${file.name}` : ""}</small></label>
     </div>
     <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="collaborate-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
-    <EmailOtpVerification requireCaptcha={false} />
-    <button type="submit" className={styles.submitButton} disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
+    <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+    <button type="submit" className={styles.submitButton} disabled={busy || !captchaToken}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;
 }

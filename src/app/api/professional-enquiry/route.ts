@@ -1,5 +1,5 @@
 import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 const allowedExtensions = new Set(["pdf", "doc", "docx", "jpg", "jpeg", "png"]);
 const jurisdictionDocumentExtensions = new Set(["pdf", "doc", "docx"]);
@@ -68,7 +68,12 @@ export async function POST(request: Request) {
   }
 
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(fields.email, value("emailVerificationToken")),
+    await consumeFormVerification(
+      request,
+      fields.email,
+      value("captchaToken"),
+      value("emailVerificationToken"),
+    ),
   );
   if (verificationResponse) return verificationResponse;
 

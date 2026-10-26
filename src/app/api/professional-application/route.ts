@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 import {
   backgrounds, categories, countries, engagementOptions, experienceBands, hierarchiesFor,
   isSeniorReview, positionDisplayLabel, positionsFor, specialisationsFor, subdivisionCountryCodes, indianStates,
@@ -110,8 +110,10 @@ export async function POST(request: Request) {
   if (!await validCv(cv, limit)) return response("The CV must be a valid PDF, DOC or DOCX file within the upload limit.", 400);
 
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(
+    await consumeFormVerification(
+      request,
       String(applicant?.email),
+      String(form.get("captchaToken") || "").trim(),
       String(form.get("emailVerificationToken") || "").trim(),
     ),
   );

@@ -1,5 +1,5 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
@@ -85,7 +85,12 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
+    await consumeFormVerification(
+      request,
+      get("email"),
+      get("captchaToken"),
+      get("emailVerificationToken"),
+    ),
   );
   if (verificationResponse) return verificationResponse;
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;

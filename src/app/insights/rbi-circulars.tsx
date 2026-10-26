@@ -232,6 +232,7 @@ export default function RbiCircularsPage() {
   const [query, setQuery] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const filteredCategories = useMemo(
     () =>
@@ -545,7 +546,7 @@ export default function RbiCircularsPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? 'Submitting…' : 'Subscribe'} <Icon name="arrow" />
               </button>
             </div>
@@ -553,7 +554,7 @@ export default function RbiCircularsPage() {
               <input type="checkbox" name="consent" value="yes" required />
               I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </label>
-            <EmailOtpVerification />
+            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
             {subscribeStatus && <p role="status">{subscribeStatus}</p>}
           </form>
         </div>
