@@ -117,25 +117,18 @@ export const professionals: ProfessionalRecord[] = [
       "Supports clients with licensing, business acquisitions, corporate due diligence, and BIS and ISI compliance.",
   },
 ];
-type CmsProfessional = Pick<ProfessionalRecord, "slug" | "name" | "role" | "expertise"> &
-  Partial<Omit<ProfessionalRecord, "slug" | "name" | "role" | "expertise">>;
-
-export default function Leadership({
-  limit,
-  cmsProfessionals = [],
-  variant = "standard",
-  people = [],
-}: {
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string; description?: string };
+type LeadershipProps = {
   limit?: number;
   cmsProfessionals?: CmsProfessional[];
-  variant?: "standard" | "premium";
+  variant?: "default" | "premium";
   people?: ProfessionalRecord[];
-}) {
-  const merged = [
-    ...cmsProfessionals,
-    ...professionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug)),
-  ];
-  const visibleProfessionals = variant === "premium" ? people : limit ? merged.slice(0, limit) : merged;
+};
+
+export default function Leadership({ limit, cmsProfessionals = [], variant = "default", people }: LeadershipProps) {
+  const sourceProfessionals = people ?? professionals;
+  const merged = [...cmsProfessionals, ...sourceProfessionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
+  const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
