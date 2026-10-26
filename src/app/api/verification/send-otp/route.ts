@@ -19,10 +19,21 @@ export async function POST(request: Request) {
     return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
   }
 
+  let captchaOk = false;
   try {
-    if (!(await verifyTurnstile(String(body.captchaToken ?? ""), request))) {
-      return Response.json({ message: "Please complete the CAPTCHA verification and try again." }, { status: 400 });
-    }
+    captchaOk = await verifyTurnstile(String(body.captchaToken ?? ""), request);
+  } catch {
+    console.error("Turnstile verification unavailable.");
+    return Response.json(
+      { message: "Verification is temporarily unavailable. Please try again." },
+      { status: 503 },
+    );
+  }
+  if (!captchaOk) {
+    return Response.json({ message: "Please complete the CAPTCHA verification and try again." }, { status: 400 });
+  }
+
+  try {
     const result = await sendEmailOtp(email);
     if (!result.ok) {
       return Response.json(
