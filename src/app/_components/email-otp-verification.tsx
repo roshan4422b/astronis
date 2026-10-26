@@ -18,6 +18,7 @@ export default function EmailOtpVerification({
   resetKey?: number;
 } = {}) {
   const container = useRef<HTMLDivElement>(null);
+  const captchaTokenRef = useRef("");
   const codeInputId = useId();
   const [captchaToken, setCaptchaToken] = useState("");
   const [internalCaptchaReset, setInternalCaptchaReset] = useState(0);
@@ -31,6 +32,7 @@ export default function EmailOtpVerification({
   const [now, setNow] = useState(0);
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const updateCaptchaToken = useCallback((token: string) => {
+    captchaTokenRef.current = token;
     setCaptchaToken(token);
     onCaptchaToken?.(token);
   }, [onCaptchaToken]);
@@ -94,6 +96,7 @@ export default function EmailOtpVerification({
 
   async function sendCode() {
     try {
+      const captchaTokenForRequest = captchaTokenRef.current;
       const form = getVerificationScope(container.current);
       const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
       const nextEmail = emailAddress?.trim().toLowerCase() ?? emailInput?.value.trim().toLowerCase() ?? "";
@@ -102,7 +105,7 @@ export default function EmailOtpVerification({
         emailInput?.focus();
         return;
       }
-      if (!captchaToken) {
+      if (!captchaTokenForRequest) {
         setStatus("Complete the CAPTCHA before requesting a verification code.");
         return;
       }
@@ -113,7 +116,7 @@ export default function EmailOtpVerification({
       const response = await fetch("/api/verification/send-enquiry-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nextEmail, captchaToken }),
+        body: JSON.stringify({ email: nextEmail, captchaToken: captchaTokenForRequest }),
       });
       const result = (await response.json()) as { message?: string; retryAfter?: number };
       if (!response.ok) throw new Error(result.message || "We could not send your verification code.");
