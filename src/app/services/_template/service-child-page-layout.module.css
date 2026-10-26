@@ -200,11 +200,7 @@
 
   .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
     border-color: #93c5fd;
-    background: var(--service-blue);
-  }
-
-  .pageLayout .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover) {
-    background: var(--service-blue);
+    background: #eff6ff;
   }
 }
 
@@ -1088,8 +1084,23 @@
   color: #fff !important;
 }
 
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"][aria-pressed="true"]) {
+  border-color: #0751db !important;
+  background: #0751db !important;
+  box-shadow: 0 8px 20px rgb(6 30 59 / 18%);
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"][aria-pressed="true"]) h3,
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"][aria-pressed="true"]) p {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"][aria-pressed="true"]) :global(svg),
+.pageContent :global(section[class*="services"]) :global([class*="serviceCard"][aria-pressed="true"]) :global([class*="icon"]) {
+  color: #fff !important;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover),
   .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover),
   .pageContent :global(section[class*="process"]) :global([class*="timeline"] > li:hover),
   .pageContent :global(section[class*="requirements"]) :global([class*="requirementGrid"] > article:hover),
@@ -1104,11 +1115,6 @@
   .pageContent :global(section[class*="features"]) :global([class*="featureStrip"] > div:hover) {
     background-color: #0751db !important;
     background-image: none !important;
-  }
-
-  .pageContent :global(section[class*="services"]) :global([class*="serviceCard"]:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])) {
-    color: #fff !important;
-    transition: color 0.3s ease;
   }
 
   .pageContent :global(section[class*="benefits"]) :global([class*="benefitGrid"] > article:hover *:not(svg):not(svg *):not([class*="icon"]):not([class*="Icon"])),

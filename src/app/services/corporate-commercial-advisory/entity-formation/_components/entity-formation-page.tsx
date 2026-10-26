@@ -6,6 +6,7 @@ import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { getServiceChildHeroImage, services } from "@/data/services";
 import PrivateLimitedFaq from "../private-limited/private-limited-faq";
 import PageSectionLayout from "./page-section-layout";
+import ServiceCards from "./service-cards";
 import ServiceChildTestimonial from "@/app/services/_template/service-child-testimonial";
 import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import styles from "./entity-formation-page.module.css";
@@ -140,15 +141,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             title={data.servicesHeading ?? "Coordinated support from planning to setup"}
             text={data.servicesDescription ?? "Bring the formation steps and connected requirements into one considered plan."}
           />
-          <div className={`${styles.serviceGrid} ${data.serviceCardsThreeColumns ? styles.serviceCardsThreeColumns : ""}`}>
-            {data.services.map(([icon, title, description]) => (
-              <article className={styles.serviceCard} key={title}>
-                <span className={styles.icon}><Icon name={icon} /></span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </article>
-            ))}
-          </div>
+          <ServiceCards services={data.services} threeColumns={data.serviceCardsThreeColumns} />
           {data.relatedPages && (
             <nav className={styles.relatedPages} aria-label="Related services">
               <span>Explore related services</span>

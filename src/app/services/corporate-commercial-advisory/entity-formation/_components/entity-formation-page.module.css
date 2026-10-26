@@ -536,10 +536,17 @@
 }
 
 .serviceCard {
+  box-sizing: border-box;
+  width: 100%;
   min-height: 190px;
   padding: 21px;
   border: 1px solid #dbe4ef;
+  border-radius: 0;
   background: linear-gradient(145deg, #fff, #f4f8fc);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
 
