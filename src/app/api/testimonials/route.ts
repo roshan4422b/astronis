@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   const verificationResponse = verificationFailure(
-    await consumeFormVerification(request, get("email"), get("captchaToken"), get("emailVerificationToken")),
+    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
   );
   if (verificationResponse) return verificationResponse;
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;

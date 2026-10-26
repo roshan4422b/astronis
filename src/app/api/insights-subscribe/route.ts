@@ -1,4 +1,4 @@
-import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -11,12 +11,7 @@ export async function POST(request: Request) {
   const consent = String(data.get("consent") || "");
   if (email.length > 180 || !/^\S+@\S+\.\S+$/.test(email) || consent !== "yes") return Response.json({ message: "Please enter a valid email address and provide your consent." }, { status: 400 });
   const verificationResponse = verificationFailure(
-    await consumeFormVerification(
-      request,
-      email,
-      String(data.get("captchaToken") || ""),
-      String(data.get("emailVerificationToken") || ""),
-    ),
+    await consumeEmailVerification(email, String(data.get("emailVerificationToken") || "")),
   );
   if (verificationResponse) return verificationResponse;
   const webhook = process.env.ENQUIRY_WEBHOOK_URL;

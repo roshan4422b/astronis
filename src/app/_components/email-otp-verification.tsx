@@ -27,7 +27,7 @@ declare global {
 
 export default function EmailOtpVerification({
   emailAddress,
-  requireCaptcha = true,
+  requireCaptcha = false,
 }: {
   emailAddress?: string;
   requireCaptcha?: boolean;

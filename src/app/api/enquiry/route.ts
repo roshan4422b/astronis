@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -157,6 +158,11 @@ export async function POST(request: Request) {
   if (typeError) {
     return rejectWithMessage(typeError, 400);
   }
+
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(fields.email, sanitize(raw.emailVerificationToken)),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const supabase = await createSupabaseServerClient();
   if (!supabase) {
