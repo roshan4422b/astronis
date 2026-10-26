@@ -39,6 +39,9 @@ export default function MainServicePage({ practice }: { practice: ServicePractic
           summary: `Explore advisory support for ${child.toLowerCase()} within ${group.title.toLowerCase()}.`,
         })),
       }));
+  const navigationGroups = service.canonicalSlug === "corporate-commercial-advisory"
+    ? groups.slice(0, 3)
+    : groups;
 
   return <div className={`${styles.page} ${cards.page}`} data-service-template>
     <ServiceHero practice={practice} />
@@ -46,7 +49,7 @@ export default function MainServicePage({ practice }: { practice: ServicePractic
       variant="bar"
       showItemNumbers={false}
       title="Explore our capabilities"
-      items={groups.map(group => ({
+      items={navigationGroups.map(group => ({
         id: group.slug,
         title: group.title,
         icon: group.icon,

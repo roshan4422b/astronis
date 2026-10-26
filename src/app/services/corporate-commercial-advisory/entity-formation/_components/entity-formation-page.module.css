@@ -1,11 +1,11 @@
 .page {
-  --navy: #061e3b;
+  --navy: var(--service-navy);
   --navy-soft: #0b2947;
-  --blue: #0751db;
-  --ink: #0a2949;
-  --muted: #586c82;
-  --gold: #e4bf80;
-  --line: #dce5ef;
+  --blue: var(--service-blue);
+  --ink: var(--service-ink);
+  --muted: var(--service-muted);
+  --gold: var(--service-light-blue);
+  --line: var(--service-border);
   color: var(--ink);
   overflow-x: visible;
 }
@@ -159,7 +159,7 @@
 
 .heroCopy h2 {
   margin-bottom: 15px;
-  color: #e8c78e;
+  color: #bfdbfe;
   font: 400 clamp(21px, 2.4vw, 30px) / 1.35 Georgia, serif;
 }
 
@@ -256,7 +256,7 @@
 }
 
 .pageNavLayout {
-  --page-nav-width: 220px;
+  --page-nav-width: 280px;
   --page-nav-gap: 12px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--page-nav-width);
@@ -289,7 +289,7 @@
 }
 
 .sectionLayoutWithSidebar {
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 12px;
   align-items: start;
 }
@@ -315,14 +315,10 @@
   position: sticky;
   top: 160px;
   align-self: start;
-  width: 220px;
+  width: 280px;
   min-width: 0;
   margin-top: 8px;
   max-height: calc(100vh - 180px);
-}
-
-.pageSectionNavHidden {
-  display: none;
 }
 
 .pageSectionNav {
@@ -502,43 +498,6 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.relatedPages {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 22px;
-  margin-top: 26px;
-  padding: 18px 20px;
-  border-left: 3px solid var(--gold);
-  background: #f3f7fb;
-}
-
-.relatedPages > span {
-  color: var(--navy);
-  font-size: max(var(--font-size-min), 13px);
-  font-weight: 700;
-}
-
-.relatedPages a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--blue);
-  font-size: max(var(--font-size-min), 13px);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.relatedPages a svg {
-  width: 15px;
-  height: 15px;
-  transition: transform 0.2s;
-}
-
-.relatedPages a:hover svg {
-  transform: translateX(3px);
-}
-
 .serviceCard {
   min-height: 190px;
   padding: 21px;
@@ -658,7 +617,7 @@
 
 .benefitImage figcaption strong,
 .structureImage figcaption strong {
-  color: #e8c78e;
+  color: #bfdbfe;
   font-weight: 400;
 }
 
@@ -773,7 +732,7 @@
 
 .structure,
 .features {
-  background: radial-gradient(ellipse at 0 0, #173e65, transparent 58%), var(--navy);
+  background: #0751db;
   color: #fff;
 }
 
@@ -1118,7 +1077,7 @@
 .requirementPanel {
   padding: 30px;
   border-left: 3px solid var(--gold);
-  background: var(--navy);
+  background: #0751db;
   color: white;
 }
 
@@ -1235,7 +1194,7 @@
   font-size: max(var(--font-size-min), 14px);
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .priceButton:hover,
@@ -1461,7 +1420,7 @@
 }
 
 .stars {
-  color: #e4bf80;
+  color: var(--service-light-blue);
   letter-spacing: 2px;
 }
 
@@ -1663,7 +1622,7 @@
 
 .final {
   padding: 78px 0;
-  background: radial-gradient(ellipse at 75% 10%, #173e65, transparent 55%), var(--navy);
+  background: #0751db;
   color: white;
   text-align: center;
 }
@@ -1898,11 +1857,6 @@
     grid-template-columns: 1fr;
   }
 
-  .relatedPages {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .serviceCard {
     min-height: 0;
   }
@@ -2013,3 +1967,18 @@
     grid-template-columns: 1fr;
   }
 }
+
+.heroNote { border-left-color:var(--service-light-blue); }
+.heroNote > span,.introPanel > span,.requirementPanel > span,.priceCard > span,.customPrice > span,.final > .container > span { color:#93c5fd; }
+.primary { color:#fff; background:var(--service-blue); border-color:var(--service-blue); }
+.primary:hover { background:#0645b5; border-color:#0645b5; }
+.pageSectionNavWrap {
+  overflow-y:auto;
+  border:1px solid var(--service-blue);
+  background:var(--service-blue);
+  box-shadow:0 8px 24px rgb(6 30 59 / 18%);
+}
+.pageSectionNavList { border-left-color:#b5d2f4; }
+.pageSectionNavLink,.pageSectionNavLinkActive { color:#fff; }
+.pageSectionNavLink { color:#dbeafe; }
+.pageSectionNavLink:hover,.pageSectionNavLink:focus-visible,.pageSectionNavLinkActive { background:#0644b8; color:#fff; }

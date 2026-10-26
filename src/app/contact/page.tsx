@@ -14,7 +14,7 @@ export default function ContactPage() {
   return (
     <CmsPageRoute path="/contact" eyebrow="Contact">
       <Hero />
-      <section className="contact-main section">
+      <section className="contact-main section" id="enquiry-form">
         <div className="container contact-grid">
           <ContactDetails showMap />
           <EnquiryForm />

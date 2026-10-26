@@ -47,11 +47,11 @@
   box-shadow: none;
   border-radius: 2px;
 }
-.feature { display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; background: linear-gradient(125deg, #d8effff5, #cbe9ff91 50%, #3c88c324), url('/images/india-presence/mumbai.jpg') center/cover; }
+.feature { display: flex; flex-direction: column; justify-content: space-between; min-height: 326px; padding: 34px 28px 14px; background: linear-gradient(145deg, #061e3be8, #0b376fba 58%, #061e3b99), url('/images/india-presence/mumbai.jpg') center/cover; color: #fff; }
 .featureCopy { display: flex; flex-direction: column; gap: 12px; }
-.feature p { font-size: max(var(--font-size-min), 14px); line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; }
-.feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #2852af; margin-top: 16px; }
-.feature > span { font-size: max(var(--font-size-min), 12px); letter-spacing: 1.8px; text-transform: uppercase; }
+.feature p { color: #fff; font-size: max(var(--font-size-min), 14px); line-height: 1.5; letter-spacing: 1.7px; text-transform: uppercase; text-shadow: 0 2px 8px #061e3bcc; }
+.feature p::after { content: ""; display: block; width: 39px; height: 1px; background: #bfdbfe; margin-top: 16px; }
+.feature > span { color: #dbeafe; font-size: max(var(--font-size-min), 12px); letter-spacing: 1.8px; text-transform: uppercase; text-shadow: 0 2px 8px #061e3bcc; }
 .footer { display: none; }
 .search { display: none; }
 .searchField { display: none; }

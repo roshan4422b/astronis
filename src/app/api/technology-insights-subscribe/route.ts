@@ -1,3 +1,5 @@
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin) {
@@ -39,6 +41,16 @@ export async function POST(request: Request) {
   ) {
     return Response.json({ message: "Please check your details and confirm your subscription." }, { status: 400 });
   }
+
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(
+      request,
+      email,
+      String(data.get("captchaToken") || ""),
+      String(data.get("emailVerificationToken") || ""),
+    ),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const webhook = process.env.ENQUIRY_WEBHOOK_URL;
   if (!webhook) {

@@ -12,6 +12,8 @@ import {
 } from "@/content/enquiry-config";
 import Icon from "./icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
+import EmailOtpVerification from "./email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 import styles from "./global-enquiry-form.module.css";
 
 const companyTypes = [
@@ -249,6 +251,14 @@ export default function GlobalEnquiryForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validate()) return;
+    const form = event.currentTarget;
+    let formVerification: ReturnType<typeof getFormVerification>;
+    try {
+      formVerification = getFormVerification(form, false);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
+      return;
+    }
 
     const message = detail.message.trim();
     const selectedService = category === "service" ? primarySelection : "";
@@ -295,6 +305,7 @@ export default function GlobalEnquiryForm({
       enquiryAgreementAccepted: detail.enquiryAgreementAccepted ? "yes" : "",
       enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
+      ...formVerification,
     };
 
     setBusy(true);
@@ -314,7 +325,7 @@ export default function GlobalEnquiryForm({
 
       setSuccess(true);
       setStatus(data.message || "Your enquiry has been submitted successfully.");
-      event.currentTarget.reset();
+      form.reset();
       setDetail((current) => ({
         ...current,
         name: "",
@@ -831,6 +842,8 @@ export default function GlobalEnquiryForm({
           onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
+
+        <EmailOtpVerification requireCaptcha={false} />
 
         <label className={styles.honey} aria-hidden="true">
           Website

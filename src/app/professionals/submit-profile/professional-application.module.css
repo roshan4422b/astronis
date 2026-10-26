@@ -1,0 +1,74 @@
+.page {
+  --ink: #18314b;
+  --muted: #52667b;
+  --line: #d8e1eb;
+  --blue: #1265a8;
+  color: var(--ink);
+  background: #f4f7fa;
+  padding-bottom: 5rem;
+}
+.page.page :is(p, small, span, label, a, button, li, dt, dd, input, select, textarea) { font-size: 16px !important; line-height: 1.55; }
+.applicationIntro { background: linear-gradient(118deg,#102d4b,#174e78 64%,#2575a0); color: white; padding: clamp(3rem,8vw,6.5rem) 1.5rem; }
+.introInner { max-width: 1120px; margin: 0 auto; }
+.introInner h1 { max-width: 850px; margin: 1rem 0; font: 600 clamp(2.5rem,5vw,4.5rem)/1.04 Georgia,serif; letter-spacing: -.035em; }
+.introInner p { max-width: 780px; color: #e4edf5; }
+.disclaimer { margin-top: 1.5rem; border-left: 3px solid #85c6eb; padding-left: 1rem; }
+.eyebrow { color: #4ba4d5; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.formShell { max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: minmax(240px,.72fr) minmax(0,1.5fr); gap: 2rem; align-items: start; }
+.formIntro,.formColumn,.successPanel { background: white; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 14px 40px #19334b0b; }
+.formIntro { padding: 2rem; position: sticky; top: 1rem; }
+.formIntro h2,.stepHeading h2,.successPanel h2 { font: 600 30px/1.2 Georgia,serif; margin: .7rem 0; color: var(--ink); }
+.formIntro p { color: var(--muted); }
+.guidanceCard { display: flex; align-items: flex-start; gap: .8rem; padding: 1rem; background: #eef6fb; border: 1px solid #d4e7f3; border-radius: 8px; color: #244966; }
+.guidanceCard :global(svg) { flex: none; color: var(--blue); margin-top: 3px; }
+.guidanceCard p { margin: 0; }
+.formColumn { overflow: hidden; }
+.progress { list-style: none; margin: 0; padding: 1rem; display: grid; grid-template-columns: repeat(5,1fr); gap: .45rem; background: #f9fbfd; border-bottom: 1px solid var(--line); }
+.progress li { min-width: 0; color: #68798b; display: grid; gap: .35rem; justify-items: center; text-align: center; }
+.progress li span { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #b8c7d5; border-radius: 50%; font-weight: 700; }
+.progress li strong { font-size: 16px; font-weight: 500; }
+.progress .currentStep { color: #07558c; }.progress .currentStep span,.progress .completedStep span { color: white; background: #1265a8; border-color: #1265a8; }
+.applicationForm { padding: clamp(1.2rem,3vw,2.4rem); }
+.honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; }
+.stepHeading { border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.stepHeading > span { color: var(--blue); font-weight: 700; }
+.stepHeading h2 { margin-bottom: 0; }
+.fieldStack { display: grid; gap: 1.25rem; }
+.fieldGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+.field { display: grid; align-content: start; gap: .45rem; color: var(--ink); font-weight: 600; }
+.field b,.consentCheck b,.choiceFieldset b { color: #b13c3c; }
+.field em,.blockHeading em { color: #68798b; font-style: normal; font-weight: 400; }
+.field input,.field select,.field textarea,.searchField input { width: 100%; border: 1px solid #aebdca; border-radius: 6px; background: white; color: #182c40; padding: .75rem .85rem; min-height: 48px; }
+.field input:focus,.field select:focus,.field textarea:focus,.searchField input:focus { outline: 3px solid #b5dcf3; border-color: #1265a8; }
+.field small,.field > small,.blockHeading small { color: var(--muted); font-weight: 400; }
+.errorText { color: #a62525 !important; font-weight: 600; }
+.choiceFieldset,.registrationFieldset { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; min-width: 0; }
+.choiceFieldset legend,.registrationFieldset legend { padding: 0 .35rem; font-weight: 700; }
+.choiceFieldset legend small,.registrationFieldset legend small { display: block; color: var(--muted); font-weight: 400; }
+.chipList { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .8rem; }
+.chip,.selectedChip { border-radius: 999px; border: 1px solid #aebdca; background: #fff; color: #26445f; padding: .55rem .85rem; cursor: pointer; }
+.selectedChip { background: #e4f2fb; border-color: #287bb4; color: #064d7e; font-weight: 700; }
+.multiSelectBlock { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+.blockHeading { display: grid; gap: .2rem; }
+.searchField { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; color: var(--blue); }
+.searchField input { flex: 1; }
+.searchField svg { width: 20px; }
+.clearSelection { background: none; border: 0; color: var(--blue); text-decoration: underline; cursor: pointer; margin-top: .75rem; }
+.note { color: #41586d; padding: .8rem; background: #f4f7fa; display: flex; gap: .6rem; align-items: flex-start; margin: 0; }
+.note svg { flex: none; color: var(--blue); }
+.subsection { border-bottom: 1px solid var(--line); padding-bottom: .6rem; }
+.subsection h3 { margin: 0; font-size: 20px; }.subsection p { margin: .25rem 0; color: var(--muted); }
+.optionalLocation { border: 1px solid var(--line); padding: .9rem; border-radius: 7px; }.optionalLocation summary { cursor: pointer; font-weight: 600; margin-bottom: .7rem; }
+.fileInput { padding: .65rem !important; }
+.uploadHint { color: var(--muted); font-weight: 400; }
+.dropZone { border: 1px dashed #93abc0; min-height: 95px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: .7rem; color: #49647e; }
+.fileStatus { display: flex; align-items: center; gap: .6rem; overflow-wrap: anywhere; color: #27536e; }.fileStatus button { margin-left: auto; color: #a62525; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
+.reviewHeading { display: flex; justify-content: space-between; gap: 1rem; align-items: center; background: #f4f8fb; padding: .8rem; }.reviewHeading p { margin: 0; }.reviewHeading span { color: #375f7b; font-weight: 600; }
+.reviewGroup { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }.reviewGroup > div { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }.reviewGroup h3 { font-size: 19px; }.reviewGroup button { background: none; color: var(--blue); border: 0; text-decoration: underline; cursor: pointer; }.reviewGroup dl { display: grid; grid-template-columns: minmax(130px,.6fr) 1.4fr; gap: .55rem 1rem; margin-bottom: 0; }.reviewGroup dt { color: #65778a; }.reviewGroup dd { margin: 0; overflow-wrap: anywhere; }
+.declarationText { padding: 1rem; background: #f4f7fa; border-left: 3px solid #377da9; }
+.consentCheck { display: flex; gap: .7rem; align-items: flex-start; font-weight: 400; }.consentCheck input { flex: none; width: 20px; height: 20px; margin-top: .25rem; accent-color: #1265a8; }.consentCheck a { color: #07558c; text-decoration: underline; }
+.controls { display: flex; justify-content: space-between; gap: .8rem; margin-top: 1.7rem; border-top: 1px solid var(--line); padding-top: 1.2rem; }.controls button { min-height: 48px; border-radius: 6px; padding: .7rem 1rem; cursor: pointer; font-weight: 700; }.backButton { color: #244966; background: white; border: 1px solid #9eb0c0; }.nextButton { color: white; background: #125c91; border: 1px solid #125c91; margin-left: auto; display: inline-flex; align-items: center; gap: .6rem; }.nextButton:disabled { opacity: .65; cursor: wait; }
+.submitError { color: #a62525; background: #fff3f2; border: 1px solid #e8b7b2; padding: .8rem; }.noDraft { font-size: 16px !important; color: var(--muted); text-align: center; }
+.successPanel { max-width: 780px; margin: 4rem auto; padding: 3rem; text-align: center; }.successIcon { display: grid; place-items: center; margin: 0 auto 1rem; width: 56px; height: 56px; border-radius: 50%; color: white; background: #218359; }.successPanel p { color: var(--muted); }.reference { margin: 1.5rem auto; padding: 1rem; background: #f3f7fa; border-radius: 7px; }.successPanel a { display: inline-flex; gap: .5rem; color: #07558c; font-weight: 700; }.visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media(max-width:850px) { .formShell { grid-template-columns: 1fr; }.formIntro { position: static; } }
+@media(max-width:580px) { .fieldGrid { grid-template-columns: 1fr; }.progress { padding: .7rem .35rem; gap: .2rem; }.progress li strong { font-size: 16px !important; }.reviewGroup dl { grid-template-columns: 1fr; gap: .15rem; }.reviewGroup dd { margin-bottom: .5rem; }.reviewHeading { align-items: flex-start; flex-direction: column; }.applicationIntro { padding-left: 1.1rem; padding-right: 1.1rem; }.successPanel { margin: 2rem 1rem; padding: 1.5rem; } }

@@ -2,11 +2,12 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { corporateArticles } from "@/content/corporate-articles";
-import { testimonials } from "@/content/testimonials";
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { getServiceChildHeroImage, services } from "@/data/services";
 import PrivateLimitedFaq from "../private-limited/private-limited-faq";
 import PageSectionLayout from "./page-section-layout";
+import ServiceChildTestimonial from "@/app/services/_template/service-child-testimonial";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import styles from "./entity-formation-page.module.css";
 
 function Heading({
@@ -45,12 +46,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       : undefined);
   const categoryHref = data.categoryHref
     ?? `${parentService ? `/services/${parentService.canonicalSlug}` : "/services/corporate-commercial-advisory"}#${category?.slug ?? "entity-formation-business-setup"}`;
-  const currentTestimonial = data.testimonials ? undefined : testimonials.find(
-    (testimonial) =>
-      testimonial.status === "approved" &&
-      testimonial.publicationConsent &&
-      testimonial.service === "Corporate & Commercial Advisory",
-  );
   const articles = corporateArticles.slice(0, 3);
   const highlightIndex = data.comparisonFocusIndex === undefined ? 0 : data.comparisonFocusIndex;
   const navItems = data.referenceNavigation
@@ -80,7 +75,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       ? ["Section 8 Company", "Private Limited Company", "LLP", "Partnership"]
       : ["LLP", "Private Limited Company", "One Person Company", "Partnership"];
   const comparisonHeaders = data.comparisonHeaders ?? defaultAlternatives;
-  const showTestimonials = data.showTestimonials ?? true;
   const showInsights = data.showInsights ?? true;
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
@@ -92,7 +86,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""}`} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id="overview">
         <Image
           src={heroImage}
           alt={data.imageAlt}
@@ -112,21 +106,15 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2>{data.heroStatement}</h2>
-            <p>{data.description}</p>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
             <div className={styles.actions}>
-              <Link className={styles.primary} href={data.heroPrimaryHref ?? "/professionals/enquiry"}>{data.heroPrimaryAction ?? "Get Started"} <Icon name="arrow" /></Link>
-              <Link className={styles.secondary} href={data.heroSecondaryHref ?? "/contact"}>{data.heroSecondaryAction ?? "Schedule a Consultation"} <Icon name="calendar" /></Link>
+              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
             </div>
-          </div>
-          <div className={styles.heroNote}>
-            <span>{data.heroNoteEyebrow ?? "FORMATION WITH A LONG VIEW"}</span>
-            <strong>{data.heroNoteTitle ?? <>Structure first.<br />Then move forward with clarity.</>}</strong>
-            <p>{data.heroNoteDescription ?? "Connect formation decisions with the way your organisation will operate."}</p>
           </div>
         </div>
       </section>
 
+      <ServiceChildPageLayout items={sectionNavItems} includeTestimonial={false}>
       {data.showIntro !== false && <PageSectionLayout variant="full-width">
         <section className={styles.intro}>
         <div className={`container ${styles.introGrid}`}>
@@ -144,7 +132,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>}
 
-      <PageSectionLayout variant="with-sidebar" navItems={sectionNavItems}>
+      <PageSectionLayout variant="full-width">
         <section className={styles.services}>
         <div className="container">
           <Heading
@@ -161,14 +149,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               </article>
             ))}
           </div>
-          {data.relatedPages && (
-            <nav className={styles.relatedPages} aria-label="Related services">
-              <span>Explore related services</span>
-              {data.relatedPages.map(([title, href]) => (
-                <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
-              ))}
-            </nav>
-          )}
         </div>
         </section>
 
@@ -235,7 +215,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
                   {panel.description && <p>{panel.description}</p>}
                   <div className={styles.tableWrap} role="region" aria-label={`${panel.heading} comparison`} tabIndex={0}>
                     <table>
-                      <thead><tr><th>Parameter</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
+                      <thead><tr><th>{panel.rowHeader ?? "Parameter"}</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
                       <tbody>{panel.rows.map((row) => (
                         <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                       ))}</tbody>
@@ -350,7 +330,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             <article className={styles.customPrice}>
               <span>FOR COMPLEX REQUIREMENTS</span><h3>{data.customHeading ?? "Customised Quote"}</h3>
               <p>{data.customDescription ?? "For complex ownership, activity-specific permissions, foreign participation or tailored requirements."}</p>
-              <Link href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
+              <Link className={styles.priceButton} href="/professionals/enquiry">Get a Quote <Icon name="arrow" /></Link>
             </article>
           </div>
           {data.priceNote !== null && <p className={styles.priceNote}>{data.priceNote ?? "Government charges, applicable taxes and third-party costs are confirmed separately as part of the proposed scope."}</p>}
@@ -381,29 +361,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>
 
-      {showTestimonials && (data.testimonials || currentTestimonial) && (
-        <PageSectionLayout variant="full-width">
-          <section className={styles.testimonial}>
-          <div className="container">
-            <Heading eyebrow="TESTIMONIALS" title="What Our Clients Say" />
-            {data.testimonials ? <div className={styles.testimonialGrid}>
-              {data.testimonials.map(([quote, name, designation, company, rating], index) => (
-                <figure key={`${name}-${company}-${index}`}>
-                  <span className={styles.quoteMark}>“</span>
-                  <span className={styles.testimonialAvatar} aria-hidden="true">{name.slice(0, 1)}</span>
-                  <blockquote>{quote}</blockquote>
-                  <figcaption><strong>{name}</strong><span>{designation}, {company}</span><span className={styles.stars} aria-label={`${rating} out of 5 stars`}>{"★".repeat(rating)}</span></figcaption>
-                </figure>
-              ))}
-            </div> : currentTestimonial && <figure>
-              <span className={styles.quoteMark}>“</span>
-              <blockquote>{currentTestimonial.quote}</blockquote>
-              <figcaption><strong>{currentTestimonial.name}</strong><span>{currentTestimonial.designation}, {currentTestimonial.company}</span><span className={styles.stars} aria-label={`${currentTestimonial.rating} out of 5 stars`}>{"★".repeat(currentTestimonial.rating || 0)}</span></figcaption>
-            </figure>}
-          </div>
-          </section>
-        </PageSectionLayout>
-      )}
+      <ServiceChildTestimonial />
 
       {showInsights && <PageSectionLayout variant="full-width">
         <section className={styles.insights}>
@@ -462,6 +420,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </div>
         </section>
       </PageSectionLayout>
+      </ServiceChildPageLayout>
     </div>
   );
 }

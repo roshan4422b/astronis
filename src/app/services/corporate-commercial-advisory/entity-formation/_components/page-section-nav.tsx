@@ -12,8 +12,8 @@ type PageSectionNavItem = {
   label: string;
 };
 
-const noHiddenSections: string[] = [];
 const sectionIcons: Record<string, string> = {
+  services: "building",
   benefits: "award",
   structure: "network",
   comparison: "scale",
@@ -22,16 +22,26 @@ const sectionIcons: Record<string, string> = {
   requirements: "shield",
   fees: "rupee",
   faqs: "help",
+  needs: "search",
+  "why-needed": "search",
+  framework: "shield",
+  stakeholders: "people",
+  resources: "file",
+  consultation: "calendar",
+  features: "award",
+  insights: "file",
+  knowledge: "file",
+  experience: "people",
+  eligibility: "shield",
+  taxation: "percent",
 };
 
 export default function PageSectionNav({
   items,
-  hiddenWhenVisible = noHiddenSections,
-  mobileCollapsible = false,
-  branded = false,
+  mobileCollapsible = true,
+  branded = true,
 }: {
   items: PageSectionNavItem[];
-  hiddenWhenVisible?: string[];
   mobileCollapsible?: boolean;
   branded?: boolean;
 }) {
@@ -40,9 +50,7 @@ export default function PageSectionNav({
     () => items.filter(({ id, label }) => id !== "overview" && label.trim().toLowerCase() !== "overview"),
     [items],
   );
-  const hiddenSectionIds = useMemo(() => hiddenWhenVisible, [hiddenWhenVisible]);
   const [activeId, setActiveId] = useState<string>(visibleItems[0]?.id ?? "");
-  const [isHidden, setIsHidden] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const navigationId = useId();
 
@@ -76,35 +84,6 @@ export default function PageSectionNav({
     return () => observer.disconnect();
   }, [visibleItems]);
 
-  useEffect(() => {
-    if (!hiddenSectionIds.length) return;
-
-    const sectionNodes = hiddenSectionIds
-      .map((id) => document.getElementById(id))
-      .filter((node): node is HTMLElement => Boolean(node));
-
-    if (!sectionNodes.length) return;
-
-    const visibleFullWidthSections = new Set<string>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) visibleFullWidthSections.add(entry.target.id);
-          else visibleFullWidthSections.delete(entry.target.id);
-        });
-        setIsHidden(visibleFullWidthSections.size > 0);
-      },
-      { threshold: 0 },
-    );
-
-    sectionNodes.forEach((node) => observer.observe(node));
-
-    return () => {
-      observer.disconnect();
-      visibleFullWidthSections.clear();
-    };
-  }, [hiddenSectionIds]);
-
   const handleClick = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
     event.preventDefault();
     const target = document.getElementById(id);
@@ -125,9 +104,8 @@ export default function PageSectionNav({
 
   return (
     <aside
-      className={`${styles.pageSectionNavWrap} ${isHidden ? styles.pageSectionNavHidden : ""}`}
+      className={styles.pageSectionNavWrap}
       aria-label="Page sections"
-      aria-hidden={isHidden}
     >
       {branded && (
         <>

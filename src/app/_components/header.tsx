@@ -19,6 +19,7 @@ import InsightsMenu from "./insights-menu";
 import TechnologyMenu from "./technology-menu";
 import { isRouteActive } from "./navigation-state";
 import ScheduleMeetingModal from "./schedule-meeting-modal";
+import GlobalSearch from "./global-search";
 
 const navigation = [
   {
@@ -123,13 +124,13 @@ export default function Header() {
   };
 
   const scheduleOpen = (label: string) => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(label), 120);
   };
 
   const scheduleClose = () => {
-    if (window.innerWidth <= 1050) return;
+    if (window.innerWidth <= 1250) return;
     if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
     hoverTimer.current = window.setTimeout(() => setOpen(null), 180);
   };
@@ -185,25 +186,27 @@ export default function Header() {
 
   return (
     <>
-    <header ref={ref} className="site-header">
+      <div className="site-header-stack">
       <div className="utility-bar">
         <div className="container utility-inner">
           <span>
             CORPORATE <b>•</b> REGULATORY <b>•</b> LEGAL <b>•</b> BUSINESS
             ADVISORY
           </span>
-          <div>
-            <a href="tel:+919311664455">
+          <div className="utility-contact">
+            <a href="tel:+919311664455" aria-label="Call +91 9311664455">
               <Icon name="phone" />
               +91 9311664455
             </a>
-            <a href="mailto:advisory@astronisglobal.com">
+            <a href="mailto:advisory@astronisglobal.com" aria-label="Email advisory@astronisglobal.com">
               <Icon name="mail" />
               advisory@astronisglobal.com
             </a>
           </div>
+          <div className="utility-search"><GlobalSearch /></div>
         </div>
       </div>
+    <header ref={ref} className="site-header">
       <div className="container nav-shell">
         <Link
           href="/"
@@ -258,7 +261,7 @@ export default function Header() {
                     aria-haspopup="true"
                     aria-controls={"menu-" + slugify(n.label)}
                     onClick={() => {
-                      if (window.innerWidth > 1050) {
+                      if (window.innerWidth > 1250) {
                         setOpen(n.label);
                       } else {
                         toggleMenu(n.label);
@@ -315,6 +318,7 @@ export default function Header() {
         </nav>
       </div>
     </header>
+      </div>
     <ScheduleMeetingModal open={meetingModalOpen} onClose={() => setMeetingModalOpen(false)} />
     </>
   );

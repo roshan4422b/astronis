@@ -17,11 +17,11 @@ import {
   getAdditionalServiceDetailStaticParams,
 } from "@/data/additional-service-detail-pages";
 import MainServicePage from "../_template/main-service-page";
-import SectionNavigation from "../_template/section-navigation";
+import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import serviceStyles from "../_template/service-template.module.css";
+import ServiceChildHero from "../_template/service-child-hero";
 import BusinessAdvisoryDetailPage, { businessAdvisoryMetadata } from "../business-advisory-contracts/business-advisory-detail";
 import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-cross-border/fema-cross-border-detail";
-import { Banner } from "../../_components/ui";
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
@@ -172,6 +172,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (hierarchy) {
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
+    const childRoute = group.childRoutes?.[child];
+    if (childRoute && childRoute.split("/").at(-1) !== slugs[2]) permanentRedirect(childRoute);
     const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
     if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
     const intellectualPropertyPage = service.canonicalSlug === "intellectual-property-right-services"
@@ -199,21 +201,22 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     if (regulatoryDetail && regulatoryGroup) {
       return <ConsumerRegulatoryDetailPage detail={regulatoryDetail} group={regulatoryGroup} practice={regulatoryServices} />;
     }
-    const relatedServices = group.children.filter(item => item !== child);
     const childHeroImage = getServiceChildHeroImage(serviceAnchor(child), service.canonicalSlug);
     return <div className={serviceStyles.page} data-service-template>
-      <Banner title={child} eyebrow={service.title} text={`${child} support connected to ${service.title.toLowerCase()}.`} image={childHeroImage} />
-      <div className={`container ${serviceStyles.detailLayout}`}>
-        <aside className={serviceStyles.detailAside}>
-          <SectionNavigation
-            title="On this page"
-            items={[
-              { id: "service-overview", title: "Service overview" },
-              { id: "related-services", title: "Related services" },
-            ]}
-          />
-        </aside>
-        <div className={serviceStyles.detailContent}>
+      <ServiceChildHero
+        serviceTitle={service.title}
+        serviceHref={`/services/${service.canonicalSlug}`}
+        groupTitle={group.title}
+        groupHref={`/services/${service.canonicalSlug}#${group.slug}`}
+        title={child}
+        subtitle={`Practical guidance for ${child}, shaped around your organisation and requirements.`}
+        image={childHeroImage}
+      />
+      <ServiceChildPageLayout
+        items={[
+          { id: "service-overview", label: "Service overview" },
+        ]}
+      >
           <section className={serviceStyles.detailIntro} id="service-overview">
             <nav aria-label="Breadcrumb" style={{ marginBottom: 24 }}>
               <Link href="/services">Services</Link> <span aria-hidden="true">›</span>{" "}
@@ -226,21 +229,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             <p>{child} sits within {group.title}. Our team can help assess the requirements and coordinate next steps.</p>
             <Link href={`/services/${service.canonicalSlug}#${group.slug}`}>Explore {group.title}</Link>
           </section>
-          <section className={serviceStyles.childSection} id="related-services">
-            <div className={serviceStyles.childHeading}><span>01</span><h2>Related services</h2></div>
-            <ul>
-              {relatedServices.map(item => (
-                <li key={item}>
-                  <Link href={group.childRoutes?.[item] || `/services/${service.canonicalSlug}/${group.slug}/${serviceAnchor(item)}`}>
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <Link href={`/services/${service.canonicalSlug}`}>Explore {service.title}</Link>
-          </section>
-        </div>
-      </div>
+      </ServiceChildPageLayout>
     </div>;
   }
 

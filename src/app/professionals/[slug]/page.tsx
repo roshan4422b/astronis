@@ -1,7 +1,5 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import Image from "@/app/_components/asset-image";
-import Icon from "@/app/_components/icon";
 import { professionals } from "../leadership";
 import ProfessionalCollaboration from "../professional-collaboration";
 import styles from "./profile.module.css";
@@ -24,9 +22,10 @@ const serviceLinks = [
 ];
 
 export function generateStaticParams() {
-  return [...professionals.map((p) => ({ slug: p.slug })), { slug: "partner-with-us" }];
+  return [...professionals.map((person) => ({ slug: person.slug })), { slug: "partner-with-us" }];
 }
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const cmsPerson = (await getPublishedContent("professionals")).find((item) => item.slug === slug);
   if (cmsPerson) return getPublishedContentMetadata(cmsPerson, `/professionals/${cmsPerson.slug}`);
@@ -59,6 +58,7 @@ function ProfilePage({ person }: { person: Professional }) {
     <section className={styles.bottomCta}><div className={styles.wrap}><span>PEOPLE · PERSPECTIVE · PROGRESS · TOGETHER</span><h2>Need Expert Advice?</h2><p>Connect with our professionals for strategic legal, regulatory and business solutions.</p><Link className={styles.button} href={enquiry}>Schedule a Consultation <Icon name="arrow" /></Link></div></section>
   </div>;
 }
+
 export default async function Profile({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const cmsPerson = (await getPublishedContent("professionals")).find((item) => item.slug === slug);
@@ -80,7 +80,7 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
   }
   if (cmsPerson) return <CmsContentPage record={cmsPerson} eyebrow="Professionals" />;
   if (slug === "partner-with-us") return <ProfessionalCollaboration />;
-  const person = professionals.find((p) => p.slug === slug);
+  const person = professionals.find((record) => record.slug === slug);
   if (!person) notFound();
-  return <ProfilePage person={person} />;
+  return <ProfessionalProfileTemplate person={person} />;
 }

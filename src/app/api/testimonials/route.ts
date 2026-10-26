@@ -83,6 +83,10 @@ export async function POST(request: Request) {
       { message: "Please authorise publication of the submitted photograph or remove it." },
       { status: 400 },
     );
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(request, get("email"), get("captchaToken"), get("emailVerificationToken")),
+  );
+  if (verificationResponse) return verificationResponse;
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
   const hasMedia =
     (video instanceof File && video.size > 0) ||

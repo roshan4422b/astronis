@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
 import Icon from "../_components/icon";
+import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./testimonial-form.module.css";
 export default function TestimonialForm({
   initialFormat = "written",
@@ -377,6 +378,7 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
+          <EmailOtpVerification />
           <button className="button" type="submit" disabled={busy || recording}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />

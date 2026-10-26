@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import { getServiceChildHeroImage } from "@/data/services";
+import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
 
 export const metadata: Metadata = {
@@ -23,15 +24,16 @@ export default function BankingAdvisoryPage() {
 
   return (
     <div className={PageStyles.page}>
-      <section className={PageStyles.hero} id="overview">
+      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
         <Image src={heroImage} alt="Banking advisory" fill priority className={PageStyles.heroImage} />
         <div className={`container ${PageStyles.heroInner}`}>
           <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">Banking Advisory</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · BANKING ADVISORY</span><h1>Banking Advisory</h1><h2>Navigating Banking Regulations. Securing Financial Transactions.</h2><p>Advisory on banking transactions, lending documentation, secured financing and borrower-lender relationships.</p><div className={PageStyles.actions}><Link className={PageStyles.primary} href="/contact">Schedule a Banking Consultation <Icon name="arrow" /></Link><Link className={PageStyles.secondary} href="/professionals/enquiry">Request Banking Legal Assistance <Icon name="calendar" /></Link></div></div>
+          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · BANKING ADVISORY</span><h1>Banking Advisory</h1><h2 className="service-child-hero-subtitle">Navigating Banking Regulations. Securing Financial Transactions.</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
         </div>
       </section>
 
-      <section className={PageStyles.services}>
+      <ServiceChildPageLayout items={[{ id: "services", label: "Services" }]}>
+      <section className={PageStyles.services} id="services">
         <div className="container">
           <div className={PageStyles.heading}><span className={PageStyles.eyebrow}>OUR BANKING ADVISORY SERVICES</span><h2>Practical legal and regulatory support for banking transactions</h2><p>Support across lending documentation, security structures, dispute resolution and bank regulatory matters.</p></div>
 
@@ -46,6 +48,7 @@ export default function BankingAdvisoryPage() {
           </div>
         </div>
       </section>
+      </ServiceChildPageLayout>
 
     </div>
   );

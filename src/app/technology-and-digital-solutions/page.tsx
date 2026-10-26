@@ -117,7 +117,7 @@ export default async function TechnologySolutionsPage() {
     <section className={styles.enquirySection} id="enquiry">
       <div className={`${styles.wrap} ${styles.enquiryGrid}`}>
         <div className={styles.enquiryCopy}><span className={styles.eyebrow}>Let&apos;s build what comes next</span><h2>Discuss Your Technology Requirements</h2><p>Bring us your business challenge. Together, we can identify the right technology, processes and expertise to help you move forward.</p><div className={styles.enquiryImage}><Image src="/Technology, IT & ITES .png" alt="Connected technology and digital business systems" fill sizes="(max-width: 800px) 90vw, 40vw" /></div><a href="tel:+919311664455"><Icon name="phone" /><span><small>Speak with our team</small>+91 93116 64455</span><Icon name="arrow" /></a><a href="mailto:advisory@astronisglobal.com"><Icon name="mail" /><span><small>Write to us</small>advisory@astronisglobal.com</span><Icon name="arrow" /></a></div>
-        <div className={styles.enquiryPanel}><span className={styles.eyebrow}>Start a conversation</span><h3>Tell us what you have in mind.</h3><p>Share a few details and our team will get in touch to discuss your requirements.</p><Enquiry /></div>
+        <div className={styles.enquiryPanel} id="enquiry"><span className={styles.eyebrow}>Start a conversation</span><h3>Tell us what you have in mind.</h3><p>Share a few details and our team will get in touch to discuss your requirements.</p><Enquiry /></div>
       </div>
     </section>
   </div></CmsPageRoute>;

@@ -31,7 +31,7 @@ const regionCards = [
     flag: "/flag/Flag_of_India.svg.webp",
     description: "Our home market and primary platform for enterprise, regulatory and transaction advisory across key growth sectors.",
     tags: ["India Entry", "Corporate Advisory", "Regulatory", "Transactions"],
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/india-presence/india-gate.jpg",
     href: "/global-presence/india",
   },
   {

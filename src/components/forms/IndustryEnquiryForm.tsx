@@ -9,6 +9,8 @@ import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import { industryFormConfig } from "@/data/industryFormConfig";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -78,6 +80,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (busy) return;
+    const formElement = event.currentTarget;
 
     const nextErrors: Record<string, string> = {};
     if (!form.fullName.trim()) nextErrors.fullName = "Please enter your full name.";
@@ -108,6 +111,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         pageTitle: document.title || "Astronis Global", referrer: document.referrer || "",
         consent: "yes", enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", utmSource: params.get("utm_source") || "",
+        ...getFormVerification(event.currentTarget, false),
         utmMedium: params.get("utm_medium") || "", utmCampaign: params.get("utm_campaign") || "",
       };
 
@@ -135,6 +139,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         consent: false,
         enquiryAgreementAccepted: false,
       });
+      formElement.reset();
     } catch (error) {
       setSuccess(false);
       setStatus(error instanceof Error ? error.message : "We couldn't submit your enquiry right now. Please try again or contact us at advisory@astronisglobal.com.");
@@ -192,6 +197,8 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
+
+        <EmailOtpVerification requireCaptcha={false} />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}

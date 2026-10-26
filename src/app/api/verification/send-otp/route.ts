@@ -1,0 +1,44 @@
+import { isValidVerificationEmail, sendEmailOtp, verifyTurnstile } from "@/lib/form-verification.server";
+
+export const runtime = "nodejs";
+
+export async function POST(request: Request) {
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) {
+    return Response.json({ message: "This request is not permitted." }, { status: 403 });
+  }
+  let body: { email?: unknown; captchaToken?: unknown };
+  try {
+    body = (await request.json()) as { email?: unknown; captchaToken?: unknown };
+  } catch {
+    return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
+  }
+
+  const email = String(body.email ?? "").trim().toLowerCase();
+  if (!isValidVerificationEmail(email)) {
+    return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
+  }
+
+  try {
+    if (!(await verifyTurnstile(String(body.captchaToken ?? ""), request))) {
+      return Response.json({ message: "Please complete the CAPTCHA verification and try again." }, { status: 400 });
+    }
+    const result = await sendEmailOtp(email);
+    if (!result.ok) {
+      return Response.json(
+        { message: "Please wait before requesting another code.", retryAfter: result.retryAfter },
+        { status: 429 },
+      );
+    }
+    return Response.json({
+      message: "A 6-digit verification code has been sent to your email address.",
+      retryAfter: result.retryAfter,
+    });
+  } catch {
+    console.error("Email OTP delivery failed.");
+    return Response.json(
+      { message: "We could not send your verification code. Please try again later." },
+      { status: 502 },
+    );
+  }
+}

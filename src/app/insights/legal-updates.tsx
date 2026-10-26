@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import styles from "./legal-updates.module.css";
 
 const popularSearches = [
@@ -696,6 +697,7 @@ export default function LegalUpdates() {
               <input type="checkbox" name="consent" value="yes" required />
               I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </label>
+            <EmailOtpVerification />
             {subscribeStatus && <p role="status">{subscribeStatus}</p>}
           </form>
         </div>
