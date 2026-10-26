@@ -1,5 +1,5 @@
 import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const allowedExtensions = /\.(pdf|doc|docx|jpe?g|png)$/i;
@@ -37,7 +37,12 @@ export async function POST(request: Request) {
   }
 
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(fields.email, field("emailVerificationToken")),
+    await consumeFormVerification(
+      request,
+      fields.email,
+      field("captchaToken"),
+      field("emailVerificationToken"),
+    ),
   );
   if (verificationResponse) return verificationResponse;
 

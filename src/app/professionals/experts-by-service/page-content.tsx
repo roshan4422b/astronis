@@ -86,6 +86,7 @@ export default function ExpertsByService() {
   const [applied, setApplied] = useState({ query: "", service: "", expertise: "", industry: "", jurisdiction: "", location: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [formStatus, setFormStatus] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState(false);
@@ -136,7 +137,7 @@ export default function ExpertsByService() {
           consent: "yes",
           enquiryAgreementAccepted: "yes",
           enquiryAgreementId: "enquiry-communication-consultation-consent",
-          ...getFormVerification(form, false),
+          ...getFormVerification(form),
           website: "",
           pageUrl: window.location.href,
           pathname: window.location.pathname,
@@ -263,8 +264,8 @@ export default function ExpertsByService() {
           <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" required /></label>
           <label className={styles.upload}><span className={styles.srOnly}>Choose File</span><input name="upload" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" /></label>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="experts-by-service-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} />
-          <EmailOtpVerification />
-          <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
+          <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+          <button className={styles.submitButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>
     </section>

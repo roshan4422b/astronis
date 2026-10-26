@@ -158,6 +158,7 @@ export default function GlobalEnquiryForm({
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const primaryOptions = getPrimaryOptions(category);
   const secondaryOptions = useMemo(
@@ -254,7 +255,7 @@ export default function GlobalEnquiryForm({
     const form = event.currentTarget;
     let formVerification: ReturnType<typeof getFormVerification>;
     try {
-      formVerification = getFormVerification(form, false);
+      formVerification = getFormVerification(form);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
       return;
@@ -843,7 +844,7 @@ export default function GlobalEnquiryForm({
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification requireCaptcha={false} />
+        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
 
         <label className={styles.honey} aria-hidden="true">
           Website
@@ -851,7 +852,7 @@ export default function GlobalEnquiryForm({
         </label>
 
         <div className={styles.actions}>
-          <button type="submit" className={styles.button} disabled={busy}>
+          <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
             {busy ? "Sending…" : variant === "market" ? "Request a Consultation" : "Submit Enquiry"}
             <Icon name="arrow" />
           </button>

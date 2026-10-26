@@ -13,6 +13,7 @@ export default function TestimonialForm({
   const [format, setFormat] = useState(initialFormat),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false),
+    [captchaToken, setCaptchaToken] = useState(""),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [preview, setPreview] = useState(""),
@@ -378,8 +379,8 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
-          <EmailOtpVerification />
-          <button className="button" type="submit" disabled={busy || recording}>
+          <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+          <button className="button" type="submit" disabled={busy || recording || !captchaToken}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>
