@@ -3,7 +3,6 @@ import {
   isValidVerificationEmail,
   logEmailOtpFailure,
   sendEmailOtp,
-  verifyTurnstile,
 } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
@@ -14,9 +13,9 @@ export async function POST(request: Request) {
     return Response.json({ message: "This request is not permitted." }, { status: 403 });
   }
 
-  let body: { email?: unknown; captchaToken?: unknown };
+  let body: { email?: unknown };
   try {
-    body = (await request.json()) as { email?: unknown; captchaToken?: unknown };
+    body = (await request.json()) as { email?: unknown };
   } catch {
     return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
   }
@@ -24,23 +23,6 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim().toLowerCase();
   if (!isValidVerificationEmail(email)) {
     return Response.json({ message: "Please enter a valid email address." }, { status: 400 });
-  }
-
-  let captchaOk = false;
-  try {
-    captchaOk = await verifyTurnstile(String(body.captchaToken ?? ""), request);
-  } catch {
-    console.error("Turnstile verification unavailable.");
-    return Response.json(
-      { message: "Verification is temporarily unavailable. Please try again." },
-      { status: 503 },
-    );
-  }
-  if (!captchaOk) {
-    return Response.json(
-      { message: "Please complete the CAPTCHA verification and try again." },
-      { status: 400 },
-    );
   }
 
   try {
