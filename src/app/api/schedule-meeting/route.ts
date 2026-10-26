@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { services } from "@/data/services";
-import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -48,35 +48,10 @@ export async function POST(request: Request) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(dateValue.getTime()) || dateValue.toISOString().slice(0, 10) !== date || weekday === 0 || weekday === 6 || date < new Date().toISOString().slice(0, 10)) return error("Choose a valid future weekday.");
   if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true || raw.enquiryAgreementAccepted !== "yes" || raw.enquiryAgreementId !== "enquiry-communication-consultation-consent") return error("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
 
-  const reference = `AST-${new Date().toISOString().slice(2, 10).replaceAll("-", "")}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
-  const acceptanceTimestamp = new Date().toISOString();
-  const persistedId = await persistPublicEnquiry({
-    name,
-    email,
-    company: organisation,
-    subject: `Consultation request ${reference}`,
-    message: `Requested ${date} at ${time} (${timezone}), ${mode}. Service: ${service}. Team size: ${team}.`,
-    formType: "consultation-booking",
-    data: {
-      name,
-      email,
-      phone,
-      organisation,
-      service,
-      team,
-      turnover,
-      date,
-      time,
-      timezone,
-      mode,
-      consent: true,
-      enquiryAgreementAccepted: true,
-      enquiryAgreementId: "enquiry-communication-consultation-consent",
-      enquiryAgreementAcceptedAt: acceptanceTimestamp,
-      reference,
-    },
-  });
-  if (!persistedId) return error("We couldn't save your consultation request. Please try again.", 503);
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(email, clean(raw.emailVerificationToken, 128)),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;

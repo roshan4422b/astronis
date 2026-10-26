@@ -1,4 +1,4 @@
-export function getFormVerification(form: HTMLElement, requireCaptcha = true) {
+export function getFormVerification(form: HTMLElement, requireCaptcha = false) {
   const captchaToken = form.querySelector<HTMLInputElement>('input[name="captchaToken"]')?.value ?? "";
   const emailVerificationToken = form.querySelector<HTMLInputElement>('input[name="emailVerificationToken"]')?.value ?? "";
   if (!emailVerificationToken) {

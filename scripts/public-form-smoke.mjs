@@ -64,6 +64,12 @@ for (const path of formPages) {
   }
 }
 
+const applicationPage = await fetch(new URL("/professionals/submit-profile", baseUrl));
+const applicationHtml = await applicationPage.text();
+if (!applicationPage.ok || !applicationHtml.includes("Professional application")) {
+  throw new Error(`Professional application page check failed (HTTP ${applicationPage.status}).`);
+}
+
 const directSubmissions = [
   [
     "enquiry",
@@ -177,13 +183,12 @@ const directSubmissions = [
 for (const [label, path, options] of directSubmissions) {
   const response = await fetch(new URL(path, baseUrl), options);
   const result = await response.json();
-  const expectedRejection = ["enquiry", "global enquiry", "professional enquiry"].includes(label)
-    ? "verify your email"
-    : "captcha";
+  const expectedRejection = "verify your email";
   if (response.ok || !result.message?.toLowerCase().includes(expectedRejection)) {
     throw new Error(`Direct ${label} submission did not reach the ${expectedRejection} rejection (HTTP ${response.status}).`);
   }
 }
 
 console.log(`Passed: ${formPages.length} public form pages render verification controls.`);
-console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected.`);
+console.log("Passed: professional application page renders.");
+console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected without email verification.`);

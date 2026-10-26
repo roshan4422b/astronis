@@ -3,6 +3,8 @@
 import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 import {
   applicantDeclaration, applicationSteps, backgrounds, categories, countries, engagementOptions, experienceBands,
   hierarchiesFor, indianStates, isSeniorReview, positionsFor, positionDisplayLabel, qualificationGuidance,
@@ -235,6 +237,13 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
     data.set("application", JSON.stringify(application));
     data.set("website", website);
     data.set("cv", file);
+    try {
+      const verification = getFormVerification(event.currentTarget);
+      data.set("emailVerificationToken", verification.emailVerificationToken);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Verify your email address before submitting.");
+      return;
+    }
     setSubmitting(true); setStatus("");
     try {
       const response = await fetch("/api/professional-application", { method: "POST", body: data });
@@ -312,6 +321,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
           <p className={styles.declarationText}>{applicantDeclaration}</p>
           <label className={styles.consentCheck}><input type="checkbox" checked={answers.declarationAccepted} onChange={(event) => update("declarationAccepted", event.target.checked)} aria-invalid={Boolean(errors.declarationAccepted)} /> <span>I confirm the applicant declaration above. <b>*</b>{error("declarationAccepted")}</span></label>
           <label className={styles.consentCheck}><input type="checkbox" checked={answers.privacyConsentAccepted} onChange={(event) => update("privacyConsentAccepted", event.target.checked)} aria-invalid={Boolean(errors.privacyConsentAccepted)} /> <span>I have read the <Link href="/legal/privacy-policy" target="_blank" rel="noreferrer">Astronis Global Privacy Policy</Link> and consent to the handling of my application information for review. <b>*</b>{error("privacyConsentAccepted")}</span></label>
+          <EmailOtpVerification emailAddress={answers.email} />
         </div>}
 
         {status && <p className={styles.submitError} role="alert">{status}</p>}
