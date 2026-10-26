@@ -2,9 +2,9 @@ import Hero from "./hero";
 import Link from "next/link";
 import Leadership from "./leadership";
 import Consultation from "../home/consultation";
-import { Button } from "../_components/ui";
 import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
 import CmsPageRoute from "@/app/_components/cms-page-route";
+import styles from "./professionals-page.module.css";
 const fallbackMetadata = { title: "Our Professionals" };
 export async function generateMetadata() {
   return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/professionals")) };

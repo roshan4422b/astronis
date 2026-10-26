@@ -1,4 +1,5 @@
 import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 const allowedExtensions = new Set(["pdf", "doc", "docx", "jpg", "jpeg", "png"]);
 const jurisdictionDocumentExtensions = new Set(["pdf", "doc", "docx"]);
@@ -65,6 +66,11 @@ export async function POST(request: Request) {
   } else if (documents.length > 3 || totalSize > 20 * 1024 * 1024 || documents.some(file => file.size > 10 * 1024 * 1024 || !allowedExtensions.has(file.name.split(".").pop()?.toLowerCase() || ""))) {
     return Response.json({ message: "Add up to three PDF, DOC, DOCX, JPG or PNG files under 10 MB each and 20 MB total." }, { status: 400 });
   }
+
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(fields.email, value("emailVerificationToken")),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const acceptanceTimestamp = new Date().toISOString();
   const enquiryReference = crypto.randomUUID();

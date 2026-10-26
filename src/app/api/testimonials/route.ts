@@ -1,5 +1,6 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
 import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
