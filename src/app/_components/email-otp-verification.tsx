@@ -93,27 +93,27 @@ export default function EmailOtpVerification({
   }, [email, updateCaptchaToken]);
 
   async function sendCode() {
-    const form = getVerificationScope(container.current);
-    const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
-    const nextEmail = emailAddress?.trim().toLowerCase() ?? emailInput?.value.trim().toLowerCase() ?? "";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
-      setStatus("Enter a valid email address before requesting a verification code.");
-      emailInput?.focus();
-      return;
-    }
-    if (!captchaToken) {
-      setStatus("Complete the CAPTCHA before requesting a verification code.");
-      return;
-    }
-
-    setBusy(true);
-    setStatus("");
-    setEmail(nextEmail);
     try {
+      const form = getVerificationScope(container.current);
+      const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
+      const nextEmail = emailAddress?.trim().toLowerCase() ?? emailInput?.value.trim().toLowerCase() ?? "";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
+        setStatus("Enter a valid email address before requesting a verification code.");
+        emailInput?.focus();
+        return;
+      }
+      if (!captchaToken) {
+        setStatus("Complete the CAPTCHA before requesting a verification code.");
+        return;
+      }
+
+      setBusy(true);
+      setStatus("");
+      setEmail(nextEmail);
       const response = await fetch("/api/verification/send-enquiry-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nextEmail }),
+        body: JSON.stringify({ email: nextEmail, captchaToken }),
       });
       const result = (await response.json()) as { message?: string; retryAfter?: number };
       if (!response.ok) throw new Error(result.message || "We could not send your verification code.");
@@ -126,6 +126,8 @@ export default function EmailOtpVerification({
       setStatus(error instanceof Error ? error.message : "We could not send your verification code.");
     } finally {
       setBusy(false);
+      updateCaptchaToken("");
+      setInternalCaptchaReset((current) => current + 1);
     }
   }
 
