@@ -28,6 +28,7 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
     if (!ref.current || !window.turnstile || idRef.current) return;
     idRef.current = window.turnstile.render(ref.current, {
       sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+      appearance: "always",
       callback: (token: string) => cb.current(token),
       "expired-callback": () => cb.current(""),
       "error-callback": () => cb.current(""),
