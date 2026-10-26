@@ -1,4 +1,5 @@
 import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const allowedExtensions = /\.(pdf|doc|docx|jpe?g|png)$/i;
@@ -34,6 +35,11 @@ export async function POST(request: Request) {
     if (upload.size > MAX_FILE_SIZE || !allowedExtensions.test(upload.name)) return Response.json({ message: "Please upload a PDF, DOC, DOCX, JPG or PNG smaller than 10 MB." }, { status: 400 });
     attachment = { name: upload.name.slice(0, 160), mimeType: upload.type || "application/octet-stream", base64: Buffer.from(await upload.arrayBuffer()).toString("base64") };
   }
+
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(fields.email, field("emailVerificationToken")),
+  );
+  if (verificationResponse) return verificationResponse;
 
   const acceptanceTimestamp = new Date().toISOString();
   const enquiryReference = crypto.randomUUID();

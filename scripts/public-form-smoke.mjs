@@ -173,6 +173,7 @@ const directSubmissions = [
         company: "Example Ltd",
         service: "Corporate Advisory",
         consent: "yes",
+        identityPublicationConsent: "yes",
         format: "written",
         message: "This is a valid enough testimonial.",
       }),

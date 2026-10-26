@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Resend } from "resend";
 import { services } from "@/data/services";
 import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
@@ -53,6 +54,8 @@ export async function POST(request: Request) {
   );
   if (verificationResponse) return verificationResponse;
 
+  const reference = randomUUID();
+  const acceptanceTimestamp = new Date().toISOString();
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !from) {

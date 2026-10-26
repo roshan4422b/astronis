@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import Image from "@/app/_components/asset-image";
+import Icon from "@/app/_components/icon";
 import { professionals } from "../leadership";
 import ProfessionalCollaboration from "../professional-collaboration";
+import ProfessionalProfileTemplate from "./profile-template";
 import styles from "./profile.module.css";
 import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
