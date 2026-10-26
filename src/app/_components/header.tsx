@@ -184,6 +184,8 @@ export default function Header() {
     };
   }, []);
 
+  if (path.startsWith("/admin")) return null;
+
   return (
     <>
       <div className="site-header-stack">
