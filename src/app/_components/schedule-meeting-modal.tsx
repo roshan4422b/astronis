@@ -34,6 +34,7 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [sentMessage, setSentMessage] = useState("");
   const [serviceUnavailable, setServiceUnavailable] = useState(false);
   const [sent, setSent] = useState(false);
   const [month, setMonth] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1));
@@ -41,7 +42,7 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const previousFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const launch = () => { setStep(1); setMessage(""); };
+    const launch = () => { setStep(1); setMessage(""); setSentMessage(""); };
     window.addEventListener("astronis:open-scheduler", launch);
     return () => window.removeEventListener("astronis:open-scheduler", launch);
   }, []);
@@ -82,12 +83,13 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
       const response = await fetch("/api/schedule-meeting", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...details, name: details.name.trim(), phone: `${details.code}${details.phone.replace(/\D/g, "")}`, organisation: details.organisation.trim(), date, time, timezone: zone, mode, consent, enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", ...getFormVerification(dialog.current!) }) });
       const result = await response.json();
       if (!response.ok) { setServiceUnavailable(response.status === 503); throw new Error(result.message || "We couldn't send your request. Please try again."); }
+      setSentMessage(result.message || "Your consultation request was received. Our team will contact you to confirm availability.");
       setSent(true);
     } catch (error) { setMessage(error instanceof Error ? error.message : "We couldn't send your request. Please try again."); }
     finally { setBusy(false); }
   }
 
-  const close = () => { onClose(); window.setTimeout(() => { setSent(false); setStep(1); setMessage(""); setServiceUnavailable(false); }, 250); };
+  const close = () => { onClose(); window.setTimeout(() => { setSent(false); setStep(1); setMessage(""); setSentMessage(""); setServiceUnavailable(false); }, 250); };
   const fallbackBody = `Consultation request (pending confirmation)\nName: ${details.name.trim()}\nMobile: ${details.code}${details.phone}\nEmail: ${details.email}\nOrganisation: ${details.organisation}\nService required: ${details.service}\nTeam size: ${details.team}\nAnnual turnover: ${details.turnover}\nPreferred date: ${date}\nPreferred time: ${time} (${zone})\nMeeting mode: ${mode}\n\nThis is a preferred time request, not a confirmed appointment.`;
   return <div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
     <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="meeting-title" tabIndex={-1} ref={dialog}>
@@ -95,7 +97,8 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
       {sent ? <div className={styles.success}>
         <span className={styles.check} aria-hidden="true">✓</span><p className={styles.eyebrow}>REQUEST RECEIVED</p>
         <h2 id="meeting-title">Thank you, {details.name.split(" ")[0]}.</h2>
-        <p>Your consultation request has been sent to the Astronis team. Your preferred time is not reserved yet; our team will contact you to confirm availability.</p>
+        <p>{sentMessage}</p>
+        <p>Your preferred time is not reserved yet; our team will contact you to confirm availability.</p>
         <div className={styles.summary}><strong>Preferred time</strong><span>{new Date(`${date}T12:00:00`).toLocaleDateString("en-IN", { dateStyle: "full" })} · {time} ({zone})</span><strong>Meeting mode</strong><span>{mode}</span></div>
         <button className={styles.primary} onClick={close}>Back to website</button>
       </div> : <>

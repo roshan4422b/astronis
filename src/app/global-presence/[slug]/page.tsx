@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { countries, siteMenu, slugify } from "@/content/site";
 import { Banner, Button, TextLink } from "../../_components/ui";
+import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import CmsContentPage from "@/app/_components/cms-content-page";
+export const dynamic = "force-dynamic";
 const entries = [...countries, ...siteMenu.global, "Local Insight"];
 const jurisdictionEntries = entries.filter((title) => !["india", "uae", "singapore", "uk", "usa"].includes(slugify(title)));
 export function generateStaticParams() {
@@ -12,6 +15,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const cmsRecord = (await getPublishedContent("global-presence")).find((item) => item.slug === slug);
+  if (cmsRecord) return getPublishedContentMetadata(cmsRecord, `/global-presence/${cmsRecord.slug}`);
   return { title: jurisdictionEntries.find((t) => slugify(t) === slug) };
 }
 export default async function Desk({
@@ -20,6 +25,11 @@ export default async function Desk({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const cmsRecord = (await getPublishedContent("global-presence")).find((item) => item.slug === slug);
+  if (cmsRecord && (
+    cmsRecord.data.sourceDefined !== true ||
+    (typeof cmsRecord.data.content === "string" && cmsRecord.data.content.trim())
+  )) return <CmsContentPage record={cmsRecord} eyebrow="Global Presence" />;
   const title = jurisdictionEntries.find((t) => slugify(t) === slug);
   if (!title) notFound();
   return (

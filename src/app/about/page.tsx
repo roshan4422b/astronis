@@ -3,14 +3,20 @@ import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import { statistics } from "@/content/site";
 import styles from "./about.module.css";
+import type { Metadata } from "next";
+import { getPublishedPageMetadata } from "@/lib/supabase/server";
+import CmsPageRoute from "@/app/_components/cms-page-route";
 
-export const metadata = { title: "About Us", description: "Discover Astronis Global: our journey since 2015, our people and our integrated approach to legal, regulatory and business advisory." };
+const fallbackMetadata: Metadata = { title: "About Us", description: "Discover Astronis Global: our journey since 2015, our people and our integrated approach to legal, regulatory and business advisory." };
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/about")) };
+}
 const navigation = [["Our Story", "#our-story"], ["Vision & Mission", "/about/vision-and-mission"], ["Core Values", "/about/core-values"], ["Leadership Team", "/professionals"], ["Our Methodology", "/about/our-methodology"], ["Global Presence", "/global-presence"], ["Careers", "/about/careers"], ["Why Choose Us", "/about/why-choose-us"]];
 const journey = [["2015", "Our foundation", "A commitment to legal insight and practical client service."], ["Our expertise", "Integrated thinking", "Corporate, regulatory and business perspectives brought together."], ["Our reach", "Across India", "Supporting businesses across sectors and jurisdictions."], ["Our outlook", "Global perspective", "Collaboration for domestic and cross-border business needs."], ["Today", "A bigger tomorrow", "Growing with our clients, our people and our purpose."]];
 const clients = [["bulb", "Startups & Entrepreneurs"], ["people", "MSMEs & Family Businesses"], ["building", "Corporates & MNCs"], ["shield", "Financial Institutions"], ["scale", "Government & Regulatory Bodies"], ["globe", "NGOs & Social Enterprises"]];
 function Action({ href = "/contact", children, outline = false }: { href?: string; children: React.ReactNode; outline?: boolean }) { return <Link href={href} className={`${styles.button} ${outline ? styles.outline : ""}`}>{children}<Icon name="arrow" /></Link>; }
-export default function AboutPage() {
-  return <div className={`${styles.page} about-page-scope about-home-scope`}>
+export default async function AboutPage() {
+  return <CmsPageRoute path="/about" eyebrow="Company"><div className={`${styles.page} about-page-scope about-home-scope`}>
     <section className={styles.hero} id="our-story"><Image src="/Real Estate & Construction .png" alt="" fill preload sizes="100vw" /><div className={`container ${styles.heroInner}`}><div><nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/">Home</Link><span>›</span><span aria-current="page">About Us</span></nav><span className={styles.goldLine} /><h1>A Journey of Trust, Growth<br className={styles.desktopBreak} /> and Global Impact</h1><p>Legal insight. Business perspective. A shared ambition.<br className={styles.desktopBreak} /> Our journey is shaped by clients, people and purpose.</p></div><aside className={styles.heroNote}><span className={styles.goldLine} />Rooted<br />in values.<br />Built for<br />what’s next.<span className={styles.whiteLine} /></aside></div></section>
     <nav aria-label="Explore About Us" className={styles.subnav}><div className="container">{navigation.map(([title, href], i) => <Link href={href} className={i === 0 ? styles.selected : undefined} key={title}>{title}</Link>)}</div></nav>
     <section className={styles.journey} aria-labelledby="journey-title"><div className={`container ${styles.journeyInner}`}><div><span className={styles.eyebrow}>OUR EVOLUTION</span><h2 id="journey-title">A Journey with Purpose</h2><p>A decade of progress, powered by trust, expertise and enduring client relationships.</p></div><ol className={styles.timeline}>{journey.map(([label, title, text]) => <li key={label}><span className={styles.milestone}>{label}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></div></section>
@@ -19,5 +25,5 @@ export default function AboutPage() {
     <section className={styles.methodology} id="methodology"><div className="container"><div className={styles.methodHeading}><div><span className={styles.eyebrow}>HOW WE WORK</span><h2>Clarity at Every Step</h2></div><p>Listen carefully. Think broadly. Deliver practical advice.</p></div><ol>{[["search", "Understand", "Your goals and business context."], ["chart", "Assess", "The risks, requirements and opportunities."], ["bulb", "Strategise", "A practical plan shaped around you."], ["people", "Deliver", "Coordinated support and clear communication."]].map(([icon, title, text]) => <li key={title}><span className={styles.methodIcon}><Icon name={icon} /></span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol></div></section>
     <section className={styles.tomorrow}><Image src="/Part-11 .png" alt="" fill sizes="100vw" /><div className={`container ${styles.tomorrowInner}`}><div><h2>Committed to a<br />Better Tomorrow</h2><p>Guided by our values, we continue to build stronger businesses, lasting relationships and a more inclusive future.</p></div><div className={styles.tomorrowNote}>People<br />Opportunities<br />Progress<br />A stronger tomorrow<span className={styles.whiteLine} /></div></div></section>
     <section className={styles.contact}><div className={`container ${styles.contactInner}`}><div><h2>Let’s Create What’s Next <span>—</span> Together.</h2><p>Speak with our team to explore how Astronis Global can support your goals.</p></div><div className={styles.actions}><Action>Contact Us</Action><Action outline>Request a Consultation</Action></div></div></section>
-  </div>;
+  </div></CmsPageRoute>;
 }

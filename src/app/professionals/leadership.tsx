@@ -100,34 +100,22 @@ export const professionals = [
       "Supports clients with licensing, business acquisitions, corporate due diligence, and BIS and ISI compliance.",
   },
 ];
-
-export type ProfessionalRecord = (typeof professionals)[number];
-
-export default function Leadership({ limit, variant, people }: { limit?: number; variant?: "premium"; people?: readonly ProfessionalRecord[] }) {
-  const records = people ?? professionals;
-  const visibleProfessionals = limit ? records.slice(0, limit) : records;
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string };
+export default function Leadership({ limit, cmsProfessionals = [] }: { limit?: number; cmsProfessionals?: CmsProfessional[] }) {
+  const merged = [...cmsProfessionals, ...professionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
+  const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
       {visibleProfessionals.map((p) => (
-        <article className={variant === "premium" ? styles.personCard : "leader-card"} key={p.slug}>
-          <div className={variant === "premium" ? styles.portrait : "leader-avatar"}>
-            {p.image ? (
-              <Image
-                src={p.image}
-                alt={p.name}
-                fill
-                sizes={variant === "premium" ? "(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw" : "(max-width: 760px) 35vw, 155px"}
-              />
-            ) : (
-              <span className="professional-photo-placeholder" role="img" aria-label={`${p.name} photo coming soon`}>
-                {p.name
-                  .split(/\s+/)
-                  .map((part) => part[0])
-                  .slice(0, 2)
-                  .join("")}
-              </span>
-            )}
+        <article className="leader-card" key={p.slug}>
+          <div className="leader-avatar">
+            {p.image ? <Image
+              src={p.image}
+              alt={p.name}
+              fill
+              sizes="(max-width: 760px) 35vw, 155px"
+            /> : <span aria-hidden="true">{p.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</span>}
           </div>
           <div className={variant === "premium" ? styles.personBody : undefined}>
             <h3>{p.name}</h3>
