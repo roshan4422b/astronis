@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { services } from "@/data/services";
-import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export const runtime = "nodejs";
 
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   if (!isValidMeetingTime(time) || !validZones.has(timezone) || !validModes.has(mode) || raw.consent !== true || raw.enquiryAgreementAccepted !== "yes" || raw.enquiryAgreementId !== "enquiry-communication-consultation-consent") return error("Please read and accept the Enquiry, Communication & Consultation Consent Agreement before submitting your enquiry.");
 
   const verificationResponse = verificationFailure(
-    await consumeFormVerification(request, email, clean(raw.captchaToken, 2048), clean(raw.emailVerificationToken, 128)),
+    await consumeEmailVerification(email, clean(raw.emailVerificationToken, 128)),
   );
   if (verificationResponse) return verificationResponse;
 
