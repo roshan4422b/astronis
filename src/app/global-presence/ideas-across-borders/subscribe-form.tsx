@@ -9,7 +9,7 @@ import styles from "./page.module.css";
 export default function SubscribeForm() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
-  const [, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
 
   async function subscribe(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,5 +28,5 @@ export default function SubscribeForm() {
     }
   }
 
-  return <form className={styles.subscribeForm} onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="insights-email">Your email address</label><input id="insights-email" name="email" type="email" autoComplete="email" placeholder="Your Email Address" required maxLength={180} /><button type="submit" disabled={busy}>{busy ? "Sending…" : "Subscribe"}<Icon name="arrow" /></button></div><label className={styles.subscribeConsent}><input type="checkbox" name="consent" value="yes" required /><span>I agree to be contacted about insights and updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></span></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{status && <p role="status">{status}</p>}</form>;
+  return <form className={styles.subscribeForm} onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="insights-email">Your email address</label><input id="insights-email" name="email" type="email" autoComplete="email" placeholder="Your Email Address" required maxLength={180} /><button type="submit" disabled={busy || !captchaToken}>{busy ? "Sending…" : "Subscribe"}<Icon name="arrow" /></button></div><label className={styles.subscribeConsent}><input type="checkbox" name="consent" value="yes" required /><span>I agree to be contacted about insights and updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></span></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{status && <p role="status">{status}</p>}</form>;
 }

@@ -38,6 +38,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
 
   const updateField = (field: keyof typeof form, value: string | boolean) => {
@@ -149,10 +150,10 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification resetOnSubmit={false} />
+        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
 
         <div style={{ width: "100%" }}>
-          <button type="submit" className={styles.button} disabled={busy}>
+          <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
             {busy ? "Sending..." : "Send Enquiry"}
           </button>
         </div>
