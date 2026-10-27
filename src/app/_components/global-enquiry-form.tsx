@@ -158,7 +158,7 @@ export default function GlobalEnquiryForm({
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
 
   const primaryOptions = getPrimaryOptions(category);
   const secondaryOptions = useMemo(
@@ -852,7 +852,7 @@ export default function GlobalEnquiryForm({
         </label>
 
         <div className={styles.actions}>
-          <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+          <button type="submit" className={styles.button} disabled={busy}>
             {busy ? "Sending…" : variant === "market" ? "Request a Consultation" : "Submit Enquiry"}
             <Icon name="arrow" />
           </button>

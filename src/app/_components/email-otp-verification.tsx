@@ -44,6 +44,8 @@ const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, {
   const [status, setStatus] = useState("");
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(0);
+  const captchaSubmittingRef = useRef(false);
+  const resubmittingFormRef = useRef(false);
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const updateCaptchaToken = useCallback((token: string) => {
     setCaptchaToken(token);
@@ -69,6 +71,60 @@ const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, {
     const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
     if (!form) return;
     let captchaResetTimer: number | undefined;
+    const interceptSubmit = (event: Event) => {
+      if (!(form instanceof HTMLFormElement)) return;
+      if (resubmittingFormRef.current) {
+        resubmittingFormRef.current = false;
+        return;
+      }
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (captchaSubmittingRef.current) return;
+
+      captchaSubmittingRef.current = true;
+      setStatus("");
+      const submitter = event instanceof SubmitEvent ? event.submitter : null;
+      const captchaRequest = captchaRef.current?.getFreshToken();
+      if (!captchaRequest) {
+        captchaSubmittingRef.current = false;
+        setStatus("CAPTCHA verification could not be completed. Please try submitting again.");
+        return;
+      }
+      void captchaRequest
+        .then((token) => {
+          if (!token) {
+            setStatus("CAPTCHA verification could not be completed. Please try submitting again.");
+            updateCaptchaToken("");
+            setInternalCaptchaReset((current) => current + 1);
+            return;
+          }
+          const captchaInput = form.querySelector<HTMLInputElement>('input[name="captchaToken"]');
+          if (!captchaInput) {
+            console.error("The enquiry form is missing its CAPTCHA token field.");
+            setStatus("CAPTCHA verification could not be completed. Please try submitting again.");
+            return;
+          }
+          captchaInput.value = token;
+          updateCaptchaToken(token);
+          resubmittingFormRef.current = true;
+          if (submitter instanceof HTMLButtonElement || submitter instanceof HTMLInputElement) {
+            form.requestSubmit(submitter);
+          } else {
+            form.requestSubmit();
+          }
+          resubmittingFormRef.current = false;
+        })
+        .catch((error: unknown) => {
+          resubmittingFormRef.current = false;
+          console.error("Could not complete CAPTCHA verification before form submission.", error);
+          setStatus("CAPTCHA verification could not be completed. Please try submitting again.");
+          updateCaptchaToken("");
+          setInternalCaptchaReset((current) => current + 1);
+        })
+        .finally(() => {
+          captchaSubmittingRef.current = false;
+        });
+    };
     const resetVerification = () => {
       updateCaptchaToken("");
       setEmail("");
@@ -89,11 +145,17 @@ const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, {
       }, 0);
     };
     form.addEventListener("reset", resetVerification);
-    if (form instanceof HTMLFormElement) form.addEventListener("submit", resetCaptchaAfterSubmit);
+    if (form instanceof HTMLFormElement) {
+      form.addEventListener("submit", interceptSubmit, true);
+      form.addEventListener("submit", resetCaptchaAfterSubmit);
+    }
     if (!emailInput) return () => {
       if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
       form.removeEventListener("reset", resetVerification);
-      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
+      if (form instanceof HTMLFormElement) {
+        form.removeEventListener("submit", interceptSubmit, true);
+        form.removeEventListener("submit", resetCaptchaAfterSubmit);
+      }
     };
     const clearProofWhenEmailChanges = () => {
       if (emailInput.value.trim().toLowerCase() !== email) {
@@ -107,7 +169,10 @@ const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, {
     return () => {
       if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
       form.removeEventListener("reset", resetVerification);
-      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
+      if (form instanceof HTMLFormElement) {
+        form.removeEventListener("submit", interceptSubmit, true);
+        form.removeEventListener("submit", resetCaptchaAfterSubmit);
+      }
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
   }, [email, resetOnSubmit, updateCaptchaToken]);

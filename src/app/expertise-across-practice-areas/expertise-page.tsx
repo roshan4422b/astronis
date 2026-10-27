@@ -74,7 +74,7 @@ export default function ExpertisePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [formStatus, setFormStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState(false);
   const visibleAreas = practiceAreas.filter((area) => {
@@ -205,7 +205,7 @@ export default function ExpertisePage() {
               <label>Name *<input name="name" autoComplete="name" placeholder="Your Name" required /></label><label>Organisation *<input name="organisation" autoComplete="organization" placeholder="Company / Organisation" required /></label><label>Email *<input name="email" type="email" autoComplete="email" placeholder="Your Email" required /></label><label>Phone *<input name="phone" type="tel" autoComplete="tel" placeholder="Your Phone" required /></label>
               <label>Expertise Required *<select name="expertise" required defaultValue=""><option value="" disabled>Select Expertise</option>{practiceAreas.map((area) => <option key={area.title}>{area.title}</option>)}</select></label><label>Service<select name="service" required defaultValue=""><option value="" disabled>Select Service</option>{serviceOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Industry<select name="industry" defaultValue=""><option value="">Select Industry</option>{industryOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Jurisdiction<select name="jurisdiction" defaultValue=""><option value="" disabled>Select Jurisdiction</option>{jurisdictionOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
               <label className={styles.requirementField}>Brief Description of Requirement *<textarea name="message" placeholder="Tell us about your requirement" required minLength={10} /></label><label className={styles.uploadField}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /><small>PDF, DOC, image · Max 5 MB</small></label>
-              <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="expertise-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} /><EmailOtpVerification onCaptchaToken={setCaptchaToken} /><button className={styles.navyButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
+              <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="expertise-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} /><EmailOtpVerification onCaptchaToken={setCaptchaToken} /><button className={styles.navyButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
               {formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
             </form>
           </div>

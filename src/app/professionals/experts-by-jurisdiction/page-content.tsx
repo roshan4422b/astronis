@@ -69,7 +69,7 @@ export default function ExpertsByJurisdiction() {
   const [applied, setApplied] = useState({ query: "", jurisdiction: "", expertise: "", service: "", industry: "", location: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const [formStatus, setFormStatus] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
@@ -243,7 +243,7 @@ export default function ExpertsByJurisdiction() {
           <small className={styles.uploadNote}>PDF, DOC, DOCX · Max 5 MB</small>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="jurisdiction-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />
           <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
-          <button className={styles.submitButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
+          <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>
     </section>

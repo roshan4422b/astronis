@@ -62,7 +62,6 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -248,9 +247,9 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+        <EmailOtpVerification />
 
-        <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+        <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Requirement"}
         </button>
 

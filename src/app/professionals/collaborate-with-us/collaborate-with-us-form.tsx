@@ -36,7 +36,7 @@ export default function CollaborateWithUsForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
@@ -110,7 +110,7 @@ export default function CollaborateWithUsForm() {
     </div>
     <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="collaborate-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
     <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
-    <button type="submit" className={styles.submitButton} disabled={busy || !captchaToken}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
+    <button type="submit" className={styles.submitButton} disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;
 }

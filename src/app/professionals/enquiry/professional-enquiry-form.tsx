@@ -25,7 +25,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
@@ -102,7 +102,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     <div className={styles.uploadBlock}><span>Upload relevant documents (optional)</span><label className={styles.dropZone} onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); addFiles(event.dataTransfer.files); }}><Icon name="file" /><span><strong>Click to upload</strong> or drag and drop<small>PDF, DOC, DOCX, JPG, PNG · Max 10 MB each · 3 files</small></span><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onChange={event => { if (event.target.files) addFiles(event.target.files); event.target.value = ""; }} /></label>{files.length > 0 && <ul className={styles.fileList}>{files.map((file,index) => <li key={`${file.name}-${index}`}><span>{file.name}</span><button type="button" onClick={() => setFiles(current => current.filter((_,itemIndex) => itemIndex !== index))} aria-label={`Remove ${file.name}`}>Remove</button></li>)}</ul>}</div>
     <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="professional-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement={networkApplication} />
     <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
-    <div className={styles.submitRow}><button type="submit" disabled={busy || !captchaToken}>{busy ? "Sending…" : networkApplication ? "Submit Profile" : "Submit Enquiry"}<Icon name="arrow" /></button><p>{networkApplication ? "Our team will review your profile and contact you about suitable collaboration opportunities." : "Our team will review your enquiry and connect you with an appropriate professional."}</p></div>
+    <div className={styles.submitRow}><button type="submit" disabled={busy}>{busy ? "Sending…" : networkApplication ? "Submit Profile" : "Submit Enquiry"}<Icon name="arrow" /></button><p>{networkApplication ? "Our team will review your profile and contact you about suitable collaboration opportunities." : "Our team will review your enquiry and connect you with an appropriate professional."}</p></div>
     {status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <a href="mailto:advisory@astronisglobal.com"> Email our team.</a>}</p>}
   </form>;
 }

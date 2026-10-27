@@ -266,7 +266,7 @@ export default function BusinessUpdates() {
   const [showMoreRegulators, setShowMoreRegulators] = useState(false);
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredUpdates = useMemo(
@@ -678,7 +678,7 @@ export default function BusinessUpdates() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting || !captchaToken}>
+              <button type="submit" disabled={submitting}>
                 {submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" />
               </button>
             </div>
