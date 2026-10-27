@@ -13,6 +13,7 @@ declare global {
   interface Window {
     turnstile?: {
       render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+      execute: (id?: string) => void;
       reset: (id?: string) => void;
       remove: (id?: string) => void;
     };
@@ -53,11 +54,22 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
     pending.resolve(token);
   }, []);
 
-  const resetForPendingRequest = useCallback(() => {
+  const resetWidget = useCallback(() => {
+    if (!idRef.current || !window.turnstile) return;
+    try {
+      window.turnstile.reset(idRef.current);
+    } catch (error) {
+      console.error("Could not reset the Cloudflare Turnstile widget.", error);
+    }
+  }, []);
+
+  const executePendingRequest = useCallback(() => {
     if (!pendingRef.current || !idRef.current || !window.turnstile) return;
     try {
       window.turnstile.reset(idRef.current);
-    } catch {
+      window.turnstile.execute(idRef.current);
+    } catch (error) {
+      console.error("Could not execute the Cloudflare Turnstile challenge.", error);
       finishPending("");
     }
   }, [finishPending]);
@@ -66,6 +78,7 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
     if (!ref.current || !window.turnstile || idRef.current) return;
     const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
     if (!sitekey) {
+      console.error("Cloudflare Turnstile is unavailable: NEXT_PUBLIC_TURNSTILE_SITE_KEY is missing.");
       callbackRef.current("");
       finishPending("");
       return;
@@ -73,7 +86,8 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
     try {
       idRef.current = window.turnstile.render(ref.current, {
         sitekey,
-        appearance: "always",
+        size: "invisible",
+        execution: "execute",
         callback: (token: string) => {
           callbackRef.current(token);
           finishPending(token);
@@ -81,6 +95,7 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
         "expired-callback": () => {
           callbackRef.current("");
           finishPending("");
+          resetWidget();
         },
         "error-callback": (errorCode: unknown) => {
           if (typeof errorCode === "string") {
@@ -88,32 +103,40 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
           }
           callbackRef.current("");
           finishPending("");
+          resetWidget();
         },
       });
       for (const ready of readyWaitersRef.current.splice(0)) ready();
-      resetForPendingRequest();
-    } catch {
+    } catch (error) {
+      console.error("Could not render the Cloudflare Turnstile widget.", error);
       callbackRef.current("");
       finishPending("");
     }
-  }, [finishPending, resetForPendingRequest]);
+  }, [finishPending, resetWidget]);
 
   const getFreshToken = useCallback((): Promise<string> => {
-    if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) return Promise.resolve("");
+    if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+      console.error("Cloudflare Turnstile is unavailable: NEXT_PUBLIC_TURNSTILE_SITE_KEY is missing.");
+      return Promise.resolve("");
+    }
     if (pendingRef.current) return pendingRef.current.promise;
     let resolveToken!: (token: string) => void;
     const promise = new Promise<string>((resolve) => {
       resolveToken = resolve;
     });
-    const timeout = window.setTimeout(() => finishPending(""), TOKEN_TIMEOUT_MS);
+    const timeout = window.setTimeout(() => {
+      callbackRef.current("");
+      finishPending("");
+      resetWidget();
+    }, TOKEN_TIMEOUT_MS);
     pendingRef.current = { resolve: resolveToken, promise, timeout };
     if (window.turnstile && idRef.current) {
-      resetForPendingRequest();
+      executePendingRequest();
     } else {
-      readyWaitersRef.current.push(resetForPendingRequest);
+      readyWaitersRef.current.push(executePendingRequest);
     }
     return promise;
-  }, [finishPending, resetForPendingRequest]);
+  }, [executePendingRequest, finishPending, resetWidget]);
 
   useImperativeHandle(forwardedRef, () => ({ getFreshToken }), [getFreshToken]);
 
@@ -129,10 +152,10 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
 
   useEffect(() => {
     if (resetKey && idRef.current) {
-      window.turnstile?.reset(idRef.current);
+      resetWidget();
       callbackRef.current("");
     }
-  }, [resetKey]);
+  }, [resetKey, resetWidget]);
 
   return (
     <>
@@ -140,7 +163,11 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, Props>(function Turnst
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive"
         onReady={mount}
-        onError={() => finishPending("")}
+        onError={() => {
+          console.error("Could not load the Cloudflare Turnstile script.");
+          callbackRef.current("");
+          finishPending("");
+        }}
       />
       <div ref={ref} />
     </>

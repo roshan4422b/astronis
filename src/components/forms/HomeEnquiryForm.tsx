@@ -1,13 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styles from "@/components/forms/formStyles.module.css";
 import FormInput from "@/components/forms/shared/FormInput";
 import FormSelect from "@/components/forms/shared/FormSelect";
 import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import { getFormVerification } from "@/lib/form-verification.client";
 
 const interestOptions = [
@@ -38,9 +38,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
 
   const updateField = (field: keyof typeof form, value: string | boolean) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -66,8 +64,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
     try {
       setBusy(true);
       setStatus("");
-      const freshCaptchaToken = await captchaRef.current?.getFreshCaptchaToken();
-      const verification = getFormVerification(formElement, freshCaptchaToken);
+      const verification = getFormVerification(formElement);
 
       const params = new URLSearchParams(window.location.search);
       const payload = {
@@ -152,10 +149,10 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification ref={captchaRef} onCaptchaToken={setCaptchaToken} resetOnSubmit={false} />
+        <EmailOtpVerification resetOnSubmit={false} />
 
         <div style={{ width: "100%" }}>
-          <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+          <button type="submit" className={styles.button} disabled={busy}>
             {busy ? "Sending..." : "Send Enquiry"}
           </button>
         </div>

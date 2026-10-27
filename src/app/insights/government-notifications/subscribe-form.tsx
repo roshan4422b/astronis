@@ -9,7 +9,7 @@ import styles from "../gst-updates.module.css";
 export default function SubscribeForm() {
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
 
   async function subscribe(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,7 +46,7 @@ export default function SubscribeForm() {
           required
           maxLength={180}
         />
-        <button type="submit" disabled={submitting || !captchaToken}>
+        <button type="submit" disabled={submitting}>
           {submitting ? "Sending..." : "Subscribe"} <Icon name="arrow" />
         </button>
       </div>

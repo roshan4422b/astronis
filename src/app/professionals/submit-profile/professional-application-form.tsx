@@ -46,7 +46,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
   const [fileError, setFileError] = useState("");
   const [website, setWebsite] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [successReference, setSuccessReference] = useState("");
   const [preferredCountryInput, setPreferredCountryInput] = useState("");
@@ -327,7 +327,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
         </div>}
 
         {status && <p className={styles.submitError} role="alert">{status}</p>}
-        <div className={styles.controls}>{step > 0 && <button type="button" className={styles.backButton} onClick={() => { setStep((current) => current - 1); setErrors({}); setStatus(""); }}>Previous</button>}{step < applicationSteps.length - 1 ? <button type="button" className={styles.nextButton} onClick={continueToNext}>Continue <Icon name="arrow" /></button> : <button className={styles.nextButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting…" : "Submit Professional Application"}<Icon name="arrow" /></button>}</div>
+        <div className={styles.controls}>{step > 0 && <button type="button" className={styles.backButton} onClick={() => { setStep((current) => current - 1); setErrors({}); setStatus(""); }}>Previous</button>}{step < applicationSteps.length - 1 ? <button type="button" className={styles.nextButton} onClick={continueToNext}>Continue <Icon name="arrow" /></button> : <button className={styles.nextButton} type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Submit Professional Application"}<Icon name="arrow" /></button>}</div>
         <p className={styles.noDraft}>Applications are submitted securely for review. Draft saving is unavailable for this form.</p>
       </form>
     </div>

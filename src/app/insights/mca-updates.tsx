@@ -88,7 +88,7 @@ export default function McaUpdates() {
   const [showMoreTopics, setShowMoreTopics] = useState(false);
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
   const normalizedQuery = query.trim().toLowerCase();
   const visibleUpdates = useMemo(
     () => updates.filter((item) => matchesTopic(item.topic, item.title, item.label, selectedTopic)
@@ -204,7 +204,7 @@ export default function McaUpdates() {
     <section className={styles.cta}>
       <AssetImage src="/corporate-regulatory-hero.png" alt="" fill sizes="100vw" />
       <div className={styles.ctaShade} /><div className={styles.ctaInner}><div><h2>Stay Updated. Stay Compliant.</h2><p>Get the latest MCA updates, company law insights and expert analysis from Astronis Global.</p></div>
-        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="mca-subscribe-email">Email address</label><input id="mca-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
+        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="mca-subscribe-email">Email address</label><input id="mca-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
       </div>
     </section>
   </div>;

@@ -232,7 +232,7 @@ export default function RbiCircularsPage() {
   const [query, setQuery] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [, setCaptchaToken] = useState("");
 
   const filteredCategories = useMemo(
     () =>
@@ -546,7 +546,7 @@ export default function RbiCircularsPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting || !captchaToken}>
+              <button type="submit" disabled={submitting}>
                 {submitting ? 'Submitting…' : 'Subscribe'} <Icon name="arrow" />
               </button>
             </div>
