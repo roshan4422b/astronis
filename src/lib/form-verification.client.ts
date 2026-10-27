@@ -1,11 +1,13 @@
-export function getFormVerification(form: HTMLElement, requireCaptcha = true) {
-  const captchaToken = form.querySelector<HTMLInputElement>('input[name="captchaToken"]')?.value ?? "";
+export function getFormVerification(form: HTMLElement, captchaTokenOverride?: string) {
+  const captchaToken = captchaTokenOverride
+    ?? form.querySelector<HTMLInputElement>('input[name="captchaToken"]')?.value
+    ?? "";
   const emailVerificationToken = form.querySelector<HTMLInputElement>('input[name="emailVerificationToken"]')?.value ?? "";
   if (!emailVerificationToken) {
     throw new Error("Verify your email address before submitting this form.");
   }
-  if (requireCaptcha && !captchaToken) {
+  if (!captchaToken) {
     throw new Error("Complete the CAPTCHA verification before submitting this form.");
   }
-  return requireCaptcha ? { captchaToken, emailVerificationToken } : { emailVerificationToken };
+  return { captchaToken, emailVerificationToken };
 }
