@@ -1,12 +1,14 @@
-export type CaptchaTokenProvider = { getToken: () => Promise<string> };
+export type CaptchaTokenProvider = {
+  getToken: (options?: { fresh?: boolean }) => Promise<string>;
+};
 
 export async function fetchWithFreshCaptcha(
   captcha: CaptchaTokenProvider | null,
   send: (captchaToken: string) => Promise<Response>,
 ) {
-  const getFreshToken = async () => {
-    let token = await captcha?.getToken() ?? "";
-    if (!token) token = await captcha?.getToken() ?? "";
+  const getToken = async (fresh = false) => {
+    let token = await captcha?.getToken(fresh ? { fresh: true } : undefined) ?? "";
+    if (!token && !fresh) token = await captcha?.getToken({ fresh: true }) ?? "";
     if (!token) {
       throw new Error("Verification is taking longer than usual. Please try again.");
     }
@@ -16,15 +18,18 @@ export async function fetchWithFreshCaptcha(
   const isCaptchaFailure = async (response: Response) => {
     if (response.ok) return false;
     const body = await response.clone().json().catch(() => null) as { message?: unknown } | null;
-    return typeof body?.message === "string" && body.message.toLowerCase().includes("captcha");
+    return body?.message === "Please complete the CAPTCHA verification and try again.";
   };
 
-  let response = await send(await getFreshToken());
+  let response = await send(await getToken());
   if (await isCaptchaFailure(response)) {
-    response = await send(await getFreshToken());
+    response = await send(await getToken(true));
     if (await isCaptchaFailure(response)) {
       throw new Error("Verification is taking longer than usual. Please try again.");
     }
+  }
+  if (response.ok && captcha) {
+    void captcha.getToken({ fresh: true }).catch(() => "");
   }
   return response;
 }
