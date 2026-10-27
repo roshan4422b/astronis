@@ -150,6 +150,10 @@ const bankingFinancialServicesChildRoutes: Record<string, string> = {
 const tribunalsDisputeResolutionChildRoutes: Record<string, string> = {
   "Mediation & Conciliation Cell":
     "/services/litigation-dispute-resolution/tribunals-dispute-resolution/mediation-conciliation-cell",
+  "Real-Estate regulatory Authority":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/real-estate-regulatory-authority",
+  "Central Administrative Tribunal":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/central-administrative-tribunal",
 };
 
 const technologyPrivacyChildRoutes: Record<string, string> = {
