@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Icon from "../_components/icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "../_components/enquiry-agreement-checkbox";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "../_components/email-otp-verification";
-import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
+import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./professional-collaboration.module.css";
 
 const professionalTypes = [
@@ -36,7 +35,7 @@ export default function CollaborationForm() {
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [agreementAccepted, setAgreementAccepted] = useState(false);
   const [agreementError, setAgreementError] = useState("");
 
@@ -74,10 +73,7 @@ export default function CollaborationForm() {
     setBusy(true);
     setStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
-        data.set("captchaToken", captchaToken);
-        return fetch("/api/professional-enquiry", { method: "POST", body: data });
-      });
+      const response = await fetch("/api/professional-enquiry", { method: "POST", body: data });
       const result = await response.json() as { message?: string };
       setSuccess(response.ok);
       setStatus(result.message || (response.ok
@@ -111,8 +107,8 @@ export default function CollaborationForm() {
       <label className={styles.uploadField}><span>Upload Supporting Document</span><input type="file" accept=".pdf,.doc,.docx" onChange={event => selectFile(event.currentTarget.files?.[0], event.currentTarget)} /><small>PDF, DOC, DOCX, up to 5 MB{file ? ` · ${file.name}` : ""}</small></label>
     </div>
     <EnquiryAgreementCheckbox accepted={agreementAccepted} error={agreementError} errorId="professional-collaboration-enquiry-agreement-error" onChange={(accepted) => { setAgreementAccepted(accepted); setAgreementError(""); }} onInvalid={() => setAgreementError(enquiryAgreementMessage)} />
-    <EmailOtpVerification ref={captchaRef} />
-    <button className={styles.submitButton} type="submit" disabled={busy}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
+    <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+    <button className={styles.submitButton} type="submit" disabled={busy || !captchaToken}>{busy ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>
     {status && <p className={styles.formStatus} data-success={success} role="status">{status}</p>}
   </form>;
 }

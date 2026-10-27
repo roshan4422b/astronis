@@ -2,11 +2,11 @@
 
 import Image from "@/app/_components/asset-image";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 import Link from "next/link";
 import { professionals } from "@/app/professionals/leadership";
-import { useRef, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import styles from "./expertise-page.module.css";
 
 const practiceAreas = [
@@ -74,7 +74,7 @@ export default function ExpertisePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [formStatus, setFormStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState(false);
   const visibleAreas = practiceAreas.filter((area) => {
@@ -103,11 +103,11 @@ export default function ExpertisePage() {
     setSubmitting(true);
     setFormStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+      const response = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         formType: "service", name: values.get("name"), email: values.get("email"), company: values.get("organisation"), phone: values.get("phone"),
         service: values.get("service"), industry: values.get("industry"), country: values.get("jurisdiction"), location: values.get("jurisdiction"), message,
-        consent: "yes", enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", ...getFormVerification(form, captchaToken), pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
-      }) }));
+        consent: "yes", enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", ...getFormVerification(form), pageUrl: window.location.href, pathname: window.location.pathname, pageTitle: document.title, referrer: document.referrer,
+      }) });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.message || "We couldn't submit your enquiry.");
       setFormStatus(result.message);
@@ -205,7 +205,7 @@ export default function ExpertisePage() {
               <label>Name *<input name="name" autoComplete="name" placeholder="Your Name" required /></label><label>Organisation *<input name="organisation" autoComplete="organization" placeholder="Company / Organisation" required /></label><label>Email *<input name="email" type="email" autoComplete="email" placeholder="Your Email" required /></label><label>Phone *<input name="phone" type="tel" autoComplete="tel" placeholder="Your Phone" required /></label>
               <label>Expertise Required *<select name="expertise" required defaultValue=""><option value="" disabled>Select Expertise</option>{practiceAreas.map((area) => <option key={area.title}>{area.title}</option>)}</select></label><label>Service<select name="service" required defaultValue=""><option value="" disabled>Select Service</option>{serviceOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Industry<select name="industry" defaultValue=""><option value="">Select Industry</option>{industryOptions.map((option) => <option key={option}>{option}</option>)}</select></label><label>Jurisdiction<select name="jurisdiction" defaultValue=""><option value="" disabled>Select Jurisdiction</option>{jurisdictionOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
               <label className={styles.requirementField}>Brief Description of Requirement *<textarea name="message" placeholder="Tell us about your requirement" required minLength={10} /></label><label className={styles.uploadField}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /><small>PDF, DOC, image · Max 5 MB</small></label>
-              <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="expertise-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} /><EmailOtpVerification ref={captchaRef} /><button className={styles.navyButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
+              <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="expertise-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} /><EmailOtpVerification onCaptchaToken={setCaptchaToken} /><button className={styles.navyButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting..." : "Submit Enquiry"} <Arrow /></button>
               {formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
             </form>
           </div>

@@ -1,17 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Icon from "@/app/_components/icon";
 import styles from "./page.module.css";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 
 const interests = ["Referral Partnership", "Strategic Alliance", "Co-Counsel Arrangement", "Knowledge Collaboration", "Other Partnership Opportunity"];
 
 export default function PartnershipForm() {
   const [busy, setBusy] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
@@ -26,6 +26,13 @@ export default function PartnershipForm() {
       return;
     }
     setEnquiryAgreementError("");
+    let formVerification: ReturnType<typeof getFormVerification>;
+    try {
+      formVerification = getFormVerification(form);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
+      return;
+    }
     const payload = {
       formType: "service",
       name: String(formData.get("name") || "").trim(),
@@ -41,6 +48,7 @@ export default function PartnershipForm() {
       enquiryAgreementAccepted: "yes",
       enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
+      ...formVerification,
       pageUrl: window.location.href,
       pageTitle: document.title || "Astronis Global",
       pathname: window.location.pathname,
@@ -53,13 +61,11 @@ export default function PartnershipForm() {
     setBusy(true);
     setStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) =>
-        fetch("/api/enquiry", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...payload, ...getFormVerification(form, captchaToken) }),
-        }),
-      );
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data?.success !== true) {
         throw new Error(data?.message || "We could not send your enquiry. Please try again.");
@@ -85,6 +91,6 @@ export default function PartnershipForm() {
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
   </div>
   <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
-  <EmailOtpVerification ref={captchaRef} />
-  <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
+  <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+  <button type="submit" disabled={busy || !captchaToken}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

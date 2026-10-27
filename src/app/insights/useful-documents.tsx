@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import styles from "./gst-updates.module.css";
 import documentStyles from "./useful-documents.module.css";
@@ -80,7 +79,7 @@ export default function UsefulDocuments() {
   const [downloadNotice, setDownloadNotice] = useState("");
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
   const normalizedQuery = query.trim().toLowerCase();
 
   const visibleFeatured = useMemo(
@@ -114,11 +113,7 @@ export default function UsefulDocuments() {
     setSubmitting(true);
     setSubscribeStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
-        const data = new FormData(form);
-        data.set("captchaToken", captchaToken);
-        return fetch("/api/insights-subscribe", { method: "POST", body: data });
-      });
+      const response = await fetch("/api/insights-subscribe", { method: "POST", body: new FormData(form) });
       const result: { message?: string } = await response.json();
       setSubscribeStatus(result.message || "We could not process your request.");
       if (response.ok) form.reset();
@@ -199,7 +194,7 @@ export default function UsefulDocuments() {
     <section className={styles.cta}>
       <AssetImage src="/corporate-regulatory-hero.png" alt="" fill sizes="100vw" />
       <div className={styles.ctaShade} /><div className={styles.ctaInner}><div><h2>Simplify Your Legal and Compliance Processes</h2><p className={documentStyles.ctaDescription}>Download essential documents, guides and templates from Astronis Global.</p></div>
-        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="documents-subscribe-email">Email address</label><input id="documents-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification ref={captchaRef} />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
+        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="documents-subscribe-email">Email address</label><input id="documents-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
       </div>
     </section>
   </div>;

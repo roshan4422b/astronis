@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
 import Icon from "../_components/icon";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "../_components/email-otp-verification";
-import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
+import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./testimonial-form.module.css";
 export default function TestimonialForm({
   initialFormat = "written",
@@ -14,6 +13,7 @@ export default function TestimonialForm({
   const [format, setFormat] = useState(initialFormat),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false),
+    [captchaToken, setCaptchaToken] = useState(""),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [preview, setPreview] = useState(""),
@@ -23,8 +23,7 @@ export default function TestimonialForm({
     [testimonialText, setTestimonialText] = useState("");
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
-    live = useRef<HTMLVideoElement>(null),
-    captchaRef = useRef<EmailOtpVerificationHandle>(null);
+    live = useRef<HTMLVideoElement>(null);
   useEffect(
     () => () => stream.current?.getTracks().forEach((t) => t.stop()),
     [],
@@ -108,9 +107,9 @@ export default function TestimonialForm({
     }
     setBusy(true);
     try {
-      const res = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
-        data.set("captchaToken", captchaToken);
-        return fetch("/api/testimonials", { method: "POST", body: data });
+      const res = await fetch("/api/testimonials", {
+        method: "POST",
+        body: data,
       });
       const result = await res.json();
       setStatus(result.message);
@@ -380,8 +379,8 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
-          <EmailOtpVerification ref={captchaRef} />
-          <button className="button" type="submit" disabled={busy || recording}>
+          <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+          <button className="button" type="submit" disabled={busy || recording || !captchaToken}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>
