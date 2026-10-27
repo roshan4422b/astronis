@@ -15,20 +15,26 @@ declare global {
       render: (el: HTMLElement, opts: Record<string, unknown>) => string;
       reset: (id?: string) => void;
       remove: (id?: string) => void;
+      getResponse: (id?: string) => string;
     };
   }
 }
 
-export type TurnstileHandle = { getToken: () => Promise<string> };
+export type TurnstileHandle = {
+  getToken: (options?: { fresh?: boolean }) => Promise<string>;
+};
 
 type Props = { onToken?: (token: string) => void };
 
 const TurnstileWidget = forwardRef<TurnstileHandle, Props>(function TurnstileWidget({ onToken }, forwardedRef) {
   const elementRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const tokenRef = useRef("");
   const callbackRef = useRef(onToken);
-  const pendingRef = useRef<{ resolve: (token: string) => void; timer: number } | null>(null);
-  const returnedTokensRef = useRef(new Set<string>());
+  const waiterRef = useRef<{
+    promise: Promise<string>;
+    settle: (token: string) => void;
+  } | null>(null);
 
   callbackRef.current = onToken;
 
@@ -36,63 +42,96 @@ const TurnstileWidget = forwardRef<TurnstileHandle, Props>(function TurnstileWid
     if (!elementRef.current || !window.turnstile || widgetIdRef.current) return;
     widgetIdRef.current = window.turnstile.render(elementRef.current, {
       sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+      "refresh-expired": "auto",
       callback: (token: string) => {
+        tokenRef.current = token;
         callbackRef.current?.(token);
-        const pending = pendingRef.current;
-        if (pending && token && !returnedTokensRef.current.has(token)) {
-          returnedTokensRef.current.add(token);
-          pending.resolve(token);
-        }
+        waiterRef.current?.settle(token);
       },
-      "expired-callback": () => callbackRef.current?.(""),
-      "error-callback": () => {
+      "expired-callback": () => {
+        tokenRef.current = "";
         callbackRef.current?.("");
-        pendingRef.current?.resolve("");
+      },
+      "error-callback": (code: unknown) => {
+        tokenRef.current = "";
+        callbackRef.current?.("");
+        if (typeof code === "number" || (typeof code === "string" && /^\d+$/.test(code))) {
+          console.warn(`Turnstile error code: ${code}`);
+        }
+        waiterRef.current?.settle("");
       },
     });
   }, []);
 
-  const getToken = useCallback(async () => {
-    const deadline = Date.now() + 20_000;
+  const waitForWidget = useCallback(async (timeout: number) => {
+    const deadline = Date.now() + timeout;
     while ((!window.turnstile || !widgetIdRef.current) && Date.now() < deadline) {
       mount();
       await new Promise((resolve) => window.setTimeout(resolve, 50));
     }
+    return window.turnstile && widgetIdRef.current
+      ? { turnstile: window.turnstile, widgetId: widgetIdRef.current }
+      : null;
+  }, [mount]);
 
-    const widgetId = widgetIdRef.current;
-    const turnstile = window.turnstile;
-    if (!widgetId || !turnstile) return "";
-    if (pendingRef.current) return "";
+  const waitForToken = useCallback((timeout: number) => {
+    if (waiterRef.current) return waiterRef.current.promise;
 
-    return new Promise<string>((resolve) => {
-      const finish = (token: string) => {
-        const pending = pendingRef.current;
-        if (!pending) return;
-        window.clearTimeout(pending.timer);
-        pendingRef.current = null;
+    let settle!: (token: string) => void;
+    const promise = new Promise<string>((resolve) => {
+      const timer = window.setTimeout(() => settle(""), timeout);
+      settle = (token: string) => {
+        window.clearTimeout(timer);
+        if (waiterRef.current?.settle === settle) waiterRef.current = null;
         resolve(token);
       };
-      const timer = window.setTimeout(() => finish(""), Math.max(0, deadline - Date.now()));
-      pendingRef.current = { resolve: finish, timer };
-      callbackRef.current?.("");
-      try {
-        turnstile.reset(widgetId);
-      } catch {
-        finish("");
-      }
     });
-  }, [mount]);
+    waiterRef.current = { promise, settle };
+    return promise;
+  }, []);
+
+  const getToken = useCallback(async (options?: { fresh?: boolean }) => {
+    const waitDuration = options?.fresh ? 25_000 : 15_000;
+    const deadline = Date.now() + waitDuration;
+    const widget = await waitForWidget(waitDuration);
+    if (!widget) return "";
+
+    if (!options?.fresh) {
+      let token = tokenRef.current;
+      if (!token) {
+        try {
+          token = widget.turnstile.getResponse(widget.widgetId) || "";
+        } catch {
+          token = "";
+        }
+      }
+      if (token) {
+        tokenRef.current = token;
+        return token;
+      }
+      return waitForToken(Math.max(0, deadline - Date.now()));
+    }
+
+    tokenRef.current = "";
+    callbackRef.current?.("");
+    const tokenPromise = waitForToken(25_000);
+    try {
+      widget.turnstile.reset(widget.widgetId);
+    } catch {
+      waiterRef.current?.settle("");
+    }
+    return tokenPromise;
+  }, [waitForToken, waitForWidget]);
 
   useImperativeHandle(forwardedRef, () => ({ getToken }), [getToken]);
 
   useEffect(() => {
     mount();
     return () => {
-      const pending = pendingRef.current;
-      if (pending) {
-        window.clearTimeout(pending.timer);
-        pending.resolve("");
-      }
+      const waiter = waiterRef.current;
+      waiterRef.current = null;
+      waiter?.settle("");
+      tokenRef.current = "";
       if (widgetIdRef.current) window.turnstile?.remove(widgetIdRef.current);
       widgetIdRef.current = null;
     };
