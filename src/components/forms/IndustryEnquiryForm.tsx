@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import styles from "@/components/forms/formStyles.module.css";
 import FormInput from "@/components/forms/shared/FormInput";
@@ -9,8 +9,8 @@ import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import { industryFormConfig } from "@/data/industryFormConfig";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -58,7 +58,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -112,16 +112,11 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
         pageTitle: document.title || "Astronis Global", referrer: document.referrer || "",
         consent: "yes", enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent", website: "", utmSource: params.get("utm_source") || "",
+        ...getFormVerification(event.currentTarget),
         utmMedium: params.get("utm_medium") || "", utmCampaign: params.get("utm_campaign") || "",
       };
 
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) =>
-        fetch("/api/enquiry", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...payload, ...getFormVerification(formElement, captchaToken) }),
-        }),
-      );
+      const response = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data?.success !== true) {
@@ -204,9 +199,9 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification ref={captchaRef} />
+        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
 
-        <button type="submit" className={styles.button} disabled={busy}>
+        <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}
         </button>
 

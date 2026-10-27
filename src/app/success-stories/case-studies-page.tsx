@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import { testimonials as allTestimonials } from "@/content/testimonials";
 import { featuredCaseStudies } from "@/content/featured-case-studies";
@@ -192,7 +191,7 @@ export default function CaseStudiesPage() {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const visiblePracticeAreas = useMemo(
@@ -234,10 +233,9 @@ export default function CaseStudiesPage() {
     setSubmitting(true);
     setEmailStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
-        const data = new FormData(form);
-        data.set("captchaToken", captchaToken);
-        return fetch("/api/insights-subscribe", { method: "POST", body: data });
+      const response = await fetch("/api/insights-subscribe", {
+        method: "POST",
+        body: new FormData(form),
       });
       const result: { message?: string } = await response.json();
       setEmailStatus(
@@ -653,7 +651,7 @@ export default function CaseStudiesPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? "Submitting…" : "Subscribe"}
                 <Icon name="arrow" />
               </button>
@@ -665,7 +663,7 @@ export default function CaseStudiesPage() {
                 <Link href="/legal/privacy-policy">Privacy Policy</Link>
               </span>
             </label>
-            <EmailOtpVerification ref={captchaRef} />
+            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
             {emailStatus && <p role="status">{emailStatus}</p>}
           </form>
         </div>

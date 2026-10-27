@@ -1,16 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
-import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import styles from "./page.module.css";
 
 export default function SubscribeForm() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
-  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   async function subscribe(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,11 +17,7 @@ export default function SubscribeForm() {
     setBusy(true);
     setStatus("");
     try {
-      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
-        const data = new FormData(form);
-        data.set("captchaToken", captchaToken);
-        return fetch("/api/insights-subscribe", { method: "POST", body: data });
-      });
+      const response = await fetch("/api/insights-subscribe", { method: "POST", body: new FormData(form) });
       const result = await response.json();
       setStatus(result.message || "We could not process your request.");
       if (response.ok) form.reset();
@@ -33,5 +28,5 @@ export default function SubscribeForm() {
     }
   }
 
-  return <form className={styles.subscribeForm} onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="insights-email">Your email address</label><input id="insights-email" name="email" type="email" autoComplete="email" placeholder="Your Email Address" required maxLength={180} /><button type="submit" disabled={busy}>{busy ? "Sending…" : "Subscribe"}<Icon name="arrow" /></button></div><label className={styles.subscribeConsent}><input type="checkbox" name="consent" value="yes" required /><span>I agree to be contacted about insights and updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></span></label><EmailOtpVerification ref={captchaRef} />{status && <p role="status">{status}</p>}</form>;
+  return <form className={styles.subscribeForm} onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="insights-email">Your email address</label><input id="insights-email" name="email" type="email" autoComplete="email" placeholder="Your Email Address" required maxLength={180} /><button type="submit" disabled={busy || !captchaToken}>{busy ? "Sending…" : "Subscribe"}<Icon name="arrow" /></button></div><label className={styles.subscribeConsent}><input type="checkbox" name="consent" value="yes" required /><span>I agree to be contacted about insights and updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></span></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{status && <p role="status">{status}</p>}</form>;
 }
