@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import styles from "@/components/forms/formStyles.module.css";
 import FormInput from "@/components/forms/shared/FormInput";
@@ -10,8 +10,8 @@ import PhoneInput from "@/components/forms/shared/PhoneInput";
 import { serviceAnchor } from "@/data/service-detail-types";
 import { serviceFormConfig } from "@/data/serviceFormConfig";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
-import EmailOtpVerification from "@/app/_components/email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
+import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -62,7 +62,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -152,12 +152,17 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
         pathname: window.location.pathname, pageTitle: document.title || "Astronis Global",
         referrer: document.referrer || "", consent: "yes", enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent", website: "",
-        ...getFormVerification(event.currentTarget),
         utmSource: params.get("utm_source") || "", utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
       };
 
-      const response = await fetch("/api/enquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) =>
+        fetch("/api/enquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, ...getFormVerification(formElement, captchaToken) }),
+        }),
+      );
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data?.success !== true) {
@@ -248,9 +253,9 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+        <EmailOtpVerification ref={captchaRef} />
 
-        <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+        <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Requirement"}
         </button>
 
