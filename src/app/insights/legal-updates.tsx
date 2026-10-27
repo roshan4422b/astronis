@@ -309,7 +309,7 @@ export default function LegalUpdates() {
   const [activeRegulator, setActiveRegulator] = useState<(typeof regulatorFilters)[number]>("All");
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const normalizedQuery = query.trim().toLowerCase();
 
   const filteredLatest = useMemo(
@@ -690,7 +690,7 @@ export default function LegalUpdates() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" />
               </button>
             </div>

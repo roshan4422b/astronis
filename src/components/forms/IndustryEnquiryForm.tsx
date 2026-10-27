@@ -58,6 +58,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -198,9 +199,9 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification />
+        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
 
-        <button type="submit" className={styles.button} disabled={busy}>
+        <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}
         </button>
 
