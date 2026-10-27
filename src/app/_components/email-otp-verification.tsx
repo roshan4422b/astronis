@@ -1,23 +1,38 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
-import TurnstileWidget from "@/components/TurnstileWidget";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import TurnstileWidget, { type TurnstileWidgetHandle } from "@/components/TurnstileWidget";
 import styles from "./email-otp-verification.module.css";
+
+export type EmailOtpVerificationHandle = {
+  getFreshCaptchaToken: () => Promise<string>;
+};
 
 function getVerificationScope(element: HTMLDivElement | null) {
   return element?.closest("form") ?? element?.closest<HTMLElement>('[role="dialog"]') ?? null;
 }
 
-export default function EmailOtpVerification({
-  emailAddress,
-  onCaptchaToken,
-  resetKey = 0,
-}: {
+const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
   resetKey?: number;
-} = {}) {
+  resetOnSubmit?: boolean;
+}>(function EmailOtpVerification({
+  emailAddress,
+  onCaptchaToken,
+  resetKey = 0,
+  resetOnSubmit = true,
+}, forwardedRef) {
   const container = useRef<HTMLDivElement>(null);
+  const captchaRef = useRef<TurnstileWidgetHandle>(null);
   const codeInputId = useId();
   const [captchaToken, setCaptchaToken] = useState("");
   const [internalCaptchaReset, setInternalCaptchaReset] = useState(0);
@@ -34,6 +49,10 @@ export default function EmailOtpVerification({
     setCaptchaToken(token);
     onCaptchaToken?.(token);
   }, [onCaptchaToken]);
+
+  useImperativeHandle(forwardedRef, () => ({
+    getFreshCaptchaToken: async () => (await captchaRef.current?.getFreshToken()) ?? "",
+  }), []);
 
   useEffect(() => {
     if (!cooldownUntil) return;
@@ -62,6 +81,7 @@ export default function EmailOtpVerification({
       setInternalCaptchaReset((current) => current + 1);
     };
     const resetCaptchaAfterSubmit = () => {
+      if (!resetOnSubmit) return;
       captchaResetTimer = window.setTimeout(() => {
         updateCaptchaToken("");
         setInternalCaptchaReset((current) => current + 1);
@@ -90,7 +110,7 @@ export default function EmailOtpVerification({
       if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
-  }, [email, updateCaptchaToken]);
+  }, [email, resetOnSubmit, updateCaptchaToken]);
 
   async function sendCode() {
     try {
@@ -159,6 +179,7 @@ export default function EmailOtpVerification({
       <div className={styles.actions}>
         <div className={styles.captcha}>
           <TurnstileWidget
+            ref={captchaRef}
             onToken={updateCaptchaToken}
             resetKey={resetKey + internalCaptchaReset}
           />
@@ -193,4 +214,6 @@ export default function EmailOtpVerification({
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );
-}
+});
+
+export default EmailOtpVerification;

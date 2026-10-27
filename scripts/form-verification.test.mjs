@@ -70,9 +70,15 @@ globalThis.fetch = async (input, init = {}) => {
   }
   if (url === "https://challenges.cloudflare.com/turnstile/v0/siteverify") {
     const body = new URLSearchParams(String(init.body));
+    const token = body.get("response");
     return Response.json({
-      success: body.get("response") === "valid-captcha" || body.get("response") === "foreign-host-token",
-      hostname: body.get("response") === "foreign-host-token" ? "untrusted.example" : "astronis.test",
+      success: token === "valid-captcha" || token === "foreign-host-token",
+      hostname: token === "foreign-host-token" ? "untrusted.example" : "astronis.test",
+      "error-codes": token === "invalid-captcha"
+        ? ["invalid-input-response"]
+        : token === "expired-captcha"
+          ? ["timeout-or-duplicate"]
+          : [],
     });
   }
   throw new Error(`Unexpected network request: ${url}`);
@@ -88,6 +94,7 @@ const {
   verifyEmailOtp,
   verifyTurnstile,
 } = await import("../src/lib/form-verification.server.ts");
+const { getFormVerification } = await import("../src/lib/form-verification.client.ts");
 
 test("classifies missing Upstash configuration without attempting a storage request", async () => {
   const saved = {
@@ -161,6 +168,7 @@ test("accepts email-bound OTP proof without CAPTCHA and rejects reuse or a diffe
 test("rejects invalid CAPTCHA and missing email proof at the form submission boundary", async () => {
   entries.clear();
   assert.equal(await verifyTurnstile("invalid-captcha", request), false);
+  assert.equal(await verifyTurnstile("expired-captcha", request), false);
   assert.equal(await verifyTurnstile("foreign-host-token", request), false);
   const invalidCaptcha = await consumeFormVerification(request, email, "invalid-captcha", "proof");
   assert.equal(invalidCaptcha.ok, false);
@@ -168,6 +176,20 @@ test("rejects invalid CAPTCHA and missing email proof at the form submission bou
 
   const missingProof = await consumeFormVerification(request, email, "valid-captcha", "");
   assert.equal(missingProof.ok, false);
+});
+
+test("uses the freshly fetched CAPTCHA token instead of a cached hidden-field token", () => {
+  const form = {
+    querySelector(selector) {
+      if (selector === 'input[name="captchaToken"]') return { value: "stale-captcha" };
+      if (selector === 'input[name="emailVerificationToken"]') return { value: "email-proof" };
+      return null;
+    },
+  };
+  assert.deepEqual(getFormVerification(form, "fresh-captcha"), {
+    captchaToken: "fresh-captcha",
+    emailVerificationToken: "email-proof",
+  });
 });
 
 test("expires the server-side email verification proof", async () => {
