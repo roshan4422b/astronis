@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useMemo, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification from "@/app/_components/email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
+import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
 import {
   applicantDeclaration, applicationSteps, backgrounds, categories, countries, engagementOptions, experienceBands,
   hierarchiesFor, indianStates, isSeniorReview, positionsFor, positionDisplayLabel, qualificationGuidance,
@@ -46,7 +46,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
   const [fileError, setFileError] = useState("");
   const [website, setWebsite] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
   const [status, setStatus] = useState("");
   const [successReference, setSuccessReference] = useState("");
   const [preferredCountryInput, setPreferredCountryInput] = useState("");
@@ -190,6 +190,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     const nextErrors = validateAll();
     setErrors(nextErrors);
     const firstInvalidStep = applicationSteps.findIndex((_, index) => Object.keys(validateStep(index)).length > 0);
@@ -239,8 +240,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
     data.set("website", website);
     data.set("cv", file);
     try {
-      const verification = getFormVerification(event.currentTarget);
-      data.set("captchaToken", verification.captchaToken ?? "");
+      const verification = getFormVerification(form, "");
       data.set("emailVerificationToken", verification.emailVerificationToken);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Verify your email address before submitting.");
@@ -248,7 +248,10 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
     }
     setSubmitting(true); setStatus("");
     try {
-      const response = await fetch("/api/professional-application", { method: "POST", body: data });
+      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
+        data.set("captchaToken", captchaToken);
+        return fetch("/api/professional-application", { method: "POST", body: data });
+      });
       const result = await response.json() as { message?: string; applicationReference?: string };
       if (!response.ok) { setStatus(result.message || "We couldn't submit your application. Please review it and try again."); return; }
       setSuccessReference(result.applicationReference || "");
@@ -323,11 +326,11 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
           <p className={styles.declarationText}>{applicantDeclaration}</p>
           <label className={styles.consentCheck}><input type="checkbox" checked={answers.declarationAccepted} onChange={(event) => update("declarationAccepted", event.target.checked)} aria-invalid={Boolean(errors.declarationAccepted)} /> <span>I confirm the applicant declaration above. <b>*</b>{error("declarationAccepted")}</span></label>
           <label className={styles.consentCheck}><input type="checkbox" checked={answers.privacyConsentAccepted} onChange={(event) => update("privacyConsentAccepted", event.target.checked)} aria-invalid={Boolean(errors.privacyConsentAccepted)} /> <span>I have read the <Link href="/legal/privacy-policy" target="_blank" rel="noreferrer">Astronis Global Privacy Policy</Link> and consent to the handling of my application information for review. <b>*</b>{error("privacyConsentAccepted")}</span></label>
-          <EmailOtpVerification emailAddress={answers.email} onCaptchaToken={setCaptchaToken} />
+          <EmailOtpVerification ref={captchaRef} emailAddress={answers.email} />
         </div>}
 
         {status && <p className={styles.submitError} role="alert">{status}</p>}
-        <div className={styles.controls}>{step > 0 && <button type="button" className={styles.backButton} onClick={() => { setStep((current) => current - 1); setErrors({}); setStatus(""); }}>Previous</button>}{step < applicationSteps.length - 1 ? <button type="button" className={styles.nextButton} onClick={continueToNext}>Continue <Icon name="arrow" /></button> : <button className={styles.nextButton} type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting…" : "Submit Professional Application"}<Icon name="arrow" /></button>}</div>
+        <div className={styles.controls}>{step > 0 && <button type="button" className={styles.backButton} onClick={() => { setStep((current) => current - 1); setErrors({}); setStatus(""); }}>Previous</button>}{step < applicationSteps.length - 1 ? <button type="button" className={styles.nextButton} onClick={continueToNext}>Continue <Icon name="arrow" /></button> : <button className={styles.nextButton} type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Submit Professional Application"}<Icon name="arrow" /></button>}</div>
         <p className={styles.noDraft}>Applications are submitted securely for review. Draft saving is unavailable for this form.</p>
       </form>
     </div>

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
+import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
 import styles from "../gst-updates.module.css";
 
 export default function SubscribeForm() {
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
 
   async function subscribe(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,9 +19,10 @@ export default function SubscribeForm() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/insights-subscribe", {
-        method: "POST",
-        body: new FormData(form),
+      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
+        const data = new FormData(form);
+        data.set("captchaToken", captchaToken);
+        return fetch("/api/insights-subscribe", { method: "POST", body: data });
       });
       const result: { message?: string } = await response.json();
       setStatus(result.message || "We could not process your request.");
@@ -46,7 +48,7 @@ export default function SubscribeForm() {
           required
           maxLength={180}
         />
-        <button type="submit" disabled={submitting || !captchaToken}>
+        <button type="submit" disabled={submitting}>
           {submitting ? "Sending..." : "Subscribe"} <Icon name="arrow" />
         </button>
       </div>
@@ -54,7 +56,7 @@ export default function SubscribeForm() {
         <input type="checkbox" name="consent" value="yes" required />
         I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
       </label>
-      <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+      <EmailOtpVerification ref={captchaRef} />
       {status && <p role="status">{status}</p>}
     </form>
   );

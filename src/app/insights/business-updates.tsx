@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
-import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import EmailOtpVerification, { type EmailOtpVerificationHandle } from "@/app/_components/email-otp-verification";
+import { fetchWithFreshCaptcha } from "@/lib/form-verification.client";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import styles from "./business-updates.module.css";
 
@@ -266,7 +267,7 @@ export default function BusinessUpdates() {
   const [showMoreRegulators, setShowMoreRegulators] = useState(false);
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredUpdates = useMemo(
@@ -317,9 +318,10 @@ export default function BusinessUpdates() {
     setSubscribeStatus("");
 
     try {
-      const response = await fetch("/api/insights-subscribe", {
-        method: "POST",
-        body: new FormData(form),
+      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) => {
+        const data = new FormData(form);
+        data.set("captchaToken", captchaToken);
+        return fetch("/api/insights-subscribe", { method: "POST", body: data });
       });
       const result: { message?: string } = await response.json();
       setSubscribeStatus(
@@ -678,7 +680,7 @@ export default function BusinessUpdates() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting || !captchaToken}>
+              <button type="submit" disabled={submitting}>
                 {submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" />
               </button>
             </div>
@@ -686,7 +688,7 @@ export default function BusinessUpdates() {
               <input type="checkbox" name="consent" value="yes" required />
               I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </label>
-            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+            <EmailOtpVerification ref={captchaRef} />
             {subscribeStatus && <p role="status">{subscribeStatus}</p>}
           </form>
         </div>

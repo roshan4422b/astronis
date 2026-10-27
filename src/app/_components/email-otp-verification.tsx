@@ -3,30 +3,33 @@
 import {
   useCallback,
   useEffect,
+  useImperativeHandle,
   useId,
   useRef,
   useState,
+  forwardRef,
 } from "react";
-import TurnstileWidget from "@/components/TurnstileWidget";
+import TurnstileWidget, { type TurnstileHandle } from "@/components/TurnstileWidget";
 import styles from "./email-otp-verification.module.css";
 
 function getVerificationScope(element: HTMLDivElement | null) {
   return element?.closest("form") ?? element?.closest<HTMLElement>('[role="dialog"]') ?? null;
 }
 
-export default function EmailOtpVerification({
-  emailAddress,
-  onCaptchaToken,
-  resetKey = 0,
-}: {
+export type EmailOtpVerificationHandle = { getToken: () => Promise<string> };
+
+type Props = {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
-  resetKey?: number;
-}) {
+};
+
+const EmailOtpVerification = forwardRef<EmailOtpVerificationHandle, Props>(function EmailOtpVerification({
+  emailAddress,
+  onCaptchaToken,
+}: Props, forwardedRef) {
   const container = useRef<HTMLDivElement>(null);
+  const captchaRef = useRef<TurnstileHandle>(null);
   const codeInputId = useId();
-  const [captchaToken, setCaptchaToken] = useState("");
-  const [captchaReset, setCaptchaReset] = useState(0);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
@@ -36,10 +39,11 @@ export default function EmailOtpVerification({
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(0);
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
-  const updateCaptchaToken = useCallback((token: string) => {
-    setCaptchaToken(token);
-    onCaptchaToken?.(token);
-  }, [onCaptchaToken]);
+  const updateCaptchaToken = useCallback((token: string) => onCaptchaToken?.(token), [onCaptchaToken]);
+
+  useImperativeHandle(forwardedRef, () => ({
+    getToken: () => captchaRef.current?.getToken() ?? Promise.resolve(""),
+  }), []);
 
   useEffect(() => {
     if (!cooldownUntil) return;
@@ -55,9 +59,7 @@ export default function EmailOtpVerification({
     const form = getVerificationScope(container.current);
     const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
     if (!form) return;
-    let captchaResetTimer: number | undefined;
     const resetVerification = () => {
-      updateCaptchaToken("");
       setEmail("");
       setCode("");
       setVerificationToken("");
@@ -65,21 +67,10 @@ export default function EmailOtpVerification({
       setStatus("");
       setCooldownUntil(0);
       setNow(0);
-      setCaptchaReset((current) => current + 1);
-    };
-    const resetCaptchaAfterSubmit = () => {
-      captchaResetTimer = window.setTimeout(() => {
-        updateCaptchaToken("");
-        setCaptchaReset((current) => current + 1);
-        captchaResetTimer = undefined;
-      }, 0);
     };
     form.addEventListener("reset", resetVerification);
-    if (form instanceof HTMLFormElement) form.addEventListener("submit", resetCaptchaAfterSubmit);
     if (!emailInput) return () => {
-      if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
       form.removeEventListener("reset", resetVerification);
-      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
     };
     const clearProofWhenEmailChanges = () => {
       if (emailInput.value.trim().toLowerCase() !== email) {
@@ -91,12 +82,10 @@ export default function EmailOtpVerification({
     };
     emailInput.addEventListener("input", clearProofWhenEmailChanges);
     return () => {
-      if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
       form.removeEventListener("reset", resetVerification);
-      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
-  }, [email, updateCaptchaToken]);
+  }, [email]);
 
   async function sendCode() {
     try {
@@ -161,8 +150,8 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || !captchaToken}>
+        <TurnstileWidget ref={captchaRef} onToken={updateCaptchaToken} />
+        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
         {codeSent && !verificationToken && (
@@ -188,8 +177,9 @@ export default function EmailOtpVerification({
       </div>
       {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );
-}
+});
+
+export default EmailOtpVerification;

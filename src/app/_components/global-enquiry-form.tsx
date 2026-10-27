@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { industries as siteIndustries } from "@/content/site";
 import {
@@ -12,8 +12,8 @@ import {
 } from "@/content/enquiry-config";
 import Icon from "./icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
-import EmailOtpVerification from "./email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import EmailOtpVerification, { type EmailOtpVerificationHandle } from "./email-otp-verification";
+import { fetchWithFreshCaptcha, getFormVerification } from "@/lib/form-verification.client";
 import styles from "./global-enquiry-form.module.css";
 
 const companyTypes = [
@@ -158,7 +158,7 @@ export default function GlobalEnquiryForm({
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const captchaRef = useRef<EmailOtpVerificationHandle>(null);
 
   const primaryOptions = getPrimaryOptions(category);
   const secondaryOptions = useMemo(
@@ -253,14 +253,6 @@ export default function GlobalEnquiryForm({
     event.preventDefault();
     if (!validate()) return;
     const form = event.currentTarget;
-    let formVerification: ReturnType<typeof getFormVerification>;
-    try {
-      formVerification = getFormVerification(form);
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
-      return;
-    }
-
     const message = detail.message.trim();
     const selectedService = category === "service" ? primarySelection : "";
     const selectedIndustry = category === "industry" ? primarySelection : variant === "market" ? detail.interest : "";
@@ -306,18 +298,19 @@ export default function GlobalEnquiryForm({
       enquiryAgreementAccepted: detail.enquiryAgreementAccepted ? "yes" : "",
       enquiryAgreementId: "enquiry-communication-consultation-consent",
       website: "",
-      ...formVerification,
     };
 
     setBusy(true);
     setStatus("");
 
     try {
-      const response = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetchWithFreshCaptcha(captchaRef.current, (captchaToken) =>
+        fetch("/api/enquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, ...getFormVerification(form, captchaToken) }),
+        }),
+      );
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data?.success !== true) {
@@ -844,7 +837,7 @@ export default function GlobalEnquiryForm({
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+        <EmailOtpVerification ref={captchaRef} />
 
         <label className={styles.honey} aria-hidden="true">
           Website
@@ -852,7 +845,7 @@ export default function GlobalEnquiryForm({
         </label>
 
         <div className={styles.actions}>
-          <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+          <button type="submit" className={styles.button} disabled={busy}>
             {busy ? "Sending…" : variant === "market" ? "Request a Consultation" : "Submit Enquiry"}
             <Icon name="arrow" />
           </button>
