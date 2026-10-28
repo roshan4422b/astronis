@@ -121,13 +121,27 @@ type CmsProfessional = { slug: string; name: string; role: string; expertise: st
 type LeadershipProps = {
   limit?: number;
   cmsProfessionals?: CmsProfessional[];
+  suppressedSlugs?: string[];
   variant?: "default" | "premium";
   people?: ProfessionalRecord[];
 };
 
-export default function Leadership({ limit, cmsProfessionals = [], variant = "default", people }: LeadershipProps) {
+export default function Leadership({
+  limit,
+  cmsProfessionals = [],
+  suppressedSlugs = [],
+  variant = "default",
+  people,
+}: LeadershipProps) {
   const sourceProfessionals = people ?? professionals;
-  const merged = [...cmsProfessionals, ...sourceProfessionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug))];
+  const suppressed = new Set(suppressedSlugs);
+  const merged = [
+    ...cmsProfessionals,
+    ...sourceProfessionals.filter((person) =>
+      !suppressed.has(person.slug) &&
+      !cmsProfessionals.some((item) => item.slug === person.slug),
+    ),
+  ];
   const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (

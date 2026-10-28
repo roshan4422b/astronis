@@ -25,7 +25,7 @@ import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
 export const dynamic = "force-dynamic";
 
@@ -154,7 +154,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
-  const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
+  const [publishedServices, suppressedSlugs] = await Promise.all([
+    slugs.length === 1 ? getPublishedContent("services") : Promise.resolve([]),
+    getUnpublishedSourceContentSlugs("services"),
+  ]);
+  const cmsService = publishedServices.find((item) => item.slug === slugs[0]);
+  if (suppressedSlugs.has(slugs[0])) notFound();
   if (cmsService?.data.sourceDefined === true) {
     const sourcePractice = resolvePractice(slugs)?.practice;
     if (sourcePractice) {

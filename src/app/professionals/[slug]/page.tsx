@@ -7,7 +7,7 @@ import { professionals } from "../leadership";
 import ProfessionalCollaboration from "../professional-collaboration";
 import ProfessionalProfileTemplate from "./profile-template";
 import styles from "./profile.module.css";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
 export const dynamic = "force-dynamic";
 
@@ -36,9 +36,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const person = professionals.find((p) => p.slug === slug);
   return { title: slug === "partner-with-us" ? "Professional Collaboration" : person?.name, description: person ? `Learn about ${person.name} at Astronis Global.` : "Explore professional collaboration, strategic partnerships and international professional networks with Astronis Global." };
 }
-function ProfilePage({ person }: { person: Professional }) {
+function ProfilePage({
+  person,
+  relatedProfessionals = professionals,
+}: {
+  person: Professional;
+  relatedProfessionals?: Professional[];
+}) {
   const enquiry = `/professionals/enquiry?professional=${person.slug}`;
-  const related = professionals.filter((item) => item.slug !== person.slug);
+  const related = relatedProfessionals.filter((item) => item.slug !== person.slug);
   const focus = focusBySlug[person.slug] || [person.expertise];
   return <div className={styles.page}>
     <div className={styles.wrap}>
@@ -65,7 +71,12 @@ function ProfilePage({ person }: { person: Professional }) {
 
 export default async function Profile({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cmsPerson = (await getPublishedContent("professionals")).find((item) => item.slug === slug);
+  const [publishedPeople, suppressedSlugs] = await Promise.all([
+    getPublishedContent("professionals"),
+    getUnpublishedSourceContentSlugs("professionals"),
+  ]);
+  const cmsPerson = publishedPeople.find((item) => item.slug === slug);
+  const relatedProfessionals = professionals.filter((person) => !suppressedSlugs.has(person.slug));
   if (cmsPerson?.data.sourceDefined === true) {
     const sourcePerson = professionals.find((item) => item.slug === slug);
     if (sourcePerson) {
@@ -79,11 +90,12 @@ export default async function Profile({ params }: { params: Promise<{ slug: stri
         education: typeof cmsPerson.data.education === "string" && cmsPerson.data.education ? cmsPerson.data.education : sourcePerson.education,
         enrolment: typeof cmsPerson.data.enrolment === "string" && cmsPerson.data.enrolment ? cmsPerson.data.enrolment : sourcePerson.enrolment,
       };
-      return <ProfilePage person={person} />;
+      return <ProfilePage person={person} relatedProfessionals={relatedProfessionals} />;
     }
   }
   if (cmsPerson) return <CmsContentPage record={cmsPerson} eyebrow="Professionals" />;
   if (slug === "partner-with-us") return <ProfessionalCollaboration />;
+  if (suppressedSlugs.has(slug)) notFound();
   const person = professionals.find((record) => record.slug === slug);
   if (!person) notFound();
   return <ProfessionalProfileTemplate person={person} />;

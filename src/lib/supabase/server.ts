@@ -156,6 +156,31 @@ export async function getPublishedContent(collection: string): Promise<Published
   }));
 }
 
+export async function getUnpublishedSourceContentSlugs(collection: string): Promise<Set<string>> {
+  if (!publicCollections.has(collection)) return new Set<string>();
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return new Set<string>();
+  const { data, error } = await supabase.rpc("cms_unpublished_source_content_slugs", {
+    requested_collection: collection,
+  });
+  if (error) {
+    logCmsRpcError("cms_unpublished_source_content_slugs", error);
+    return new Set<string>();
+  }
+  if (!Array.isArray(data)) {
+    logCmsRpcError("cms_unpublished_source_content_slugs", "invalid_response");
+    return new Set<string>();
+  }
+  return new Set(
+    data.flatMap((record) =>
+      record && typeof record === "object" && "slug" in record && typeof record.slug === "string"
+        ? [record.slug]
+        : [],
+    ),
+  );
+}
+
 export type PublicCmsTestimonial = {
   slug: string;
   name: string;

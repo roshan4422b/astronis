@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "../india/india-quick-nav";
 import indiaStyles from "../india/page.module.css";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 const nycImage = "/images/market-usa.jpg";
 
@@ -182,14 +184,26 @@ const faqs = [
   ],
 ] as const;
 
-export default function UsaPage() {
+export default async function UsaPage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("usa")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "usa");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "USA";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Strategic legal, regulatory and business advisory support for organisations operating, investing and expanding in the United States.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage ? cms.data.featuredImage : nycImage;
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={`${indiaStyles.page} ${styles.usaPage}`}>
       <section className={indiaStyles.hero} aria-labelledby="usa-title">
         <div className={`${indiaStyles.heroPhoto} ${styles.heroPhoto}`}>
           <AssetImage
             className={styles.heroImage}
-            src={nycImage}
+            src={image}
             alt="New York and Manhattan skyline"
             fill
             priority
@@ -206,13 +220,9 @@ export default function UsaPage() {
           </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
-            <h1 id="usa-title">USA</h1>
+            <h1 id="usa-title">{title}</h1>
             <h2>Opportunity. Innovation.<br />Global Impact.</h2>
-            <p>
-              Strategic legal, regulatory and business advisory support for
-              organisations operating, investing and expanding in the United
-              States.
-            </p>
+            <p>{description}</p>
             <div className={indiaStyles.heroActions}>
               <Link className={indiaStyles.primaryButton} href="#capabilities">
                 Explore USA Capabilities <Icon name="arrow" />
@@ -230,6 +240,7 @@ export default function UsaPage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={indiaStyles.overview}><div className={indiaStyles.container}><div className={indiaStyles.overviewCopy}><span className={indiaStyles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} ariaLabel="USA page sections" />
 
       <section className={indiaStyles.overview} id="overview" aria-labelledby="overview-title">
