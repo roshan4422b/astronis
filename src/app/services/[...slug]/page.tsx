@@ -27,6 +27,11 @@ import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
 import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
+import PrivateStyleAdvisoryPage from "../_template/private-style-advisory-page";
+import {
+  getPrivateStyleAdvisoryPage,
+  getPrivateStyleAdvisoryStaticParams,
+} from "@/data/private-style-advisory-pages";
 export const dynamic = "force-dynamic";
 
 function resolveHierarchy(slugs: string[]) {
@@ -52,6 +57,7 @@ export function generateStaticParams() {
     })),
     ...getIntellectualPropertyServiceStaticParams(),
     ...getAdditionalServiceDetailStaticParams(),
+    ...getPrivateStyleAdvisoryStaticParams(),
   ];
 }
 
@@ -59,6 +65,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const slugs = (await params).slug;
   const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
   if (cmsService) return getPublishedContentMetadata(cmsService, `/services/${cmsService.slug}`);
+  const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
+  if (privateStylePage) {
+    const canonical = `/services/${privateStylePage.route.join("/")}`;
+    return {
+      title: `${privateStylePage.title} | ${privateStylePage.serviceTitle} | Astronis`,
+      description: privateStylePage.description,
+      alternates: { canonical },
+      openGraph: { title: privateStylePage.title, description: privateStylePage.description, url: canonical, type: "website" },
+    };
+  }
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
@@ -173,6 +189,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     }
   }
   if (cmsService) return <CmsContentPage record={cmsService} eyebrow="Services" />;
+  const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
+  if (privateStylePage) return <PrivateStyleAdvisoryPage data={privateStylePage} />;
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const { service, group, child } = hierarchy;
