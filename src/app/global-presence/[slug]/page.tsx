@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { countries, siteMenu, slugify } from "@/content/site";
 import { Banner, Button, TextLink } from "../../_components/ui";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
 export const dynamic = "force-dynamic";
 const entries = [...countries, ...siteMenu.global, "Local Insight"];
@@ -25,19 +25,27 @@ export default async function Desk({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const cmsRecord = (await getPublishedContent("global-presence")).find((item) => item.slug === slug);
+  const [jurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  const cmsRecord = jurisdictions.find((item) => item.slug === slug);
+  if (!cmsRecord && suppressedSlugs.has(slug)) notFound();
   if (cmsRecord && (
     cmsRecord.data.sourceDefined !== true ||
     (typeof cmsRecord.data.content === "string" && cmsRecord.data.content.trim())
   )) return <CmsContentPage record={cmsRecord} eyebrow="Global Presence" />;
   const title = jurisdictionEntries.find((t) => slugify(t) === slug);
   if (!title) notFound();
+  const cmsTitle = typeof cmsRecord?.data.title === "string" ? cmsRecord.data.title : "";
+  const cmsDescription = typeof cmsRecord?.data.description === "string" ? cmsRecord.data.description : "";
+  const cmsImage = typeof cmsRecord?.data.featuredImage === "string" ? cmsRecord.data.featuredImage : "";
   return (
     <>
       <Banner
-        title={countries.includes(title) ? title + " Country Desk" : title}
-        text="Cross-border perspective. Jurisdiction-specific understanding."
-        image="/Part-9 .png"
+        title={cmsTitle || (countries.includes(title) ? title + " Country Desk" : title)}
+        text={cmsDescription || "Cross-border perspective. Jurisdiction-specific understanding."}
+        image={cmsImage || "/Part-9 .png"}
       />
       <section className="section">
         <div className="container article-layout">

@@ -17,17 +17,39 @@ const featuredIndustries = [
   { title: "Professional Services", description: "Strategic advisory for professional firms, partnerships and service-led businesses.", image: "/Professional & Business Services .png", href: "/industries/professional-and-business-services" },
 ] as const;
 
-export default function Industries() {
+type CmsIndustry = { slug: string; title: string; description: string; image: string };
+
+export default function Industries({
+  cmsIndustries = [],
+  suppressedSlugs = [],
+}: {
+  cmsIndustries?: CmsIndustry[];
+  suppressedSlugs?: string[];
+}) {
   const [active, setActive] = useState(0);
   const dragStart = useRef<number | null>(null);
   const isPaused = useRef(false);
-  const total = featuredIndustries.length;
+  const suppressed = new Set(suppressedSlugs);
+  const displayIndustries = featuredIndustries.flatMap((industry) => {
+    const slug = industry.href.split("/").pop() || "";
+    if (suppressed.has(slug)) return [];
+    const cmsIndustry = cmsIndustries.find((item) => item.slug === slug);
+    return [{
+      ...industry,
+      title: cmsIndustry?.title || industry.title,
+      description: cmsIndustry?.description || industry.description,
+      image: cmsIndustry?.image || industry.image,
+    }];
+  });
+  const total = displayIndustries.length;
 
   function move(direction: number) {
+    if (!total) return;
     setActive((current) => (current + direction + total) % total);
   }
 
   useEffect(() => {
+    if (!total) return;
     const timer = window.setInterval(() => {
       if (!isPaused.current && !document.hidden) {
         setActive((current) => (current + 1) % total);
@@ -96,7 +118,7 @@ export default function Industries() {
             <Icon name="arrow" />
           </button>
           <div className="industry-carousel-stage">
-            {featuredIndustries.map((industry, index) => {
+            {displayIndustries.map((industry, index) => {
               const position = relativePosition(index);
               const distance = Math.abs(position);
               return (
@@ -132,7 +154,7 @@ export default function Industries() {
           </button>
         </div>
         <div className="industry-carousel-status" aria-label="Choose an industry">
-          {featuredIndustries.map((industry, index) => (
+          {displayIndustries.map((industry, index) => (
             <button key={industry.title} type="button" className={active === index ? "active" : ""} onClick={() => setActive(index)} aria-label={`Show ${industry.title}`} aria-current={active === index} />
           ))}
         </div>

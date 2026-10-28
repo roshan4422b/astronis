@@ -27,7 +27,7 @@ import Aviation from "../aviation";
 import RetailConsumer from "../retail-consumer";
 import RenewableEnergy from "../renewable-energy";
 import Agriculture from "../agriculture";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
 export const dynamic = "force-dynamic";
 export function generateStaticParams() {
@@ -49,7 +49,12 @@ export default async function IndustryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const cmsIndustry = (await getPublishedContent("industries")).find((item) => item.slug === slug);
+  const [publishedIndustries, suppressedSlugs] = await Promise.all([
+    getPublishedContent("industries"),
+    getUnpublishedSourceContentSlugs("industries"),
+  ]);
+  const cmsIndustry = publishedIndustries.find((item) => item.slug === slug);
+  if (suppressedSlugs.has(slug)) notFound();
   if (cmsIndustry && (
     cmsIndustry.data.sourceDefined !== true ||
     (typeof cmsIndustry.data.content === "string" && cmsIndustry.data.content.trim())

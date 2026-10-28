@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "./india-quick-nav";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "India Legal, Regulatory & Business Advisory",
@@ -159,13 +161,27 @@ const faqs = [
   ],
 ] as const;
 
-export default function IndiaPage() {
+export default async function IndiaPage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("india")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "india");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "India";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Trusted legal, regulatory and business advisory support for a stronger, more competitive India.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage
+    ? cms.data.featuredImage
+    : "/Shri Ram Mandir for India Presentation .png";
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={styles.page}>
       <section className={`${styles.hero} ${styles.indiaHero}`} aria-labelledby="india-title">
         <div className={styles.heroPhoto}>
           <AssetImage
-            src="/Shri Ram Mandir for India Presentation .png"
+            src={image}
             alt="Shri Ram Mandir in Ayodhya"
             fill
             priority
@@ -182,12 +198,9 @@ export default function IndiaPage() {
           </nav>
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>Global Presence</span>
-            <h1 id="india-title">India</h1>
+            <h1 id="india-title">{title}</h1>
             <h2>Local Depth. Global Perspective.</h2>
-            <p>
-              Trusted legal, regulatory and business advisory support for a
-              stronger, more competitive India.
-            </p>
+            <p>{description}</p>
             <div className={styles.heroActions}>
               <Link className={styles.primaryButton} href="#capabilities">
                 Explore India Capabilities <Icon name="arrow" />
@@ -205,6 +218,7 @@ export default function IndiaPage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={styles.overview}><div className={styles.container}><div className={styles.overviewCopy}><span className={styles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} />
 
       <section className={styles.overview} id="overview" aria-labelledby="overview-title">

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import GlobalEnquiryForm from "@/app/_components/global-enquiry-form";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "../india/india-quick-nav";
 import indiaStyles from "../india/page.module.css";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 const dubaiImage =
   "/images/uae-dubai-skyline.jpg";
@@ -183,13 +185,25 @@ const faqs = [
   ],
 ] as const;
 
-export default function UaePage() {
+export default async function UaePage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("uae")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "uae");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "UAE";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Integrated legal, regulatory and business advisory support for organisations operating, investing and expanding across the UAE.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage ? cms.data.featuredImage : dubaiImage;
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={`${indiaStyles.page} ${styles.uaePage}`}>
       <section className={indiaStyles.hero} aria-labelledby="uae-title">
         <div className={indiaStyles.heroPhoto}>
           <AssetImage
-            src={dubaiImage}
+            src={image}
             alt="Dubai skyline and Burj Khalifa at dusk"
             fill
             priority
@@ -206,12 +220,9 @@ export default function UaePage() {
           </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
-            <h1 id="uae-title">UAE</h1>
+            <h1 id="uae-title">{title}</h1>
             <h2>Gateway to Opportunity.<br />A Strategic Global Hub.</h2>
-            <p>
-              Integrated legal, regulatory and business advisory support for
-              organisations operating, investing and expanding across the UAE.
-            </p>
+            <p>{description}</p>
             <div className={indiaStyles.heroActions}>
               <Link className={indiaStyles.primaryButton} href="#capabilities">
                 Explore UAE Capabilities <Icon name="arrow" />
@@ -229,6 +240,7 @@ export default function UaePage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={indiaStyles.overview}><div className={indiaStyles.container}><div className={indiaStyles.overviewCopy}><span className={indiaStyles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} ariaLabel="UAE page sections" />
 
       <section className={indiaStyles.overview} id="overview" aria-labelledby="overview-title">

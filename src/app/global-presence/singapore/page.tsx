@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "../india/india-quick-nav";
 import indiaStyles from "../india/page.module.css";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 const singaporeImage = "/images/singapore-marina-bay.jpg";
 
@@ -182,13 +184,25 @@ const faqs = [
   ],
 ] as const;
 
-export default function SingaporePage() {
+export default async function SingaporePage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("singapore")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "singapore");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "Singapore";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Strategic legal, regulatory and business advisory support for organisations operating, investing and expanding in Singapore and across the Asia-Pacific region.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage ? cms.data.featuredImage : singaporeImage;
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={`${indiaStyles.page} ${styles.singaporePage}`}>
       <section className={indiaStyles.hero} aria-labelledby="singapore-title">
         <div className={indiaStyles.heroPhoto}>
           <AssetImage
-            src={singaporeImage}
+            src={image}
             alt="Marina Bay and Singapore's downtown skyline"
             fill
             priority
@@ -205,13 +219,9 @@ export default function SingaporePage() {
           </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
-            <h1 id="singapore-title">Singapore</h1>
+            <h1 id="singapore-title">{title}</h1>
             <h2>A Trusted Partner in Asia-Pacific.</h2>
-            <p>
-              Strategic legal, regulatory and business advisory support for
-              organisations operating, investing and expanding in Singapore and
-              across the Asia-Pacific region.
-            </p>
+            <p>{description}</p>
             <div className={indiaStyles.heroActions}>
               <Link className={indiaStyles.primaryButton} href="#capabilities">
                 Explore Singapore Capabilities <Icon name="arrow" />
@@ -229,6 +239,7 @@ export default function SingaporePage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={indiaStyles.overview}><div className={indiaStyles.container}><div className={indiaStyles.overviewCopy}><span className={indiaStyles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} ariaLabel="Singapore page sections" />
 
       <section className={indiaStyles.overview} id="overview" aria-labelledby="overview-title">

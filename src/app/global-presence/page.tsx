@@ -6,7 +6,7 @@ import { corporateArticles } from "@/content/corporate-articles";
 import { industries } from "@/content/site";
 import professionalsStyles from "../professionals/professional-scope.module.css";
 import styles from "./global-presence.module.css";
-import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedPageMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsPageRoute from "@/app/_components/cms-page-route";
 
 const fallbackMetadata = {
@@ -168,13 +168,20 @@ const insights = corporateArticles.slice(0, 3);
 
 export const dynamic = "force-dynamic";
 export default async function GlobalPresencePage() {
-  const cmsJurisdictions = (await getPublishedContent("global-presence")).map((item) => ({
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  const cmsJurisdictions = publishedJurisdictions.map((item) => ({
     slug: item.slug,
     title: String(item.data.title || ""),
     description: String(item.data.description || ""),
     featuredImage: String(item.data.featuredImage || ""),
   })).filter((item) => item.title);
-  const displayRegions = regionCards.map((region) => {
+  const displayRegions = regionCards.filter((region) => {
+    const slug = region.href.split("/").pop() || "";
+    return !suppressedSlugs.has(slug);
+  }).map((region) => {
     const slug = region.href.split("/").pop();
     const cmsRegion = cmsJurisdictions.find((item) => item.slug === slug);
     return cmsRegion ? {
@@ -184,7 +191,10 @@ export default async function GlobalPresencePage() {
       image: cmsRegion.featuredImage || region.image,
     } : region;
   });
-  const additionalJurisdictions = cmsJurisdictions.filter((item) => !displayRegions.some((region) => region.href.endsWith(`/${item.slug}`)));
+  const additionalJurisdictions = cmsJurisdictions.filter((item) =>
+    !suppressedSlugs.has(item.slug) &&
+    !displayRegions.some((region) => region.href.endsWith(`/${item.slug}`)),
+  );
   return (
     <CmsPageRoute path="/global-presence" eyebrow="Global">
     <main className={`${styles.page} ${professionalsStyles.scope}`}>

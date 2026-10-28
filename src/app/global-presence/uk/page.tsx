@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "../india/india-quick-nav";
 import indiaStyles from "../india/page.module.css";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 const ukImage = "/images/uk-london-westminster.jpg";
 
@@ -182,13 +184,25 @@ const faqs = [
   ],
 ] as const;
 
-export default function UkPage() {
+export default async function UkPage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("uk")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "uk");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "UK";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Integrated legal, regulatory and business advisory support for organisations operating, investing and expanding in the UK.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage ? cms.data.featuredImage : ukImage;
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={`${indiaStyles.page} ${styles.ukPage}`}>
       <section className={indiaStyles.hero} aria-labelledby="uk-title">
         <div className={indiaStyles.heroPhoto}>
           <AssetImage
-            src={ukImage}
+            src={image}
             alt="Big Ben, Palace of Westminster and London skyline"
             fill
             priority
@@ -205,12 +219,9 @@ export default function UkPage() {
           </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
-            <h1 id="uk-title">UK</h1>
+            <h1 id="uk-title">{title}</h1>
             <h2>A Strategic Gateway to Europe and Beyond.</h2>
-            <p>
-              Integrated legal, regulatory and business advisory support for
-              organisations operating, investing and expanding in the UK.
-            </p>
+            <p>{description}</p>
             <div className={indiaStyles.heroActions}>
               <Link className={indiaStyles.primaryButton} href="#capabilities">
                 Explore UK Capabilities <Icon name="arrow" />
@@ -228,6 +239,7 @@ export default function UkPage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={indiaStyles.overview}><div className={indiaStyles.container}><div className={indiaStyles.overviewCopy}><span className={indiaStyles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} ariaLabel="UK page sections" />
 
       <section className={indiaStyles.overview} id="overview" aria-labelledby="overview-title">
