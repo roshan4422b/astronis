@@ -23,7 +23,8 @@ export default function TestimonialForm({
     [testimonialText, setTestimonialText] = useState("");
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
-    live = useRef<HTMLVideoElement>(null);
+    live = useRef<HTMLVideoElement>(null),
+    submissionInFlight = useRef(false);
   useEffect(
     () => () => stream.current?.getTracks().forEach((t) => t.stop()),
     [],
@@ -83,6 +84,7 @@ export default function TestimonialForm({
   }
   async function submit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (submissionInFlight.current) return;
     setStatus("");
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -105,6 +107,7 @@ export default function TestimonialForm({
       setStatus("Please use a video smaller than 20 MB.");
       return;
     }
+    submissionInFlight.current = true;
     setBusy(true);
     try {
       const res = await fetch("/api/testimonials", {
@@ -112,7 +115,11 @@ export default function TestimonialForm({
         body: data,
       });
       const result = await res.json();
-      setStatus(result.message);
+      setStatus(
+        typeof result.message === "string"
+          ? result.message
+          : "We could not confirm the testimonial submission. Please try again.",
+      );
       if (res.ok) {
         form.reset();
         setVideo(null);
@@ -127,6 +134,7 @@ export default function TestimonialForm({
         "Your testimonial could not be sent. Please contact advisory@astronisglobal.com.",
       );
     } finally {
+      submissionInFlight.current = false;
       setBusy(false);
     }
   }
@@ -259,7 +267,7 @@ export default function TestimonialForm({
                       setStatus("");
                     }}
                   />
-                  {photoName && <span className={styles.uploadSuccess} role="status">✓ {photoName} uploaded</span>}
+                  {photoName && <span className={styles.uploadSuccess} role="status">✓ {photoName} selected</span>}
                 </label>
                 {photoSelected && (
                   <label className="consent full">
@@ -338,7 +346,7 @@ export default function TestimonialForm({
                       setStatus("");
                     }}
                   />
-                  {videoName && <span className={styles.uploadSuccess} role="status">✓ {videoName} uploaded</span>}
+                  {videoName && <span className={styles.uploadSuccess} role="status">✓ {videoName} selected for submission</span>}
                 </label>
               </div>
             )}

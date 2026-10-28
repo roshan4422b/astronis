@@ -30,7 +30,7 @@ export const demoInsights = [
 ];
 
 export type EnquiryStatus = "New" | "In Progress" | "Responded" | "Closed";
-export type TestimonialApprovalStatus = "Pending" | "Approved" | "Rejected";
+export type TestimonialApprovalStatus = "Pending" | "Approved" | "Rejected" | "Archived";
 export type TestimonialConsentStatus = "Granted" | "Not granted" | "Not Recorded" | "Withdrawn";
 
 export const demoEnquiries: {

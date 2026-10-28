@@ -52,6 +52,9 @@ export type AdminTestimonial = {
   title?: string;
   internalNotes?: string;
   identityPublicationConsent?: boolean;
+  videoUrl?: string;
+  mediaSubmitted?: boolean;
+  format?: string;
 };
 
 export type AdminContentSection = "pages" | "services" | "industries" | "professionals" | "global-presence" | "technology";
@@ -248,8 +251,11 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, name: text(row.data.name), email: text(row.data.email), title: text(row.data.title),
           text: text(row.data.text), excerpt: text(row.data.excerpt), company: text(row.data.company), designation: text(row.data.designation), service: text(row.data.service), date: row.created_at ?? "",
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
-          approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : "Pending",
+          approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
           identityPublicationConsent: row.data.identityPublicationConsent === true, internalNotes: text(row.data.internalNotes),
+          videoUrl: text(row.data.videoUrl),
+          mediaSubmitted: row.data.mediaSubmitted === true,
+          format: text(row.data.format),
         }));
         const enquiryRows: EnquiryRow[] = Array.isArray(enquiryPayload.records) ? enquiryPayload.records : [];
         const enquiries: AdminEnquiry[] = enquiryRows.map((row) => ({
