@@ -28,6 +28,10 @@ const corporateGovernanceChildRoutes: Record<string, string> = {
 };
 
 const investmentAndTransactionChildRoutes: Record<string, string> = {
+  "Start-Up/MSME Investment Advisory":
+    "/services/business-advisory-contracts/investment-and-transaction-advisory/start-up-msme-investment-advisory",
+  "Fundraising Advisory":
+    "/services/business-advisory-contracts/investment-and-transaction-advisory/fundraising-advisory",
   "Investor Coordination":
     "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
   "Commercial Due Diligence":
@@ -61,6 +65,13 @@ const odiChildRoutes: Record<string, string> = {
 const ecbChildRoutes: Record<string, string> = {
   "External Commercial Borrowing":
     "/services/fema-fdi-cross-border/ecb-compliance-and-support/external-commercial-borrowing",
+};
+
+const crossBorderChildRoutes: Record<string, string> = {
+  "International Joint Ventures":
+    "/services/fema-fdi-cross-border/cross-border-compliance-and-support/international-joint-ventures",
+  "Overseas Expansion":
+    "/services/fema-fdi-cross-border/cross-border-compliance-and-support/overseas-expansion",
 };
 
 const workplaceComplianceChildRoutes: Record<string, string> = {
@@ -139,6 +150,10 @@ const bankingFinancialServicesChildRoutes: Record<string, string> = {
 const tribunalsDisputeResolutionChildRoutes: Record<string, string> = {
   "Mediation & Conciliation Cell":
     "/services/litigation-dispute-resolution/tribunals-dispute-resolution/mediation-conciliation-cell",
+  "Real-Estate regulatory Authority":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/real-estate-regulatory-authority",
+  "Central Administrative Tribunal":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/central-administrative-tribunal",
 };
 
 const technologyPrivacyChildRoutes: Record<string, string> = {
@@ -372,6 +387,9 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "fema-fdi-cross-border" && group.slug === "ecb-compliance-and-support"
       ? { childRoutes: ecbChildRoutes }
+      : {}),
+    ...(service.slug === "fema-fdi-cross-border" && group.slug === "cross-border-compliance-and-support"
+      ? { childRoutes: crossBorderChildRoutes }
       : {}),
     ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "workplace-compliances"
       ? { childRoutes: workplaceComplianceChildRoutes }
