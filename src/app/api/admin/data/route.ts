@@ -73,7 +73,13 @@ export async function GET(request: Request) {
   if (collection !== "all") query = query.eq("collection", collection);
   if (status) query = query.eq("status", status);
   const { data, error } = await query;
-  if (error) return errorResponse("Could not load content.", 500);
+  if (error) {
+    console.error("[admin-cms] Content query failed.", {
+      collection: collection || "all",
+      code: error.code || "unknown",
+    });
+    return errorResponse("Could not load content.", 500);
+  }
   const merged = new Map<string, AdminContentRow>();
   for (const row of getSourceContentRecords(collection === "all" ? undefined : collection)) {
     merged.set(`${row.collection}:${row.slug}`, row);

@@ -152,8 +152,18 @@ export async function POST(request: Request) {
     status: "pending",
     data: testimonial,
   });
-  if (persistenceError)
-    return Response.json({ message: "We could not save your testimonial for review. Please try again." }, { status: 503 });
+  if (persistenceError) {
+    const code = persistenceError.code || "unknown";
+    console.error("[testimonials] CMS insert failed.", { code });
+    const message = code === "42501"
+      ? "The CMS database denied this submission. Please contact the website team to check its submission permissions."
+      : code === "42P01" || code === "PGRST205"
+        ? "The testimonial CMS is not available. Please contact the website team to check its database migrations."
+        : code === "23514"
+          ? "The CMS rejected this testimonial's fields. Please review the required fields and try again."
+          : "We could not save your testimonial for review. Please try again later.";
+    return Response.json({ message }, { status: 503 });
+  }
   try {
     if (!webhook)
       return Response.json({
