@@ -13,7 +13,7 @@ import {
 import Icon from "./icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
 import EmailOtpVerification from "./email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import { getEmailVerification } from "@/lib/form-verification.client";
 import styles from "./global-enquiry-form.module.css";
 
 const companyTypes = [
@@ -252,11 +252,11 @@ export default function GlobalEnquiryForm({
     event.preventDefault();
     if (!validate()) return;
     const form = event.currentTarget;
-    let formVerification: ReturnType<typeof getFormVerification>;
+    let formVerification: ReturnType<typeof getEmailVerification>;
     try {
-      formVerification = getFormVerification(form, false);
+      formVerification = getEmailVerification(form);
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
+      setStatus(error instanceof Error ? error.message : "Verify your email address before submitting this form.");
       return;
     }
 
@@ -304,7 +304,7 @@ export default function GlobalEnquiryForm({
       consent: detail.consent ? "yes" : "",
       enquiryAgreementAccepted: detail.enquiryAgreementAccepted ? "yes" : "",
       enquiryAgreementId: "enquiry-communication-consultation-consent",
-      website: "",
+      website: form.querySelector<HTMLInputElement>('input[name="website"]')?.value || "",
       ...formVerification,
     };
 
@@ -843,7 +843,7 @@ export default function GlobalEnquiryForm({
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification requireCaptcha={false} />
+        <EmailOtpVerification captchaOptional />
 
         <label className={styles.honey} aria-hidden="true">
           Website

@@ -6,6 +6,9 @@ export const runtime = "nodejs";
 
 const FAILURE_MESSAGE = "We couldn't submit your enquiry. Please try again.";
 const SUCCESS_MESSAGE = "Your enquiry has been submitted successfully.";
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const requestsByIp = new Map<string, { count: number; resetAt: number }>();
 const allowedFormTypes = new Set(["home", "industry", "service", "technology"]);
 const fieldNames = [
   "name", "email", "company", "phone", "designation", "service", "industry",
@@ -67,6 +70,24 @@ const subjectFor = (fields: EnquiryFields) => {
 const rejectWithMessage = (message: string, status = 400) =>
   Response.json({ success: false, message }, { status });
 
+function isRateLimited(ip: string, now: number) {
+  const current = requestsByIp.get(ip);
+  if (current && current.resetAt > now && current.count >= RATE_LIMIT) return true;
+
+  requestsByIp.set(
+    ip,
+    current && current.resetAt > now
+      ? { ...current, count: current.count + 1 }
+      : { count: 1, resetAt: now + RATE_WINDOW_MS },
+  );
+  if (requestsByIp.size > 5000) {
+    for (const [key, entry] of requestsByIp) {
+      if (entry.resetAt <= now) requestsByIp.delete(key);
+    }
+  }
+  return false;
+}
+
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin)
@@ -90,7 +111,14 @@ export async function POST(request: Request) {
   fields.enquiryAgreementAccepted = normalizeConsent(raw.enquiryAgreementAccepted);
 
   if (fields.website) {
-    return rejectWithMessage("Your submission could not be processed.", 400);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE });
+  }
+
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")?.trim()
+    || "unknown";
+  if (isRateLimited(ip, Date.now())) {
+    return rejectWithMessage("Too many enquiries. Please try again later.", 429);
   }
 
   if (!allowedFormTypes.has(fields.formType)) {
@@ -121,6 +149,8 @@ export async function POST(request: Request) {
     if (fields.name.trim().length < 2 || fields.name.trim().length > 120) return "Please enter your name.";
     if (!fields.email.trim()) return "Please enter a valid email address.";
     if (!emailRegex.test(fields.email) || fields.email.length > 254) return "Please enter a valid email address.";
+    if (fields.phone.length > 40) return "Please enter a valid phone number.";
+    if (fields.company.length > 160) return "Please enter a valid company name.";
     if (!isCompactTechnologyEnquiry && !fields.phone.trim()) return "Please enter your phone number.";
     if (!isCompactTechnologyEnquiry && !fields.message.trim()) return "Please provide more details about your enquiry.";
     if (!isCompactTechnologyEnquiry && fields.message.trim().length < 10) return "Please provide more details about your enquiry.";

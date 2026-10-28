@@ -8,7 +8,7 @@ import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import EmailOtpVerification from "@/app/_components/email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import { getEmailVerification } from "@/lib/form-verification.client";
 
 const interestOptions = [
   { value: "Business Advisory", label: "Business Advisory" },
@@ -64,6 +64,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
     try {
       setBusy(true);
       setStatus("");
+      const verification = getEmailVerification(formElement);
 
       const params = new URLSearchParams(window.location.search);
       const payload = {
@@ -83,8 +84,8 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         consent: "yes",
         enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent",
-        website: "",
-        ...getFormVerification(event.currentTarget, false),
+        website: formElement.querySelector<HTMLInputElement>('input[name="website"]')?.value || "",
+        ...verification,
         utmSource: params.get("utm_source") || "",
         utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
@@ -148,7 +149,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification requireCaptcha={false} />
+        <EmailOtpVerification captchaOptional />
 
         <div style={{ width: "100%" }}>
           <button type="submit" className={styles.button} disabled={busy}>

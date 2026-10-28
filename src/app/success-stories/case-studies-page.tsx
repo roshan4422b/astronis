@@ -191,6 +191,7 @@ export default function CaseStudiesPage() {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const visiblePracticeAreas = useMemo(
@@ -650,7 +651,7 @@ export default function CaseStudiesPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? "Submitting…" : "Subscribe"}
                 <Icon name="arrow" />
               </button>
@@ -662,7 +663,7 @@ export default function CaseStudiesPage() {
                 <Link href="/legal/privacy-policy">Privacy Policy</Link>
               </span>
             </label>
-            <EmailOtpVerification />
+            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
             {emailStatus && <p role="status">{emailStatus}</p>}
           </form>
         </div>

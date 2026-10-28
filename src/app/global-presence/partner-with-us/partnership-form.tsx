@@ -5,7 +5,7 @@ import Icon from "@/app/_components/icon";
 import styles from "./page.module.css";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import EmailOtpVerification from "@/app/_components/email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import { getEmailVerification } from "@/lib/form-verification.client";
 
 const interests = ["Referral Partnership", "Strategic Alliance", "Co-Counsel Arrangement", "Knowledge Collaboration", "Other Partnership Opportunity"];
 
@@ -25,11 +25,11 @@ export default function PartnershipForm() {
       return;
     }
     setEnquiryAgreementError("");
-    let formVerification: ReturnType<typeof getFormVerification>;
+    let formVerification: ReturnType<typeof getEmailVerification>;
     try {
-      formVerification = getFormVerification(form, false);
+      formVerification = getEmailVerification(form);
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Complete email and CAPTCHA verification before submitting.");
+      setStatus(error instanceof Error ? error.message : "Verify your email address before submitting this form.");
       return;
     }
     const payload = {
@@ -46,7 +46,7 @@ export default function PartnershipForm() {
       careerAgreementId: "career-professional-partnership-consent",
       enquiryAgreementAccepted: "yes",
       enquiryAgreementId: "enquiry-communication-consultation-consent",
-      website: "",
+      website: String(formData.get("website") || ""),
       ...formVerification,
       pageUrl: window.location.href,
       pageTitle: document.title || "Astronis Global",
@@ -90,6 +90,6 @@ export default function PartnershipForm() {
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
   </div>
   <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="partner-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} includeCareerAgreement />
-  <EmailOtpVerification requireCaptcha={false} />
+  <EmailOtpVerification captchaOptional />
   <button type="submit" disabled={busy}>{busy ? "Sending…" : "Submit Enquiry"}<Icon name="arrow" /></button><p className={styles.formNote}>Your information is treated as confidential.</p>{status && <p role="status" className={success ? styles.success : styles.error}>{status}{!success && <> <a href="mailto:advisory@astronisglobal.com">Email our team</a></>}</p>}</form>;
 }

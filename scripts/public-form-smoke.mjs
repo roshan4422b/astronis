@@ -184,12 +184,30 @@ const directSubmissions = [
 for (const [label, path, options] of directSubmissions) {
   const response = await fetch(new URL(path, baseUrl), options);
   const result = await response.json();
-  const expectedRejection = "verify your email";
-  if (response.ok || !result.message?.toLowerCase().includes(expectedRejection)) {
-    throw new Error(`Direct ${label} submission did not reach the ${expectedRejection} rejection (HTTP ${response.status}).`);
+  const rejectionMessage = result.message?.toLowerCase() || "";
+  const rejectedForVerification =
+    rejectionMessage.includes("captcha")
+    || rejectionMessage.includes("verify this email address")
+    || rejectionMessage.includes("verify your email address");
+  if (response.ok || !rejectedForVerification) {
+    throw new Error(`Direct ${label} submission did not reach the CAPTCHA or email verification rejection (HTTP ${response.status}).`);
   }
+  if (label === "enquiry" && rejectionMessage.includes("captcha")) {
+    throw new Error("Direct enquiry submission should not require CAPTCHA verification.");
+  }
+}
+
+const honeypotResponse = await fetch(new URL("/api/enquiry", baseUrl), {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ website: "bot-filled" }),
+});
+const honeypotResult = await honeypotResponse.json();
+if (!honeypotResponse.ok || honeypotResult.success !== true) {
+  throw new Error(`Honeypot submission was not silently accepted (HTTP ${honeypotResponse.status}).`);
 }
 
 console.log(`Passed: ${formPages.length} public form pages render verification controls.`);
 console.log("Passed: professional application page renders.");
-console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected without email verification.`);
+console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected without email verification, and enquiry rejects are not CAPTCHA-related.`);
+console.log("Passed: filled enquiry honeypot receives a success response without being processed.");

@@ -1,41 +1,34 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+import TurnstileWidget from "@/components/TurnstileWidget";
 import styles from "./email-otp-verification.module.css";
-
-type TurnstileApi = {
-  render: (container: HTMLElement, options: {
-    sitekey: string;
-    callback: (token: string) => void;
-    "expired-callback": () => void;
-    "error-callback": (errorCode?: string | number) => boolean | void;
-    theme: "light";
-  }) => string;
-  reset: (widgetId: string) => void;
-  remove: (widgetId: string) => void;
-};
 
 function getVerificationScope(element: HTMLDivElement | null) {
   return element?.closest("form") ?? element?.closest<HTMLElement>('[role="dialog"]') ?? null;
 }
 
-declare global {
-  interface Window {
-    turnstile?: TurnstileApi;
-  }
-}
-
 export default function EmailOtpVerification({
   emailAddress,
-  requireCaptcha = false,
+  onCaptchaToken,
+  resetKey = 0,
+  captchaOptional = false,
 }: {
   emailAddress?: string;
-  requireCaptcha?: boolean;
-} = {}) {
+  onCaptchaToken?: (token: string) => void;
+  resetKey?: number;
+  captchaOptional?: boolean;
+}) {
   const container = useRef<HTMLDivElement>(null);
-  const widget = useRef<string | null>(null);
   const codeInputId = useId();
   const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
@@ -44,57 +37,11 @@ export default function EmailOtpVerification({
   const [status, setStatus] = useState("");
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(0);
-  const siteKey = requireCaptcha ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY : undefined;
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
-
-  useEffect(() => {
-    if (!requireCaptcha || !siteKey || !container.current) return;
-    let cancelled = false;
-    const renderWidget = () => {
-      if (cancelled || !window.turnstile || !container.current || widget.current) return;
-      widget.current = window.turnstile.render(container.current, {
-        sitekey: siteKey,
-        theme: "light",
-        callback: (token) => setCaptchaToken(token),
-        "expired-callback": () => setCaptchaToken(""),
-        "error-callback": (errorCode) => {
-          setCaptchaToken("");
-          const code = String(errorCode ?? "");
-          setStatus(code === "110200"
-            ? "This website hostname is not authorized for the configured CAPTCHA key (Cloudflare error 110200). Add this hostname in Cloudflare Turnstile Hostname Management."
-            : code
-              ? `CAPTCHA could not load (Cloudflare error ${code}). Please refresh the challenge and try again.`
-              : "CAPTCHA could not load. Please refresh the challenge and try again.");
-          return true;
-        },
-      });
-    };
-
-    const existingScript = document.querySelector<HTMLScriptElement>("#cloudflare-turnstile-script");
-    if (window.turnstile) {
-      renderWidget();
-    } else if (existingScript) {
-      existingScript.addEventListener("load", renderWidget);
-    } else {
-      const script = document.createElement("script");
-      script.id = "cloudflare-turnstile-script";
-      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-      script.async = true;
-      script.defer = true;
-      script.addEventListener("load", renderWidget, { once: true });
-      script.addEventListener("error", () => setStatus("CAPTCHA could not load. Please try again later."), { once: true });
-      document.head.appendChild(script);
-    }
-
-    return () => {
-      cancelled = true;
-      if (existingScript) existingScript.removeEventListener("load", renderWidget);
-      if (widget.current && window.turnstile) {
-        window.turnstile.remove(widget.current);
-        widget.current = null;
-      }
-    };
-  }, [requireCaptcha, siteKey]);
+  const updateCaptchaToken = useCallback((token: string) => {
+    setCaptchaToken(token);
+    onCaptchaToken?.(token);
+  }, [onCaptchaToken]);
 
   useEffect(() => {
     if (!cooldownUntil) return;
@@ -110,8 +57,9 @@ export default function EmailOtpVerification({
     const form = getVerificationScope(container.current);
     const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
     if (!form) return;
+    let captchaResetTimer: number | undefined;
     const resetVerification = () => {
-      setCaptchaToken("");
+      updateCaptchaToken("");
       setEmail("");
       setCode("");
       setVerificationToken("");
@@ -119,10 +67,22 @@ export default function EmailOtpVerification({
       setStatus("");
       setCooldownUntil(0);
       setNow(0);
-      if (requireCaptcha && widget.current && window.turnstile) window.turnstile.reset(widget.current);
+      setCaptchaReset((current) => current + 1);
+    };
+    const resetCaptchaAfterSubmit = () => {
+      captchaResetTimer = window.setTimeout(() => {
+        updateCaptchaToken("");
+        setCaptchaReset((current) => current + 1);
+        captchaResetTimer = undefined;
+      }, 0);
     };
     form.addEventListener("reset", resetVerification);
-    if (!emailInput) return () => form.removeEventListener("reset", resetVerification);
+    if (form instanceof HTMLFormElement) form.addEventListener("submit", resetCaptchaAfterSubmit);
+    if (!emailInput) return () => {
+      if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
+      form.removeEventListener("reset", resetVerification);
+      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
+    };
     const clearProofWhenEmailChanges = () => {
       if (emailInput.value.trim().toLowerCase() !== email) {
         setVerificationToken("");
@@ -133,38 +93,30 @@ export default function EmailOtpVerification({
     };
     emailInput.addEventListener("input", clearProofWhenEmailChanges);
     return () => {
+      if (captchaResetTimer !== undefined) window.clearTimeout(captchaResetTimer);
       form.removeEventListener("reset", resetVerification);
+      if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
-  }, [email, requireCaptcha]);
-
-  const resetCaptcha = () => {
-    setCaptchaToken("");
-    if (widget.current && window.turnstile) window.turnstile.reset(widget.current);
-  };
+  }, [email, updateCaptchaToken]);
 
   async function sendCode() {
-    const form = getVerificationScope(container.current);
-    const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
-    const nextEmail = emailAddress?.trim().toLowerCase() ?? emailInput?.value.trim().toLowerCase() ?? "";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
-      setStatus("Enter a valid email address before requesting a verification code.");
-      emailInput?.focus();
-      return;
-    }
-    if (requireCaptcha && !captchaToken) {
-      setStatus("Complete the CAPTCHA before requesting a verification code.");
-      return;
-    }
-
-    setBusy(true);
-    setStatus("");
-    setEmail(nextEmail);
     try {
-      const response = await fetch(requireCaptcha ? "/api/verification/send-otp" : "/api/verification/send-enquiry-otp", {
+      const form = getVerificationScope(container.current);
+      const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
+      const nextEmail = emailAddress?.trim().toLowerCase() ?? emailInput?.value.trim().toLowerCase() ?? "";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
+        setStatus("Enter a valid email address before requesting a verification code.");
+        emailInput?.focus();
+        return;
+      }
+      setBusy(true);
+      setStatus("");
+      setEmail(nextEmail);
+      const response = await fetch("/api/verification/send-enquiry-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nextEmail, ...(requireCaptcha ? { captchaToken } : {}) }),
+        body: JSON.stringify({ email: nextEmail }),
       });
       const result = (await response.json()) as { message?: string; retryAfter?: number };
       if (!response.ok) throw new Error(result.message || "We could not send your verification code.");
@@ -176,7 +128,6 @@ export default function EmailOtpVerification({
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "We could not send your verification code.");
     } finally {
-      resetCaptcha();
       setBusy(false);
     }
   }
@@ -210,10 +161,10 @@ export default function EmailOtpVerification({
   return (
     <section className={styles.panel} aria-label="Email verification">
       <p className={styles.heading}>Verify your email to continue</p>
-      <div className={requireCaptcha ? styles.captcha : undefined} ref={container} />
-      {requireCaptcha && !siteKey && <p className={styles.error}>CAPTCHA verification is not configured.</p>}
+      <div ref={container} />
       <div className={styles.actions}>
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (requireCaptcha && !siteKey)}>
+        <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
+        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
         {codeSent && !verificationToken && (
@@ -239,7 +190,7 @@ export default function EmailOtpVerification({
       </div>
       {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      {requireCaptcha && <input type="hidden" name="captchaToken" value={captchaToken} readOnly />}
+      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );

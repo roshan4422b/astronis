@@ -1,4 +1,4 @@
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -43,7 +43,12 @@ export async function POST(request: Request) {
   }
 
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(email, String(data.get("emailVerificationToken") || "")),
+    await consumeFormVerification(
+      request,
+      email,
+      String(data.get("captchaToken") || ""),
+      String(data.get("emailVerificationToken") || ""),
+    ),
   );
   if (verificationResponse) return verificationResponse;
 

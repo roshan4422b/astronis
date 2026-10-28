@@ -15,10 +15,6 @@
   font-weight: 650;
 }
 
-.captcha {
-  min-height: 65px;
-}
-
 .actions,
 .codeRow {
   display: flex;

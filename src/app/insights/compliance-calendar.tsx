@@ -111,6 +111,7 @@ export default function ComplianceCalendar({ variant = "insights" }: { variant?:
   const [monthOffset, setMonthOffset] = useState(0);
   const [subscribeStatus, setSubscribeStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const currentMonth = new Date(2025, 9 + monthOffset, 1);
   const isOctober = monthOffset === 0;
   const normalizedQuery = query.trim().toLowerCase();
@@ -239,7 +240,7 @@ export default function ComplianceCalendar({ variant = "insights" }: { variant?:
     <section className={styles.cta}>
       <AssetImage src="/corporate-regulatory-hero.png" alt="" fill sizes="100vw" />
       <div className={styles.ctaShade} /><div className={styles.ctaInner}><div><h2>Stay Compliant. Stay Ahead.</h2><p>Get the latest compliance dates, regulatory updates and expert analysis from Astronis Global.</p></div>
-        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="calendar-subscribe-email">Email address</label><input id="calendar-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
+        <form onSubmit={subscribe}><div><label className={styles.srOnly} htmlFor="calendar-subscribe-email">Email address</label><input id="calendar-subscribe-email" name="email" type="email" placeholder="Enter your email address" required maxLength={180} /><button type="submit" disabled={submitting || !captchaToken}>{submitting ? "Submitting…" : "Subscribe"} <Icon name="arrow" /></button></div><label className={styles.consent}><input type="checkbox" name="consent" value="yes" required />I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link></label><EmailOtpVerification onCaptchaToken={setCaptchaToken} />{subscribeStatus && <p role="status">{subscribeStatus}</p>}</form>
       </div>
     </section>
   </div>;

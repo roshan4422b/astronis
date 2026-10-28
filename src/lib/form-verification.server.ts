@@ -211,23 +211,57 @@ async function sendOtpWithMailtrap(email: string, code: string) {
 
 export async function verifyTurnstile(token: string, request: Request): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) throw new Error("Cloudflare Turnstile is not configured.");
+  if (!secret) {
+    console.error("Cloudflare Turnstile verification unavailable: TURNSTILE_SECRET_KEY is missing.");
+    throw new Error("Cloudflare Turnstile is not configured.");
+  }
   if (!token || token.length > 2048) return false;
 
   const body = new URLSearchParams({ secret, response: token });
   const remoteIp = request.headers.get("cf-connecting-ip");
   if (remoteIp) body.set("remoteip", remoteIp);
 
-  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
-    cache: "no-store",
-    signal: AbortSignal.timeout(5000),
-  });
-  if (!response.ok) throw new Error("Cloudflare Turnstile verification request failed.");
-  const result = (await response.json()) as { success?: boolean; hostname?: string };
-  return result.success === true && result.hostname === new URL(request.url).hostname;
+  let response: Response;
+  try {
+    response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+      cache: "no-store",
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch (error) {
+    console.error("Cloudflare Turnstile verification request failed.", {
+      error: error instanceof Error ? error.name : "UnknownError",
+    });
+    throw new Error("Cloudflare Turnstile verification request failed.", { cause: error });
+  }
+  if (!response.ok) {
+    console.error("Cloudflare Turnstile verification request failed.", { status: response.status });
+    throw new Error("Cloudflare Turnstile verification request failed.");
+  }
+  const result = (await response.json()) as {
+    success?: boolean;
+    hostname?: string;
+    "error-codes"?: unknown;
+  };
+  const expectedHostname = new URL(request.url).hostname.toLowerCase();
+  const hostname = typeof result.hostname === "string" ? result.hostname.toLowerCase() : "";
+  const errorCodes = Array.isArray(result["error-codes"])
+    ? result["error-codes"].filter(
+        (code): code is string => typeof code === "string" && /^[a-z0-9-]{1,64}$/i.test(code),
+      )
+    : [];
+  if (result.success !== true || hostname !== expectedHostname) {
+    console.warn("Cloudflare Turnstile verification rejected.", {
+      errorCodes,
+      hostname: hostname || null,
+      expectedHostname,
+      reason: result.success === true ? "hostname-mismatch" : "provider-rejected",
+    });
+    return false;
+  }
+  return true;
 }
 
 export async function sendEmailOtp(
