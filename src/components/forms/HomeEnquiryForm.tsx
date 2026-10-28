@@ -7,6 +7,8 @@ import FormSelect from "@/components/forms/shared/FormSelect";
 import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getEmailVerification } from "@/lib/form-verification.client";
 
 const interestOptions = [
   { value: "Business Advisory", label: "Business Advisory" },
@@ -46,6 +48,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (busy) return;
+    const formElement = event.currentTarget;
 
     const nextErrors: Record<string, string> = {};
     if (!form.fullName.trim()) nextErrors.fullName = "Please enter your full name.";
@@ -61,6 +64,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
     try {
       setBusy(true);
       setStatus("");
+      const verification = getEmailVerification(formElement);
 
       const params = new URLSearchParams(window.location.search);
       const payload = {
@@ -80,7 +84,8 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         consent: "yes",
         enquiryAgreementAccepted: "yes",
         enquiryAgreementId: "enquiry-communication-consultation-consent",
-        website: "",
+        website: formElement.querySelector<HTMLInputElement>('input[name="website"]')?.value || "",
+        ...verification,
         utmSource: params.get("utm_source") || "",
         utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
@@ -104,6 +109,7 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
         consent: false,
         enquiryAgreementAccepted: false,
       });
+      formElement.reset();
       setStatus("Thank you for contacting Astronis Global. Your enquiry has been received. Our team will review your requirement and connect you with the appropriate professional.");
     } catch (error) {
       setSuccess(false);
@@ -142,6 +148,8 @@ export default function HomeEnquiryForm({ compact = false }: { compact?: boolean
           onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
+
+        <EmailOtpVerification captchaOptional />
 
         <div style={{ width: "100%" }}>
           <button type="submit" className={styles.button} disabled={busy}>

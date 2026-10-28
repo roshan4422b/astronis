@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import AssetImage from '@/app/_components/asset-image';
 import Icon from '@/app/_components/icon';
+import EmailOtpVerification from '@/app/_components/email-otp-verification';
 import InsightsTestimonials from '@/app/_components/insights-testimonials';
 import styles from './gst-updates.module.css';
 
@@ -231,6 +232,7 @@ export default function RbiCircularsPage() {
   const [query, setQuery] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const filteredCategories = useMemo(
     () =>
@@ -544,7 +546,7 @@ export default function RbiCircularsPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? 'Submitting…' : 'Subscribe'} <Icon name="arrow" />
               </button>
             </div>
@@ -552,6 +554,7 @@ export default function RbiCircularsPage() {
               <input type="checkbox" name="consent" value="yes" required />
               I agree to receive updates. <Link href="/legal/privacy-policy">Privacy Policy</Link>
             </label>
+            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
             {subscribeStatus && <p role="status">{subscribeStatus}</p>}
           </form>
         </div>

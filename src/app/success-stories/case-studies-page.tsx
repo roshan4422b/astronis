@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
 import InsightsTestimonials from "@/app/_components/insights-testimonials";
 import { testimonials as allTestimonials } from "@/content/testimonials";
 import { featuredCaseStudies } from "@/content/featured-case-studies";
@@ -190,6 +191,7 @@ export default function CaseStudiesPage() {
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const visiblePracticeAreas = useMemo(
@@ -649,7 +651,7 @@ export default function CaseStudiesPage() {
                 required
                 maxLength={180}
               />
-              <button type="submit" disabled={submitting}>
+              <button type="submit" disabled={submitting || !captchaToken}>
                 {submitting ? "Submitting…" : "Subscribe"}
                 <Icon name="arrow" />
               </button>
@@ -661,6 +663,7 @@ export default function CaseStudiesPage() {
                 <Link href="/legal/privacy-policy">Privacy Policy</Link>
               </span>
             </label>
+            <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
             {emailStatus && <p role="status">{emailStatus}</p>}
           </form>
         </div>

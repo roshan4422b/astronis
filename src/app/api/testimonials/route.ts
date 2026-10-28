@@ -1,4 +1,6 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -33,11 +35,12 @@ export async function POST(request: Request) {
     !get("company") ||
     !get("service") ||
     get("consent") !== "yes" ||
+    get("identityPublicationConsent") !== "yes" ||
     !["written", "video"].includes(format) ||
     ["name", "email", "company", "designation", "phone", "service"].some(
       (k) => get(k).length > 200,
     ) ||
-    get("message").length > 5000
+    get("message").length > 180
   )
     return Response.json(
       {
@@ -82,14 +85,37 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
-  if (!webhook)
+  const hasMedia =
+    (video instanceof File && video.size > 0) ||
+    (photo instanceof File && photo.size > 0);
+  if (hasMedia && !webhook)
     return Response.json(
       {
         message:
-          "Online submissions are not available yet. Please email advisory@astronisglobal.com to share your experience. Your testimonial has not been submitted.",
+          "Media submissions are not configured yet. Please remove attachments or try again later.",
       },
       { status: 503 },
     );
+  if (webhook) {
+    try {
+      if (new URL(webhook).protocol !== "https:") throw new Error("HTTPS required");
+    } catch {
+      console.error("[testimonials] Webhook URL is invalid or does not use HTTPS.");
+      return Response.json(
+        { message: "Testimonial delivery is not configured correctly. Please try again later." },
+        { status: 503 },
+      );
+    }
+  }
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(
+      request,
+      get("email"),
+      get("captchaToken"),
+      get("emailVerificationToken"),
+    ),
+  );
+  if (verificationResponse) return verificationResponse;
   data.set("status", "pending-review");
   const consentAcceptedAt = new Date().toISOString();
   data.set("submittedAt", consentAcceptedAt);
@@ -99,8 +125,41 @@ export async function POST(request: Request) {
   data.set("publicationChannel", "website");
   data.set("materialType", format === "video" ? "video" : "written-testimonial");
   data.set("photoPublicationConsent", get("photoPublicationConsent") === "yes" ? "yes" : "no");
-  data.set("identityPublicationConsent", "no");
+  data.set("identityPublicationConsent", get("identityPublicationConsent"));
+  const supabase = await createSupabaseServerClient();
+  if (!supabase)
+    return Response.json({ message: "Testimonial submission is not configured yet. Please try again later." }, { status: 503 });
+  const submissionId = crypto.randomUUID();
+  const testimonial = {
+    name: get("name"),
+    email: get("email"),
+    company: get("company"),
+    designation: get("designation"),
+    service: get("service"),
+    format,
+    text: get("message"),
+    excerpt: get("message").slice(0, 240),
+    consent: true,
+    identityPublicationConsent: get("identityPublicationConsent") === "yes",
+    consentAcceptedAt,
+    agreementVersion: TESTIMONIAL_AGREEMENT_VERSION,
+    photoPublicationConsent: get("photoPublicationConsent") === "yes",
+    mediaSubmitted: Boolean((video instanceof File && video.size) || (photo instanceof File && photo.size)),
+  };
+  const { error: persistenceError } = await supabase.from("cms_content").insert({
+    collection: "testimonials",
+    slug: `submission-${submissionId}`,
+    status: "pending",
+    data: testimonial,
+  });
+  if (persistenceError)
+    return Response.json({ message: "We could not save your testimonial for review. Please try again." }, { status: 503 });
   try {
+    if (!webhook)
+      return Response.json({
+        submissionSaved: true,
+        message: "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
+      });
     if (new URL(webhook).protocol !== "https:")
       throw new Error("HTTPS required");
     const result = await fetch(webhook, {
@@ -113,16 +172,16 @@ export async function POST(request: Request) {
     });
     if (!result.ok) throw new Error("Delivery failed");
     return Response.json({
+      submissionSaved: true,
       message:
         "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
     });
   } catch {
-    return Response.json(
-      {
-        message:
-          "We could not deliver your testimonial. Please try again or contact our team.",
-      },
-      { status: 502 },
-    );
+    console.error("[testimonials] Submission saved, but webhook delivery failed.");
+    return Response.json({
+      submissionSaved: true,
+      message:
+        "Your testimonial was saved for review, but we could not confirm delivery of its attachment or notification. Please contact advisory@astronisglobal.com and do not submit it again.",
+    });
   }
 }

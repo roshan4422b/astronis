@@ -2,6 +2,8 @@
 
 import Image from "@/app/_components/asset-image";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getEmailVerification } from "@/lib/form-verification.client";
 import Icon from "@/app/_components/icon";
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
@@ -134,7 +136,8 @@ export default function ExpertsByService() {
           consent: "yes",
           enquiryAgreementAccepted: "yes",
           enquiryAgreementId: "enquiry-communication-consultation-consent",
-          website: "",
+          ...getEmailVerification(form),
+          website: String(values.get("website") || ""),
           pageUrl: window.location.href,
           pathname: window.location.pathname,
           pageTitle: document.title,
@@ -260,6 +263,8 @@ export default function ExpertsByService() {
           <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" required /></label>
           <label className={styles.upload}><span className={styles.srOnly}>Choose File</span><input name="upload" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" /></label>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="experts-by-service-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} />
+          <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px" }} />
+          <EmailOtpVerification captchaOptional />
           <button className={styles.submitButton} type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit Enquiry"} <Icon name="arrow" /></button>{formStatus && <p className={styles.formStatus} role="status">{formStatus}</p>}
         </form></div>
       </div>

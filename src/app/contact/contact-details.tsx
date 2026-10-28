@@ -25,6 +25,15 @@ export default function ContactDetails({
           <a href="mailto:advisory@astronisglobal.com">advisory@astronisglobal.com</a>
         </section>
       </div>
+      {showRegisteredOffice ? (
+        <div>
+          <Icon name="building" />
+          <section>
+            <h4>Registered Office</h4>
+            <p>E-111-B, NHC, Uttam Nagar, Dwarka Mor, New Delhi-110059</p>
+          </section>
+        </div>
+      ) : null}
       <div>
         <Icon name="phone" />
         <section>
@@ -50,15 +59,6 @@ export default function ContactDetails({
           </p>
         </section>
       </div>
-      {showRegisteredOffice ? (
-        <div>
-          <Icon name="building" />
-          <section>
-            <h4>Registered Office</h4>
-            <p>E-111-B, NHC, Uttam Nagar, Dwarka Mor, New Delhi-110059</p>
-          </section>
-        </div>
-      ) : null}
       {showMap && (
         <div className="contact-details-map">
           <iframe

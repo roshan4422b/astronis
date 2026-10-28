@@ -1,3 +1,5 @@
+import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin) return Response.json({ message: "This request is not permitted." }, { status: 403 });
@@ -8,6 +10,15 @@ export async function POST(request: Request) {
   const email = String(data.get("email") || "").trim();
   const consent = String(data.get("consent") || "");
   if (email.length > 180 || !/^\S+@\S+\.\S+$/.test(email) || consent !== "yes") return Response.json({ message: "Please enter a valid email address and provide your consent." }, { status: 400 });
+  const verificationResponse = verificationFailure(
+    await consumeFormVerification(
+      request,
+      email,
+      String(data.get("captchaToken") || ""),
+      String(data.get("emailVerificationToken") || ""),
+    ),
+  );
+  if (verificationResponse) return verificationResponse;
   const webhook = process.env.ENQUIRY_WEBHOOK_URL;
   if (!webhook) return Response.json({ message: "Online update requests are not available yet. Please email advisory@astronisglobal.com. Your request has not been sent." }, { status: 503 });
   try {

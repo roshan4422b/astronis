@@ -1,7 +1,22 @@
 import Image from "@/app/_components/asset-image";
 import { Heading, TextLink } from "../_components/ui";
 import Leadership from "../professionals/leadership";
-export default function Professionals() {
+import styles from "./professionals.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
+
+export default async function Professionals() {
+  const [cmsProfessionals, suppressedSlugs] = await Promise.all([
+    getPublishedContent("professionals"),
+    getUnpublishedSourceContentSlugs("professionals"),
+  ]);
+  const people = cmsProfessionals.map((item) => ({
+    slug: item.slug,
+    name: String(item.data.title || ""),
+    role: String(item.data.designation || ""),
+    expertise: String(item.data.expertise || ""),
+    description: String(item.data.description || item.data.content || ""),
+    image: typeof item.data.featuredImage === "string" ? item.data.featuredImage : "",
+  })).filter((item) => item.name);
   return (
     <section className="section professionals-section">
       <div className="professional-banner">
@@ -21,7 +36,9 @@ export default function Professionals() {
         </div>
       </div>
       <div className="container">
-        <Leadership limit={3} />
+        <div className={styles.professionalDirectory}>
+          <Leadership limit={3} cmsProfessionals={people} suppressedSlugs={[...suppressedSlugs]} />
+        </div>
         <div className="center">
           <TextLink href="/professionals">View All Professionals</TextLink>
         </div>

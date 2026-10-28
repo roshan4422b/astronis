@@ -9,6 +9,8 @@ import FormTextarea from "@/components/forms/shared/FormTextarea";
 import PhoneInput from "@/components/forms/shared/PhoneInput";
 import { technologyFormConfig } from "@/data/technologyFormConfig";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
+import EmailOtpVerification from "@/app/_components/email-otp-verification";
+import { getEmailVerification } from "@/lib/form-verification.client";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -107,6 +109,7 @@ export default function TechnologyEnquiryForm({
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (busy) return;
+    const formElement = event.currentTarget;
 
     const nextErrors: Record<string, string> = {};
     const isOptionalCompactEnquiry = compact && (!form.solution || ["Client & Enterprise Portals", "Cybersecurity Readiness", "Cloud & Collaboration Solutions"].includes(form.solution));
@@ -136,7 +139,9 @@ export default function TechnologyEnquiryForm({
         preferredContact: form.preferredContact, pageUrl: window.location.href,
         pathname: window.location.pathname, pageTitle: document.title || "Astronis Global",
         referrer: document.referrer || "", consent: "yes", enquiryAgreementAccepted: "yes",
-        enquiryAgreementId: "enquiry-communication-consultation-consent", website: "",
+        enquiryAgreementId: "enquiry-communication-consultation-consent",
+        website: formElement.querySelector<HTMLInputElement>('input[name="website"]')?.value || "",
+        ...getEmailVerification(formElement),
         utmSource: params.get("utm_source") || "", utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
       };
@@ -167,6 +172,7 @@ export default function TechnologyEnquiryForm({
         consent: false,
         enquiryAgreementAccepted: false,
       });
+      formElement.reset();
     } catch (error) {
       setSuccess(false);
       setStatus(error instanceof Error ? error.message : "We couldn't submit your enquiry right now. Please try again or contact us at advisory@astronisglobal.com.");
@@ -240,6 +246,8 @@ export default function TechnologyEnquiryForm({
           onChange={(accepted) => { updateField("enquiryAgreementAccepted", accepted); updateField("consent", accepted); }}
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
+
+        <EmailOtpVerification captchaOptional />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : compact ? "Submit Enquiry" : "Discuss My Technology Requirement"}

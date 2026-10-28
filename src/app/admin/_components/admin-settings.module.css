@@ -1,0 +1,386 @@
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.card :global(.admin-panel-heading) {
+  align-items: flex-start;
+}
+
+.card :global(.admin-panel-heading h2) {
+  color: #0751db;
+  font-size: 17px;
+}
+
+.card :global(.admin-panel-heading p) {
+  max-width: 470px;
+  color: #7d899b;
+  font-size: 12px;
+}
+
+.sectionIcon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e5ecf6;
+  border-radius: 8px;
+  color: #315c9c;
+  background: #f2f6fc;
+}
+
+.profileForm,
+.preferencesForm {
+  display: grid;
+  gap: 15px;
+  padding: 0 18px 18px;
+}
+
+.profileForm :global(.admin-field) {
+  display: grid;
+  gap: 6px;
+}
+
+.profileForm :global(.admin-field > span) {
+  color: #435169;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.profileForm :global(.admin-field input) {
+  width: 100%;
+  min-height: 39px;
+  padding: 8px 10px;
+  border: 1px solid #dce3ed;
+  border-radius: 6px;
+  color: #25344c;
+  background: #fff;
+  outline: none;
+}
+
+.profileForm :global(.admin-field input:focus) {
+  border-color: #4380e5;
+  box-shadow: 0 0 0 3px rgba(7, 81, 219, .1);
+}
+
+.profileForm :global(.admin-field input[aria-invalid="true"]) {
+  border-color: #b23b43;
+}
+
+.profileIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.avatar {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px dashed #c8d4e5;
+  border-radius: 50%;
+  color: #6b7d96;
+  background: #f6f8fb;
+}
+
+.profileIdentity strong,
+.profileIdentity small {
+  display: block;
+}
+
+.profileIdentity strong {
+  color: #34435b;
+  font-size: 12px;
+}
+
+.profileIdentity small {
+  margin-top: 3px;
+  color: #8290a3;
+  font-size: 11px;
+}
+
+.error {
+  color: #a43e3e;
+  font-size: 11px;
+}
+
+.success {
+  padding: 9px 11px;
+  border: 1px solid #cce7d6;
+  border-radius: 6px;
+  color: #276643;
+  background: #f1faf4;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #edf0f4;
+}
+
+.formActions button:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.brandingContent {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 0 18px 18px;
+}
+
+.logoPreview {
+  display: flex;
+  width: 100%;
+  min-height: 98px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1px solid #e7ebf1;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.logoPreview img {
+  width: min(100%, 260px);
+  height: auto;
+  max-height: 72px;
+  object-fit: contain;
+}
+
+.brandName {
+  color: #263650;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.colourLine {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #6e7c91;
+  font-size: 11px;
+}
+
+.colourLine > span:not(:last-child) {
+  width: 19px;
+  height: 19px;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 5px;
+}
+
+.navySwatch {
+  background: #071a40;
+}
+
+.blueSwatch {
+  background: #0751db;
+}
+
+.lightSwatch {
+  background: #f5f7fb;
+}
+
+.websiteUrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1552b1;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.websiteUrl:hover {
+  text-decoration: underline;
+}
+
+.note {
+  color: #7c899c;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.preferenceList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.toggleRow {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid #edf0f4;
+  color: #46546b;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.toggleRow input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.toggleRow i {
+  position: relative;
+  width: 37px;
+  height: 21px;
+  flex: 0 0 auto;
+  border-radius: 20px;
+  background: #c9d1dd;
+  transition: background .15s ease;
+}
+
+.toggleRow i::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 30, 55, .22);
+  content: "";
+  transition: transform .15s ease;
+}
+
+.toggleRow input:checked + i {
+  background: #0751db;
+}
+
+.toggleRow input:checked + i::after {
+  transform: translateX(16px);
+}
+
+.toggleRow input:focus-visible + i {
+  outline: 3px solid rgba(7, 81, 219, .25);
+  outline-offset: 2px;
+}
+
+.securityList {
+  display: grid;
+  padding: 0 18px;
+}
+
+.securityRow {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 59px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.securityIcon {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border-radius: 6px;
+  color: #6c7b91;
+  background: #f3f6fa;
+}
+
+.securityCopy strong,
+.securityCopy small {
+  display: block;
+}
+
+.securityCopy strong {
+  color: #3b4960;
+  font-size: 11px;
+}
+
+.securityCopy small {
+  margin-top: 3px;
+  color: #8793a4;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.securityRow :global(.admin-status) {
+  font-size: 9px;
+}
+
+.card > .note {
+  padding: 13px 18px 17px;
+}
+
+.systemCard {
+  grid-column: 1 / -1;
+}
+
+.systemInfo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+  margin: 0;
+  padding: 0 18px 18px;
+}
+
+.systemInfo > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 43px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.systemInfo dt {
+  color: #77849a;
+  font-size: 11px;
+}
+
+.systemInfo dd {
+  margin: 0;
+  color: #34435a;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .settingsGrid,
+  .systemInfo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .systemCard {
+    grid-column: auto;
+  }
+
+  .securityRow {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .securityRow :global(.admin-status) {
+    grid-column: 2;
+    justify-self: start;
+    margin: -3px 0 8px;
+  }
+}

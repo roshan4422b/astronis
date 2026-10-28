@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "../india/india-quick-nav";
 import indiaStyles from "../india/page.module.css";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 const quickLinks = [
   ["Overview", "overview"],
@@ -180,13 +182,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MiddleEastPage() {
+export default async function MiddleEastPage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("middle-east")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "middle-east");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "Middle East";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Strategic legal, regulatory and business advisory support for organisations operating, investing and expanding across the Middle East.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage
+    ? cms.data.featuredImage
+    : "/images/uae-dubai-skyline.jpg";
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={`${indiaStyles.page} ${styles.middleEastPage}`}>
       <section className={`${indiaStyles.hero} ${styles.middleEastHero}`} aria-labelledby="middle-east-title">
         <div className={`${indiaStyles.heroPhoto} ${styles.heroPhoto}`}>
           <AssetImage
-            src="/images/uae-dubai-skyline.jpg"
+            src={image}
             alt="Dubai skyline at sunset with modern towers and Burj Khalifa"
             fill
             priority
@@ -206,13 +222,9 @@ export default function MiddleEastPage() {
           </nav>
           <div className={indiaStyles.heroCopy}>
             <span className={indiaStyles.eyebrow}>Global Presence</span>
-            <h1 id="middle-east-title">Middle East</h1>
+            <h1 id="middle-east-title">{title}</h1>
             <h2>Opportunity. Partnership. Growth.</h2>
-            <p>
-              Strategic legal, regulatory and business advisory support for
-              organisations operating, investing and expanding across the
-              Middle East.
-            </p>
+            <p>{description}</p>
             <div className={indiaStyles.heroActions}>
               <Link className={indiaStyles.primaryButton} href="#capabilities">
                 Explore Middle East Capabilities <Icon name="arrow" />
@@ -235,6 +247,7 @@ export default function MiddleEastPage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={indiaStyles.overview}><div className={indiaStyles.container}><div className={indiaStyles.overviewCopy}><span className={indiaStyles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} ariaLabel="Middle East page sections" />
 
       <section className={indiaStyles.overview} id="overview" aria-labelledby="overview-title">

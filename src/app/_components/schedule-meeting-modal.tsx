@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { practices } from "@/content/site";
 import styles from "./schedule-meeting-modal.module.css";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "./enquiry-agreement-checkbox";
+import EmailOtpVerification from "./email-otp-verification";
+import { getFormVerification } from "@/lib/form-verification.client";
 
 type Details = { name: string; phone: string; code: string; email: string; organisation: string; service: string; team: string; turnover: string };
 const blank: Details = { name: "", phone: "", code: "+91", email: "", organisation: "", service: "", team: "", turnover: "" };
@@ -31,7 +33,10 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [message, setMessage] = useState("");
+  const [sentMessage, setSentMessage] = useState("");
   const [serviceUnavailable, setServiceUnavailable] = useState(false);
   const [sent, setSent] = useState(false);
   const [month, setMonth] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1));
@@ -39,7 +44,7 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
   const previousFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const launch = () => { setStep(1); setMessage(""); };
+    const launch = () => { setStep(1); setMessage(""); setSentMessage(""); };
     window.addEventListener("astronis:open-scheduler", launch);
     return () => window.removeEventListener("astronis:open-scheduler", launch);
   }, []);
@@ -77,15 +82,16 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
     setEnquiryAgreementError("");
     setBusy(true); setMessage(""); setServiceUnavailable(false);
     try {
-      const response = await fetch("/api/schedule-meeting", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...details, name: details.name.trim(), phone: `${details.code}${details.phone.replace(/\D/g, "")}`, organisation: details.organisation.trim(), date, time, timezone: zone, mode, consent, enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent" }) });
+      const response = await fetch("/api/schedule-meeting", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...details, name: details.name.trim(), phone: `${details.code}${details.phone.replace(/\D/g, "")}`, organisation: details.organisation.trim(), date, time, timezone: zone, mode, consent, enquiryAgreementAccepted: "yes", enquiryAgreementId: "enquiry-communication-consultation-consent", ...getFormVerification(dialog.current!) }) });
       const result = await response.json();
       if (!response.ok) { setServiceUnavailable(response.status === 503); throw new Error(result.message || "We couldn't send your request. Please try again."); }
+      setSentMessage(result.message || "Your consultation request was received. Our team will contact you to confirm availability.");
       setSent(true);
     } catch (error) { setMessage(error instanceof Error ? error.message : "We couldn't send your request. Please try again."); }
-    finally { setBusy(false); }
+    finally { setBusy(false); setCaptchaReset((current) => current + 1); }
   }
 
-  const close = () => { onClose(); window.setTimeout(() => { setSent(false); setStep(1); setMessage(""); setServiceUnavailable(false); }, 250); };
+  const close = () => { onClose(); window.setTimeout(() => { setSent(false); setStep(1); setMessage(""); setSentMessage(""); setServiceUnavailable(false); }, 250); };
   const fallbackBody = `Consultation request (pending confirmation)\nName: ${details.name.trim()}\nMobile: ${details.code}${details.phone}\nEmail: ${details.email}\nOrganisation: ${details.organisation}\nService required: ${details.service}\nTeam size: ${details.team}\nAnnual turnover: ${details.turnover}\nPreferred date: ${date}\nPreferred time: ${time} (${zone})\nMeeting mode: ${mode}\n\nThis is a preferred time request, not a confirmed appointment.`;
   return <div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
     <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="meeting-title" tabIndex={-1} ref={dialog}>
@@ -93,7 +99,8 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
       {sent ? <div className={styles.success}>
         <span className={styles.check} aria-hidden="true">✓</span><p className={styles.eyebrow}>REQUEST RECEIVED</p>
         <h2 id="meeting-title">Thank you, {details.name.split(" ")[0]}.</h2>
-        <p>Your consultation request has been sent to the Astronis team. Your preferred time is not reserved yet; our team will contact you to confirm availability.</p>
+        <p>{sentMessage}</p>
+        <p>Your preferred time is not reserved yet; our team will contact you to confirm availability.</p>
         <div className={styles.summary}><strong>Preferred time</strong><span>{new Date(`${date}T12:00:00`).toLocaleDateString("en-IN", { dateStyle: "full" })} · {time} ({zone})</span><strong>Meeting mode</strong><span>{mode}</span></div>
         <button className={styles.primary} onClick={close}>Back to website</button>
       </div> : <>
@@ -120,10 +127,10 @@ export default function ScheduleMeetingModal({ open, onClose }: { open: boolean;
           <div className={styles.datePanel}><div className={styles.month}><button aria-label="Previous month" disabled={month.getFullYear() === earliest.getFullYear() && month.getMonth() === earliest.getMonth()} onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}>‹</button><strong>{month.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}</strong><button aria-label="Next month" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>›</button></div><div className={styles.calendar}>{["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={`${d}${i}`} className={styles.weekday}>{d}</span>)}{Array.from({ length: offset }, (_, i) => <span key={`empty${i}`} />)}{Array.from({ length: days }, (_, i) => { const current = new Date(month.getFullYear(), month.getMonth(), i + 1); const key = dayKey(current); const disabled = current < earliest || current.getDay() === 0 || current.getDay() === 6; return <button key={key} disabled={disabled} aria-pressed={date === key} className={date === key ? styles.daySelected : ""} onClick={() => setDate(key)}>{i + 1}</button>; })}</div><p className={styles.note}>Choose a preferred weekday. Our team will confirm availability by email.</p></div>
           <div className={styles.timePanel}><label>Preferred time ({zone}) <b>*</b><select value={time} onChange={(e) => setTime(e.target.value)}><option value="">Choose a time</option>{meetingTimes.map((t) => <option key={t}>{t}</option>)}</select></label><label>Timezone <b>*</b><select value={zone} onChange={(e) => setZone(e.target.value)}>{zones.map((z) => <option key={z}>{z}</option>)}</select></label><p className={styles.note}>Times are shown in the selected timezone. Available preferences run from 9:30 AM to 7:30 PM.</p><fieldset><legend>Preferred meeting mode <b>*</b></legend><div className={styles.modes}>{modes.map((item, i) => <button type="button" key={item} aria-pressed={mode === item} className={mode === item ? styles.modeSelected : ""} onClick={() => setMode(item)}><span>{["◉", "☎", "⌂"][i]}</span>{item}</button>)}</div>{mode === "In-Person Meeting" && <p className={styles.note}>Location details will be shared by our team when your meeting is confirmed.</p>}{mode === "Video Meeting" && <p className={styles.note}>A video link will be shared after your meeting is confirmed.</p>}</fieldset></div>
         </div>}
-        {step === 3 && <div className={styles.review}><div><h3>Contact details <button type="button" onClick={() => setStep(1)}>Edit</button></h3><dl>{[["Name", details.name], ["Mobile", `${details.code} ${details.phone}`], ["Email", details.email], ["Organisation", details.organisation], ["Service required", details.service], ["Team size", details.team], ["Annual turnover", details.turnover]].map(([a,b]) => <div key={a}><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div><div><h3>Meeting preference <button type="button" onClick={() => setStep(2)}>Edit</button></h3><dl><div><dt>Date</dt><dd>{new Date(`${date}T12:00:00`).toLocaleDateString("en-IN", { dateStyle: "full" })}</dd></div><div><dt>Time</dt><dd>{time} · {zone}</dd></div><div><dt>Mode</dt><dd>{mode}</dd></div></dl></div><p className={styles.note}>Submitting requests a preferred time. The meeting is not booked until Astronis confirms availability.</p></div>}
+        {step === 3 && <div className={styles.review}><div><h3>Contact details <button type="button" onClick={() => setStep(1)}>Edit</button></h3><dl>{[["Name", details.name], ["Mobile", `${details.code} ${details.phone}`], ["Email", details.email], ["Organisation", details.organisation], ["Service required", details.service], ["Team size", details.team], ["Annual turnover", details.turnover]].map(([a,b]) => <div key={a}><dt>{a}</dt><dd>{b}</dd></div>)}</dl></div><div><h3>Meeting preference <button type="button" onClick={() => setStep(2)}>Edit</button></h3><dl><div><dt>Date</dt><dd>{new Date(`${date}T12:00:00`).toLocaleDateString("en-IN", { dateStyle: "full" })}</dd></div><div><dt>Time</dt><dd>{time} · {zone}</dd></div><div><dt>Mode</dt><dd>{mode}</dd></div></dl></div><p className={styles.note}>Submitting requests a preferred time. The meeting is not booked until Astronis confirms availability.</p><EmailOtpVerification emailAddress={details.email} onCaptchaToken={setCaptchaToken} resetKey={captchaReset} /></div>}
         {step === 3 && <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="consultation-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setConsent(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} additionalText="I confirm the information provided is accurate." />}
         {message && <p className={styles.error} role="alert">{message}{serviceUnavailable && <> <a href={`mailto:advisory@astronisglobal.com?subject=${encodeURIComponent("Consultation request")}&body=${encodeURIComponent(fallbackBody)}`}>Email your request instead</a></>}</p>}
-        <div className={styles.actions}>{step === 1 ? <><button className={styles.textButton} onClick={close}>Cancel</button><button className={styles.primary} disabled={!validDetails} onClick={() => { setStep(2); setMessage(""); }}>Continue to Date & Time <span>→</span></button></> : step === 2 ? <><button className={styles.textButton} onClick={() => setStep(1)}>← Back to Your Details</button><button className={styles.primary} disabled={!date || !time || !mode} onClick={() => setStep(3)}>Continue to Review <span>→</span></button></> : <><button className={styles.textButton} onClick={() => setStep(2)}>← Back to Meeting</button><button className={styles.primary} disabled={busy} onClick={submit}>{busy ? "Sending request…" : "Send Consultation Request"}</button></>}</div>
+        <div className={styles.actions}>{step === 1 ? <><button className={styles.textButton} onClick={close}>Cancel</button><button className={styles.primary} disabled={!validDetails} onClick={() => { setStep(2); setMessage(""); }}>Continue to Date & Time <span>→</span></button></> : step === 2 ? <><button className={styles.textButton} onClick={() => setStep(1)}>← Back to Your Details</button><button className={styles.primary} disabled={!date || !time || !mode} onClick={() => setStep(3)}>Continue to Review <span>→</span></button></> : <><button className={styles.textButton} onClick={() => setStep(2)}>← Back to Meeting</button><button className={styles.primary} disabled={busy || !captchaToken} onClick={submit}>{busy ? "Sending request…" : "Send Consultation Request"}</button></>}</div>
       </>}
     </section>
   </div>;

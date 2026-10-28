@@ -9,17 +9,30 @@ import { ExpertiseBanner } from "./hub-sections";
 import styles from "./hub.module.css";
 
 const categories = ["All", "Corporate", "Regulatory", "Legal", "Compliance", "Transactions", "International", "Technology", "Risk"];
-export default function ServicesExplorer() {
+type CmsService = { slug: string; title: string; category: string; description?: string };
+export default function ServicesExplorer({
+  cmsServices = [],
+  suppressedSlugs = [],
+}: {
+  cmsServices?: CmsService[];
+  suppressedSlugs?: string[];
+}) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
-  const matches = services.filter(service => matchesService(service, query, category));
+  const cmsSlugs = new Set(cmsServices.map((item) => item.slug));
+  const suppressed = new Set(suppressedSlugs);
+  const availableServices = services.filter((service) => !suppressed.has(service.canonicalSlug));
+  const matches = availableServices.filter(service => !cmsSlugs.has(service.canonicalSlug) && matchesService(service, query, category));
   const exactMatches = query.trim() ? searchServiceHierarchy(query) : [];
-  const subServiceCount = services.reduce((count, service) => count + service.subServices.length, 0);
-  const childServiceCount = services.reduce((count, service) => count + service.subServices.reduce((total, group) => total + group.children.length, 0), 0);
+  const visibleExactMatches = exactMatches.filter((result) => ![...suppressed].some((slug) => result.href === `/services/${slug}` || result.href.startsWith(`/services/${slug}/`)));
+  const matchingCms = cmsServices.filter((item) => (category === "All" || item.category.toLowerCase() === category.toLowerCase()) && `${item.title} ${item.category} ${item.description || ""}`.toLowerCase().includes(query.trim().toLowerCase()));
+  const serviceCategories = [...categories, ...new Set(cmsServices.map((item) => item.category).filter((item) => !categories.includes(item)))];
+  const subServiceCount = availableServices.reduce((count, service) => count + service.subServices.length, 0);
+  const childServiceCount = availableServices.reduce((count, service) => count + service.subServices.reduce((total, group) => total + group.children.length, 0), 0);
   return <section id="all-services" className={styles.directory} aria-labelledby="services-title"><div className="container">
-    <div className={styles.sectionHeading}><div><span className={styles.eyebrow}>OUR SERVICE PORTFOLIO</span><h2 id="services-title">Find the expertise<br />you need.</h2></div><p>Explore {services.length} main services, {subServiceCount} sub-services and {childServiceCount} child services.<br />One connected perspective on your business.</p></div>
-    <div className={styles.filters}><label htmlFor="hub-service-search">Search by service, regulation or business need</label><input id="hub-service-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Try corporate structuring, DPDP, FEMA…" /><div className={styles.filterButtons} aria-label="Filter services">{categories.map(item => <button type="button" key={item} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>)}</div></div>
-    <p className={styles.result} role="status">{query.trim() ? `${exactMatches.length} matching services` : `${matches.length} main services in the approved portfolio`}</p>
-    {query.trim() ? exactMatches.length ? <div className={styles.grid}>{exactMatches.map((result, index) => <Link className={styles.card} href={result.href} key={`${result.href}-${index}`}><div className={styles.cardBody}><h3>{result.title}</h3><p>{result.path}</p><span className={styles.cardAction}>Explore service <span aria-hidden="true">→</span></span></div></Link>)}</div> : <div className={styles.empty}><h3>No matching services</h3><p>Try a broader term or explore the complete portfolio.</p><button type="button" onClick={() => { setQuery(""); setCategory("All"); }}>Clear search</button></div> : matches.length ? <><div className={styles.grid}>{matches.slice(0, 6).map(service => <ServiceCard key={service.slug} service={service} />)}</div>{category === "All" && <ExpertiseBanner />}<div className={styles.grid}>{matches.slice(6).map(service => <ServiceCard key={service.slug} service={service} />)}</div></> : <div className={styles.empty}><h3>No matching services</h3><p>Choose another filter.</p><button type="button" onClick={() => { setQuery(""); setCategory("All"); }}>Clear filters</button></div>}
+    <div className={styles.sectionHeading}><div><span className={styles.eyebrow}>OUR SERVICE PORTFOLIO</span><h2 id="services-title">Find the expertise<br />you need.</h2></div><p>Explore {matches.length + matchingCms.length} main services, {subServiceCount} sub-services and {childServiceCount} child services.<br />One connected perspective on your business.</p></div>
+    <div className={styles.filters}><label htmlFor="hub-service-search">Search by service, regulation or business need</label><input id="hub-service-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Try corporate structuring, DPDP, FEMA…" /><div className={styles.filterButtons} aria-label="Filter services">{serviceCategories.map(item => <button type="button" key={item} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}</button>)}</div></div>
+    <p className={styles.result} role="status">{query.trim() ? `${visibleExactMatches.length + matchingCms.length} matching services` : `${matches.length + matchingCms.length} main services in the approved portfolio`}</p>
+    {query.trim() ? visibleExactMatches.length || matchingCms.length ? <div className={styles.grid}>{visibleExactMatches.map((result, index) => <Link className={styles.card} href={result.href} key={`${result.href}-${index}`}><div className={styles.cardBody}><h3>{result.title}</h3><p>{result.path}</p><span className={styles.cardAction}>Explore service <span aria-hidden="true">→</span></span></div></Link>)}{matchingCms.map((item) => <Link className={styles.card} href={`/services/${item.slug}`} key={item.slug}><div className={styles.cardBody}><h3>{item.title}</h3><p>{item.description || item.category}</p><span className={styles.cardAction}>Explore service <span aria-hidden="true">→</span></span></div></Link>)}</div> : <div className={styles.empty}><h3>No matching services</h3><p>Try a broader term or explore the complete portfolio.</p><button type="button" onClick={() => { setQuery(""); setCategory("All"); }}>Clear search</button></div> : matches.length || matchingCms.length ? <><div className={styles.grid}>{matches.slice(0, 6).map(service => <ServiceCard key={service.slug} service={service} />)}{matchingCms.map((item) => <Link className={styles.card} href={`/services/${item.slug}`} key={item.slug}><div className={styles.cardBody}><h3>{item.title}</h3><p>{item.description || item.category}</p><span className={styles.cardAction}>Explore service <span aria-hidden="true">→</span></span></div></Link>)}</div>{category === "All" && <ExpertiseBanner />}<div className={styles.grid}>{matches.slice(6).map(service => <ServiceCard key={service.slug} service={service} />)}</div></> : <div className={styles.empty}><h3>No matching services</h3><p>Choose another filter.</p><button type="button" onClick={() => { setQuery(""); setCategory("All"); }}>Clear filters</button></div>}
   </div></section>;
 }

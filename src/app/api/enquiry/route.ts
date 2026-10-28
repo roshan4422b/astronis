@@ -1,9 +1,14 @@
 import { Resend } from "resend";
+import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
 const FAILURE_MESSAGE = "We couldn't submit your enquiry. Please try again.";
 const SUCCESS_MESSAGE = "Your enquiry has been submitted successfully.";
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const requestsByIp = new Map<string, { count: number; resetAt: number }>();
 const allowedFormTypes = new Set(["home", "industry", "service", "technology"]);
 const fieldNames = [
   "name", "email", "company", "phone", "designation", "service", "industry",
@@ -65,6 +70,24 @@ const subjectFor = (fields: EnquiryFields) => {
 const rejectWithMessage = (message: string, status = 400) =>
   Response.json({ success: false, message }, { status });
 
+function isRateLimited(ip: string, now: number) {
+  const current = requestsByIp.get(ip);
+  if (current && current.resetAt > now && current.count >= RATE_LIMIT) return true;
+
+  requestsByIp.set(
+    ip,
+    current && current.resetAt > now
+      ? { ...current, count: current.count + 1 }
+      : { count: 1, resetAt: now + RATE_WINDOW_MS },
+  );
+  if (requestsByIp.size > 5000) {
+    for (const [key, entry] of requestsByIp) {
+      if (entry.resetAt <= now) requestsByIp.delete(key);
+    }
+  }
+  return false;
+}
+
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   if (origin && origin !== new URL(request.url).origin)
@@ -87,30 +110,19 @@ export async function POST(request: Request) {
   fields.careerAgreementAccepted = normalizeConsent(raw.careerAgreementAccepted);
   fields.enquiryAgreementAccepted = normalizeConsent(raw.enquiryAgreementAccepted);
 
-  console.log("Enquiry received:", {
-    formType: fields.formType,
-    name: fields.name,
-    email: fields.email,
-    phone: fields.phone,
-    company: fields.company,
-    service: fields.service,
-    industry: fields.industry,
-    technology: fields.technology,
-    solution: fields.solution,
-    country: fields.country,
-    consent: fields.consent,
-    honeypotFilled: Boolean(fields.website),
-    pageUrl: fields.pageUrl,
-  });
-
   if (fields.website) {
-    console.log("Enquiry rejected: honeypot filled.", { formType: fields.formType, pageUrl: fields.pageUrl });
-    return rejectWithMessage("Your submission could not be processed.", 400);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE });
+  }
+
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")?.trim()
+    || "unknown";
+  if (isRateLimited(ip, Date.now())) {
+    return rejectWithMessage("Too many enquiries. Please try again later.", 429);
   }
 
   if (!allowedFormTypes.has(fields.formType)) {
     const message = "Unsupported enquiry type.";
-    console.log("Enquiry rejected:", { reason: message, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(message, 400);
   }
 
@@ -137,6 +149,8 @@ export async function POST(request: Request) {
     if (fields.name.trim().length < 2 || fields.name.trim().length > 120) return "Please enter your name.";
     if (!fields.email.trim()) return "Please enter a valid email address.";
     if (!emailRegex.test(fields.email) || fields.email.length > 254) return "Please enter a valid email address.";
+    if (fields.phone.length > 40) return "Please enter a valid phone number.";
+    if (fields.company.length > 160) return "Please enter a valid company name.";
     if (!isCompactTechnologyEnquiry && !fields.phone.trim()) return "Please enter your phone number.";
     if (!isCompactTechnologyEnquiry && !fields.message.trim()) return "Please provide more details about your enquiry.";
     if (!isCompactTechnologyEnquiry && fields.message.trim().length < 10) return "Please provide more details about your enquiry.";
@@ -167,21 +181,44 @@ export async function POST(request: Request) {
 
   const commonError = validateCommon();
   if (commonError) {
-    console.log("Enquiry rejected:", { reason: commonError, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(commonError, 400);
   }
 
   const typeError = validateForType();
   if (typeError) {
-    console.log("Enquiry rejected:", { reason: typeError, formType: fields.formType, pageUrl: fields.pageUrl });
     return rejectWithMessage(typeError, 400);
+  }
+
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(fields.email, sanitize(raw.emailVerificationToken)),
+  );
+  if (verificationResponse) return verificationResponse;
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) {
+    console.error("Enquiry submission failed: Supabase is not configured");
+    return rejectWithMessage("Enquiry submission is not configured yet. Please try again later.", 503);
+  }
+  const enquiryId = crypto.randomUUID();
+  const { error: saveError } = await supabase.from("cms_enquiries").insert({
+    id: enquiryId,
+    name: fields.name.trim(),
+    email: fields.email.trim(),
+    company: fields.company,
+    subject: subjectFor(fields),
+    message: fields.message,
+    form_type: fields.formType,
+    data: fields,
+  });
+  if (saveError) {
+    console.error("Enquiry submission failed: database persistence failed", saveError?.code || "unknown");
+    return rejectWithMessage("We couldn't submit your enquiry. Please try again.", 503);
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey || !from) {
-    console.error("Enquiry submission failed: email provider is not configured");
-    return rejectWithMessage(FAILURE_MESSAGE, 503);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
   }
 
   const acceptanceTimestamp = new Date().toISOString();
@@ -208,9 +245,9 @@ export async function POST(request: Request) {
       html,
     });
     if (result.error) throw new Error(result.error.message);
-    return Response.json({ success: true, message: SUCCESS_MESSAGE });
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
   } catch (error) {
     console.error("Enquiry submission failed:", error instanceof Error ? error.message : "Unknown email provider error");
-    return rejectWithMessage(FAILURE_MESSAGE, 502);
+    return Response.json({ success: true, message: SUCCESS_MESSAGE, reference: enquiryId });
   }
 }

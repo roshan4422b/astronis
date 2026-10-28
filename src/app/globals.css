@@ -213,7 +213,7 @@ main section[class*="hero"] :is(
 ) {
   color: #fff !important;
 }
-main section[class*="hero"] :is(a, button):is(
+main section[class*="hero"]:not([class*="global-presence-module"]) :is(a, button):is(
   [class*="primary"],
   [class*="button"]:not([class*="secondary"]),
   [class*="action"]:not([class*="secondary"])
@@ -1315,7 +1315,7 @@ main section[class*="hero"] :is(a, button):is(
 .home-contact-section .contact-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
-  align-items: start;
+  align-items: stretch;
 }
 .home-contact-section {
   background: #042446;
@@ -3901,20 +3901,29 @@ textarea::placeholder {
 }
 @media (max-width: 640px) {
   .utility-inner {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 36px auto;
-    gap: 0;
-    padding-block: 3px;
-  }
-  .utility-inner > .utility-search {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: center;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    min-height: 56px;
+    padding-block: 8px;
   }
   .utility-inner > .utility-contact {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: center;
+    gap: 16px;
+  }
+  .utility-inner > .utility-contact a {
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    gap: 0;
+    font-size: 0;
+  }
+  .utility-inner > .utility-contact .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .utility-inner > .utility-search button {
+    width: 40px;
+    height: 40px;
   }
 }
 @media (max-width: 480px) {

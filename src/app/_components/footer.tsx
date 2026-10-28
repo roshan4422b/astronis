@@ -150,7 +150,7 @@ export default function Footer() {
       </a>
       <a
         className="floating-contact whatsapp"
-        href="https://wa.me/918009898104?text=Hello%20Astronis%20Global%2C%20I%20would%20like%20to%20know%20more."
+        href="https://wa.me/919311664455?text=Hello%20Astronis%20Global%2C%20I%20would%20like%20to%20know%20more."
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Astronis Global on WhatsApp"

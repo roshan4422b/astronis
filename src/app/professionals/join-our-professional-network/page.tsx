@@ -8,7 +8,7 @@ export const metadata = {
   description: "Explore collaboration opportunities with Astronis Global and share your professional profile with our team.",
 };
 
-const application = "/professionals/enquiry?network=join";
+const application = "/professionals/submit-profile";
 const benefits = [
   ["globe", "Collaborate Across Borders"], ["chart", "Expand Your Practice"], ["people", "Access New Opportunities"],
   ["file", "Work on Meaningful Matters"], ["shield", "Be Part of a Trusted Network"], ["bulb", "Create Lasting Impact"],
