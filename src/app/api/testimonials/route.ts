@@ -108,7 +108,12 @@ export async function POST(request: Request) {
     }
   }
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
+    await consumeFormVerification(
+      request,
+      get("email"),
+      get("captchaToken"),
+      get("emailVerificationToken"),
+    ),
   );
   if (verificationResponse) return verificationResponse;
   data.set("status", "pending-review");
