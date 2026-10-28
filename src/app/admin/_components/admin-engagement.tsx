@@ -31,6 +31,16 @@ function displayDate(value: string) {
   }).format(date);
 }
 
+function safeVideoUrl(value: string) {
+  const url = value.trim();
+  if (url.startsWith("/") && !url.startsWith("//")) return url;
+  try {
+    return new URL(url).protocol === "https:" ? url : "";
+  } catch {
+    return "";
+  }
+}
+
 function dateInputValue(value: string) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
@@ -314,6 +324,7 @@ export function TestimonialsManagement() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState(false);
   const [savingTestimonial, setSavingTestimonial] = useState(false);
+  const [savingDecision, setSavingDecision] = useState(false);
   const [testimonialEdit, setTestimonialEdit] = useState({
     name: "", email: "", title: "", company: "", designation: "", service: "", text: "", internalNotes: "",
   });
@@ -411,7 +422,7 @@ export function TestimonialsManagement() {
         date: saved.created_at || item.date,
         consentStatus: saved.data.consent === true && saved.data.identityPublicationConsent === true ? "Granted" : "Not granted",
         identityPublicationConsent: saved.data.identityPublicationConsent === true,
-        approvalStatus: saved.status === "published" ? "Approved" : saved.status === "rejected" ? "Rejected" : "Pending",
+        approvalStatus: saved.status === "published" ? "Approved" : saved.status === "rejected" ? "Rejected" : saved.status === "archived" ? "Archived" : "Pending",
       } : item));
       setEditingTestimonial(false);
       setNotice("Testimonial changes saved.");
@@ -427,6 +438,7 @@ export function TestimonialsManagement() {
   }
 
   async function confirmApprovalChange() {
+    if (savingDecision) return;
     if (!pendingDecision || !testimonials.some((item) => item.id === pendingDecision.id)) {
       setPendingDecision(null);
       setNotice("That testimonial is no longer available.");
@@ -439,7 +451,8 @@ export function TestimonialsManagement() {
       return;
     }
     try {
-      const status = pendingDecision.status === "Approved" ? "published" : pendingDecision.status === "Rejected" ? "rejected" : "pending";
+      setSavingDecision(true);
+      const status = pendingDecision.status === "Approved" ? "published" : pendingDecision.status === "Rejected" ? "rejected" : pendingDecision.status === "Archived" ? "archived" : "pending";
       const response = await fetch("/api/admin/data", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: pendingDecision.id, status }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not update testimonial.");
@@ -449,6 +462,8 @@ export function TestimonialsManagement() {
       setPendingDecision(null);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not update testimonial.");
+    } finally {
+      setSavingDecision(false);
     }
   }
 
@@ -485,7 +500,7 @@ export function TestimonialsManagement() {
           <FilterDropdown
             label="Filter by approval status"
             value={approvalFilter}
-            options={["All approval statuses", "Pending", "Approved", "Rejected"]}
+            options={["All approval statuses", "Pending", "Approved", "Rejected", "Archived"]}
             onChange={(value) => { setApprovalFilter(value); setPage(1); }}
           />
           <FilterDropdown
@@ -542,6 +557,17 @@ export function TestimonialsManagement() {
                 <div><dt>Identity publication consent</dt><dd>{selected.identityPublicationConsent ? "Granted" : "Not granted"}</dd></div>
                 <div><dt>Approval status</dt><dd><StatusBadge status={selected.approvalStatus} /></dd></div>
                 <div className="admin-detail-message"><dt>Full testimonial</dt><dd>{selected.text}</dd></div>
+                {selected.videoUrl && safeVideoUrl(selected.videoUrl) ? (
+                  <div className="admin-detail-message">
+                    <dt>Video preview</dt>
+                    <dd><video src={safeVideoUrl(selected.videoUrl)} controls preload="metadata" playsInline className="video-preview" /></dd>
+                  </div>
+                ) : selected.mediaSubmitted ? (
+                  <div className="admin-detail-message">
+                    <dt>Media attachment</dt>
+                    <dd>{selected.format === "video" ? "A video was submitted through the configured delivery integration. No playback URL is stored in the CMS." : "A photograph was submitted through the configured delivery integration. No preview URL is stored in the CMS."}</dd>
+                  </div>
+                ) : null}
                 {selected.internalNotes ? <div className="admin-detail-message"><dt>Internal notes</dt><dd>{selected.internalNotes}</dd></div> : null}
               </dl>
               <div className="admin-moderation-actions">
@@ -549,7 +575,7 @@ export function TestimonialsManagement() {
                   setTestimonialEdit({ name: selected.name, email: selected.email || "", title: selected.title || "", company: selected.company || "", designation: selected.designation || "", service: selected.service || "", text: selected.text, internalNotes: selected.internalNotes || "" });
                   setEditingTestimonial(true);
                 }}>Edit Testimonial</button>
-                {(["Pending", "Approved", "Rejected"] as const).map((status) => (
+                {(["Pending", "Approved", "Rejected", "Archived"] as const).map((status) => (
                   <button
                     key={status}
                     type="button"
@@ -557,7 +583,7 @@ export function TestimonialsManagement() {
                     disabled={selected.approvalStatus === status || (status === "Approved" && (selected.consentStatus !== "Granted" || !selected.identityPublicationConsent))}
                     onClick={() => updateApproval(selected, status)}
                   >
-                    {status === "Pending" ? "Return to Pending" : status}
+                    {status === "Pending" ? "Return to Pending" : status === "Archived" ? "Archive" : status}
                   </button>
                 ))}
               </div>
@@ -583,8 +609,8 @@ export function TestimonialsManagement() {
               : "This testimonial is no longer available."}
           </p>
           <div className="admin-modal-actions">
-            <button type="button" className="admin-button admin-button-secondary" onClick={() => setPendingDecision(null)}>Cancel</button>
-            <button type="button" className="admin-button" disabled={!target} onClick={confirmApprovalChange}>Confirm status change</button>
+            <button type="button" className="admin-button admin-button-secondary" disabled={savingDecision} onClick={() => setPendingDecision(null)}>Cancel</button>
+            <button type="button" className="admin-button" disabled={!target || savingDecision} onClick={confirmApprovalChange}>{savingDecision ? "Saving…" : "Confirm status change"}</button>
           </div>
         </AccessibleDialog>
       ) : null}

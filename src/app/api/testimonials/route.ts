@@ -84,10 +84,6 @@ export async function POST(request: Request) {
       { message: "Please authorise publication of the submitted photograph or remove it." },
       { status: 400 },
     );
-  const verificationResponse = verificationFailure(
-    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
-  );
-  if (verificationResponse) return verificationResponse;
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
   const hasMedia =
     (video instanceof File && video.size > 0) ||
@@ -111,6 +107,10 @@ export async function POST(request: Request) {
       );
     }
   }
+  const verificationResponse = verificationFailure(
+    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
+  );
+  if (verificationResponse) return verificationResponse;
   data.set("status", "pending-review");
   const consentAcceptedAt = new Date().toISOString();
   data.set("submittedAt", consentAcceptedAt);
@@ -152,6 +152,7 @@ export async function POST(request: Request) {
   try {
     if (!webhook)
       return Response.json({
+        submissionSaved: true,
         message: "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
       });
     if (new URL(webhook).protocol !== "https:")
@@ -166,14 +167,16 @@ export async function POST(request: Request) {
     });
     if (!result.ok) throw new Error("Delivery failed");
     return Response.json({
+      submissionSaved: true,
       message:
         "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
     });
   } catch {
     console.error("[testimonials] Submission saved, but webhook delivery failed.");
     return Response.json({
+      submissionSaved: true,
       message:
-        "Your testimonial was saved for review, but we could not confirm delivery of its media or notification. Please contact advisory@astronisglobal.com before resubmitting.",
-    }, { status: 503 });
+        "Your testimonial was saved for review, but we could not confirm delivery of its attachment or notification. Please contact advisory@astronisglobal.com and do not submit it again.",
+    });
   }
 }
