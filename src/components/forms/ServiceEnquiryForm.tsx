@@ -11,7 +11,7 @@ import { serviceAnchor } from "@/data/service-detail-types";
 import { serviceFormConfig } from "@/data/serviceFormConfig";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
 import EmailOtpVerification from "@/app/_components/email-otp-verification";
-import { getFormVerification } from "@/lib/form-verification.client";
+import { getEmailVerification } from "@/lib/form-verification.client";
 
 const countryOptions = [
   { value: "India", label: "India" },
@@ -62,7 +62,6 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
   const [status, setStatus] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -151,8 +150,9 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
         preferredContact: form.preferredContact, pageUrl: window.location.href,
         pathname: window.location.pathname, pageTitle: document.title || "Astronis Global",
         referrer: document.referrer || "", consent: "yes", enquiryAgreementAccepted: "yes",
-        enquiryAgreementId: "enquiry-communication-consultation-consent", website: "",
-        ...getFormVerification(event.currentTarget),
+        enquiryAgreementId: "enquiry-communication-consultation-consent",
+        website: formElement.querySelector<HTMLInputElement>('input[name="website"]')?.value || "",
+        ...getEmailVerification(formElement),
         utmSource: params.get("utm_source") || "", utmMedium: params.get("utm_medium") || "",
         utmCampaign: params.get("utm_campaign") || "",
       };
@@ -248,9 +248,9 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+        <EmailOtpVerification captchaOptional />
 
-        <button type="submit" className={styles.button} disabled={busy || !captchaToken}>
+        <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Requirement"}
         </button>
 

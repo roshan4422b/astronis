@@ -1,5 +1,21 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com${isDevelopment ? " 'unsafe-eval'" : ""}`,
+  "style-src 'self' 'unsafe-inline' https:",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https:",
+  "connect-src 'self' https://challenges.cloudflare.com https: data:",
+  "frame-src 'self' https://challenges.cloudflare.com https:",
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'self'",
+].join("; ");
+
 const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
   experimental: { cpus: 1 },
@@ -62,6 +78,14 @@ const nextConfig: NextConfig = {
       { source: "/services/corporate-commercial-advisory/entity-formation", destination: "/services/corporate-commercial-advisory/entity-formation-business-setup", permanent: true },
       { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation/:path*", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring/:path*", permanent: true },
       { source: "/services/corporate-commercial-advisory/entity-structuring-group-reorganisation", destination: "/services/corporate-commercial-advisory/corporate-governance-and-entity-structuring", permanent: true },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [{ key: "Content-Security-Policy", value: contentSecurityPolicy }],
+      },
     ];
   },
 };

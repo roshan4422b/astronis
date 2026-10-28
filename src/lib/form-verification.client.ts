@@ -11,3 +11,11 @@ export function getFormVerification(form: HTMLElement, captchaTokenOverride?: st
   }
   return { captchaToken, emailVerificationToken };
 }
+
+export function getEmailVerification(form: HTMLElement) {
+  const emailVerificationToken = form.querySelector<HTMLInputElement>('input[name="emailVerificationToken"]')?.value ?? "";
+  if (!emailVerificationToken) {
+    throw new Error("Verify your email address before submitting this form.");
+  }
+  return { emailVerificationToken };
+}
