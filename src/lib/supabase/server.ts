@@ -54,8 +54,22 @@ export type PublishedCmsContent = {
   data: Record<string, unknown>;
 };
 
-function logCmsRpcError(operation: string, code: string | undefined) {
-  console.error(`[cms] ${operation} RPC failed`, { code: code || "unknown" });
+function logCmsRpcError(
+  operation: string,
+  error: {
+    code?: string;
+    message?: string;
+    details?: string;
+    hint?: string;
+  } | string,
+) {
+  const diagnostic = typeof error === "string" ? { code: error } : error;
+  console.error(`[cms] ${operation} RPC failed`, {
+    code: diagnostic.code || "unknown",
+    message: diagnostic.message || "No error message provided.",
+    ...(diagnostic.details ? { details: diagnostic.details } : {}),
+    ...(diagnostic.hint ? { hint: diagnostic.hint } : {}),
+  });
 }
 
 function metadataText(value: unknown) {
@@ -118,7 +132,7 @@ export async function getPublishedContent(collection: string): Promise<Published
     requested_collection: collection,
   });
   if (error) {
-    logCmsRpcError("cms_public_content", error.code);
+    logCmsRpcError("cms_public_content", error);
     return [];
   }
   if (!Array.isArray(data)) {
@@ -156,7 +170,7 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
   if (!supabase) return [];
   const { data, error } = await supabase.rpc("cms_public_testimonials");
   if (error) {
-    logCmsRpcError("cms_public_testimonials", error.code);
+    logCmsRpcError("cms_public_testimonials", error);
     return [];
   }
   if (!Array.isArray(data)) {
@@ -206,7 +220,7 @@ export async function getPublishedCmsPage(path: string): Promise<PublishedCmsPag
     requested_path: normalizedPath,
   });
   if (error) {
-    logCmsRpcError("cms_published_page", error.code);
+    logCmsRpcError("cms_published_page", error);
     return null;
   }
   if (!Array.isArray(data) || !data.length) return null;
@@ -233,7 +247,7 @@ export async function getSourceTestimonialSlugs(): Promise<Set<string>> {
   if (!supabase) return new Set<string>();
   const { data, error } = await supabase.rpc("cms_source_testimonial_slugs");
   if (error) {
-    logCmsRpcError("cms_source_testimonial_slugs", error.code);
+    logCmsRpcError("cms_source_testimonial_slugs", error);
     return new Set<string>();
   }
   if (!Array.isArray(data)) {
