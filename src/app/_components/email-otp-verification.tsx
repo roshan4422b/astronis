@@ -18,10 +18,12 @@ export default function EmailOtpVerification({
   emailAddress,
   onCaptchaToken,
   resetKey = 0,
+  captchaOptional = false,
 }: {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
   resetKey?: number;
+  captchaOptional?: boolean;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const codeInputId = useId();
@@ -162,7 +164,7 @@ export default function EmailOtpVerification({
       <div ref={container} />
       <div className={styles.actions}>
         <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || !captchaToken}>
+        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
         {codeSent && !verificationToken && (
