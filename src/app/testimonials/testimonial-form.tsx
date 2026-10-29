@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
+import { getFormVerification } from "@/lib/form-verification.client";
 import Icon from "../_components/icon";
 import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./testimonial-form.module.css";
@@ -87,8 +88,17 @@ export default function TestimonialForm({
     if (submissionInFlight.current) return;
     setStatus("");
     const form = e.currentTarget;
+    let verification: ReturnType<typeof getFormVerification>;
+    try {
+      verification = getFormVerification(form, captchaToken);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Complete the verification before submitting this form.");
+      return;
+    }
     const data = new FormData(form);
     data.set("format", format);
+    data.set("captchaToken", verification.captchaToken);
+    data.set("emailVerificationToken", verification.emailVerificationToken);
     if (format === "video" && video)
       data.set(
         "video",
