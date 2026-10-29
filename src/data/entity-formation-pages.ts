@@ -11,6 +11,7 @@ export type EntityFormationPageData = {
   description: string;
   introduction: string;
   image: string;
+  heroImage?: string;
   imageAlt: string;
   heroOverlay?: boolean;
   basicPrice: string;
@@ -77,6 +78,7 @@ export type EntityFormationPageData = {
   categoryParentTitle?: string;
   categoryParentHref?: string;
   heroEyebrow?: string;
+  heroSubtitleWrap?: boolean;
   heroPrimaryAction?: string;
   heroPrimaryHref?: string;
   heroSecondaryAction?: string;

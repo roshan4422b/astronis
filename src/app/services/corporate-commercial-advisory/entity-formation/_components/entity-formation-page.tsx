@@ -83,7 +83,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const heroServiceSlug = data.serviceHref?.split("/")[2]
     ?? data.categoryHref?.split("/")[2]
     ?? parentService?.canonicalSlug;
-  const heroImage = getServiceChildHeroImage(data.slug, heroServiceSlug) ?? data.image;
+  const heroImage = data.heroImage ?? getServiceChildHeroImage(data.slug, heroServiceSlug) ?? data.image;
 
   return (
     <div className={styles.page}>
@@ -107,7 +107,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            <h2 className={`service-child-hero-subtitle ${data.heroSubtitleWrap ? styles.heroSubtitleWrap : ""}`}>{data.heroStatement}</h2>
             <div className={styles.actions}>
               <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
             </div>

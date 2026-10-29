@@ -36,6 +36,7 @@ import {
   getReferenceServicePageData,
   getReferenceServicePageMetadata,
 } from "@/data/reference-service-pages";
+<<<<<<< HEAD
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { commercialContractPages } from "@/data/commercial-contract-pages";
 import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
@@ -44,6 +45,13 @@ import { businessReorganisationPages } from "@/data/business-reorganisation-page
 import { transactionGovernancePages } from "@/data/transaction-governance-pages";
 import { contractDraftingPageData } from "../corporate-commercial-advisory/_components/contract-drafting-review-negotiations-page";
 export const dynamic = "force-dynamic";
+=======
+import {
+  getRequestedServicePage,
+  getRequestedServicePageMetadata,
+  getRequestedServicePageStaticParams,
+} from "@/data/requested-service-pages";
+>>>>>>> 7da3bc5 (I have added child pages)
 
 function resolveHierarchy(slugs: string[]) {
   const service = services.find(item => item.canonicalSlug === slugs[0]);
@@ -94,12 +102,17 @@ export function generateStaticParams() {
     })),
     ...getIntellectualPropertyServiceStaticParams(),
     ...getAdditionalServiceDetailStaticParams(),
+<<<<<<< HEAD
     ...getPrivateStyleAdvisoryStaticParams(),
+=======
+    ...getRequestedServicePageStaticParams(),
+>>>>>>> 7da3bc5 (I have added child pages)
   ];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
+<<<<<<< HEAD
   const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
   if (cmsService) return getPublishedContentMetadata(cmsService, `/services/${cmsService.slug}`);
   const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
@@ -114,6 +127,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
   const referenceServiceMetadata = getReferenceServicePageMetadata(`/services/${slugs.join("/")}`);
   if (referenceServiceMetadata) return referenceServiceMetadata;
+=======
+  const referenceRoute = `/services/${slugs.join("/")}`;
+  const requestedMetadata = getRequestedServicePageMetadata(referenceRoute);
+  if (requestedMetadata) return requestedMetadata;
+  const referenceMetadata = getReferenceServicePageMetadata(referenceRoute);
+  if (referenceMetadata) return referenceMetadata;
+>>>>>>> 7da3bc5 (I have added child pages)
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
@@ -230,6 +250,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
+<<<<<<< HEAD
   const [publishedServices, suppressedSlugs] = await Promise.all([
     slugs.length === 1 ? getPublishedContent("services") : Promise.resolve([]),
     getUnpublishedSourceContentSlugs("services"),
@@ -253,6 +274,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (privateStylePage) return <PrivateStyleAdvisoryPage data={privateStylePage} />;
   const referenceServicePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
   if (referenceServicePage) return <EntityFormationPage data={referenceServicePage} />;
+=======
+  const requestedPage = getRequestedServicePage(`/services/${slugs.join("/")}`);
+  if (requestedPage) return <EntityFormationPage data={requestedPage} />;
+  const referencePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
+  if (referencePage) return <EntityFormationPage data={referencePage} />;
+>>>>>>> 7da3bc5 (I have added child pages)
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const { service, group, child } = hierarchy;

@@ -980,7 +980,7 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
     relatedPages: [
       ["BIS - Bureau of Indian Standards", `${licensingServicePath}#product-industrial`],
       ["ISI - Indian Standards Institution", `${licensingServicePath}#product-industrial`],
-      ["Pollution / Environmental Permissions", `${licensingServicePath}#product-industrial`],
+      ["Pollution / Environmental Permissions", `${licensingServicePath}/product-industrial/pollution-environmental-permissions`],
       ["Factory / Industrial Approvals", `${licensingServicePath}#product-industrial`],
       ["Legal Metrology", `${licensingServicePath}/food-and-consumer/legal-metrology`],
       ["Packaging & Labelling", `${licensingServicePath}/food-and-consumer/packaging-and-labelling`],
@@ -1123,8 +1123,8 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
       ["Liquor Licence", `${licensingServicePath}/food-and-consumer/liquor-license`],
       ["Shops & Establishments", `${licensingServicePath}/business-registrations/shops-and-establishment`],
       ["Factory / Industrial Approvals", `${licensingServicePath}#product-industrial`],
-      ["Pollution / Environmental Permissions", `${licensingServicePath}#product-industrial`],
-      ["Trade / Health Licence", `${licensingServicePath}#business-registrations`],
+      ["Pollution / Environmental Permissions", `${licensingServicePath}/product-industrial/pollution-environmental-permissions`],
+      ["Trade / Health Licence", `${licensingServicePath}/business-registrations/trade-health-licence`],
     ],
     insights: [
       ["Fire NOC Requirements for Commercial Buildings: A Preparation Guide", "Fire Safety", "Food & Consumer"],
@@ -1262,7 +1262,7 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
     relatedPages: [
       ["Udyam / MSME", `${licensingServicePath}/business-registrations/udyam-msme`],
       ["Shops & Establishments", `${licensingServicePath}/business-registrations/shops-and-establishment`],
-      ["Trade / Health Licence", `${licensingServicePath}#business-registrations`],
+      ["Trade / Health Licence", `${licensingServicePath}/business-registrations/trade-health-licence`],
       ["Company Incorporation", "/services/corporate-commercial-advisory/entity-formation-business-setup/private-limited-company"],
       ["LLP Registration", "/services/corporate-commercial-advisory/entity-formation-business-setup/limited-liability-partnership"],
       ["Professional Firm Advisory", `${licensingServicePath}#business-registrations`],
@@ -1432,7 +1432,7 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
       ["Trust Registration", `${licensingServicePath}#ngo-institutional`],
       ["Society Registration", `${licensingServicePath}#ngo-institutional`],
       ["NGO Darpan", `${licensingServicePath}#ngo-institutional`],
-      ["CSR-related Registrations", `${licensingServicePath}#ngo-institutional`],
+      ["CSR-related Registrations", `${licensingServicePath}/ngo-institutional/csr-related-registrations`],
     ],
     insights: [
       ["FCRA Registration in India: Eligibility, Process and Key Documentation", "FCRA Compliance", "NGO & Institutional"],
@@ -1576,11 +1576,11 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
     customHeading: "Integrated Industrial Approvals",
     customDescription: "For multi-approval facilities, expansion projects, multiple locations, complex processes or continuing compliance coordination.",
     relatedPages: [
-      ["Pollution / Environmental Permissions", `${licensingServicePath}#product-industrial`],
+      ["Pollution / Environmental Permissions", `${licensingServicePath}/product-industrial/pollution-environmental-permissions`],
       ["EPR Registration", `${licensingServicePath}/product-industrial/epr-extended-producer-responsibility`],
       ["BIS Certification", `${licensingServicePath}#product-industrial`],
       ["ISI Mark Certification", `${licensingServicePath}#product-industrial`],
-      ["WPC-Wood Plastic Composite", `${licensingServicePath}#product-industrial`],
+      ["WPC-Wood Plastic Composite", `${licensingServicePath}/product-industrial/wpc-wood-plastic-composite`],
       ["Fire Department NOC", `${licensingServicePath}/food-and-consumer/fire-department-noc`],
     ],
     insights: [

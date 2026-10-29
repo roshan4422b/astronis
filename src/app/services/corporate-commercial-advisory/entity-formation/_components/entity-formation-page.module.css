@@ -163,6 +163,12 @@
   font: 400 clamp(21px, 2.4vw, 30px) / 1.35 Georgia, serif;
 }
 
+.heroSubtitleWrap {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
 .heroCopy > p {
   max-width: 675px;
   color: #d2dce6;

@@ -185,6 +185,22 @@ const sustainabilityChildRoutes: Record<string, string> = {
 const ngoInstitutionalChildRoutes: Record<string, string> = {
   "NGO Registration, Nonprofit Compliance & Institutional Advisory":
     "/services/licensing-registrations/ngo-institutional/ngo-registration-nonprofit-compliance-institutional-advisory",
+  "CSR-related Registrations":
+    "/services/licensing-registrations/ngo-institutional/csr-related-registrations",
+};
+
+const businessRegistrationChildRoutes: Record<string, string> = {
+  "Import-Export":
+    "/services/licensing-registrations/business-registrations/import-export",
+  "Trade / Health Licence":
+    "/services/licensing-registrations/business-registrations/trade-health-licence",
+};
+
+const productIndustrialChildRoutes: Record<string, string> = {
+  "WPC-Wood Plastic Composite":
+    "/services/licensing-registrations/product-industrial/wpc-wood-plastic-composite",
+  "Pollution / Environmental Permissions":
+    "/services/licensing-registrations/product-industrial/pollution-environmental-permissions",
 };
 
 const descriptions = [
@@ -239,6 +255,8 @@ const serviceChildHeroImages: Record<string, string> = {
   "bis-bureau-of-indian-standards": "BIS Testing Laboratory.png",
   "board-committee-processes": "Futuristic Blue Boardroom Skyline.png",
   "banking-insolvency-restructuring-advisory:fintech-advisory-and-compliance": "Global Finance in Blue Light.png",
+  "banking-insolvency-restructuring-advisory:creditor-and-debtors-advisory": "Reserve Bank of India Night Finance Scene.png",
+  "banking-insolvency-restructuring-advisory:creditor-debtors-advisory": "Reserve Bank of India Night Finance Scene.png",
   "banking-insolvency-restructuring-advisory:nbfc-compliance": "Reserve Bank of India Night Finance Scene.png",
   "banking-insolvency-restructuring-advisory:nbfc-formation-licensing-advisory": "Reserve Bank of India Night Finance Scene.png",
   "banking-insolvency-restructuring-advisory:rbi-regulatory": "Reserve Bank of India Night Finance Scene.png",
@@ -253,6 +271,7 @@ const serviceChildHeroImages: Record<string, string> = {
   "corporate-litigation": "Cinematic Blue-Toned Legal Office.png",
   "brand-protection": "Cinematic Blue-Toned Legal Office.png",
   "entity-structuring": "Organisational Structuring .png",
+  "financial-fraud-investigations": "Global Finance in Blue Light.png",
   "governance-framework-corporate-policies": "Governance & Management Framework .png",
   "india-entry-strategy": "India Entry Strategy .png",
   "import-export": "Import-Export .png",
@@ -418,8 +437,16 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "licensing-registrations" && group.slug === "ngo-institutional"
       ? { childRoutes: ngoInstitutionalChildRoutes }
       : {}),
+<<<<<<< HEAD
     ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
       ? { childRoutes: technologyPrivacyChildRoutes }
+=======
+    ...(service.slug === "licensing-registrations" && group.slug === "business-registrations"
+      ? { childRoutes: businessRegistrationChildRoutes }
+      : {}),
+    ...(service.slug === "licensing-registrations" && group.slug === "product-industrial"
+      ? { childRoutes: productIndustrialChildRoutes }
+>>>>>>> 7da3bc5 (I have added child pages)
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
