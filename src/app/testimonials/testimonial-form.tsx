@@ -15,6 +15,7 @@ export default function TestimonialForm({
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false),
     [captchaToken, setCaptchaToken] = useState(""),
+    [captchaResetKey, setCaptchaResetKey] = useState(0),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [preview, setPreview] = useState(""),
@@ -125,11 +126,15 @@ export default function TestimonialForm({
         body: data,
       });
       const result = await res.json();
-      setStatus(
-        typeof result.message === "string"
-          ? result.message
-          : "We could not confirm the testimonial submission. Please try again.",
-      );
+      let message = typeof result.message === "string"
+        ? result.message
+        : "We could not confirm the testimonial submission. Please try again.";
+      if (message.toLowerCase().includes("captcha")) {
+        setCaptchaToken("");
+        setCaptchaResetKey((current) => current + 1);
+        message = "The CAPTCHA could not be confirmed. Please complete the refreshed CAPTCHA and submit again.";
+      }
+      setStatus(message);
       if (res.ok) {
         form.reset();
         setVideo(null);
@@ -397,7 +402,7 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
-          <EmailOtpVerification onCaptchaToken={setCaptchaToken} />
+          <EmailOtpVerification onCaptchaToken={setCaptchaToken} resetKey={captchaResetKey} />
           <button className="button" type="submit" disabled={busy || recording || !captchaToken}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
