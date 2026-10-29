@@ -32,6 +32,17 @@ import {
   getPrivateStyleAdvisoryPage,
   getPrivateStyleAdvisoryStaticParams,
 } from "@/data/private-style-advisory-pages";
+import {
+  getReferenceServicePageData,
+  getReferenceServicePageMetadata,
+} from "@/data/reference-service-pages";
+import type { EntityFormationPageData } from "@/data/entity-formation-pages";
+import { commercialContractPages } from "@/data/commercial-contract-pages";
+import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
+import { businessStructuringPages } from "@/data/business-structuring-pages";
+import { businessReorganisationPages } from "@/data/business-reorganisation-pages";
+import { transactionGovernancePages } from "@/data/transaction-governance-pages";
+import { contractDraftingPageData } from "../corporate-commercial-advisory/_components/contract-drafting-review-negotiations-page";
 export const dynamic = "force-dynamic";
 
 function resolveHierarchy(slugs: string[]) {
@@ -47,6 +58,32 @@ function resolveHierarchy(slugs: string[]) {
     : undefined;
   if (slugs.length === 3 && !child) return null;
   return { service, group, child };
+}
+
+function getHierarchyPageData(
+  serviceSlug: string,
+  groupSlug: string,
+  childSlug: string,
+): EntityFormationPageData | undefined {
+  if (serviceSlug === "business-advisory-contracts" && groupSlug === "commercial-contracts") {
+    if (childSlug === "contract-drafting-review-negotiations") return contractDraftingPageData;
+    return [...commercialContractPages, ...contractAndRestructuringPages]
+      .find((page) => (
+        page.categoryTitle === "Commercial Contracts"
+        && (page.slug === childSlug || serviceAnchor(page.title) === childSlug)
+      ));
+  }
+
+  if (serviceSlug === "corporate-commercial-advisory") {
+    if (groupSlug === "corporate-governance-and-entity-structuring") {
+      return [...businessStructuringPages, ...businessReorganisationPages, ...contractAndRestructuringPages]
+        .find((page) => page.slug === childSlug);
+    }
+
+    if (groupSlug === "mergers-acquisitions-and-transactions") {
+      return transactionGovernancePages.find((page) => page.slug === childSlug);
+    }
+  }
 }
 
 export function generateStaticParams() {
@@ -75,6 +112,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       openGraph: { title: privateStylePage.title, description: privateStylePage.description, url: canonical, type: "website" },
     };
   }
+  const referenceServiceMetadata = getReferenceServicePageMetadata(`/services/${slugs.join("/")}`);
+  if (referenceServiceMetadata) return referenceServiceMetadata;
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const title = hierarchy.child || hierarchy.group.title;
@@ -90,6 +129,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         openGraph: {
           title: `${additionalServicePage.title} | ${hierarchy.service.title} | Astronis`,
           description: additionalServicePage.description,
+          url: canonical,
+          type: "website",
+        },
+      };
+    }
+    const hierarchyPageData = hierarchy.child
+      ? getHierarchyPageData(
+        hierarchy.service.canonicalSlug,
+        hierarchy.group.slug,
+        serviceAnchor(hierarchy.child),
+      )
+      : undefined;
+    if (hierarchyPageData) {
+      const canonical = `/services/${hierarchy.service.canonicalSlug}/${hierarchy.group.slug}/${serviceAnchor(hierarchy.child!)}`;
+      return {
+        title: `${hierarchyPageData.title} | ${hierarchy.service.title} | Astronis`,
+        description: hierarchyPageData.description,
+        alternates: { canonical },
+        openGraph: {
+          title: `${hierarchyPageData.title} | ${hierarchy.service.title} | Astronis`,
+          description: hierarchyPageData.description,
           url: canonical,
           type: "website",
         },
@@ -191,6 +251,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (cmsService) return <CmsContentPage record={cmsService} eyebrow="Services" />;
   const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
   if (privateStylePage) return <PrivateStyleAdvisoryPage data={privateStylePage} />;
+  const referenceServicePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
+  if (referenceServicePage) return <EntityFormationPage data={referenceServicePage} />;
   const hierarchy = resolveHierarchy(slugs);
   if (hierarchy) {
     const { service, group, child } = hierarchy;
@@ -199,6 +261,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     if (childRoute && childRoute.split("/").at(-1) !== slugs[2]) permanentRedirect(childRoute);
     const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
     if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
+    const hierarchyPageData = getHierarchyPageData(
+      service.canonicalSlug,
+      group.slug,
+      serviceAnchor(child),
+    );
+    if (hierarchyPageData) return <EntityFormationPage data={hierarchyPageData} />;
     const intellectualPropertyPage = service.canonicalSlug === "intellectual-property-right-services"
       ? getIntellectualPropertyServicePage(group.slug, serviceAnchor(child))
       : undefined;
