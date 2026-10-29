@@ -44,6 +44,16 @@ export default function EmailOtpVerification({
   }, [onCaptchaToken]);
 
   useEffect(() => {
+    if (!captchaToken) return;
+    const timer = window.setTimeout(() => {
+      updateCaptchaToken("");
+      setCaptchaReset((current) => current + 1);
+      setStatus("The CAPTCHA expired. Please complete it again before continuing.");
+    }, 240_000);
+    return () => window.clearTimeout(timer);
+  }, [captchaToken, updateCaptchaToken]);
+
+  useEffect(() => {
     if (!cooldownUntil) return;
     const interval = window.setInterval(() => {
       const current = Date.now();

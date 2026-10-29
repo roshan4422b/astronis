@@ -178,6 +178,13 @@ test("rejects invalid CAPTCHA and missing email proof at the form submission bou
   assert.equal(missingProof.ok, false);
 });
 
+test("checks Turnstile hostname against the forwarded public host", async () => {
+  const proxiedRequest = new Request("https://internal.vercel.invalid/api/testimonials", {
+    headers: { "x-forwarded-host": "astronis.test" },
+  });
+  assert.equal(await verifyTurnstile("valid-captcha", proxiedRequest), true);
+});
+
 test("uses the freshly fetched CAPTCHA token instead of a cached hidden-field token", () => {
   const form = {
     querySelector(selector) {

@@ -245,7 +245,10 @@ export async function verifyTurnstile(token: string, request: Request): Promise<
     hostname?: string;
     "error-codes"?: unknown;
   };
-  const expectedHostname = new URL(request.url).hostname.toLowerCase();
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const expectedHostname = new URL(
+    forwardedHost ? `https://${forwardedHost}` : request.url,
+  ).hostname.toLowerCase();
   const hostname = typeof result.hostname === "string" ? result.hostname.toLowerCase() : "";
   const errorCodes = Array.isArray(result["error-codes"])
     ? result["error-codes"].filter(
