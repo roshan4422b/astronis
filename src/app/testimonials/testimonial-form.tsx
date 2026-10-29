@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { practices } from "@/content/site";
-import { getFormVerification } from "@/lib/form-verification.client";
 import Icon from "../_components/icon";
 import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./testimonial-form.module.css";
@@ -14,8 +13,6 @@ export default function TestimonialForm({
   const [format, setFormat] = useState(initialFormat),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false),
-    [captchaToken, setCaptchaToken] = useState(""),
-    [captchaResetKey, setCaptchaResetKey] = useState(0),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [preview, setPreview] = useState(""),
@@ -89,17 +86,9 @@ export default function TestimonialForm({
     if (submissionInFlight.current) return;
     setStatus("");
     const form = e.currentTarget;
-    let verification: ReturnType<typeof getFormVerification>;
-    try {
-      verification = getFormVerification(form, captchaToken);
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Complete the verification before submitting this form.");
-      return;
-    }
     const data = new FormData(form);
     data.set("format", format);
-    data.set("captchaToken", verification.captchaToken);
-    data.set("emailVerificationToken", verification.emailVerificationToken);
+    data.delete("captchaToken");
     if (format === "video" && video)
       data.set(
         "video",
@@ -126,14 +115,9 @@ export default function TestimonialForm({
         body: data,
       });
       const result = await res.json();
-      let message = typeof result.message === "string"
+      const message = typeof result.message === "string"
         ? result.message
         : "We could not confirm the testimonial submission. Please try again.";
-      if (message.toLowerCase().includes("captcha")) {
-        setCaptchaToken("");
-        setCaptchaResetKey((current) => current + 1);
-        message = "The CAPTCHA could not be confirmed. Please complete the refreshed CAPTCHA and submit again.";
-      }
       setStatus(message);
       if (res.ok) {
         form.reset();
@@ -402,8 +386,8 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
-          <EmailOtpVerification onCaptchaToken={setCaptchaToken} resetKey={captchaResetKey} />
-          <button className="button" type="submit" disabled={busy || recording || !captchaToken}>
+          <EmailOtpVerification />
+          <button className="button" type="submit" disabled={busy || recording}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>
