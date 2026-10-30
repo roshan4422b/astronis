@@ -42,7 +42,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { sidebarCollapsed, setSidebarCollapsed } = useAdminState();
+  const { sidebarCollapsed, setSidebarCollapsed, enquiries, testimonials, loadState } = useAdminState();
   const [menuOpen, setMenuOpen] = useState<"profile" | "notifications" | null>(null);
   const [globalSearch, setGlobalSearch] = useState("");
   const [logoutError, setLogoutError] = useState("");
@@ -96,6 +96,25 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   }
 
   const searchResults = navigation.filter((item) => item.label.toLowerCase().includes(globalSearch.toLowerCase()));
+  const pendingEnquiries = enquiries.filter((item) => item.status === "New");
+  const pendingTestimonials = testimonials.filter((item) => item.approvalStatus === "Pending");
+  const notificationCount = pendingEnquiries.length + pendingTestimonials.length;
+  const notifications = [
+    ...pendingEnquiries.map((item) => ({
+      id: item.id,
+      title: item.subject || "New contact enquiry",
+      detail: `${item.name} · ${item.email}`,
+      date: item.date,
+      href: "/admin/enquiries",
+    })),
+    ...pendingTestimonials.map((item) => ({
+      id: item.id,
+      title: "Testimonial awaiting review",
+      detail: item.name,
+      date: item.date,
+      href: "/admin/testimonials",
+    })),
+  ].sort((first, second) => Date.parse(second.date) - Date.parse(first.date)).slice(0, 6);
 
   return (
     <div className={`${styles.root} admin-root`}>
@@ -114,7 +133,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           />
           <span className={styles.brandCaption}>ADMIN WORKSPACE</span>
         </Link>
-        {["Overview", "Website management", "Content", "Engagement", "Configuration"].map((group) => (
+        {["Overview", "Engagement", "Website management", "Content", "Configuration"].map((group) => (
           <div className={styles.navGroup} key={group}>
             <div className={styles.navGroupLabel}>{group}</div>
             {navigation.filter((item) => item.group === group).map((item) => {
@@ -143,8 +162,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               {globalSearch ? <div className={styles.searchResults}>{searchResults.length ? searchResults.map((item) => <Link href={item.href} key={item.href} onClick={() => setGlobalSearch("")}><AdminIcon name={item.icon} size={16} />{item.label}</Link>) : <span>No matching sections</span>}</div> : null}
             </div>
             <div className={styles.actionMenuWrap}>
-              <button type="button" className={styles.iconButton} aria-label="Notifications, demo only" aria-expanded={menuOpen === "notifications"} onClick={() => setMenuOpen(menuOpen === "notifications" ? null : "notifications")}><AdminIcon name="bell" size={24} /><i /></button>
-              {menuOpen === "notifications" ? <div className={styles.actionPopover}><strong>Notifications</strong><p>You’re viewing a UI preview. No live alerts are connected.</p></div> : null}
+              <button type="button" className={styles.iconButton} aria-label={`Notifications${notificationCount ? `, ${notificationCount} pending` : ""}`} aria-expanded={menuOpen === "notifications"} onClick={() => setMenuOpen(menuOpen === "notifications" ? null : "notifications")}><AdminIcon name="bell" size={24} />{notificationCount ? <span className={styles.notificationCount}>{notificationCount > 99 ? "99+" : notificationCount}</span> : null}</button>
+              {menuOpen === "notifications" ? <div className={`${styles.actionPopover} ${styles.notificationPopover}`}><div className={styles.notificationHeading}><strong>Notifications</strong><span>{notificationCount} pending</span></div>{loadState === "loading" ? <p>Loading notifications…</p> : loadState === "error" ? <p>Notifications are unavailable while CMS data is loading.</p> : notifications.length ? <div className={styles.notificationList}>{notifications.map((item) => <Link href={item.href} key={`${item.href}-${item.id}`} onClick={() => setMenuOpen(null)}><strong>{item.title}</strong><span>{item.detail}</span><small>{item.date && !Number.isNaN(Date.parse(item.date)) ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short" }).format(new Date(item.date)) : "Recently"}</small></Link>)}</div> : <p>No new enquiries or testimonials need review.</p>}</div> : null}
             </div>
             <div className={styles.actionMenuWrap}>
               <button type="button" className={styles.profileButton} aria-expanded={menuOpen === "profile"} onClick={() => setMenuOpen(menuOpen === "profile" ? null : "profile")}><span className={styles.profileAvatar}><AdminIcon name="people" size={22} /></span><span className={styles.profileCopy}><strong>Admin account</strong><small>Signed in</small></span><span className={styles.chevron}>⌄</span></button>

@@ -301,12 +301,18 @@
 }
 
 .topbarActions {
+  flex: 1;
+  justify-content: flex-end;
   gap: 16px;
 }
 
 .topSearchWrap,
 .actionMenuWrap {
   position: relative;
+}
+
+.topSearchWrap {
+  margin-right: auto;
 }
 
 .topSearch {
@@ -407,6 +413,23 @@
   background: #c48b3a;
 }
 
+.notificationCount {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border: 1px solid #fff;
+  border-radius: 9px;
+  color: #fff;
+  background: #c23b3b;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+}
+
 .actionPopover {
   padding: 14px;
 }
@@ -422,6 +445,64 @@
   color: #728095;
   font-size: 11px;
   line-height: 1.6;
+}
+
+.notificationPopover {
+  width: min(340px, calc(100vw - 32px));
+  max-height: min(440px, calc(100vh - 90px));
+  overflow: auto;
+}
+
+.notificationHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.notificationHeading strong {
+  margin: 0;
+}
+
+.notificationHeading span {
+  color: var(--admin-muted);
+  font-size: 11px;
+}
+
+.notificationList a {
+  display: grid;
+  gap: 2px;
+  padding: 10px 2px;
+  border-bottom: 1px solid #edf0f5;
+  text-decoration: none;
+}
+
+.notificationList a:last-child {
+  border-bottom: 0;
+}
+
+.notificationList a:hover strong {
+  color: var(--admin-blue);
+}
+
+.notificationList a strong {
+  margin: 0;
+  font-size: 12px;
+}
+
+.notificationList a span,
+.notificationList a small {
+  overflow: hidden;
+  color: var(--admin-muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notificationList a small {
+  color: #8792a2;
 }
 
 .actionPopover a {
@@ -456,8 +537,15 @@
 
 .profileCopy strong,
 .profileCopy small {
-  display: block;
+  display: inline;
   line-height: 1.3;
+  white-space: nowrap;
+}
+
+.profileCopy {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .profileCopy strong {
@@ -467,7 +555,7 @@
 }
 
 .profileCopy small {
-  margin-top: 3px;
+  margin-top: 0;
   color: #8994a5;
   font-size: 14px;
 }
@@ -1892,7 +1980,7 @@
   :global(.admin-login-card) {
     width: min(100%, 418px);
     margin: auto;
-    padding: 32px 36px 23px;
+    padding: 22px 30px 18px;
     border: 1px solid #e4e9f1;
     border-radius: 11px;
     background: white;
@@ -1902,44 +1990,20 @@
   :global(.admin-login-brand) {
     display: flex;
     align-items: center;
-    gap: 11px;
-    color: #071a40;
+    justify-content: center;
     text-decoration: none;
   }
 
-  :global(.admin-login-mark) {
-    display: grid;
-    width: 39px;
-    height: 39px;
-    place-items: center;
-    border: 1px solid #d6e0ee;
-    border-radius: 10px;
-    color: #0b2a5a;
-    font-family: Georgia, serif;
-    font-size: 23px;
-    font-weight: 700;
-  }
-
-  :global(.admin-login-brand strong),
-  :global(.admin-login-brand small) {
+  :global(.admin-login-logo) {
     display: block;
-    line-height: 1.25;
-  }
-
-  :global(.admin-login-brand strong) {
-    font-size: 12px;
-    letter-spacing: .15em;
-  }
-
-  :global(.admin-login-brand small) {
-    margin-top: 4px;
-    color: #77869d;
-    font-size: 9px;
-    letter-spacing: .13em;
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   :global(.admin-login-heading) {
-    margin: 33px 0 22px;
+    margin: 20px 0 16px;
   }
 
   :global(.admin-login-heading > span) {
@@ -1952,7 +2016,7 @@
   :global(.admin-login-heading h1) {
     margin-top: 7px;
     color: #0751db;
-    font-size: 25px;
+    font-size: 24px;
     font-weight: 600;
     letter-spacing: -.03em;
   }
@@ -1960,12 +2024,13 @@
   :global(.admin-login-heading p) {
     margin-top: 5px;
     color: #7d899a;
-    font-size: 18px;
+    font-size: 14px;
+    line-height: 1.4;
   }
 
   :global(.admin-login-field) {
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: #43516a;
     font-size: 10px;
     font-weight: 600;
@@ -1980,7 +2045,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    min-height: 41px;
+    min-height: 38px;
     padding: 0 10px;
     border: 1px solid #e0e6ef;
     border-radius: 6px;
@@ -2032,13 +2097,22 @@
     font-weight: 400;
   }
 
+  :global(.admin-login-row) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 2px 0 14px;
+  }
+
   :global(.admin-remember) {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin: 1px 0 17px;
+    margin: 0;
     color: #627088;
     font-size: 10px;
+    white-space: nowrap;
     cursor: pointer;
   }
 
@@ -2048,9 +2122,10 @@
 
   :global(.admin-login-submit) {
     width: 100%;
-    min-height: 41px;
+    min-height: 38px;
     justify-content: space-between;
     padding: 0 13px;
+    color: white;
     text-transform: none;
   }
 
@@ -2067,8 +2142,8 @@
   :global(.admin-login-dev) {
     display: flex;
     gap: 9px;
-    margin-top: 18px;
-    padding: 11px;
+    margin-top: 12px;
+    padding: 9px 10px;
     border: 1px solid #e5ecf6;
     border-radius: 6px;
     color: #708096;
@@ -2081,8 +2156,8 @@
   }
 
   :global(.admin-login-dev p) {
-    font-size: 18px;
-    line-height: 1.55;
+    font-size: 11px;
+    line-height: 1.45;
   }
 
   :global(.admin-login-dev strong) {
@@ -2090,9 +2165,14 @@
     font-size: 10px;
   }
 
+  :global(.admin-login-row .admin-login-return) {
+    margin-top: 0;
+    text-align: left;
+  }
+
   :global(.admin-login-return) {
     display: block;
-    margin-top: 15px;
+    margin-top: 12px;
     color: #1b56aa;
     font-size: 10px;
     text-align: center;
@@ -2104,8 +2184,8 @@
   }
 
   :global(.admin-login-footer) {
-    margin-top: 24px;
-    padding-top: 13px;
+    margin-top: 14px;
+    padding-top: 10px;
     border-top: 1px solid #edf0f4;
     color: #99a3b0;
     font-size: 9px;
@@ -3141,5 +3221,95 @@
 
   .root :global(.admin-insight-feedback) {
     align-items: flex-start;
+  }
+}
+
+.loginRoot {
+  padding: clamp(8px, 2vh, 16px);
+}
+
+.loginRoot :global(.admin-login-card) {
+  padding: 14px 24px 12px;
+}
+
+.loginRoot :global(.admin-login-logo) {
+  width: 130px;
+  max-height: 38px;
+}
+
+.loginRoot :global(.admin-login-heading) {
+  margin: 12px 0 10px;
+}
+
+.loginRoot :global(.admin-login-heading h1) {
+  margin-top: 5px;
+  font-size: 22px;
+}
+
+.loginRoot :global(.admin-login-heading p) {
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.loginRoot :global(.admin-login-field) {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.loginRoot :global(.admin-login-field > span) {
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.loginRoot :global(.admin-login-input) {
+  min-height: 35px;
+}
+
+.loginRoot :global(.admin-login-input input) {
+  font-size: 11px;
+}
+
+.loginRoot :global(.admin-login-row) {
+  margin: 0 0 10px;
+}
+
+.loginRoot :global(.admin-remember),
+.loginRoot :global(.admin-login-return) {
+  font-size: 12px;
+}
+
+.loginRoot :global(.admin-login-submit) {
+  min-height: 36px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.loginRoot :global(.admin-login-dev) {
+  gap: 7px;
+  margin-top: 8px;
+  padding: 7px 8px;
+}
+
+.loginRoot :global(.admin-login-dev p) {
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.loginRoot :global(.admin-login-dev strong) {
+  font-size: 11px;
+}
+
+.loginRoot :global(.admin-login-return) {
+  margin-top: 8px;
+}
+
+.loginRoot :global(.admin-login-footer) {
+  margin-top: 10px;
+  padding-top: 7px;
+}
+
+@media (max-width: 620px) {
+  .loginRoot :global(.admin-login-card) {
+    padding: 14px 18px 12px;
   }
 }

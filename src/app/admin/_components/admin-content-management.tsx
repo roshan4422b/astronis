@@ -544,12 +544,11 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
       case "technology": return [title, record.category, description, updated, status, actions];
     }
   });
-  const headingAction = <button className="admin-button" type="button" onClick={() => setAdding(true)}><AdminIcon name="plus" size={16} />{config.addLabel}</button>;
   const filterLabel = section === "professionals" ? "Filter by designation or expertise" : "Filter by category";
 
   return (
     <>
-      <PageHeading title={config.title} description={config.description} action={headingAction} />
+      <PageHeading title={config.title} description={config.description} />
       <section className="admin-panel admin-list-panel">
         <div className="admin-toolbar">
           <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder={config.search} />
