@@ -24,13 +24,13 @@ import AdminSettings from "./admin-settings";
 type Section = "dashboard" | "services" | "industries" | "professionals" | "insights" | "global-presence" | "technology" | "enquiries" | "testimonials" | "seo" | "settings";
 type RecordRow = { id?: string; sourceDefined?: boolean; title: string; category?: string; section?: string; status?: string; updated?: string; slug?: string; description?: string; content?: string; author?: string; designation?: string; expertise?: string; date?: string; name?: string; email?: string; subject?: string; excerpt?: string; publicationDate?: string; publicationDateValue?: string; seoTitle?: string; seoDescription?: string };
 
-const meta: Record<Exclude<Section, "dashboard">, { title: string; description: string; action?: string }> = {
-  services: { title: "Services", description: "Manage service content displayed across the Astronis Global website.", action: "Add service" },
-  industries: { title: "Industries", description: "Browse and manage the industry pages in the public-site directory.", action: "Add industry" },
-  professionals: { title: "Professionals", description: "Review professional profile entries shown on the public website.", action: "Add professional" },
-  insights: { title: "Insights & Resources", description: "Manage articles, regulatory updates, publications, and knowledge resources.", action: "Add New Insight" },
-  "global-presence": { title: "Global Presence", description: "Manage jurisdiction and regional pages currently represented on the website.", action: "Add jurisdiction" },
-  technology: { title: "Technology & Digital Solutions", description: "Review technology and digital advisory pages.", action: "Add page" },
+const meta: Record<Exclude<Section, "dashboard">, { title: string; description: string }> = {
+  services: { title: "Services", description: "Manage service content displayed across the Astronis Global website." },
+  industries: { title: "Industries", description: "Browse and manage the industry pages in the public-site directory." },
+  professionals: { title: "Professionals", description: "Review professional profile entries shown on the public website." },
+  insights: { title: "Insights & Resources", description: "Manage articles, regulatory updates, publications, and knowledge resources." },
+  "global-presence": { title: "Global Presence", description: "Manage jurisdiction and regional pages currently represented on the website." },
+  technology: { title: "Technology & Digital Solutions", description: "Review technology and digital advisory pages." },
   enquiries: { title: "Contact Enquiries", description: "Review and organise website enquiries in one place." },
   testimonials: { title: "Testimonials", description: "Review and manage testimonial submissions before they are considered for publication." },
   seo: { title: "SEO Management", description: "Review and manage search metadata for website pages." },
@@ -60,7 +60,7 @@ function formatDemoDate(value: string) {
 }
 
 function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
-  const { enquiries, insights, setEnquiries } = useAdminState();
+  const { enquiries, insights, testimonials, setEnquiries } = useAdminState();
   const [selectedEnquiryId, setSelectedEnquiryId] = useState<string | null>(null);
   const enquiryRows = enquiries.slice(0, 3).map((item) => [
     <strong className="admin-cell-primary" key="name">{item.name}</strong>,
@@ -70,24 +70,24 @@ function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
     <StatusBadge key="status" status={item.status} />,
     <button key="action" className="admin-text-action" type="button" onClick={() => setSelectedEnquiryId(item.id)}>View details</button>,
   ]);
-  const insightRows = insights.slice(0, 3).map((item) => [
-    <strong className="admin-cell-primary" key="title">{item.title}</strong>,
-    item.category,
-    formatDemoDate(item.updatedAt),
-    <StatusBadge key="status" status={item.status} />,
-    <Link key="action" className="admin-text-action" href="/admin/insights">Open</Link>,
+  const testimonialRows = testimonials.slice(0, 3).map((item) => [
+    <strong className="admin-cell-primary" key="name">{item.name}</strong>,
+    <span className="admin-excerpt" key="excerpt">{item.excerpt || item.text}</span>,
+    formatDemoDate(item.date),
+    <StatusBadge key="status" status={item.approvalStatus} />,
+    <Link key="action" className="admin-text-action" href="/admin/testimonials">Open</Link>,
   ]);
   return <>
     <PageHeading title="Dashboard" description="A clear overview of your website content and engagement workspace." />
     <div className="admin-stat-grid">
       <StatCard label="New enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Current CMS inbox" icon="inbox" />
+      <StatCard label="Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" />
       <StatCard label="Published insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" />
-      <StatCard label="Draft insights" value={String(insights.filter((item) => item.status === "Draft").length)} change="Editorial drafts" icon="drafts" />
     </div>
     <div className="admin-dashboard-grid">
       <section className="admin-panel admin-panel-wide"><div className="admin-panel-heading"><div><h2>Recent enquiries</h2><p>Latest persisted enquiries</p></div><Link href="/admin/enquiries">View all <AdminIcon name="arrow" size={14} /></Link></div><DataTable columns={["Name", "Email", "Subject", "Date", "Status", ""]} rows={enquiryRows} /></section>
-      <section className="admin-panel admin-panel-wide"><div className="admin-panel-heading"><div><h2>Recent insights</h2><p>Latest saved editorial records</p></div><Link href="/admin/insights">View all <AdminIcon name="arrow" size={14} /></Link></div><DataTable columns={["Article title", "Category", "Last updated", "Status", ""]} rows={insightRows} /></section>
-      <section className="admin-panel admin-quick-panel"><div className="admin-panel-heading"><div><h2>Quick actions</h2><p>Shortcuts to common tasks</p></div></div><div className="admin-quick-actions"><Link href="/admin/insights/new"><span><AdminIcon name="plus" /></span><span><strong>Add new insight</strong><small>Create a draft for review</small></span><AdminIcon name="arrow" size={15} /></Link><Link href="/admin/enquiries"><span><AdminIcon name="inbox" /></span><span><strong>View enquiries</strong><small>Review current inbox</small></span><AdminIcon name="arrow" size={15} /></Link></div></section>
+      <section className="admin-panel admin-panel-wide"><div className="admin-panel-heading"><div><h2>Recent testimonials</h2><p>Latest submitted testimonials</p></div><Link href="/admin/testimonials">View all <AdminIcon name="arrow" size={14} /></Link></div><DataTable columns={["Contributor", "Testimonial", "Date", "Status", ""]} rows={testimonialRows} /></section>
+      <section className="admin-panel admin-quick-panel"><div className="admin-panel-heading"><div><h2>Quick actions</h2><p>Shortcuts to common tasks</p></div></div><div className="admin-quick-actions"><Link href="/admin/testimonials/new"><span><AdminIcon name="plus" /></span><span><strong>Add new testimonial</strong><small>Submit a testimonial for review</small></span><AdminIcon name="arrow" size={15} /></Link><Link href="/admin/enquiries"><span><AdminIcon name="inbox" /></span><span><strong>View enquiries</strong><small>Review current inbox</small></span><AdminIcon name="arrow" size={15} /></Link></div></section>
     </div>
     {selectedEnquiryId ? <EnquiryDetailsDialog enquiry={enquiries.find((item) => item.id === selectedEnquiryId)} onClose={() => setSelectedEnquiryId(null)} onStatusChange={async (status) => {
       const response = await fetch(`/api/admin/enquiries/${selectedEnquiryId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
@@ -159,11 +159,6 @@ function CollectionPage({ section, onNotice }: { section: Exclude<Section, "dash
     }
   }
 
-  const headerAction = config.action
-    ? section === "insights"
-      ? <Link className="admin-button" href="/admin/insights/new"><AdminIcon name="plus" size={16} />{config.action}</Link>
-      : <button className="admin-button" type="button" onClick={() => onNotice("Demo only — this action does not change website content.")}><AdminIcon name="plus" size={16} />{config.action}</button>
-    : undefined;
   const columns = isInsights
       ? ["Article Title", "Category", "Author", "Last Updated", "Publication Date", "Status", "Actions"]
       : section === "services"
@@ -203,7 +198,7 @@ function CollectionPage({ section, onNotice }: { section: Exclude<Section, "dash
   });
 
   return <>
-    <PageHeading title={config.title} description={config.description} action={headerAction} />
+    <PageHeading title={config.title} description={config.description} />
     <section className="admin-panel admin-list-panel">
       <div className="admin-toolbar">
         <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder={searchPlaceholder} />
