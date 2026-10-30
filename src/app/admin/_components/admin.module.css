@@ -3192,6 +3192,7 @@
 
 .loginRoot :global(.admin-login-submit) {
   min-height: 36px;
+  color: #fff;
   font-size: 14px;
 }
 
