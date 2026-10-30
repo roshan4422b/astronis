@@ -1280,6 +1280,144 @@
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
+.featureStripFourColumns {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tribunalScreenshotPage :global(section[class*="features"]) :global([class*="featureStrip"] > div) {
+  border-color: #ffffff55 !important;
+  background: #ffffff08 !important;
+}
+
+.tribunalScreenshotPage :global(section[class*="features"]) :global([class*="featureStrip"] > div span),
+.tribunalScreenshotPage :global(section[class*="features"]) :global([class*="featureStrip"] > div small) {
+  color: #e3eaf0 !important;
+}
+
+.tribunalScreenshotPage :global(section[class*="features"]) :global([class*="featureStrip"] > div svg) {
+  color: #fff !important;
+}
+
+.tribunalBenefits {
+  padding: 66px 0;
+  background: #eaf5ff;
+}
+
+.tribunalBenefits .benefitGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tribunalBenefits .benefitGrid > article {
+  min-height: 108px;
+  padding: 20px;
+  border: 1px solid #d5e8fb;
+  background: #fff;
+}
+
+.tribunalCommitment {
+  padding: 54px 0;
+  background: #0751db;
+  color: #fff;
+}
+
+.tribunalCommitmentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 30px;
+}
+
+.tribunalCommitmentGrid > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 6px 24px;
+  border-right: 1px solid #ffffff50;
+}
+
+.tribunalCommitmentGrid > div:first-child {
+  padding-left: 0;
+}
+
+.tribunalCommitmentGrid > div:last-child {
+  border-right: 0;
+}
+
+.tribunalCommitmentGrid svg {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  color: #fff;
+}
+
+.tribunalCommitmentGrid p {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  color: #fff;
+}
+
+.tribunalCommitmentGrid span {
+  color: #d7e8ff;
+  font-size: max(var(--font-size-min), 14px);
+}
+
+.tribunalCta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 48px 0;
+  background: #061e3b;
+  color: #fff;
+}
+
+.tribunalCta::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, #04172ff2 0%, #061e3bd9 55%, #061e3b80 100%);
+  content: "";
+}
+
+.tribunalCta > .container {
+  position: relative;
+}
+
+.tribunalCta > .container > span {
+  color: #93c5fd;
+  font-size: max(var(--font-size-min), 12px);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.tribunalCta h2 {
+  max-width: 760px;
+  margin: 8px 0;
+  color: #fff;
+  font: 400 clamp(30px, 3vw, 42px) / 1.15 Georgia, serif;
+}
+
+.tribunalCta p {
+  max-width: 640px;
+  color: #d5e3f3;
+}
+
+.tribunalCta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 17px;
+  background: #fff;
+  color: #082846;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tribunalCta a svg {
+  width: 17px;
+}
+
 .featureStrip > div {
   display: flex;
   min-height: 100px;
@@ -1300,6 +1438,12 @@
 .featureStrip span {
   color: #e3eaf0;
   font-size: max(var(--font-size-min), 14px);
+}
+
+.featureStrip small {
+  color: #c5d5e6;
+  font-size: max(var(--font-size-min), 13px);
+  line-height: 1.5;
 }
 
 .faqLayout {
@@ -1791,6 +1935,14 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .featureStripFourColumns {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tribunalBenefits .benefitGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .resourceGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1937,6 +2089,34 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .featureStripFourColumns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tribunalBenefits .benefitGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tribunalCommitmentGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .tribunalCommitmentGrid > div,
+  .tribunalCommitmentGrid > div:first-child {
+    padding: 10px 0;
+    border-right: 0;
+    border-bottom: 1px solid #ffffff50;
+  }
+
+  .tribunalCommitmentGrid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .tribunalBenefits .benefitGrid {
+    grid-template-columns: 1fr;
+  }
+
   .sectionTop {
     align-items: flex-start;
     flex-direction: column;
@@ -1979,6 +2159,10 @@
   .featureStrip {
     grid-template-columns: 1fr;
   }
+
+  .featureStripFourColumns {
+    grid-template-columns: 1fr;
+  }
 }
 
 .heroNote { border-left-color:var(--service-light-blue); }
@@ -1995,3 +2179,949 @@
 .pageSectionNavLink,.pageSectionNavLinkActive { color:#fff; }
 .pageSectionNavLink { color:#dbeafe; }
 .pageSectionNavLink:hover,.pageSectionNavLink:focus-visible,.pageSectionNavLinkActive { background:#0644b8; color:#fff; }
+
+.securitiesAppellatePage {
+  --sat-blue: #075bd8;
+  --sat-navy: #062e67;
+  --sat-line: #c9e2fb;
+  --sat-pale: #f2f9ff;
+  color: #173a63;
+}
+
+.securitiesAppellatePage .heroImage {
+  object-position: center 54%;
+}
+
+.securitiesAppellatePage :global(section.service-child-page-hero) :global(h2.service-child-hero-subtitle) {
+  max-width: 1000px;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.consumerCommissionsPage .satOverviewGrid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.9fr) minmax(130px, 0.65fr);
+}
+
+.regulatoryInvestigationsPage .satOverviewGrid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.9fr) minmax(180px, 0.65fr);
+}
+
+.regulatoryFrameworkGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.satOverviewVisual {
+  position: relative;
+  min-height: 180px;
+  overflow: hidden;
+  border: 1px solid var(--sat-line);
+  border-radius: 4px;
+  background: var(--sat-pale);
+}
+
+.satOverviewVisual img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.satServices,
+.satOverview,
+.satAudience,
+.satFramework,
+.satDetails,
+.satFaq,
+.satInsights,
+.satKnowledge,
+.satRelated {
+  padding: 28px 0;
+  background: #fff;
+}
+
+.satServices {
+  padding-top: 20px;
+  padding-bottom: 16px;
+}
+
+.satServices :global([class*="heading"]) {
+  margin-bottom: 14px;
+}
+
+.satServices :global([class*="heading"] > span),
+.satOverview :global([class*="heading"] > span),
+.satAudience :global([class*="heading"] > span),
+.satPanel :global([class*="heading"] > span),
+.satFaq :global([class*="heading"] > span),
+.satInsights :global([class*="heading"] > span),
+.satKnowledge :global([class*="heading"] > span),
+.satRelated :global([class*="heading"] > span) {
+  color: var(--sat-blue);
+}
+
+.satServices :global([class*="heading"] h2),
+.satOverview :global([class*="heading"] h2),
+.satAudience :global([class*="heading"] h2),
+.satPanel :global([class*="heading"] h2),
+.satFaq :global([class*="heading"] h2),
+.satInsights :global([class*="heading"] h2),
+.satKnowledge :global([class*="heading"] h2),
+.satRelated :global([class*="heading"] h2) {
+  color: var(--sat-navy);
+  font-size: clamp(20px, 2vw, 29px);
+}
+
+.satServices :global([class*="serviceGrid"]) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.satServices :global(button[class*="serviceCard"]) {
+  min-height: 96px;
+  padding: 13px;
+  border: 1px solid var(--sat-line);
+  border-radius: 4px;
+  background: #fff;
+  color: #173a63;
+  text-align: left;
+}
+
+.satServices :global(button[class*="serviceCard"] h3) {
+  margin: 0 0 5px;
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 15px);
+}
+
+.satServices :global(button[class*="serviceCard"] p) {
+  margin: 0;
+  color: #45627e;
+  font-size: max(var(--font-size-min), 13px);
+  line-height: 1.4;
+}
+
+.satServices :global(button[class*="serviceCard"] > span:first-child) {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 7px;
+  color: var(--sat-blue);
+}
+
+.satOverview {
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+.satOverviewGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.9fr);
+  gap: 12px;
+}
+
+.satOverviewCard,
+.satKeyBenefits,
+.satPanel {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--sat-line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.satOverviewCard :global([class*="heading"]),
+.satPanel :global([class*="heading"]) {
+  margin-bottom: 8px;
+}
+
+.satOverviewCard :global([class*="heading"] h2) {
+  font-size: clamp(19px, 1.7vw, 25px);
+}
+
+.satOverviewCard > p {
+  margin: 6px 0;
+  color: #45627e;
+  font-size: max(var(--font-size-min), 13px);
+  line-height: 1.48;
+}
+
+.satOverviewCard > a,
+.satInsightGrid article a,
+.satSectionHeader > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--sat-blue);
+  font-size: max(var(--font-size-min), 12px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.satOverviewCard > a {
+  margin-top: 8px;
+  padding: 8px 11px;
+  background: var(--sat-blue);
+  color: #fff;
+}
+
+.satKeyBenefits {
+  background: var(--sat-pale);
+}
+
+.satKeyBenefits h2 {
+  margin: 0 0 8px;
+  color: var(--sat-navy);
+  font: 700 max(var(--font-size-min), 16px) / 1.3 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.satKeyBenefits ul,
+.satChecklist {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.satKeyBenefits li,
+.satChecklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #345675;
+  font-size: max(var(--font-size-min), 12px);
+  line-height: 1.4;
+}
+
+.satKeyBenefits li svg,
+.satChecklist li svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  color: var(--sat-blue);
+}
+
+.satAudience {
+  padding: 10px 0 20px;
+  background: #f4faff;
+}
+
+.satAudienceGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+  gap: 12px;
+}
+
+.satAudienceGrid > div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--sat-line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.satReasonGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.satReasonGrid article {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  min-height: 82px;
+  padding: 10px 6px;
+  border: 1px solid #e0effd;
+  color: var(--sat-blue);
+  text-align: center;
+}
+
+.satReasonGrid svg {
+  width: 20px;
+  height: 20px;
+}
+
+.satReasonGrid span {
+  color: #355a7e;
+  font-size: max(var(--font-size-min), 11px);
+  line-height: 1.3;
+}
+
+.satAudienceList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.satAudienceList article {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid #e0effd;
+}
+
+.satAudienceList article > svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  color: var(--sat-blue);
+}
+
+.satAudienceList article > span {
+  display: grid;
+  gap: 4px;
+}
+
+.satAudienceList strong {
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 11px);
+}
+
+.satAudienceList small {
+  color: #58728d;
+  font-size: max(var(--font-size-min), 10px);
+  line-height: 1.35;
+}
+
+.satThreeColumnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.satPanel {
+  padding: 12px;
+  background: #fff;
+}
+
+.satPanel :global([class*="heading"] h2) {
+  font-size: clamp(17px, 1.5vw, 21px);
+}
+
+.satTableWrap {
+  overflow-x: auto;
+  border: 1px solid #d5e8f8;
+}
+
+.satTableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #385a7b;
+  font-size: max(var(--font-size-min), 11px);
+  line-height: 1.35;
+}
+
+.satTableWrap th,
+.satTableWrap td {
+  padding: 6px;
+  border-right: 1px solid #d5e8f8;
+  border-bottom: 1px solid #d5e8f8;
+  text-align: left;
+  vertical-align: top;
+}
+
+.satTableWrap thead th {
+  background: #edf7ff;
+  color: var(--sat-navy);
+}
+
+.satTableWrap tbody th {
+  color: #244a70;
+  font-weight: 700;
+}
+
+.satSteps {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.satSteps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.satSteps li > span {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sat-blue);
+  color: #fff;
+  font-size: max(var(--font-size-min), 12px);
+  font-weight: 700;
+}
+
+.satSteps p {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.satSteps strong {
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 12px);
+}
+
+.satSteps small,
+.satNote {
+  color: #55718b;
+  font-size: max(var(--font-size-min), 10px);
+  line-height: 1.4;
+}
+
+.satNote {
+  margin: 8px 0 0;
+}
+
+.satDetails {
+  padding-top: 0;
+  background: #f4faff;
+}
+
+.satDetails .satThreeColumnGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.satChecklist {
+  gap: 7px;
+}
+
+.satFaq {
+  background: #f8fbff;
+}
+
+.satFaqGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.satFaqGrid details {
+  padding: 10px 12px;
+  border: 1px solid var(--sat-line);
+  background: #fff;
+}
+
+.satFaqGrid summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--sat-navy);
+  cursor: pointer;
+  font-size: max(var(--font-size-min), 13px);
+  font-weight: 700;
+  list-style: none;
+}
+
+.satFaqGrid summary::-webkit-details-marker {
+  display: none;
+}
+
+.satFaqGrid summary span {
+  color: var(--sat-blue);
+}
+
+.satFaqGrid details[open] summary span {
+  transform: rotate(45deg);
+}
+
+.satFaqGrid details p {
+  margin: 8px 0 0;
+  color: #4f6b85;
+  font-size: max(var(--font-size-min), 12px);
+  line-height: 1.5;
+}
+
+.satSectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.satSectionHeader :global([class*="heading"]) {
+  margin-bottom: 0;
+}
+
+.satInsightGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.satInsightGrid article {
+  overflow: hidden;
+  border: 1px solid var(--sat-line);
+  border-radius: 4px;
+  background: #fff;
+}
+
+.satInsightImage {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  background: #e7f3ff;
+}
+
+.satInsightImage img {
+  object-fit: cover;
+}
+
+.satInsightGrid article > div:last-child {
+  padding: 10px;
+}
+
+.satInsightGrid small {
+  color: #64809a;
+  font-size: max(var(--font-size-min), 10px);
+}
+
+.satInsightGrid h3 {
+  min-height: 42px;
+  margin: 6px 0;
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 14px);
+  line-height: 1.4;
+}
+
+.satInsightGrid article a svg,
+.satSectionHeader > a svg,
+.satOverviewCard > a svg {
+  width: 14px;
+  height: 14px;
+}
+
+.satKnowledge {
+  padding-top: 12px;
+}
+
+.satKnowledgeGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.satKnowledgeGrid a {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 12px 8px;
+  border: 1px solid var(--sat-line);
+  color: var(--sat-blue);
+  text-align: center;
+  text-decoration: none;
+}
+
+.satKnowledgeGrid a > svg {
+  width: 20px;
+  height: 20px;
+}
+
+.satKnowledgeGrid strong {
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 11px);
+}
+
+.satKnowledgeGrid small {
+  color: #59748f;
+  font-size: max(var(--font-size-min), 10px);
+  line-height: 1.35;
+}
+
+.satRelated {
+  padding-top: 14px;
+  padding-bottom: 18px;
+}
+
+.satRelatedGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.satRelatedGrid a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--sat-line);
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 11px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.satRelatedGrid a > svg:first-child {
+  width: 17px;
+  flex: 0 0 17px;
+  color: var(--sat-blue);
+}
+
+.satRelatedGrid a > svg:last-child {
+  width: 14px;
+  flex: 0 0 14px;
+  margin-left: auto;
+  color: var(--sat-blue);
+}
+
+.satCta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 26px 0;
+  background: var(--sat-navy);
+  color: #fff;
+}
+
+.satCta::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, #041b45f2, #063a83d9 62%, #063a8366);
+  content: "";
+}
+
+.satCta > .container {
+  position: relative;
+}
+
+.satCta > .container > span {
+  color: #b7d9ff;
+  font-size: max(var(--font-size-min), 11px);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.satCta h2 {
+  max-width: 760px;
+  margin: 5px 0;
+  color: #fff;
+  font: 400 clamp(22px, 2.5vw, 32px) / 1.2 Georgia, serif;
+}
+
+.satCta p {
+  color: #e2eeff;
+  font-size: max(var(--font-size-min), 13px);
+}
+
+.satCta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  background: #fff;
+  color: var(--sat-navy);
+  font-size: max(var(--font-size-min), 12px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.satCta a svg {
+  width: 15px;
+}
+
+@media (max-width: 1050px) {
+  .satAudienceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .satThreeColumnGrid,
+  .satDetails .satThreeColumnGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .satKnowledgeGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .satServices :global([class*="serviceGrid"]),
+  .satOverviewGrid,
+  .satThreeColumnGrid,
+  .satDetails .satThreeColumnGrid,
+  .satFaqGrid,
+  .satInsightGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .satOverviewVisual {
+    min-height: 220px;
+  }
+
+  .satReasonGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .satAudienceList,
+  .satKnowledgeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .satRelatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .satSectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .satReasonGrid,
+  .satAudienceList,
+  .satKnowledgeGrid,
+  .satRelatedGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crossBorderCorporateStructuringPage .satOverviewGrid {
+  grid-template-columns: minmax(210px, 0.85fr) minmax(0, 2fr);
+}
+
+.crossBorderCorporateStructuringPage .satKeyBenefits {
+  background: #fff;
+}
+
+.crossBorderCorporateStructuringPage .satKeyBenefits ul {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.crossBorderCorporateStructuringPage .satKeyBenefits li {
+  min-height: 82px;
+  padding: 10px;
+  border: 1px solid var(--sat-line);
+  background: #fff;
+}
+
+.crossBorderCorporateStructuringPage .satKeyBenefits li span {
+  display: grid;
+  gap: 4px;
+  color: var(--sat-navy);
+  font-weight: 700;
+}
+
+.crossBorderCorporateStructuringPage .satKeyBenefits li small {
+  color: #45627e;
+  font-size: max(var(--font-size-min), 11px);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.crossBorderCorporateStructuringPage .satAudienceGrid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+}
+
+.crossBorderCorporateStructuringPage .satReasonGrid {
+  grid-template-columns: 1fr;
+}
+
+.crossBorderCorporateStructuringPage .satReasonGrid article {
+  min-height: auto;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-items: start;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 0;
+  text-align: left;
+}
+
+.crossBorderCorporateStructuringPage .satReasonGrid span {
+  text-align: left;
+}
+
+.crossBorderCorporateStructuringPage .satAudienceList {
+  grid-template-columns: 1fr;
+}
+
+.crossBorderCorporateStructuringPage .satAudienceList article > svg {
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--sat-blue);
+  color: #fff;
+}
+
+.crossBorderCorporateStructuringPage .structuringAudienceImage {
+  min-height: 150px;
+  margin-top: 9px;
+}
+
+.crossBorderCorporateStructuringPage .satServices :global([class*="serviceGrid"]) {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(3) .satSteps {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  font-size: 10px;
+}
+
+.crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap th,
+.crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap td {
+  padding: 5px 4px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1050px) {
+  .crossBorderCorporateStructuringPage .satKeyBenefits ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .crossBorderCorporateStructuringPage .satServices :global([class*="serviceGrid"]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .crossBorderCorporateStructuringPage .satKeyBenefits ul,
+  .crossBorderCorporateStructuringPage .satServices :global([class*="serviceGrid"]),
+  .crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(3) .satSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .crossBorderCorporateStructuringPage .satFramework .satThreeColumnGrid > article:nth-child(3) {
+    grid-column: auto;
+  }
+}
+
+.femaCrossBorderPage .satOverviewGrid {
+  grid-template-columns: minmax(210px, 0.85fr) minmax(0, 2fr);
+}
+
+.femaCrossBorderPage .satKeyBenefits {
+  background: #fff;
+}
+
+.femaCrossBorderPage .satKeyBenefits ul {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.femaCrossBorderPage .satKeyBenefits li {
+  min-height: 78px;
+  padding: 9px;
+  border: 1px solid var(--sat-line);
+  background: #fff;
+}
+
+.femaCrossBorderPage .satKeyBenefits li span {
+  display: grid;
+  gap: 4px;
+  color: var(--sat-navy);
+  font-weight: 700;
+}
+
+.femaCrossBorderPage .satKeyBenefits li small {
+  color: #45627e;
+  font-size: max(var(--font-size-min), 11px);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.femaCrossBorderPage .satAudienceGrid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+}
+
+.femaCrossBorderPage .satReasonGrid {
+  grid-template-columns: 1fr;
+}
+
+.femaCrossBorderPage .satReasonGrid article {
+  min-height: auto;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-items: start;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 0;
+  text-align: left;
+}
+
+.femaCrossBorderPage .satReasonGrid span {
+  text-align: left;
+}
+
+.femaCrossBorderPage .satAudienceList {
+  grid-template-columns: 1fr;
+}
+
+.femaCrossBorderPage .satAudienceList article > svg {
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--sat-blue);
+  color: #fff;
+}
+
+.femaCrossBorderPage .femaAudienceImage {
+  min-height: 160px;
+  margin-top: 9px;
+}
+
+.femaCrossBorderPage .satServices :global([class*="serviceGrid"]) {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(3) .satSteps {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  font-size: 10px;
+}
+
+.femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap th,
+.femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(2) .satTableWrap td {
+  padding: 5px 4px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1050px) {
+  .femaCrossBorderPage .satKeyBenefits ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .femaCrossBorderPage .satServices :global([class*="serviceGrid"]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .femaCrossBorderPage .satKeyBenefits ul,
+  .femaCrossBorderPage .satServices :global([class*="serviceGrid"]),
+  .femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(3) .satSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .femaCrossBorderPage .satFramework .satThreeColumnGrid > article:nth-child(3) {
+    grid-column: auto;
+  }
+}

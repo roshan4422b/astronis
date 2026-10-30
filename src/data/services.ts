@@ -58,6 +58,12 @@ const regulatoryBankingChildRoutes: Record<string, string> = {
 const odiChildRoutes: Record<string, string> = {
   "Restructuring Tax Coordination":
     "/services/fema-fdi-cross-border/odi-compliance-and-support/restructuring-tax-coordination",
+  "Overseas Direct Investment":
+    "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment",
+  "Overseas Joint Venture":
+    "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-joint-venture",
+  "ODI Reporting & Compliance":
+    "/services/fema-fdi-cross-border/odi-compliance-and-support/odi-reporting-and-compliance",
   "Overseas Subsidiary":
     "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-subsidiary",
 };
@@ -65,13 +71,28 @@ const odiChildRoutes: Record<string, string> = {
 const ecbChildRoutes: Record<string, string> = {
   "External Commercial Borrowing":
     "/services/fema-fdi-cross-border/ecb-compliance-and-support/external-commercial-borrowing",
+  "ECB Reporting":
+    "/services/fema-fdi-cross-border/ecb-compliance-and-support/ecb-reporting",
 };
 
 const crossBorderChildRoutes: Record<string, string> = {
+  "Cross-Border Corporate Structuring":
+    "/services/fema-fdi-cross-border/cross-border-compliance-and-support/cross-border-corporate-structuring",
+  "Cross-Border M&A":
+    "/services/fema-fdi-cross-border/cross-border-compliance-and-support/cross-border-manda",
   "International Joint Ventures":
     "/services/fema-fdi-cross-border/cross-border-compliance-and-support/international-joint-ventures",
+  "Foreign Collaboration":
+    "/services/fema-fdi-cross-border/cross-border-compliance-and-support/foreign-collaboration",
   "Overseas Expansion":
     "/services/fema-fdi-cross-border/cross-border-compliance-and-support/overseas-expansion",
+};
+
+const fdiChildRoutes: Record<string, string> = {
+  "FDI Structuring":
+    "/services/fema-fdi-cross-border/fdi-compliance-and-support/fdi-structuring",
+  "Downstream Investment":
+    "/services/fema-fdi-cross-border/fdi-compliance-and-support/downstream-investment",
 };
 
 const workplaceComplianceChildRoutes: Record<string, string> = {
@@ -148,6 +169,22 @@ const bankingFinancialServicesChildRoutes: Record<string, string> = {
 };
 
 const tribunalsDisputeResolutionChildRoutes: Record<string, string> = {
+  "National Company Law Tribunal":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/national-company-law-tribunal",
+  "Debt Recovery Tribunal (DRT/DRAT)":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/debt-recovery-tribunal-drt-drat",
+  "Banking Ombudsman":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/banking-ombudsman",
+  "Domestic & International Arbitration":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration",
+  "Securities Appellate Tribunal":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/securities-appellate-tribunal",
+  "Consumer Commissions":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/consumer-commissions",
+  "Economic Offences Wing":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/economic-offences-wing",
+  "Regulatory & Administrative Investigations":
+    "/services/litigation-dispute-resolution/tribunals-dispute-resolution/regulatory-administrative-investigations",
   "Mediation & Conciliation Cell":
     "/services/litigation-dispute-resolution/tribunals-dispute-resolution/mediation-conciliation-cell",
   "Real-Estate regulatory Authority":
@@ -264,6 +301,9 @@ const serviceChildHeroImages: Record<string, string> = {
   "business-advisory-contracts:investment-structuring": "Global Finance in Blue Light.png",
   "business-advisory-contracts:investor-coordination": "Global Business Partnership In Blue.png",
   "central-administrative-tribunal": "Central Administrative Tribunal at Dusk.png",
+  "debt-recovery-tribunal-drt-drat": "Reserve Bank of India Night Finance Scene.png",
+  "banking-ombudsman": "Banking Advisory services .png",
+  "domestic-and-international-arbitration": "Cinematic Blue-Toned Legal Office.png",
   "commercial-due-diligence": "Commercial Due Diligence.png",
   "contract-drafting-review-negotiations": "Corporate Contract Signing in Blue.png",
   "contract-management": "sr Contract Management .png",
@@ -410,6 +450,9 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "fema-fdi-cross-border" && group.slug === "cross-border-compliance-and-support"
       ? { childRoutes: crossBorderChildRoutes }
       : {}),
+    ...(service.slug === "fema-fdi-cross-border" && group.slug === "fdi-compliance-and-support"
+      ? { childRoutes: fdiChildRoutes }
+      : {}),
     ...(service.slug === "industrial-employment-forensics-advisory" && group.slug === "workplace-compliances"
       ? { childRoutes: workplaceComplianceChildRoutes }
       : {}),
@@ -437,16 +480,11 @@ export const services = hierarchy.map((service, index) => ({
     ...(service.slug === "licensing-registrations" && group.slug === "ngo-institutional"
       ? { childRoutes: ngoInstitutionalChildRoutes }
       : {}),
-<<<<<<< HEAD
-    ...(service.slug === "environmental-technology-sector-specific" && group.slug === "technology-privacy-and-digital"
-      ? { childRoutes: technologyPrivacyChildRoutes }
-=======
     ...(service.slug === "licensing-registrations" && group.slug === "business-registrations"
       ? { childRoutes: businessRegistrationChildRoutes }
       : {}),
     ...(service.slug === "licensing-registrations" && group.slug === "product-industrial"
       ? { childRoutes: productIndustrialChildRoutes }
->>>>>>> 7da3bc5 (I have added child pages)
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),
