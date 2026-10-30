@@ -1,4 +1,5 @@
 export type EntityFormationPageData = {
+  pageVariant?: "nclt-screenshot" | "tribunal-screenshot" | "arbitration-screenshot" | "securities-appellate-screenshot" | "consumer-commissions-screenshot" | "economic-offences-screenshot" | "regulatory-investigations-screenshot" | "fdi-structuring-screenshot" | "foreign-collaboration-screenshot" | "cross-border-ma-screenshot" | "cross-border-corporate-structuring-screenshot" | "fema-cross-border-screenshot";
   focusDescription?: string;
   focusTitle?: string;
   focusEyebrow?: string;
@@ -8,9 +9,11 @@ export type EntityFormationPageData = {
   title: string;
   shortTitle: string;
   heroStatement: string;
+  noteDescription?: string;
   description: string;
   introduction: string;
   image: string;
+  heroImage?: string;
   imageAlt: string;
   heroOverlay?: boolean;
   basicPrice: string;
@@ -65,7 +68,37 @@ export type EntityFormationPageData = {
   benefitCardsThreeColumns?: boolean;
   benefitCardsFourColumns?: boolean;
   featureItems?: string[];
+  featureDescriptions?: string[];
   featureHeading?: string;
+  featureEyebrow?: string;
+  commitmentHeading?: string;
+  commitmentEyebrow?: string;
+  commitmentDescription?: string;
+  commitmentItems?: [string, string][];
+  galleryItems?: [string, string, string][];
+  testimonialEyebrow?: string;
+  testimonialHeading?: string;
+  testimonialDescription?: string;
+  satOverviewItems?: [string, string, string][];
+  satFrameworkRows?: [string, string][];
+  satAppealSteps?: [string, string][];
+  satTimelineRows?: [string, string][];
+  satFeeRows?: [string, string][];
+  satGovernmentFeeRows?: [string, string][];
+  satGovernmentFeeHeading?: string;
+  satProfessionalFeeHeading?: string;
+  satTimelineHeading?: string;
+  satTimelineEyebrow?: string;
+  satFrameworkHeading?: string;
+  satFrameworkColumnLabels?: [string, string];
+  satProcessHeading?: string;
+  satProcessEyebrow?: string;
+  satPrecautions?: string[];
+  satKnowledgeItems?: [string, string, string][];
+  processTable?: {
+    headers: string[];
+    rows: string[][];
+  };
   insightImages?: [string, string, string];
   comparisonFocusIndex?: number | null;
   relatedPages?: [string, string][];
@@ -77,6 +110,7 @@ export type EntityFormationPageData = {
   categoryParentTitle?: string;
   categoryParentHref?: string;
   heroEyebrow?: string;
+  heroSubtitleWrap?: boolean;
   heroPrimaryAction?: string;
   heroPrimaryHref?: string;
   heroSecondaryAction?: string;

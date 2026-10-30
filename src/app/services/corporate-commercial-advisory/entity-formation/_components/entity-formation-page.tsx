@@ -32,6 +32,24 @@ function Heading({
 }
 
 export default function EntityFormationPage({ data }: { data: EntityFormationPageData }) {
+  if (
+    data.pageVariant === "securities-appellate-screenshot"
+    || data.pageVariant === "consumer-commissions-screenshot"
+    || data.pageVariant === "economic-offences-screenshot"
+    || data.pageVariant === "regulatory-investigations-screenshot"
+    || data.pageVariant === "fdi-structuring-screenshot"
+    || data.pageVariant === "foreign-collaboration-screenshot"
+    || data.pageVariant === "cross-border-ma-screenshot"
+    || data.pageVariant === "cross-border-corporate-structuring-screenshot"
+    || data.pageVariant === "fema-cross-border-screenshot"
+  ) {
+    return <SecuritiesAppellatePage data={data} />;
+  }
+
+  if (data.pageVariant === "nclt-screenshot" || data.pageVariant === "tribunal-screenshot" || data.pageVariant === "arbitration-screenshot") {
+    return <NcltScreenshotPage data={data} />;
+  }
+
   const corporateService = services.find((service) => service.canonicalSlug === "corporate-commercial-advisory");
   const parentService = services.find((service) => data.serviceHref === `/services/${service.canonicalSlug}`)
     ?? corporateService;
@@ -83,7 +101,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const heroServiceSlug = data.serviceHref?.split("/")[2]
     ?? data.categoryHref?.split("/")[2]
     ?? parentService?.canonicalSlug;
-  const heroImage = getServiceChildHeroImage(data.slug, heroServiceSlug) ?? data.image;
+  const heroImage = data.heroImage ?? getServiceChildHeroImage(data.slug, heroServiceSlug) ?? data.image;
 
   return (
     <div className={styles.page}>
@@ -107,7 +125,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            <h2 className={`service-child-hero-subtitle ${data.heroSubtitleWrap ? styles.heroSubtitleWrap : ""}`}>{data.heroStatement}</h2>
             <div className={styles.actions}>
               <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
             </div>
@@ -342,9 +360,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       {showFeatures && <PageSectionLayout variant="full-width">
         <section className={styles.features}>
         <div className="container">
-          <Heading eyebrow="KEY FEATURES" title={data.featureHeading ?? `${data.shortTitle} at a glance`} light />
-          <div className={`${styles.featureStrip} ${data.featureItems ? styles.featureStripWide : ""}`}>{(data.featureItems ?? data.benefits.map(([, title]) => title)).map((title, index) => (
-            <div key={title}><Icon name={data.benefits[index % data.benefits.length][0]} /><span>{title}</span></div>
+          <Heading eyebrow={data.featureEyebrow ?? "KEY FEATURES"} title={data.featureHeading ?? `${data.shortTitle} at a glance`} light />
+          <div className={`${styles.featureStrip} ${data.featureItems?.length === 4 ? styles.featureStripFourColumns : data.featureItems ? styles.featureStripWide : ""}`}>{(data.featureItems ?? data.benefits.map(([, title]) => title)).map((title, index) => (
+            <div key={title}><Icon name={data.benefits[index % data.benefits.length][0]} /><span>{title}</span>{data.featureDescriptions?.[index] && <small>{data.featureDescriptions[index]}</small>}</div>
           ))}</div>
         </div>
         </section>
@@ -421,6 +439,525 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </div>
         </section>
       </PageSectionLayout>
+      </ServiceChildPageLayout>
+    </div>
+  );
+}
+
+function NcltScreenshotPage({ data }: { data: EntityFormationPageData }) {
+  const serviceSlug = data.serviceHref?.split("/")[2] ?? "litigation-dispute-resolution";
+  const heroImage = data.heroImage ?? getServiceChildHeroImage(data.slug, serviceSlug);
+  const isNclt = data.pageVariant === "nclt-screenshot";
+  const shortTitle = data.shortTitle;
+  const pageName = data.title;
+
+  return (
+    <div className={`${styles.page} ${styles.tribunalScreenshotPage}`}>
+      <section className={`${styles.hero} service-child-page-hero`} id="overview">
+        <Image
+          src={heroImage}
+          alt={data.imageAlt}
+          fill
+          priority
+          sizes="(max-width: 850px) 100vw, 55vw"
+          className={styles.heroImage}
+        />
+        <div className={`container ${styles.heroInner}`}>
+          <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span>/</span>
+            <Link href="/services">Services</Link><span>/</span>
+            <Link href={data.serviceHref ?? "/services/litigation-dispute-resolution"}>{data.serviceTitle}</Link><span>/</span>
+            <Link href={data.categoryHref ?? "/services/litigation-dispute-resolution#tribunals-dispute-resolution"}>{data.categoryTitle}</Link><span>/</span>
+            <span aria-current="page">{data.title}</span>
+          </nav>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>{data.heroEyebrow}</span>
+            <h1>{data.title}</h1>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            <div className={styles.actions}>
+              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ServiceChildPageLayout
+        items={[
+          { id: "overview", label: "Overview" },
+          { id: "services", label: "Services" },
+          { id: "approach", label: "Our Approach" },
+          { id: "process", label: "Our Process" },
+          { id: "benefits", label: "Why Choose Us" },
+          { id: "commitment", label: "Our Commitment" },
+          ...(data.galleryItems?.length ? [{ id: "gallery", label: "Our Work" }] : []),
+          { id: "testimonials", label: "Testimonials" },
+        ]}
+        includeTestimonial={false}
+      >
+        <PageSectionLayout variant="full-width">
+          <section className={styles.services} id="services">
+            <div className="container">
+              <Heading eyebrow="OUR SERVICES" title={data.servicesHeading ?? `${pageName} Services`} text={data.servicesDescription} />
+              <ServiceCards services={data.services} threeColumns />
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.features} id="approach">
+            <div className="container">
+              <Heading eyebrow={data.featureEyebrow ?? "OUR APPROACH"} title={data.featureHeading ?? "Strategic. Compliant. Results Driven."} text={data.noteDescription} light />
+              <div className={`${styles.featureStrip} ${styles.featureStripFourColumns}`}>
+                {(data.featureItems ?? []).map((title, index) => (
+                  <div key={title}>
+                    <Icon name={data.benefits[index % data.benefits.length][0]} />
+                    <span>{title}</span>
+                    {data.featureDescriptions?.[index] && <small>{data.featureDescriptions[index]}</small>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.process} id="process">
+            <div className="container">
+              <Heading eyebrow="OUR PROCESS" title={data.processHeading ?? `${shortTitle} Process`} text={data.processDescription} />
+              {data.processTable && (
+                <div className={styles.tableWrap} role="region" aria-label={`${shortTitle} process`} tabIndex={0}>
+                  <table>
+                    <thead><tr>{data.processTable.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead>
+                    <tbody>{data.processTable.rows.map((row) => (
+                      <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
+                    ))}</tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.tribunalBenefits} id="benefits">
+            <div className="container">
+              <Heading eyebrow="WHY CHOOSE US" title={data.benefitsHeading ?? `Why Choose Our ${shortTitle} Legal Team?`} text={data.introduction} />
+              <div className={`${styles.benefitGrid} ${styles.benefitCards} ${styles.benefitCardsThreeColumns}`}>
+                {data.benefits.map(([icon, title, description]) => (
+                  <article key={title}>
+                    <span className={styles.icon}><Icon name={icon} /></span>
+                    <div><h3>{title}</h3><p>{description}</p></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.tribunalCommitment} id="commitment">
+            <div className="container">
+              <Heading eyebrow={data.commitmentEyebrow ?? "OUR COMMITMENT"} title={data.commitmentHeading ?? "Your Rights. Our Priority."} text={data.commitmentDescription} light />
+              <div className={styles.tribunalCommitmentGrid}>
+                {(data.commitmentItems ?? []).map(([title, description]) => (
+                  <div key={title}><Icon name="shield" /><p><strong>{title}</strong><span>{description}</span></p></div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        {data.galleryItems?.length ? (
+          <PageSectionLayout variant="full-width">
+            <section className={styles.arbitrationGallery} id="gallery">
+              <div className="container">
+                <Heading eyebrow="OUR WORK (GALLERY)" title="Select Cases & Success Stories" text="A glimpse of representative work across domestic and international arbitration matters." />
+                <div className={styles.arbitrationGalleryGrid}>
+                  {data.galleryItems.map(([image, title, alt]) => (
+                    <article key={title}>
+                      <div className={styles.arbitrationGalleryImage}>
+                        <Image src={image} alt={alt} fill sizes="(max-width: 700px) 100vw, 20vw" />
+                      </div>
+                      <h3>{title}</h3>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </PageSectionLayout>
+        ) : null}
+
+        <ServiceChildTestimonial
+          eyebrow={data.testimonialEyebrow}
+          heading={data.testimonialHeading}
+          description={data.testimonialDescription}
+        />
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.tribunalCta}>
+            <Image src={heroImage} alt="" fill sizes="100vw" className={styles.heroImage} />
+            <div className="container">
+              <span>GET STARTED TODAY</span>
+              <h2>{data.finalHeading ?? `Need Expert Support for ${isNclt ? "NCLT" : shortTitle} Matters?`}</h2>
+              <p>{data.finalDescription}</p>
+              <Link href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+            </div>
+          </section>
+        </PageSectionLayout>
+      </ServiceChildPageLayout>
+    </div>
+  );
+}
+
+function SecuritiesAppellatePage({ data }: { data: EntityFormationPageData }) {
+  const isConsumerCommissions = data.pageVariant === "consumer-commissions-screenshot";
+  const isEconomicOffences = data.pageVariant === "economic-offences-screenshot";
+  const isRegulatoryInvestigations = data.pageVariant === "regulatory-investigations-screenshot";
+  const isFdiStructuring = data.pageVariant === "fdi-structuring-screenshot";
+  const isForeignCollaboration = data.pageVariant === "foreign-collaboration-screenshot";
+  const isCrossBorderMa = data.pageVariant === "cross-border-ma-screenshot";
+  const isCrossBorderCorporateStructuring = data.pageVariant === "cross-border-corporate-structuring-screenshot";
+  const isFemaCrossBorder = data.pageVariant === "fema-cross-border-screenshot";
+  const isDownstreamInvestment = data.slug === "downstream-investment";
+  const sections = [
+    ...(isDownstreamInvestment
+      ? [{ id: "services", label: "Services" }, { id: "overview", label: "Overview" }]
+      : [{ id: "overview", label: "Overview" }]),
+    ...(isCrossBorderCorporateStructuring ? [
+      { id: "why-sat", label: "Why Cross-Border Structuring" },
+      { id: "who-needs", label: "Who Needs These Services" },
+      { id: "services", label: "Structuring Options" },
+    ] : isFemaCrossBorder ? [
+      { id: "why-sat", label: `Why ${data.title} Matters` },
+      { id: "who-needs", label: "Who Needs These Services" },
+      ...(!isDownstreamInvestment ? [{ id: "services", label: "Services" }] : []),
+    ] : [
+      { id: "services", label: "Services" },
+      { id: "why-sat", label: isRegulatoryInvestigations ? "Why These Investigations Matter" : isCrossBorderMa ? "Why Cross-Border M&A Is Necessary" : isForeignCollaboration ? "Why Foreign Collaboration Is Necessary" : isFdiStructuring ? "Why FDI Structuring Is Necessary" : isEconomicOffences ? "Why EOW Matters" : isConsumerCommissions ? "Why Consumer Commissions Matter" : "Why SAT Matters" },
+      { id: "who-needs", label: "Who Needs These Services" },
+    ]),
+    { id: "framework", label: isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Regulatory Framework" : isEconomicOffences ? "Economic Offence Framework" : "Tribunal Framework" },
+    { id: "appeals-process", label: isRegulatoryInvestigations ? "Our Approach" : isFdiStructuring || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Step-by-Step Process" : isCrossBorderMa ? "M&A Process" : isForeignCollaboration ? "Our Collaboration Process" : isEconomicOffences ? "Investigation Process" : "Appeals Process" },
+    { id: "documents", label: "Documents Required" },
+    { id: "timelines", label: isRegulatoryInvestigations ? "Industry Timelines" : isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Indicative Timelines" : "Statutory Timelines" },
+    { id: "fees", label: isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Government Fees" : "Professional Fees" },
+    { id: "precautions", label: isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Precautions & Legal Considerations" : "Precautions" },
+    ...(isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? [{ id: "professional-fees", label: "Professional Fees" }] : []),
+    { id: "faqs", label: "FAQs" },
+    { id: "insights", label: "Insights & Events" },
+    { id: "knowledge", label: "Knowledge Centre" },
+    { id: "testimonials", label: "Testimonials" },
+    { id: "related-services", label: "Related Services" },
+  ];
+  const frameworkRows = data.satFrameworkRows ?? [];
+  const appealSteps = data.satAppealSteps ?? [];
+  const timelineRows = data.satTimelineRows ?? [];
+  const feeRows = data.satFeeRows ?? [];
+  const governmentFeeRows = data.satGovernmentFeeRows ?? [];
+  const precautions = data.satPrecautions ?? [];
+  const knowledgeItems = data.satKnowledgeItems ?? [];
+  const insightImages = [
+    "/images/services/nclt-and-nclat-advisory.webp",
+    "/images/services/litigation-dispute-resolution.webp",
+    "/images/services/arbitration-and-conciliation.webp",
+  ];
+
+  return (
+    <div className={`${styles.page} ${styles.tribunalScreenshotPage} ${styles.securitiesAppellatePage} ${isConsumerCommissions ? styles.consumerCommissionsPage : ""} ${isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? styles.regulatoryInvestigationsPage : ""} ${isCrossBorderCorporateStructuring ? styles.crossBorderCorporateStructuringPage : ""} ${isFemaCrossBorder ? styles.femaCrossBorderPage : ""}`}>
+      <section className={`${styles.hero} service-child-page-hero`} id="sat-hero">
+        <Image src={data.heroImage ?? data.image} alt={data.imageAlt} fill priority sizes="100vw" className={styles.heroImage} />
+        <div className={`container ${styles.heroInner}`}>
+          <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span>/</span>
+            <Link href="/services">Services</Link><span>/</span>
+            <Link href={data.serviceHref ?? "/services/litigation-dispute-resolution"}>{data.serviceTitle}</Link><span>/</span>
+            <Link href={data.categoryHref ?? "/services/litigation-dispute-resolution#tribunals-dispute-resolution"}>{data.categoryTitle}</Link><span>/</span>
+            <span aria-current="page">{data.title}</span>
+          </nav>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>{data.heroEyebrow}</span>
+            <h1>{data.title}</h1>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+            {isRegulatoryInvestigations && (
+              <Link className={styles.secondary} href="/professionals/enquiry">Request Regulatory Support <Icon name="arrow" /></Link>
+            )}
+            {isFdiStructuring && (
+              <Link className={styles.secondary} href="/professionals/enquiry">Request FDI Advisory Support <Icon name="arrow" /></Link>
+            )}
+            {isForeignCollaboration && (
+              <Link className={styles.secondary} href="/professionals/enquiry">Request Foreign Collaboration Support <Icon name="arrow" /></Link>
+            )}
+            {isCrossBorderMa && (
+              <Link className={styles.secondary} href="/professionals/enquiry">Request M&amp;A Advisory Support <Icon name="arrow" /></Link>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <ServiceChildPageLayout items={sections} includeTestimonial={false}>
+        {(!isCrossBorderCorporateStructuring && !isFemaCrossBorder || isDownstreamInvestment) && <PageSectionLayout variant="full-width">
+          <section className={styles.satServices} id="services">
+            <div className="container">
+              <Heading eyebrow={isConsumerCommissions ? "OUR CONSUMER COMMISSION SERVICES" : isEconomicOffences ? "OUR ECONOMIC OFFENCES WING SERVICES" : isRegulatoryInvestigations ? "OUR REGULATORY & ADMINISTRATIVE SERVICES" : isFdiStructuring ? "OUR FDI STRUCTURING SERVICES" : isForeignCollaboration ? "OUR FOREIGN COLLABORATION SERVICES" : isCrossBorderMa ? "OUR CROSS-BORDER M&A SERVICES" : isFemaCrossBorder ? `OUR ${data.title.toUpperCase()} SERVICES` : "OUR SERVICES"} title={data.servicesHeading ?? "Securities Appellate Tribunal Services"} text={data.servicesDescription} />
+              <ServiceCards services={data.services} threeColumns />
+            </div>
+          </section>
+        </PageSectionLayout>}
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satOverview} id="overview">
+            <div className="container">
+              <div className={styles.satOverviewGrid}>
+                <article className={styles.satOverviewCard}>
+                  <Heading eyebrow="OVERVIEW" title={isConsumerCommissions ? "Consumer Commissions – Your Partner in Consumer Rights" : isEconomicOffences ? "Economic Offences Wing – Strategic Legal Support for Complex Financial Matters" : isRegulatoryInvestigations ? "Navigating Complex Regulatory Landscapes" : isFdiStructuring ? "Understanding FDI Structuring in India" : isForeignCollaboration ? "How Astronis Supports International Collaborations in India" : isCrossBorderMa ? "Navigating Cross-Border M&A in India" : isCrossBorderCorporateStructuring ? "What Is Cross-Border Corporate Structuring?" : isFemaCrossBorder ? `What Is ${data.title}?` : "Securities Appellate Tribunal – Your Partner in Securities Dispute Resolution"} />
+                  <p>{data.description}</p>
+                  <p>{data.introduction}</p>
+                  <Link href={isCrossBorderCorporateStructuring || isFemaCrossBorder ? "#appeals-process" : "/contact"}>{isCrossBorderCorporateStructuring ? "Learn More About Our Approach" : isFemaCrossBorder ? `Learn More About ${data.title}` : "Schedule a Consultation"} <Icon name="arrow" /></Link>
+                </article>
+                <article className={styles.satKeyBenefits}>
+                  <h2>Key Benefits</h2>
+                  <ul>
+                    {(data.satOverviewItems ?? []).map(([icon, title, description]) => (
+                      <li key={title}><Icon name={icon} /><span>{title}{(isCrossBorderCorporateStructuring || isFemaCrossBorder) && <small>{description}</small>}</span></li>
+                    ))}
+                  </ul>
+                </article>
+                {(isConsumerCommissions || isEconomicOffences || isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa) && (
+                  <div className={styles.satOverviewVisual}>
+                    <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 700px) 100vw, 22vw" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satAudience} id="why-sat">
+            <div className="container">
+              <div className={styles.satAudienceGrid}>
+                <div>
+                  <Heading eyebrow={isConsumerCommissions ? "WHY CONSUMER COMMISSIONS MATTER?" : isEconomicOffences ? "WHY EOW MATTERS" : isRegulatoryInvestigations ? "WHY REGULATORY & ADMINISTRATIVE INVESTIGATIONS MATTER?" : isFdiStructuring ? "WHY FDI STRUCTURING IS NECESSARY?" : isForeignCollaboration ? "WHY FOREIGN COLLABORATION IS NECESSARY?" : isCrossBorderMa ? "WHY CROSS-BORDER M&A IS NECESSARY?" : isCrossBorderCorporateStructuring ? "WHY CROSS-BORDER CORPORATE STRUCTURING IS NECESSARY" : isFemaCrossBorder ? `WHY ${data.title.toUpperCase()} MATTERS` : "WHY SAT MATTERS?"} title={data.benefitsHeading ?? "Why Securities Appellate Tribunal Matters?"} />
+                  <div className={styles.satReasonGrid}>
+                    {data.benefits.map(([icon, title]) => (
+                      <article key={title}><Icon name={icon} /><span>{title}</span></article>
+                    ))}
+                  </div>
+                </div>
+                <div id="who-needs">
+                  <Heading eyebrow="WHO NEEDS THESE SERVICES?" title={data.structureHeading ?? "Who Needs These Services?"} />
+                  <div className={styles.satAudienceList}>
+                    {data.structurePoints.map(([icon, title, description]) => (
+                      <article key={title}><Icon name={isCrossBorderCorporateStructuring || isFemaCrossBorder ? "check" : icon} /><span><strong>{title}</strong><small>{description}</small></span></article>
+                    ))}
+                  </div>
+                  {isFemaCrossBorder && (data.slug === "overseas-joint-venture" || data.slug === "overseas-direct-investment") && (
+                    <div className={`${styles.satOverviewVisual} ${styles.femaAudienceImage}`}>
+                      <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 700px) 100vw, 30vw" />
+                    </div>
+                  )}
+                  {isCrossBorderCorporateStructuring && (
+                    <div className={`${styles.satOverviewVisual} ${styles.structuringAudienceImage}`}>
+                      <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 700px) 100vw, 30vw" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        {isCrossBorderCorporateStructuring && (
+          <PageSectionLayout variant="full-width">
+            <section className={styles.satServices} id="services">
+              <div className="container">
+                <Heading eyebrow="STRUCTURING OPTIONS" title={data.servicesHeading ?? "Common Cross-Border Structuring Models"} text={data.servicesDescription} />
+                <ServiceCards services={data.services} threeColumns />
+              </div>
+            </section>
+          </PageSectionLayout>
+        )}
+        {isFemaCrossBorder && !isDownstreamInvestment && (
+          <PageSectionLayout variant="full-width">
+            <section className={styles.satServices} id="services">
+              <div className="container">
+                <Heading eyebrow={`OUR ${data.title.toUpperCase()} SERVICES`} title={data.servicesHeading ?? `${data.title} Services`} text={data.servicesDescription} />
+                <ServiceCards services={data.services} threeColumns />
+              </div>
+            </section>
+          </PageSectionLayout>
+        )}
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satFramework} id="framework">
+            <div className="container">
+              <div className={`${styles.satThreeColumnGrid} ${isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? styles.regulatoryFrameworkGrid : ""}`}>
+                <article className={styles.satPanel}>
+                  <Heading eyebrow={isConsumerCommissions ? "CONSUMER COMMISSION FRAMEWORK" : isEconomicOffences ? "ECONOMIC OFFENCE FRAMEWORK" : isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "REGULATORY FRAMEWORK" : "TRIBUNAL FRAMEWORK"} title={isConsumerCommissions ? "Consumer Forums & Jurisdiction" : isEconomicOffences ? "Offence Categories & Key Examples" : isRegulatoryInvestigations ? "Regulatory Bodies & Key Focus Areas" : isFdiStructuring ? (data.satFrameworkHeading ?? "FDI Policy & Regulatory Framework") : isForeignCollaboration ? (data.satFrameworkHeading ?? "Foreign Collaboration Regulatory Framework") : isCrossBorderMa ? (data.satFrameworkHeading ?? "Cross-Border M&A Regulatory Framework") : isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satFrameworkHeading ?? "Regulatory Framework") : "Securities Appellate Tribunal"} />
+                  <div className={styles.satTableWrap}>
+                    <table><thead><tr><th>{isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satFrameworkColumnLabels?.[0] ?? "Regulatory Body / Framework") : "Aspect"}</th><th>{isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satFrameworkColumnLabels?.[1] ?? "Key Focus Areas") : "Details"}</th></tr></thead>
+                      <tbody>{frameworkRows.map(([aspect, details]) => <tr key={aspect}><th scope="row">{aspect}</th><td>{details}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                  {isCrossBorderCorporateStructuring && <Link className={styles.secondary} href="/insights">View Regulatory Updates <Icon name="arrow" /></Link>}
+                </article>
+                {(isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder) && (
+                  <article className={styles.satPanel}>
+                    <Heading eyebrow={isFdiStructuring ? "COMPARISON CHART – FDI ROUTES IN INDIA" : isForeignCollaboration ? "COMPARISON CHART – COLLABORATION MODELS" : isCrossBorderMa ? "COMPARISON CHART – M&A STRUCTURES" : isCrossBorderCorporateStructuring ? "COMPARISON CHART" : isFemaCrossBorder ? "COMPARISON CHART" : "COMPARISON CHART – KEY INVESTIGATION TYPES"} title={isFdiStructuring ? "FDI Routes in India" : isForeignCollaboration ? "Collaboration Models" : isCrossBorderMa ? "M&A Structures" : isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.comparisonHeading ?? "Comparison Chart") : "Investigation Types & Typical Outcomes"} />
+                    <div className={styles.satTableWrap}>
+                      <table>
+                        <thead><tr>{(data.comparisonPanels?.[0]?.headers ?? []).map((heading) => <th key={heading}>{heading}</th>)}</tr></thead>
+                        <tbody>{(data.comparisonPanels?.[0]?.rows ?? []).map((row, index) => <tr key={row[0] ?? index}>{row.map((cell, cellIndex) => <td key={`${index}-${cellIndex}`}>{cell}</td>)}</tr>)}</tbody>
+                      </table>
+                    </div>
+                  </article>
+                )}
+                <article className={styles.satPanel} id="appeals-process">
+                  <Heading eyebrow={isConsumerCommissions ? "COMPLAINT & APPEAL PROCESS" : isEconomicOffences ? "COMPLAINT & INVESTIGATION PROCESS" : isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satProcessEyebrow ?? "OUR INVESTIGATION PROCESS") : "APPEALS PROCESS"} title={isConsumerCommissions ? "Complaint & Appeal Process" : isEconomicOffences ? "Investigation Process" : isRegulatoryInvestigations ? "From Assessment to Resolution" : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satProcessHeading ?? "Our Collaboration Process") : "Appeal Steps"} />
+                  <ol className={styles.satSteps}>
+                    {appealSteps.map(([title, description], index) => (
+                      <li key={title}><span>{index + 1}</span><p><strong>{title}</strong><small>{description}</small></p></li>
+                    ))}
+                  </ol>
+                </article>
+                {!isCrossBorderCorporateStructuring && !isFemaCrossBorder && <article className={styles.satPanel} id="documents">
+                  <Heading eyebrow="DOCUMENTS REQUIRED" title={isConsumerCommissions ? "Consumer Complaint Documents" : isEconomicOffences ? "Investigation Records" : isRegulatoryInvestigations ? "Prepare for an Investigation" : isFdiStructuring ? "FDI Structuring Documents" : isForeignCollaboration ? "Collaboration Documents" : isCrossBorderMa ? "M&A Documents Required" : isCrossBorderCorporateStructuring ? "Documents Required" : "Prepare Your Appeal Record"} />
+                  <ul className={styles.satChecklist}>
+                    {data.documents.map((document) => <li key={document}><Icon name="check" />{document}</li>)}
+                  </ul>
+                  <p className={styles.satNote}>{isConsumerCommissions ? "Keep originals and copies of relevant records; the final list depends on the claim." : isEconomicOffences ? "Preserve relevant records and maintain a clear chain of custody." : isRegulatoryInvestigations ? "The final checklist depends on the investigating authority, sector, notice and scope of inquiry." : isFdiStructuring ? "The exact requirements depend on the investor, sector, instrument and proposed transaction." : isForeignCollaboration ? "The final checklist depends on the collaboration model, parties, jurisdictions and scope of work." : isCrossBorderMa ? "The final checklist depends on transaction structure, jurisdictions, financing, parties and due-diligence scope." : isCrossBorderCorporateStructuring ? "The final checklist depends on the jurisdictions, entity type, ownership and proposed activities." : "The final document list depends on the order, appeal grounds and applicable procedure."}</p>
+                </article>}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satDetails}>
+            <div className="container">
+              <div className={styles.satThreeColumnGrid}>
+                {(isCrossBorderCorporateStructuring || isFemaCrossBorder) && (
+                  <article className={styles.satPanel} id="documents">
+                    <Heading eyebrow="DOCUMENTS REQUIRED" title={isFemaCrossBorder ? `${data.title} Documents Required` : "Documents Required"} />
+                    <ul className={styles.satChecklist}>
+                      {data.documents.map((document) => <li key={document}><Icon name="check" />{document}</li>)}
+                    </ul>
+                    <p className={styles.satNote}>The final checklist depends on the jurisdictions, entity type, ownership and proposed activities.</p>
+                  </article>
+                )}
+                <article className={styles.satPanel} id="timelines">
+                  <Heading eyebrow={data.satTimelineEyebrow ?? (isRegulatoryInvestigations ? "INDUSTRY TIMELINES (INDICATIVE)" : "STATUTORY TIMELINES (INDICATIVE)")} title={isConsumerCommissions ? "Consumer Complaint Timelines" : isEconomicOffences ? "Investigation Timelines" : isRegulatoryInvestigations ? "Typical Investigation Timelines" : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satTimelineHeading ?? "Timelines") : "Timelines"} />
+                  <div className={styles.satTableWrap}>
+                    <table><thead><tr><th>Stage</th><th>Typical timeline</th></tr></thead>
+                      <tbody>{timelineRows.map(([stage, timeline]) => <tr key={stage}><th scope="row">{stage}</th><td>{timeline}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                  <p className={styles.satNote}>{isConsumerCommissions ? "Limitation and hearing timelines depend on the facts, applicable law and commission schedule." : isEconomicOffences ? "Timelines depend on the facts, jurisdiction, evidence and investigating authority." : isRegulatoryInvestigations ? "These indicative timelines vary by authority, sector, scope, cooperation and case complexity." : isFdiStructuring ? "Timing depends on the investor, route, sector, transaction documents and applicable authority or bank processing." : isForeignCollaboration ? "Timing depends on partner evaluation, negotiation, due diligence and applicable approvals across jurisdictions." : isCrossBorderMa ? "Actual timing depends on transaction complexity, diligence, financing, regulatory review and satisfaction of closing conditions." : isCrossBorderCorporateStructuring || isFemaCrossBorder ? "All timelines are indicative. Actual timing depends on transaction, documentation, filings and authority / bank processing." : "Subject to change based on case complexity and tribunal schedule."}</p>
+                </article>
+                <article className={styles.satPanel} id="fees">
+                  <Heading eyebrow={isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "GOVERNMENT FEES (INDICATIVE)" : "PROFESSIONAL FEES (INDICATIVE)"} title={isConsumerCommissions ? "Consumer Commission Fees (INR)" : isEconomicOffences ? "Investigation Support Fees (INR)" : isRegulatoryInvestigations ? "Government & Statutory Fees" : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satGovernmentFeeHeading ?? "Government Fees") : "Fee Ranges (INR)"} />
+                  <div className={styles.satTableWrap}>
+                    <table><thead><tr><th>{isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Activity" : "Service"}</th><th>{isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Fee (₹)" : "Fee range"}</th></tr></thead>
+                      <tbody>{(isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? governmentFeeRows : feeRows).map(([service, fees]) => <tr key={service}><th scope="row">{service}</th><td>{fees}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                  <p className={styles.satNote}>{isRegulatoryInvestigations ? "Subject to applicable laws, rules and authority schedules. Government fees may vary by jurisdiction and complexity." : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Subject to applicable laws and government schedules; fees vary by jurisdiction and transaction." : "Fees are indicative only and vary with the matter, urgency and agreed scope."}</p>
+                </article>
+                <article className={styles.satPanel} id="precautions">
+                  <Heading eyebrow="PRECAUTIONS & LEGAL CONSIDERATIONS" title={isConsumerCommissions ? "Before Filing a Complaint" : isEconomicOffences ? "During an Investigation" : isRegulatoryInvestigations ? "Key Compliance Considerations" : isFdiStructuring ? "Plan Your FDI Transaction Carefully" : isCrossBorderMa ? "Plan Your Cross-Border M&A Carefully" : isCrossBorderCorporateStructuring ? "Plan Your Cross-Border Structure Carefully" : isFemaCrossBorder ? `Plan Your ${data.title} Carefully` : "Before Filing an Appeal"} />
+                  <ul className={styles.satChecklist}>
+                    {precautions.map((precaution) => <li key={precaution}><Icon name="check" />{precaution}</li>)}
+                  </ul>
+                  {(isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder) && <Link className={styles.secondary} href="/professionals/enquiry">Request a Quote <Icon name="arrow" /></Link>}
+                </article>
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        {(isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder) && (
+          <PageSectionLayout variant="full-width">
+            <section className={styles.satDetails} id="professional-fees">
+              <div className="container">
+                <article className={styles.satPanel}>
+                  <Heading eyebrow="PROFESSIONAL FEES" title={isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satProfessionalFeeHeading ?? "Professional Fees") : "Advisory & Representation Fees"} />
+                  <div className={styles.satTableWrap}>
+                    <table><thead><tr><th>Service</th><th>Professional fee</th></tr></thead>
+                      <tbody>{feeRows.map(([service, fees]) => <tr key={service}><th scope="row">{service}</th><td>{fees}</td></tr>)}</tbody>
+                    </table>
+                  </div>
+                  <p className={styles.satNote}>{isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Professional fees depend on transaction complexity and agreed scope. Government fees, taxes and third-party charges are separate." : "Fees are agreed after assessing the matter, jurisdictions, urgency, record volume and requested scope. Taxes and third-party charges are separate."}</p>
+                  <Link className={styles.secondary} href="/professionals/enquiry">Request a Quote <Icon name="arrow" /></Link>
+                </article>
+              </div>
+            </section>
+          </PageSectionLayout>
+        )}
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satFaq} id="faqs">
+            <div className="container">
+              <Heading eyebrow={isRegulatoryInvestigations ? "FREQUENTLY ASKED QUESTIONS" : "FAQS"} title={isConsumerCommissions ? "Consumer Commission FAQs" : isEconomicOffences ? "Economic Offences Wing FAQs" : isRegulatoryInvestigations ? "Regulatory Investigation FAQs" : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Frequently Asked Questions" : "Securities Appellate Tribunal FAQs"} />
+              <div className={styles.satFaqGrid}>
+                {data.faqs.map(([question, answer]) => (
+                  <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>
+                ))}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satInsights} id="insights">
+            <div className="container">
+              <div className={styles.satSectionHeader}><Heading eyebrow="INSIGHTS & EVENTS" title={isConsumerCommissions ? "Consumer Rights Updates & Insights" : isEconomicOffences ? "Economic Offence Updates & Insights" : isRegulatoryInvestigations ? "Regulatory Insights & Updates" : isFdiStructuring ? "FDI Insights & Updates" : isForeignCollaboration ? "Foreign Collaboration Insights & Events" : isCrossBorderMa ? "Cross-Border M&A Insights & Events" : isCrossBorderCorporateStructuring ? "Latest Insights" : isFemaCrossBorder ? "Insights & Events" : "Securities Law Updates & Insights"} /><Link href="/insights">View All Insights <Icon name="arrow" /></Link></div>
+              <div className={styles.satInsightGrid}>
+                {(data.insights ?? []).map(([title, date, category], index) => (
+                  <article key={title}>
+                    <div className={styles.satInsightImage}><Image src={insightImages[index % insightImages.length]} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" /></div>
+                    <div><small>{date} · {category}</small><h3>{title}</h3><Link href="/insights">Read More <Icon name="arrow" /></Link></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satKnowledge} id="knowledge">
+            <div className="container">
+              <div className={styles.satSectionHeader}><Heading eyebrow="KNOWLEDGE CENTRE" title={isConsumerCommissions ? "Consumer Guides & Resources" : isEconomicOffences ? "Economic Offence Guides & Resources" : isRegulatoryInvestigations ? "Regulatory Resources & Guides" : isFdiStructuring ? "FDI Knowledge Centre" : isForeignCollaboration ? "Foreign Collaboration Knowledge Centre" : isCrossBorderMa ? "Cross-Border M&A Knowledge Centre" : isCrossBorderCorporateStructuring ? "Helpful Resources" : isFemaCrossBorder ? "Knowledge Centre" : "Resources & Guides"} /><Link href="/insights">View All Resources <Icon name="arrow" /></Link></div>
+              <div className={styles.satKnowledgeGrid}>
+                {knowledgeItems.map(([title, description, icon]) => <Link href="/insights" key={title}><Icon name={icon} /><strong>{title}</strong><small>{description}</small></Link>)}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <ServiceChildTestimonial
+          eyebrow={data.testimonialEyebrow}
+          heading={data.testimonialHeading}
+          description={data.testimonialDescription}
+        />
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satRelated} id="related-services">
+            <div className="container">
+              <Heading eyebrow="EXPLORE RELATED SERVICES" title={isConsumerCommissions || isEconomicOffences || isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (isForeignCollaboration || isCrossBorderMa ? "Explore Related IP & Brand Advisory Services" : isCrossBorderCorporateStructuring || isFemaCrossBorder ? "Explore Related FEMA & Cross-Border Services" : "Explore Related Services") : "Connected Legal Support"} />
+              <div className={styles.satRelatedGrid}>
+                {(data.relatedPages ?? []).map(([title, href]) => <Link href={href} key={title}><Icon name="scale" /><span>{title}</span><Icon name="arrow" /></Link>)}
+              </div>
+            </div>
+          </section>
+        </PageSectionLayout>
+
+        <PageSectionLayout variant="full-width">
+          <section className={styles.satCta}>
+            <Image src={data.heroImage ?? data.image} alt="" fill sizes="100vw" className={styles.heroImage} />
+            <div className="container"><span>GET STARTED TODAY</span><h2>{data.finalHeading}</h2><p>{data.finalDescription}</p><Link href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>{isFdiStructuring && <Link href="/professionals/enquiry">Request FDI Advisory Support <Icon name="arrow" /></Link>}{isForeignCollaboration && <Link href="/professionals/enquiry">Request Foreign Collaboration Support <Icon name="arrow" /></Link>}{isCrossBorderMa && <Link href="/professionals/enquiry">Request M&amp;A Advisory Support <Icon name="arrow" /></Link>}{isCrossBorderCorporateStructuring && <Link href="/professionals/enquiry">Request Structuring Support <Icon name="arrow" /></Link>}{isFemaCrossBorder && <Link href="/professionals/enquiry">Talk to Our Experts Today <Icon name="arrow" /></Link>}</div>
+          </section>
+        </PageSectionLayout>
       </ServiceChildPageLayout>
     </div>
   );

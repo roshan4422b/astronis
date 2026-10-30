@@ -36,6 +36,11 @@ import {
   getReferenceServicePageData,
   getReferenceServicePageMetadata,
 } from "@/data/reference-service-pages";
+import {
+  getRequestedServicePage,
+  getRequestedServicePageMetadata,
+  getRequestedServicePageStaticParams,
+} from "@/data/requested-service-pages";
 import type { EntityFormationPageData } from "@/data/entity-formation-pages";
 import { commercialContractPages } from "@/data/commercial-contract-pages";
 import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
@@ -95,6 +100,7 @@ export function generateStaticParams() {
     ...getIntellectualPropertyServiceStaticParams(),
     ...getAdditionalServiceDetailStaticParams(),
     ...getPrivateStyleAdvisoryStaticParams(),
+    ...getRequestedServicePageStaticParams(),
   ];
 }
 
@@ -112,6 +118,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       openGraph: { title: privateStylePage.title, description: privateStylePage.description, url: canonical, type: "website" },
     };
   }
+  const requestedMetadata = getRequestedServicePageMetadata(`/services/${slugs.join("/")}`);
+  if (requestedMetadata) return requestedMetadata;
   const referenceServiceMetadata = getReferenceServicePageMetadata(`/services/${slugs.join("/")}`);
   if (referenceServiceMetadata) return referenceServiceMetadata;
   const hierarchy = resolveHierarchy(slugs);
@@ -251,6 +259,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (cmsService) return <CmsContentPage record={cmsService} eyebrow="Services" />;
   const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
   if (privateStylePage) return <PrivateStyleAdvisoryPage data={privateStylePage} />;
+  const requestedPage = getRequestedServicePage(`/services/${slugs.join("/")}`);
+  if (requestedPage) return <EntityFormationPage data={requestedPage} />;
   const referenceServicePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
   if (referenceServicePage) return <EntityFormationPage data={referenceServicePage} />;
   const hierarchy = resolveHierarchy(slugs);
