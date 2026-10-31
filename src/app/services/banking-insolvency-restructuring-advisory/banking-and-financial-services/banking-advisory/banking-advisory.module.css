@@ -1,0 +1,658 @@
+.bankingServices {
+  --banking-hover-blue: #0751db;
+}
+
+.section,
+.consultation {
+  scroll-margin-top: 110px;
+}
+
+.section {
+  padding: clamp(68px, 8vw, 112px) 0;
+  color: #0a2949;
+}
+
+.tintedSection {
+  background: #f4f7fb;
+}
+
+.sectionHeading {
+  max-width: 760px;
+  margin-bottom: 38px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: #0751db;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.sectionHeading h2,
+.consultation h2 {
+  margin: 0 0 16px;
+  color: #061e3b;
+  font: 400 clamp(30px, 3.2vw, 46px)/1.16 Georgia, serif;
+  letter-spacing: -0.7px;
+}
+
+.sectionHeading p,
+.highlightPanel p,
+.infoCard p,
+.frameworkCard p,
+.comparison p,
+.processStep p,
+.documentItem p,
+.documentNote p,
+.faqItem p,
+.resourceCard p,
+.relatedCard p,
+.consultation p {
+  margin: 0;
+  color: #586c82;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.splitSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: center;
+  gap: clamp(32px, 7vw, 100px);
+}
+
+.splitSection .sectionHeading {
+  margin-bottom: 0;
+}
+
+.highlightPanel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: 4px;
+  background: #071f3d;
+  color: #fff;
+}
+
+.highlightPanel::after {
+  position: absolute;
+  right: -55px;
+  bottom: -90px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgb(255 255 255 / 15%);
+  border-radius: 50%;
+  content: "";
+}
+
+.highlightPanel > span {
+  display: block;
+  margin-bottom: 20px;
+  color: #93b7ff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.highlightPanel h3 {
+  max-width: 400px;
+  margin: 0 0 14px;
+  color: #fff;
+  font: 400 clamp(23px, 2.4vw, 31px)/1.28 Georgia, serif;
+}
+
+.highlightPanel p {
+  max-width: 430px;
+  color: #d3deec;
+}
+
+.audienceGrid,
+.frameworkGrid,
+.resourceGrid,
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.infoCard,
+.frameworkCard {
+  min-height: 220px;
+  padding: 27px 25px;
+  border: 1px solid #dfe7f0;
+  background: #fff;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.infoCard:hover,
+.frameworkCard:hover {
+  transform: translateY(-3px);
+  border-color: #0751db;
+  background: #0751db;
+  color: #fff;
+}
+
+.infoCard:hover h3,
+.frameworkCard:hover h3,
+.infoCard:hover p,
+.frameworkCard:hover p {
+  color: #fff;
+}
+
+.cardNumber {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: #0751db;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.infoCard h3,
+.frameworkCard h3,
+.processStep h3,
+.documentItem h3,
+.documentNote h3 {
+  margin: 0 0 10px;
+  color: #0a2949;
+  font: 400 21px/1.3 Georgia, serif;
+}
+
+.infoCard p,
+.frameworkCard p {
+  font-size: 14px;
+}
+
+.infoCard:hover .cardNumber {
+  color: #fff;
+}
+
+.frameworkGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.frameworkCard {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  align-content: start;
+  column-gap: 16px;
+  min-height: 160px;
+}
+
+.frameworkMarker {
+  width: 8px;
+  height: 8px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: #0751db;
+  box-shadow: 0 0 0 5px #e9f0ff;
+}
+
+.frameworkCard h3,
+.frameworkCard p {
+  grid-column: 2;
+}
+
+.frameworkCard p {
+  margin-top: 0;
+}
+
+.frameworkCard:hover .frameworkMarker {
+  background: #fff;
+  box-shadow: 0 0 0 5px rgb(255 255 255 / 20%);
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 28px;
+  border: 1px solid #dfe7f0;
+  background: #fff;
+}
+
+.comparison > div {
+  padding: clamp(25px, 4vw, 42px);
+}
+
+.comparison > div + div {
+  border-left: 1px solid #dfe7f0;
+}
+
+.comparison .eyebrow {
+  margin-bottom: 12px;
+}
+
+.comparison h3 {
+  margin: 0 0 12px;
+  color: #0a2949;
+  font: 400 24px/1.3 Georgia, serif;
+}
+
+.disclaimer {
+  margin: 14px 0 0;
+  color: #586c82;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.processList {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.processStep {
+  position: relative;
+  padding-top: 22px;
+  border-top: 1px solid #cbd7e5;
+}
+
+.processNumber {
+  display: block;
+  margin-bottom: 28px;
+  color: #0751db;
+  font: 400 30px/1 Georgia, serif;
+}
+
+.processStep h3 {
+  font-size: 20px;
+}
+
+.processStep p {
+  font-size: 14px;
+}
+
+.documentsLayout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  column-gap: clamp(35px, 7vw, 100px);
+  align-items: start;
+}
+
+.documentsLayout > .sectionHeading {
+  grid-row: span 2;
+  margin-bottom: 0;
+}
+
+.documentList {
+  border-top: 1px solid #dfe7f0;
+}
+
+.documentItem {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 14px;
+  padding: 21px 0;
+  border-bottom: 1px solid #dfe7f0;
+}
+
+.documentItem > span {
+  padding-top: 3px;
+  color: #0751db;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.documentItem h3,
+.documentNote h3 {
+  font-size: 19px;
+}
+
+.documentItem p,
+.documentNote p {
+  font-size: 14px;
+}
+
+.documentNote {
+  margin-top: 20px;
+  padding: 24px 26px;
+  border-left: 3px solid #0751db;
+  background: #f4f7fb;
+}
+
+.faqLayout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(35px, 7vw, 100px);
+  align-items: start;
+}
+
+.faqLayout .sectionHeading {
+  margin-bottom: 0;
+}
+
+.textLink {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 24px;
+  color: #0751db;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.faqList {
+  border-top: 1px solid #d5dfeb;
+}
+
+.faqItem {
+  border-bottom: 1px solid #d5dfeb;
+}
+
+.faqItem summary {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0;
+  color: #0a2949;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  list-style: none;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem summary > span {
+  flex: 0 0 auto;
+  color: #0751db;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.faqItem[open] summary > span {
+  transform: rotate(45deg);
+}
+
+.faqItem p {
+  max-width: 680px;
+  padding: 0 35px 22px 0;
+  font-size: 14px;
+}
+
+.resourceGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.resourceCard,
+.relatedCard {
+  position: relative;
+  display: flex;
+  min-height: 230px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px;
+  border: 1px solid #dfe7f0;
+  background: #fff;
+  color: #0a2949;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.resourceCard > span:first-child {
+  margin-bottom: 27px;
+  color: #0751db;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.resourceCard h3 {
+  margin: 0 0 10px;
+  color: #0a2949;
+  font: 400 23px/1.3 Georgia, serif;
+}
+
+.resourceCard p,
+.relatedCard p {
+  font-size: 14px;
+}
+
+.resourceAction {
+  margin-top: auto;
+  padding-top: 24px;
+  color: #0751db;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.resourceCard:hover,
+.resourceCard:focus-visible,
+.relatedCard:hover,
+.relatedCard:focus-visible {
+  transform: translateY(-3px);
+  border-color: #0751db;
+  background: #0751db;
+  color: #fff;
+}
+
+.resourceCard:hover h3,
+.resourceCard:hover p,
+.resourceCard:hover > span:first-child,
+.resourceCard:hover .resourceAction,
+.resourceCard:focus-visible h3,
+.resourceCard:focus-visible p,
+.resourceCard:focus-visible > span:first-child,
+.resourceCard:focus-visible .resourceAction,
+.relatedCard:hover > span:first-child,
+.relatedCard:hover p,
+.relatedCard:focus-visible > span:first-child,
+.relatedCard:focus-visible p {
+  color: #fff;
+}
+
+.relatedGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.relatedCard {
+  min-height: 200px;
+  padding: 25px;
+}
+
+.relatedCard > span:first-child {
+  margin-bottom: 15px;
+  color: #0a2949;
+  font: 400 20px/1.3 Georgia, serif;
+}
+
+.relatedArrow {
+  margin-top: auto;
+  padding-top: 18px;
+  color: #0751db;
+  font-size: 18px;
+}
+
+.relatedCard:hover .relatedArrow,
+.relatedCard:focus-visible .relatedArrow {
+  color: #fff;
+}
+
+.consultation {
+  padding: clamp(48px, 7vw, 82px) 0;
+  background: #071f3d;
+  color: #fff;
+}
+
+.consultationInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.consultationInner > div {
+  max-width: 720px;
+}
+
+.consultation .eyebrow {
+  color: #93b7ff;
+}
+
+.consultation h2 {
+  color: #fff;
+}
+
+.consultation p {
+  max-width: 650px;
+  color: #d3deec;
+}
+
+.consultationButton {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 1px solid #fff;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.consultationButton:hover,
+.consultationButton:focus-visible {
+  background: #fff;
+  color: #071f3d;
+}
+
+.consultationButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bankingServices :global([class*="serviceCard"]:hover),
+  .bankingServices :global([class*="serviceCard"]:focus-visible) {
+    border-color: var(--banking-hover-blue) !important;
+    background: var(--banking-hover-blue) !important;
+    color: #fff !important;
+  }
+
+  .bankingServices :global([class*="serviceCard"]:hover) h3,
+  .bankingServices :global([class*="serviceCard"]:hover) p,
+  .bankingServices :global([class*="serviceCard"]:focus-visible) h3,
+  .bankingServices :global([class*="serviceCard"]:focus-visible) p,
+  .bankingServices :global([class*="serviceCard"]:hover) .cardIcon,
+  .bankingServices :global([class*="serviceCard"]:focus-visible) .cardIcon {
+    color: #fff !important;
+  }
+
+  .bankingServices :global([class*="serviceCard"]:hover) .cardIcon svg,
+  .bankingServices :global([class*="serviceCard"]:focus-visible) .cardIcon svg {
+    color: #fff !important;
+    stroke: #fff !important;
+  }
+}
+
+@media (max-width: 1000px) {
+  .audienceGrid,
+  .relatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .processList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 32px;
+  }
+
+  .processStep {
+    padding-right: 15px;
+  }
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: 64px 0;
+  }
+
+  .splitSection,
+  .faqLayout,
+  .documentsLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .documentsLayout > .sectionHeading {
+    grid-row: auto;
+  }
+
+  .sectionHeading {
+    margin-bottom: 28px;
+  }
+
+  .splitSection .sectionHeading,
+  .faqLayout .sectionHeading {
+    margin-bottom: 0;
+  }
+
+  .frameworkGrid,
+  .resourceGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .frameworkCard {
+    min-height: 0;
+  }
+
+  .comparison {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .comparison > div + div {
+    border-top: 1px solid #dfe7f0;
+    border-left: 0;
+  }
+
+  .consultationInner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .audienceGrid,
+  .relatedGrid,
+  .processList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .infoCard {
+    min-height: 0;
+  }
+
+  .cardNumber {
+    margin-bottom: 20px;
+  }
+
+  .resourceCard {
+    min-height: 205px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infoCard,
+  .frameworkCard,
+  .resourceCard,
+  .relatedCard,
+  .consultationButton {
+    transition: none;
+  }
+}
