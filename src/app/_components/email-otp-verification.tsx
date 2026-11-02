@@ -44,16 +44,6 @@ export default function EmailOtpVerification({
   }, [onCaptchaToken]);
 
   useEffect(() => {
-    if (!captchaToken) return;
-    const timer = window.setTimeout(() => {
-      updateCaptchaToken("");
-      setCaptchaReset((current) => current + 1);
-      setStatus("The CAPTCHA expired. Please complete it again before continuing.");
-    }, 240_000);
-    return () => window.clearTimeout(timer);
-  }, [captchaToken, updateCaptchaToken]);
-
-  useEffect(() => {
     if (!cooldownUntil) return;
     const interval = window.setInterval(() => {
       const current = Date.now();
@@ -173,7 +163,7 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
+        <TurnstileWidget onToken={updateCaptchaToken} onError={setStatus} resetKey={resetKey + captchaReset} />
         <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>

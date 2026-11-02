@@ -1,6 +1,6 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
 import {
-  consumeEmailVerification,
+  consumeFormVerification,
   createVerifiedTestimonialEmailProof,
   verificationFailure,
 } from "@/lib/form-verification.server";
@@ -125,7 +125,12 @@ export async function POST(request: Request) {
     }
   }
   const verificationResponse = verificationFailure(
-    await consumeEmailVerification(get("email"), get("emailVerificationToken")),
+    await consumeFormVerification(
+      request,
+      get("email"),
+      get("captchaToken"),
+      get("emailVerificationToken"),
+    ),
   );
   if (verificationResponse) return verificationResponse;
   const submissionId = crypto.randomUUID();
