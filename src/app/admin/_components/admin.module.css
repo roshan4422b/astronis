@@ -15,7 +15,7 @@
   color: var(--admin-ink);
   background: var(--admin-canvas);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.5;
   text-align: left;
 }
@@ -145,7 +145,7 @@
 
 .brandCaption {
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: .15em;
 }
@@ -153,7 +153,7 @@
 .sidebarCaption {
   margin: 15px 10px 9px;
   color: #fff;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: .14em;
 }
@@ -165,7 +165,7 @@
 .navGroupLabel {
   padding: 7px 10px 6px;
   color: #fff;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
 }
 
@@ -179,7 +179,7 @@
   padding: 4px 10px;
   border-radius: 7px;
   color: #fff;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1.25;
   text-decoration: none;
   transition: background .16s ease, color .16s ease;
@@ -188,7 +188,7 @@
 .logoutError {
   margin: 8px 0;
   color: #b42318;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -228,7 +228,7 @@
   gap: 8px;
   margin: 0 9px 7px;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .previewLabel > span {
@@ -248,7 +248,7 @@
 .sidebarFootnote {
   padding: 8px 10px 0;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -289,7 +289,7 @@
   align-items: center;
   gap: 9px;
   color: #8a95a6;
-  font-size: 12px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
@@ -335,7 +335,7 @@
   outline: 0;
   color: var(--admin-ink);
   background: transparent;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .topSearch kbd {
@@ -345,7 +345,7 @@
   border-radius: 3px;
   color: #929bab;
   font-family: inherit;
-  font-size: 9px;
+  font-size: 8px;
 }
 
 .searchResults,
@@ -369,7 +369,7 @@
   padding: 9px;
   border-radius: 6px;
   color: #3b4860;
-  font-size: 12px;
+  font-size: 10px;
   text-decoration: none;
 }
 
@@ -382,7 +382,7 @@
   display: block;
   padding: 11px;
   color: var(--admin-muted);
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .iconButton {
@@ -424,7 +424,7 @@
   border-radius: 9px;
   color: #fff;
   background: #c23b3b;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
   line-height: 15px;
   text-align: center;
@@ -438,12 +438,12 @@
   display: block;
   margin-bottom: 5px;
   color: #1d2b44;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .actionPopover p {
   color: #728095;
-  font-size: 11px;
+  font-size: 9px;
   line-height: 1.6;
 }
 
@@ -468,7 +468,7 @@
 
 .notificationHeading span {
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .notificationList a {
@@ -489,14 +489,14 @@
 
 .notificationList a strong {
   margin: 0;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .notificationList a span,
 .notificationList a small {
   overflow: hidden;
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 9px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -509,7 +509,7 @@
   display: inline-block;
   margin-top: 10px;
   color: var(--admin-blue);
-  font-size: 11px;
+  font-size: 9px;
   text-decoration: none;
 }
 
@@ -550,20 +550,20 @@
 
 .profileCopy strong {
   color: #28364e;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .profileCopy small {
   margin-top: 0;
   color: #8994a5;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .chevron {
   padding-left: 2px;
   color: #8792a2;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .mobileToggle,
@@ -683,14 +683,14 @@
   :global(.admin-eyebrow) {
     margin-bottom: 7px;
     color: #77869c;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: .13em;
   }
 
   :global(.admin-page-heading h1) {
     color: #0751db;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     letter-spacing: -.035em;
     line-height: 1.2;
@@ -699,7 +699,7 @@
   :global(.admin-page-heading p) {
     margin-top: 7px;
     color: #738097;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-heading-actions),
@@ -720,7 +720,7 @@
     background: #0751db;
     box-shadow: 0 2px 5px rgba(7, 81, 219, .12);
     cursor: pointer;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 600;
     text-decoration: none;
     transition: background .16s ease, border .16s ease, box-shadow .16s ease;
@@ -758,7 +758,7 @@
     border-radius: 6px;
     color: #66758d;
     background: #f8fafd;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-demo-ribbon > span:first-child) {
@@ -815,7 +815,7 @@
     align-items: center;
     justify-content: space-between;
     color: #707d90;
-    font-size: 11px;
+    font-size: 9px;
   }
 
   :global(.admin-stat-icon) {
@@ -833,7 +833,7 @@
     display: block;
     margin-top: 6px;
     color: #0751db;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     letter-spacing: -.04em;
     line-height: 1.2;
@@ -843,7 +843,7 @@
     display: block;
     margin-top: 3px;
     color: #657187;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-dashboard-grid) {
@@ -867,14 +867,14 @@
 
   :global(.admin-panel-heading h2) {
     color: #0751db;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
   }
 
   :global(.admin-panel-heading p) {
     margin-top: 3px;
     color: #8994a5;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-panel-heading > a) {
@@ -882,7 +882,7 @@
     align-items: center;
     gap: 5px;
     color: #1552b1;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
@@ -910,7 +910,7 @@
     padding: 0 14px;
     color: #0751db;
     background: #fbfcfe;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: .025em;
   }
@@ -920,7 +920,7 @@
     padding: 9px 14px;
     border-top: 1px solid #f0f2f6;
     color: #657187;
-    font-size: 10px;
+    font-size: 8px;
     vertical-align: middle;
   }
 
@@ -937,14 +937,14 @@
     max-width: 220px;
     overflow: hidden;
     color: #28364d;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
     text-overflow: ellipsis;
   }
 
   :global(.admin-cell-secondary) {
     color: #8490a1;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-status) {
@@ -954,7 +954,7 @@
     padding: 4px 8px;
     border: 1px solid transparent;
     border-radius: 20px;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 600;
     line-height: 1.25;
     white-space: nowrap;
@@ -997,7 +997,7 @@
     color: #1654b4;
     background: transparent;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
     text-decoration: none;
   }
@@ -1043,14 +1043,14 @@
 
   :global(.admin-quick-actions strong) {
     color: #2a3951;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
   }
 
   :global(.admin-quick-actions small) {
     margin-top: 2px;
     color: #8995a6;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-quick-actions > a > svg) {
@@ -1068,7 +1068,7 @@
     color: #748197;
     background: none;
     cursor: pointer;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-row-actions) {
@@ -1136,7 +1136,7 @@
     outline: 0;
     color: #27364d;
     background: transparent;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-search input::placeholder) {
@@ -1157,7 +1157,7 @@
     color: #58667c;
     background: transparent;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-date-filter input) {
@@ -1176,7 +1176,7 @@
   :global(.admin-category-chips > span) {
     margin-right: 2px;
     color: #8994a5;
-    font-size: 9px;
+    font-size: 8px;
     white-space: nowrap;
   }
 
@@ -1188,7 +1188,7 @@
     color: #657187;
     background: white;
     cursor: pointer;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-category-chips button:hover),
@@ -1206,7 +1206,7 @@
     padding: 12px 15px;
     border-top: 1px solid #edf0f4;
     color: #8590a1;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-table-footer i) {
@@ -1234,7 +1234,7 @@
     color: #5c6a80;
     background: white;
     cursor: pointer;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-pagination button:hover:not(:disabled)) {
@@ -1269,11 +1269,11 @@
 
   :global(.admin-empty-inline strong) {
     color: #0751db;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-empty-inline > span:last-child) {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-empty-icon) {
@@ -1301,12 +1301,12 @@
 
   :global(.admin-empty-state h2) {
     color: #0751db;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   :global(.admin-empty-state p) {
     max-width: 360px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   :global(.admin-modal-backdrop) {
@@ -1330,13 +1330,13 @@
 
   :global(.admin-modal h2) {
     color: #0751db;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   :global(.admin-modal p) {
     margin-top: 8px;
     color: #69778c;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.6;
   }
 
@@ -1368,7 +1368,7 @@
     gap: 6px;
     margin: 0 18px 15px;
     color: #49576d;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
   }
 
@@ -1395,7 +1395,7 @@
     outline: none;
     color: #293850;
     background: #fff;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 400;
   }
 
@@ -1420,7 +1420,7 @@
   :global(.admin-field > small) {
     align-self: flex-end;
     color: #657187;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
   }
 
@@ -1455,7 +1455,7 @@
 
   :global(.admin-content-dialog-heading h2) {
     color: #0751db;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   :global(.admin-content-form) {
@@ -1489,7 +1489,7 @@
   :global(.admin-content-error) {
     display: block;
     color: #b42318;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 500;
   }
 
@@ -1515,7 +1515,7 @@
   :global(.admin-content-form-note) {
     margin-top: 12px !important;
     color: #7a8799;
-    font-size: 10px;
+    font-size: 8px;
     text-align: right;
   }
 
@@ -1528,7 +1528,7 @@
     display: block;
     margin-bottom: 9px;
     color: #738097;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: .08em;
   }
@@ -1536,7 +1536,7 @@
   :global(.admin-content-preview h3) {
     margin-bottom: 4px;
     color: #17243b;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   :global(.admin-content-preview > small) {
@@ -1564,7 +1564,7 @@
     gap: 10px;
     margin-bottom: 16px;
     color: #758197;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-content-details dl) {
@@ -1584,13 +1584,13 @@
 
   :global(.admin-content-details dt) {
     color: #7a8799;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-content-details dd) {
     margin: 3px 0 0;
     color: #2f3c52;
-    font-size: 11px;
+    font-size: 9px;
     overflow-wrap: anywhere;
   }
 
@@ -1603,13 +1603,13 @@
   :global(.admin-content-details section h3) {
     margin-bottom: 5px;
     color: #174b9b;
-    font-size: 11px;
+    font-size: 9px;
   }
 
   :global(.admin-content-details section p) {
     margin-top: 4px;
     color: #5f6d81;
-    font-size: 11px;
+    font-size: 9px;
     line-height: 1.65;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -1646,7 +1646,7 @@
     border-radius: 6px;
     color: #8c97a8;
     background: #fafbfd;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 400;
   }
 
@@ -1688,7 +1688,7 @@
   :global(.admin-editor-toolbar span) {
     margin-left: auto;
     color: #9aa4b2;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 400;
   }
 
@@ -1717,11 +1717,11 @@
 
   :global(.admin-image-placeholder strong) {
     color: #53627a;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-image-placeholder small) {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 400;
   }
 
@@ -1737,7 +1737,7 @@
 
   :global(.admin-form-actions > span) {
     color: #8a95a5;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-form-actions > div) {
@@ -1762,19 +1762,19 @@
 
   :global(.admin-preview-card > h1) {
     color: #0751db;
-    font-size: 22px;
+    font-size: 20px;
   }
 
   :global(.admin-preview-card > p) {
     margin-top: 7px;
     color: #68768b;
-    font-size: 12px;
+    font-size: 10px;
   }
 
   :global(.admin-preview-copy) {
     margin-top: 14px;
     color: #4f5d73;
-    font-size: 12px;
+    font-size: 10px;
     white-space: pre-wrap;
   }
 
@@ -1804,18 +1804,18 @@
 
   :global(.admin-search-preview strong) {
     color: #1c4d95;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
   }
 
   :global(.admin-search-preview small) {
     color: #34814b;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-search-preview p) {
     color: #687382;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-seo-actions) {
@@ -1883,14 +1883,14 @@
   :global(.admin-profile-placeholder strong),
   :global(.admin-brand-preview strong) {
     color: #34435b;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-profile-placeholder small),
   :global(.admin-brand-preview small) {
     margin-top: 3px;
     color: #8894a5;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-toggle-row) {
@@ -1902,7 +1902,7 @@
     margin: 0 18px;
     border-top: 1px solid #eff1f5;
     color: #59677c;
-    font-size: 10px;
+    font-size: 8px;
     cursor: pointer;
   }
 
@@ -1968,13 +1968,13 @@
 
   :global(.admin-security-row strong) {
     color: #4a5870;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-security-row small) {
     margin-top: 3px;
     color: #8994a5;
-    font-size: 9px;
+    font-size: 8px;
   }
 
   :global(.admin-login-card) {
@@ -2008,7 +2008,7 @@
 
   :global(.admin-login-heading > span) {
     color: #6e7e96;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: .13em;
   }
@@ -2016,7 +2016,7 @@
   :global(.admin-login-heading h1) {
     margin-top: 7px;
     color: #0751db;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     letter-spacing: -.03em;
   }
@@ -2024,7 +2024,7 @@
   :global(.admin-login-heading p) {
     margin-top: 5px;
     color: #7d899a;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.4;
   }
 
@@ -2032,7 +2032,7 @@
     display: block;
     margin-bottom: 12px;
     color: #43516a;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 600;
   }
 
@@ -2065,7 +2065,7 @@
     outline: 0;
     color: #27364d;
     background: transparent;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 400;
   }
 
@@ -2093,7 +2093,7 @@
     display: block;
     margin-top: 4px;
     color: #a43e3e;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 400;
   }
 
@@ -2111,7 +2111,7 @@
     gap: 7px;
     margin: 0;
     color: #627088;
-    font-size: 10px;
+    font-size: 8px;
     white-space: nowrap;
     cursor: pointer;
   }
@@ -2136,7 +2136,7 @@
     border-radius: 5px;
     color: #745a2d;
     background: #fcf8ef;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-login-dev) {
@@ -2156,13 +2156,13 @@
   }
 
   :global(.admin-login-dev p) {
-    font-size: 11px;
+    font-size: 9px;
     line-height: 1.45;
   }
 
   :global(.admin-login-dev strong) {
     color: #3d506c;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   :global(.admin-login-row .admin-login-return) {
@@ -2174,7 +2174,7 @@
     display: block;
     margin-top: 12px;
     color: #1b56aa;
-    font-size: 10px;
+    font-size: 8px;
     text-align: center;
     text-decoration: none;
   }
@@ -2188,7 +2188,7 @@
     padding-top: 10px;
     border-top: 1px solid #edf0f4;
     color: #99a3b0;
-    font-size: 9px;
+    font-size: 8px;
     text-align: center;
   }
 
@@ -2212,7 +2212,7 @@
     gap: 13px;
   }
   :global(.admin-page-heading h1) {
-    font-size: 22px;
+    font-size: 20px;
   }
   :global(.admin-heading-actions) {
     width: 100%;
@@ -2231,7 +2231,7 @@
   :global(.admin-stat-top) {
     align-items: flex-start;
     gap: 5px;
-    font-size: 10px;
+    font-size: 8px;
   }
   :global(.admin-stat-icon) {
     width: 27px;
@@ -2239,7 +2239,7 @@
   }
   :global(.admin-stat-card > strong) {
     margin-top: 7px;
-    font-size: 21px;
+    font-size: 19px;
   }
   :global(.admin-toolbar) {
     align-items: stretch;
@@ -2421,7 +2421,7 @@
   }
   .breadcrumb {
     gap: 6px;
-    font-size: 11px;
+    font-size: 9px;
   }
   .content {
     padding: 22px 15px 32px;
@@ -2447,7 +2447,7 @@
 .root :global(.admin-preview-card > h1),
 .root :global(.admin-login-heading h1) {
   color: #0751db;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .root :global(.admin-panel-heading p),
@@ -2495,7 +2495,7 @@
 .root :global(.profileCopy small),
 .root :global(.actionPopover p),
 .root :global(.actionPopover a) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-panel-heading p),
@@ -2525,7 +2525,7 @@
 
 .root :global(.admin-table th) {
   color: #0751db;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-stat-card > small) {
@@ -2543,26 +2543,26 @@
 }
 
 .root :global(.admin-status) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-text-action),
 .root :global(.admin-panel-heading > a),
 .root :global(.admin-row-actions) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-toolbar select),
 .root :global(.admin-search input),
 .root :global(.admin-date-filter input) {
-  font-size: 17px;
+  font-size: 15px;
   color: #111;
 }
 
 .root :global(.admin-category-chips button),
 .root :global(.admin-pagination button),
 .root :global(.admin-pagination > span) {
-  font-size: 17px;
+  font-size: 15px;
   color: #111;
 }
 
@@ -2577,7 +2577,7 @@
 .root :global(.admin-modal h2),
 .root :global(.admin-preview-card > h1),
 .root :global(.admin-login-heading h1) {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .root :global(.navGroupLabel),
@@ -2586,7 +2586,7 @@
 }
 
 .root .brandCaption {
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: .08em;
   white-space: nowrap;
 }
@@ -2595,13 +2595,13 @@
 .root .navLink,
 .root .logoutLink {
   color: #fff;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .root .previewLabel,
 .root .sidebarFootnote {
   color: #fff;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-stat-card > strong) {
@@ -2610,7 +2610,7 @@
 
 .root :global(.admin-login-field > span),
 .root :global(.admin-field > span) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-panel-heading > a),
@@ -2625,17 +2625,35 @@
 
 .root :global(.admin-category-chips > span),
 .root :global(.admin-search-preview > span) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-stat-card > strong) {
-  font-size: 22px;
+  font-size: 20px;
+}
+
+.root :global(.admin-stat-card-action) {
+  border: 1px solid #e6eaf0;
+  color: inherit;
+  background: #fff;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.root :global(.admin-stat-card-action:focus-visible) {
+  outline: 2px solid #0751db;
+  outline-offset: 3px;
+}
+
+.root :global(.admin-dashboard-return) {
+  margin-bottom: 14px;
 }
 
 .root :global(.admin-button),
 .root :global(.admin-toolbar label),
 .root :global(.profileCopy strong) {
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root :global(.admin-page-heading p),
@@ -2664,7 +2682,7 @@
 .root .content *,
 .root .topbar * {
   color: #111;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .root .content h1,
@@ -2674,7 +2692,7 @@
 .root .content h5,
 .root .content h6 {
   color: #0751db;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .root .content :global(.admin-button:not(.admin-button-secondary)) {
@@ -2847,6 +2865,125 @@
   flex: 0 0 auto;
 }
 
+.root :global(.admin-enquiry-export-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.enquiryNameTrigger {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.enquiryNameTrigger:focus-visible {
+  outline: 2px solid #0751db;
+  outline-offset: 3px;
+}
+
+.enquiryHoverCard {
+  position: fixed;
+  z-index: 2200;
+  width: min(380px, calc(100vw - 24px));
+  max-height: min(520px, calc(100vh - 24px));
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid #dce4ef;
+  border-radius: 10px;
+  color: #17243b;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(7, 28, 79, .2);
+  font: 14px/1.45 Arial, Helvetica, sans-serif;
+}
+
+.enquiryHoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #071c4f;
+  font-size: 13px;
+}
+
+.enquiryHoverHeader button,
+.enquiryHoverState button,
+.enquiryHoverActions button,
+.enquiryHoverActions a {
+  border: 0;
+  border-radius: 5px;
+  color: #0751db;
+  background: #f0f5ff;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+
+.enquiryHoverHeader button {
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.enquiryHoverDetails {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+.enquiryHoverDetails > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.enquiryHoverDetails dt {
+  color: #63718a;
+  font-weight: 600;
+}
+
+.enquiryHoverDetails dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.enquiryHoverMessage dd {
+  max-height: 120px;
+  overflow: auto;
+}
+
+.enquiryHoverState {
+  color: #5b687b;
+}
+
+.enquiryHoverState button {
+  margin-top: 8px;
+  padding: 6px 10px;
+}
+
+.enquiryHoverActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e8edf4;
+}
+
+.enquiryHoverActions button,
+.enquiryHoverActions a {
+  padding: 7px 10px;
+  font-weight: 600;
+}
+
 .root :global(.admin-engagement-email) {
   display: inline-block;
   color: #40516a;
@@ -2856,8 +2993,9 @@
 .root :global(.admin-engagement-actions) {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 12px;
+  flex-wrap: nowrap;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .root :global(.admin-reject-action) {
@@ -2909,7 +3047,7 @@
 
 .root :global(.admin-engagement-field .admin-field-error) {
   align-self: flex-start;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .root :global(.admin-engagement-form-actions) {
@@ -3085,7 +3223,7 @@
 
 .root :global(.admin-detail-heading h2) {
   color: #0751db;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .root :global(.admin-detail-heading button) {
@@ -3253,22 +3391,22 @@
 
 .loginRoot :global(.admin-login-heading h1) {
   margin-top: 5px;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .loginRoot :global(.admin-login-heading p) {
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.3;
 }
 
 .loginRoot :global(.admin-login-field) {
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .loginRoot :global(.admin-login-field > span) {
   margin-bottom: 4px;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .loginRoot :global(.admin-login-input) {
@@ -3276,7 +3414,7 @@
 }
 
 .loginRoot :global(.admin-login-input input) {
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .loginRoot :global(.admin-login-row) {
@@ -3285,13 +3423,13 @@
 
 .loginRoot :global(.admin-remember),
 .loginRoot :global(.admin-login-return) {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .loginRoot :global(.admin-login-submit) {
   min-height: 36px;
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .loginRoot :global(.admin-login-dev) {
@@ -3301,12 +3439,12 @@
 }
 
 .loginRoot :global(.admin-login-dev p) {
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.3;
 }
 
 .loginRoot :global(.admin-login-dev strong) {
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .loginRoot :global(.admin-login-return) {

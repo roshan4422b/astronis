@@ -109,6 +109,10 @@ The CMS is not production-configured in this repository. Before launch, apply th
 
 The enquiry form retains browser/server validation, consent, a honeypot, same-origin checks and field limits. A successful response is returned only after the enquiry is inserted in the configured Supabase database. Without Supabase configuration or if persistence fails, the API returns an explicit error and does not claim success. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` as server-only variables if email notifications are wanted; their absence does not prevent an enquiry from being saved to the admin inbox.
 
+## Admin enquiry management
+
+The existing `/admin/enquiries` inbox exports genuine `.xlsx` workbooks through admin-authorized, paginated server queries. “Download Excel” exports all enquiries regardless of active filters; “Download Filtered” applies the current search, status, and date filters. Each record can also be exported individually. Hovering or focusing an enquiry name opens its authorized full-details preview; clicking or tapping keeps it open.
+
 ## Public form verification
 
 All public enquiry, professional application, consultation, testimonial and subscription forms require a verified email OTP and a server-checked, short-lived, single-use proof before submission. A 6-digit one-time code is delivered with the existing Mailtrap transactional email API integration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Global and professional enquiries, professional applications, consultations, and subscriptions also require a Cloudflare Turnstile token verified server-side. The testimonial form displays Turnstile but does not require its token; testimonial submissions remain protected by the one-time email proof.

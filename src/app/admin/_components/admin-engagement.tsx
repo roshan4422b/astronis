@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 import {
   AdminIcon,
   DataTable,
@@ -18,11 +19,13 @@ import {
 import { useAdminState } from "./admin-state";
 import type { AdminEnquiry, AdminTestimonial } from "./admin-state";
 import type { EnquiryStatus, TestimonialApprovalStatus } from "../admin-data";
+import styles from "./admin.module.css";
 import {
   TestimonialMediaFields,
   type TestimonialMediaValue,
 } from "./testimonial-media-fields";
 import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
+import { displayEnquiryLabel, getEnquiryPreviewPosition } from "@/lib/admin/enquiry-display";
 
 const pageSize = 5;
 
@@ -35,6 +38,64 @@ function displayDate(value: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(date);
+}
+
+function displayDateTime(value: string) {
+  const date = new Date(value);
+  if (!value || Number.isNaN(date.getTime())) return "Date not available";
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
+type EnquiryApiRecord = {
+  id: string;
+  name: string | null;
+  email: string | null;
+  subject: string | null;
+  created_at: string | null;
+  status: string | null;
+  company: string | null;
+  form_type: string | null;
+  message: string | null;
+  phone?: string | null;
+  internal_notes?: string | null;
+  updated_at?: string | null;
+  data?: Record<string, unknown> | null;
+};
+
+function mapEnquiryRecord(record: EnquiryApiRecord): AdminEnquiry {
+  const data = record.data && typeof record.data === "object" ? record.data : {};
+  return {
+    id: record.id,
+    name: record.name || "",
+    email: record.email || "",
+    subject: record.subject || "",
+    date: record.created_at || "",
+    status: (record.status || "New") as EnquiryStatus,
+    company: record.company || "",
+    formType: record.form_type || "",
+    message: record.message || "",
+    phone: record.phone || (typeof data.phone === "string" ? data.phone : ""),
+    internalNotes: record.internal_notes || "",
+    data,
+    updatedAt: record.updated_at || "",
+  };
+}
+
+function enquiryAdditionalDetails(enquiry: AdminEnquiry) {
+  const omitted = new Set([
+    "name", "email", "phone", "company", "subject", "service", "message", "formtype",
+    "consent", "website", "captchaToken", "emailVerificationToken",
+  ]);
+  return Object.entries(enquiry.data || {}).filter(([key, value]) => {
+    if (omitted.has(key) || /token|secret|password/i.test(key)) return false;
+    return value !== null && value !== undefined && value !== "";
+  }).map(([key, value]) => ({
+    label: key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").replace(/^./, (letter) => letter.toUpperCase()),
+    value: typeof value === "string" ? value : JSON.stringify(value),
+  }));
 }
 
 function safeVideoUrl(value: string) {
@@ -139,17 +200,46 @@ export function EnquiryDetailsDialog({
   onClose,
   onStatusChange,
   onNotesChange,
+  onDelete,
 }: {
   enquiry: AdminEnquiry | undefined;
   onClose: () => void;
   onStatusChange: (status: EnquiryStatus) => Promise<boolean>;
   onNotesChange: (notes: string) => Promise<boolean>;
+  onDelete?: (id: string, name: string) => Promise<{ deleted: boolean; message?: string }>;
 }) {
   const [statusNotice, setStatusNotice] = useState("");
   const [notes, setNotes] = useState(enquiry?.internalNotes || "");
   const [savingNotes, setSavingNotes] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [details, setDetails] = useState<AdminEnquiry | undefined>(enquiry);
+  const [detailsLoading, setDetailsLoading] = useState(Boolean(enquiry));
+  const [detailsError, setDetailsError] = useState("");
+  const enquiryId = enquiry?.id;
 
-  if (!enquiry) {
+  useEffect(() => {
+    if (!enquiryId) return;
+    let active = true;
+    void fetch(`/api/admin/enquiries/${encodeURIComponent(enquiryId)}`, { cache: "no-store" })
+      .then(async (response) => {
+        const result = await response.json() as { record?: EnquiryApiRecord; error?: string };
+        if (!response.ok || !result.record) throw new Error(result.error || "Could not load complete enquiry details.");
+        if (active) {
+          const record = mapEnquiryRecord(result.record);
+          setDetails(record);
+          setNotes(record.internalNotes || "");
+        }
+      })
+      .catch((error: unknown) => {
+        if (active) setDetailsError(error instanceof Error ? error.message : "Could not load complete enquiry details.");
+      })
+      .finally(() => {
+        if (active) setDetailsLoading(false);
+      });
+    return () => { active = false; };
+  }, [enquiryId]);
+
+  if (!details) {
     return (
       <AccessibleDialog title="Enquiry unavailable" labelledBy="enquiry-dialog-title" onClose={onClose}>
         <EmptyState
@@ -160,28 +250,37 @@ export function EnquiryDetailsDialog({
     );
   }
 
+  const additionalDetails = enquiryAdditionalDetails(details);
   return (
     <AccessibleDialog title="Enquiry details" labelledBy="enquiry-dialog-title" onClose={onClose}>
+      {detailsLoading ? <p role="status">Loading complete enquiry details…</p> : null}
+      {detailsError ? <p className="admin-detail-note" role="status">{detailsError}</p> : null}
       <dl className="admin-detail-list">
-        <div><dt>Name</dt><dd>{enquiry.name}</dd></div>
-        <div><dt>Email</dt><dd>{enquiry.email}</dd></div>
-        {enquiry.phone ? <div><dt>Phone</dt><dd>{enquiry.phone}</dd></div> : null}
-        <div><dt>Company</dt><dd>{enquiry.company || "Not provided"}</dd></div>
-        <div><dt>Subject</dt><dd>{enquiry.subject}</dd></div>
-        <div><dt>Received</dt><dd>{displayDate(enquiry.date)}</dd></div>
-        <div><dt>Form type</dt><dd>{enquiry.formType}</dd></div>
-        <div><dt>Current status</dt><dd><StatusBadge status={enquiry.status} /></dd></div>
-        <div className="admin-detail-message"><dt>Message</dt><dd>{enquiry.message}</dd></div>
+        <div><dt>Name</dt><dd>{details.name}</dd></div>
+        <div><dt>Email</dt><dd>{details.email}</dd></div>
+        <div><dt>Phone</dt><dd>{details.phone || "Not provided"}</dd></div>
+        <div><dt>Company</dt><dd>{details.company || "Not provided"}</dd></div>
+        <div><dt>Subject</dt><dd>{displayEnquiryLabel(details.subject)}</dd></div>
+        <div><dt>Received</dt><dd>{displayDateTime(details.date)}</dd></div>
+        <div><dt>Form type</dt><dd>{displayEnquiryLabel(details.formType)}</dd></div>
+        <div><dt>Current status</dt><dd><StatusBadge status={details.status} /></dd></div>
+        <div className="admin-detail-message"><dt>Message</dt><dd>{details.message || "No message provided."}</dd></div>
+        {details.internalNotes ? <div className="admin-detail-message"><dt>Internal notes</dt><dd>{details.internalNotes}</dd></div> : null}
+        {additionalDetails.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
       </dl>
+      <a className="admin-button admin-button-secondary" href={`/api/admin/enquiries/export?id=${encodeURIComponent(details.id)}`}>Download Excel</a>
       <label className="admin-field">
         <span>Update enquiry status</span>
         <select
-          aria-label={`Status for ${enquiry.name}`}
-          value={enquiry.status}
+          aria-label={`Status for ${details.name}`}
+          value={details.status}
           onChange={(event) => {
             const status = event.target.value;
             if (status === "New" || status === "In Progress" || status === "Responded" || status === "Closed") {
-              void onStatusChange(status).then((saved) => setStatusNotice(saved ? `Enquiry status saved as ${status}.` : "Could not save the enquiry status."));
+              void onStatusChange(status).then((saved) => {
+                if (saved) setDetails((current) => current ? { ...current, status } : current);
+                setStatusNotice(saved ? `Enquiry status saved as ${status}.` : "Could not save the enquiry status.");
+              });
             }
           }}
         >
@@ -198,9 +297,23 @@ export function EnquiryDetailsDialog({
       <button className="admin-button admin-button-secondary" type="button" disabled={savingNotes} onClick={async () => {
         setSavingNotes(true);
         const saved = await onNotesChange(notes);
+        if (saved) setDetails((current) => current ? { ...current, internalNotes: notes } : current);
         setStatusNotice(saved ? "Internal notes saved." : "Could not save internal notes.");
         setSavingNotes(false);
       }}>{savingNotes ? "Saving…" : "Save internal notes"}</button>
+      {onDelete ? (
+        <button
+          className="admin-button admin-button-secondary admin-reject-action"
+          type="button"
+          disabled={deleting}
+          onClick={async () => {
+            setDeleting(true);
+            const result = await onDelete(details.id, details.name);
+            if (!result.deleted) setStatusNotice(result.message || "Could not delete enquiry.");
+            setDeleting(false);
+          }}
+        >{deleting ? "Deleting…" : "Delete enquiry"}</button>
+      ) : null}
       {statusNotice ? <p className="admin-detail-note" role="status">{statusNotice}</p> : null}
     </AccessibleDialog>
   );
@@ -214,7 +327,15 @@ export function EnquiriesManagement() {
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [deletingEnquiry, setDeletingEnquiry] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const previewAnchorRef = useRef<HTMLButtonElement | null>(null);
+  const previewPanelRef = useRef<HTMLDivElement | null>(null);
+  const previewCloseTimer = useRef<number | null>(null);
+  const previewCache = useRef(new Map<string, AdminEnquiry>());
+  const [preview, setPreview] = useState<{ id: string; loading: boolean; record?: AdminEnquiry; error?: string } | null>(null);
+  const [previewPinned, setPreviewPinned] = useState(false);
+  const [previewPosition, setPreviewPosition] = useState({ top: 12, left: 12 });
   const filtered = enquiries.filter((enquiry) => {
     const search = query.trim().toLowerCase();
     return (!search || `${enquiry.name} ${enquiry.email} ${enquiry.subject}`.toLowerCase().includes(search))
@@ -222,23 +343,153 @@ export function EnquiriesManagement() {
       && (!dateFilter || dateInputValue(enquiry.date) === dateFilter);
   });
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+
+  const clearPreviewCloseTimer = useCallback(() => {
+    if (previewCloseTimer.current !== null) {
+      window.clearTimeout(previewCloseTimer.current);
+      previewCloseTimer.current = null;
+    }
+  }, []);
+
+  function loadPreview(id: string) {
+    const cached = previewCache.current.get(id);
+    if (cached) {
+      setPreview({ id, loading: false, record: cached });
+      return;
+    }
+    setPreview({ id, loading: true });
+    void fetch(`/api/admin/enquiries/${encodeURIComponent(id)}`, { cache: "no-store" })
+      .then(async (response) => {
+        const result = await response.json() as { record?: EnquiryApiRecord; error?: string };
+        if (!response.ok || !result.record) throw new Error(result.error || "Could not load enquiry details.");
+        const record = mapEnquiryRecord(result.record);
+        previewCache.current.set(id, record);
+        setPreview((current) => current?.id === id ? { id, loading: false, record } : current);
+      })
+      .catch((error: unknown) => {
+        setPreview((current) => current?.id === id
+          ? { id, loading: false, error: error instanceof Error ? error.message : "Could not load enquiry details." }
+          : current);
+      });
+  }
+
+  function openPreview(id: string, anchor: HTMLButtonElement, pin = false) {
+    clearPreviewCloseTimer();
+    previewAnchorRef.current = anchor;
+    if (pin) setPreviewPinned(true);
+    if (preview?.id !== id) loadPreview(id);
+  }
+
+  function schedulePreviewClose() {
+    clearPreviewCloseTimer();
+    if (previewPinned) return;
+    previewCloseTimer.current = window.setTimeout(() => {
+      setPreview(null);
+      previewCloseTimer.current = null;
+    }, 260);
+  }
+
+  const closePreview = useCallback(() => {
+    clearPreviewCloseTimer();
+    setPreview(null);
+    setPreviewPinned(false);
+  }, [clearPreviewCloseTimer]);
+
+  useEffect(() => {
+    if (!preview) return;
+    const positionPreview = () => {
+      const anchor = previewAnchorRef.current;
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      const panel = previewPanelRef.current;
+      const width = panel?.getBoundingClientRect().width || Math.min(380, window.innerWidth - 24);
+      const height = panel?.getBoundingClientRect().height || 300;
+      setPreviewPosition(getEnquiryPreviewPosition(
+        rect,
+        { width, height },
+        { width: window.innerWidth, height: window.innerHeight },
+      ));
+    };
+    const positionFrame = window.requestAnimationFrame(positionPreview);
+    window.addEventListener("resize", positionPreview);
+    window.addEventListener("scroll", positionPreview, true);
+    return () => {
+      window.cancelAnimationFrame(positionFrame);
+      window.removeEventListener("resize", positionPreview);
+      window.removeEventListener("scroll", positionPreview, true);
+    };
+  }, [preview]);
+
+  useEffect(() => {
+    if (!preview || !previewPinned) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (previewAnchorRef.current?.contains(target) || previewPanelRef.current?.contains(target)) return;
+      closePreview();
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closePreview();
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [preview, previewPinned, closePreview]);
+
+  useEffect(() => () => clearPreviewCloseTimer(), [clearPreviewCloseTimer]);
+
+  function downloadEnquiryFile(url: string) {
+    window.location.assign(url);
+  }
+
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize).map((enquiry) => [
-    <strong className="admin-cell-primary" key="name">{enquiry.name}</strong>,
-    <span className="admin-engagement-email" key="email">{enquiry.email}</span>,
-    enquiry.subject,
-    displayDate(enquiry.date),
-    <StatusBadge key="status" status={enquiry.status} />,
     <button
-      key="view"
-      className="admin-text-action"
+      className={`admin-cell-primary ${styles.enquiryNameTrigger}`}
+      key="name"
       type="button"
-      onClick={(event) => {
-        triggerRef.current = event.currentTarget;
-        setSelectedId(enquiry.id);
+      aria-haspopup="dialog"
+      aria-controls="admin-enquiry-hover-details"
+      aria-expanded={preview?.id === enquiry.id}
+      onMouseEnter={(event) => openPreview(enquiry.id, event.currentTarget)}
+      onMouseLeave={schedulePreviewClose}
+      onFocus={(event) => openPreview(enquiry.id, event.currentTarget)}
+      onBlur={(event) => {
+        if (event.relatedTarget instanceof Node && previewPanelRef.current?.contains(event.relatedTarget)) return;
+        if (previewPinned) closePreview();
+        else schedulePreviewClose();
+      }}
+      onClick={(event) => openPreview(enquiry.id, event.currentTarget, true)}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") closePreview();
       }}
     >
-      View Details
+      {enquiry.name}
     </button>,
+    <span className="admin-engagement-email" key="email">{enquiry.email}</span>,
+    displayEnquiryLabel(enquiry.subject),
+    displayDate(enquiry.date),
+    <StatusBadge key="status" status={enquiry.status} />,
+    <div className="admin-engagement-actions" key="actions">
+      <button
+        className="admin-text-action"
+        type="button"
+        onClick={(event) => {
+          triggerRef.current = event.currentTarget;
+          closePreview();
+          setSelectedId(enquiry.id);
+        }}
+      >View Details</button>
+      <button className="admin-text-action" type="button" onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?id=${encodeURIComponent(enquiry.id)}`)}>Download Excel</button>
+      <button
+        className="admin-text-action admin-reject-action"
+        type="button"
+        disabled={deletingEnquiry}
+        onClick={() => { void deleteEnquiry(enquiry.id, enquiry.name); }}
+      >Delete</button>
+    </div>,
   ]);
   const selected = enquiries.find((enquiry) => enquiry.id === selectedId);
 
@@ -261,19 +512,61 @@ export function EnquiriesManagement() {
     }
   }
 
+  async function deleteEnquiry(id: string, name: string): Promise<{ deleted: boolean; message?: string }> {
+    if (deletingEnquiry) return { deleted: false, message: "Another enquiry deletion is already in progress." };
+    if (!window.confirm(`Permanently delete the enquiry from "${name}"? This cannot be undone.`)) {
+      return { deleted: false, message: "Deletion cancelled." };
+    }
+
+    setDeletingEnquiry(true);
+    try {
+      const response = await fetch(`/api/admin/enquiries/${encodeURIComponent(id)}`, { method: "DELETE" });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Could not delete enquiry.");
+      setEnquiries((current) => current.filter((item) => item.id !== id));
+      previewCache.current.delete(id);
+      if (preview?.id === id) closePreview();
+      setSelectedId((current) => current === id ? null : current);
+      setNotice(`Enquiry from ${name} was deleted.`);
+      window.requestAnimationFrame(() => {
+        document.querySelector<HTMLInputElement>(".admin-toolbar .admin-search input")?.focus();
+      });
+      return { deleted: true };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not delete enquiry.";
+      setNotice(message);
+      return { deleted: false, message };
+    } finally {
+      setDeletingEnquiry(false);
+    }
+  }
+
   const clearFilters = () => {
     setQuery("");
     setStatusFilter("All statuses");
     setDateFilter("");
     setPage(1);
   };
+  const hasActiveFilters = Boolean(query.trim() || statusFilter !== "All statuses" || dateFilter);
+  const previewRecord = preview?.record;
+  const filteredExportParams = new URLSearchParams({
+    scope: "filtered",
+    search: query.trim(),
+    status: statusFilter === "All statuses" ? "" : statusFilter,
+    date: dateFilter,
+  });
 
   return (
     <>
       <PageHeading
         title="Contact Enquiries"
         description="Review and organise website enquiries in one place."
-        action={<Link className="admin-button" href="/admin/enquiries/new"><AdminIcon name="plus" size={16} />Add New Enquiry</Link>}
+        action={
+          <div className="admin-enquiry-export-actions">
+            {hasActiveFilters ? <button className="admin-button admin-button-secondary" type="button" title="Exports enquiries matching the current search, status, and date filters." onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?${filteredExportParams}`)}>Download Filtered</button> : null}
+            <button className="admin-button" type="button" title="Exports all enquiries, ignoring active filters." onClick={() => downloadEnquiryFile("/api/admin/enquiries/export?scope=all")}>Download Excel</button>
+          </div>
+        }
       />
       <div className="admin-stat-grid admin-engagement-stats">
         <StatCard label="Total Enquiries" value={String(enquiries.length)} change="Stored enquiries" icon="inbox" />
@@ -311,11 +604,68 @@ export function EnquiriesManagement() {
       </section>
       {selectedId ? (
         <EnquiryDetailsDialog
+          key={selectedId}
           enquiry={selected}
           onClose={closeDetails}
           onStatusChange={(status) => updateEnquiry(selectedId, { status })}
           onNotesChange={(internalNotes) => updateEnquiry(selectedId, { internalNotes })}
+          onDelete={deleteEnquiry}
         />
+      ) : null}
+      {preview && typeof document !== "undefined" ? createPortal(
+        <div
+          ref={previewPanelRef}
+          className={styles.enquiryHoverCard}
+          id="admin-enquiry-hover-details"
+          role="dialog"
+          aria-label="Enquiry quick details"
+          aria-live="polite"
+          style={{ top: previewPosition.top, left: previewPosition.left }}
+          onMouseEnter={clearPreviewCloseTimer}
+          onMouseLeave={schedulePreviewClose}
+          onFocus={clearPreviewCloseTimer}
+          onBlur={(event) => {
+            if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
+              if (previewPinned) closePreview();
+              else schedulePreviewClose();
+            }
+          }}
+        >
+          <div className={styles.enquiryHoverHeader}>
+            <strong>Enquiry</strong>
+            <button type="button" aria-label="Close enquiry details" onClick={closePreview}>×</button>
+          </div>
+          {preview.loading ? <p className={styles.enquiryHoverState} role="status">Loading enquiry details…</p> : null}
+          {preview.error ? (
+            <div className={styles.enquiryHoverState} role="alert">
+              <p>{preview.error}</p>
+              <button type="button" onClick={() => loadPreview(preview.id)}>Try again</button>
+            </div>
+          ) : null}
+          {!preview.loading && !preview.error && !preview.record ? <p className={styles.enquiryHoverState}>No enquiry details are available.</p> : null}
+          {previewRecord ? (
+            <>
+              <dl className={styles.enquiryHoverDetails}>
+                <div><dt>Name</dt><dd>{previewRecord.name || "Not provided"}</dd></div>
+                <div><dt>Email</dt><dd>{previewRecord.email || "Not provided"}</dd></div>
+                <div><dt>Phone</dt><dd>{previewRecord.phone || "Not provided"}</dd></div>
+                <div><dt>Company</dt><dd>{previewRecord.company || "Not provided"}</dd></div>
+                <div><dt>Subject</dt><dd>{displayEnquiryLabel(previewRecord.subject)}</dd></div>
+                <div><dt>Form type</dt><dd>{displayEnquiryLabel(previewRecord.formType)}</dd></div>
+                <div><dt>Received</dt><dd>{displayDateTime(previewRecord.date)}</dd></div>
+                <div><dt>Status</dt><dd>{previewRecord.status}</dd></div>
+                <div className={styles.enquiryHoverMessage}><dt>Message</dt><dd>{previewRecord.message || "No message provided."}</dd></div>
+                {previewRecord.internalNotes ? <div className={styles.enquiryHoverMessage}><dt>Internal notes</dt><dd>{previewRecord.internalNotes}</dd></div> : null}
+                {enquiryAdditionalDetails(previewRecord).map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+              </dl>
+              <div className={styles.enquiryHoverActions}>
+                <button type="button" onClick={() => { closePreview(); setSelectedId(previewRecord.id); }}>Open details</button>
+                <button type="button" onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?id=${encodeURIComponent(previewRecord.id)}`)}>Download Excel</button>
+              </div>
+            </>
+          ) : null}
+        </div>,
+        document.body,
       ) : null}
     </>
   );
