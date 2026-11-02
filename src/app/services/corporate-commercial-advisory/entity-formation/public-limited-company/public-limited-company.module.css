@@ -450,3 +450,11 @@
 .final {
   background: linear-gradient(115deg, #0751db, #0b3e9f);
 }
+
+.businessDecisionHeading h2 {
+  transition: color 220ms ease;
+}
+
+.page .services .businessDecisionHeading h2:hover {
+  color: var(--blue) !important;
+}
