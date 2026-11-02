@@ -33,7 +33,6 @@ export default function LicensingRegistrationsPage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         theme="licensing"
         title="Explore our capabilities"
         items={directory.map((category) => ({

@@ -21,14 +21,16 @@ function Heading({
   title,
   text,
   light = false,
+  className,
 }: {
   eyebrow: string;
   title: string;
   text?: string;
   light?: boolean;
+  className?: string;
 }) {
   return (
-    <div className={`${styles.heading} ${light ? styles.lightHeading : ""}`}>
+    <div className={`${styles.heading} ${light ? styles.lightHeading : ""} ${className ?? ""}`}>
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       {text && <p>{text}</p>}
@@ -104,6 +106,7 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
           <section className={styles.services} id="services" data-section-layout="full-width">
             <div className="container">
               <Heading
+                className={styles.businessDecisionHeading}
                 eyebrow={`OUR SERVICES IN ${detail.title.toUpperCase()}`}
                 title="Integrated advisory for your next business decision"
                 text="A coordinated set of strategic, commercial and implementation workstreams shaped around your objectives."
@@ -174,7 +177,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
               <ol className={styles.timeline}>
                 {detail.process.map((item, index) => (
                   <li key={item.title}>
-                    <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
                     <span className={styles.stepIcon}><Icon name={["people", "search", "chart", "document", "file", "calendar"][index]} /></span>
                     <h3>{item.title}</h3><p>{item.text}</p>
                   </li>
@@ -209,7 +211,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
                 {detail.precautions.map((item, index) => (
                   <article key={item}>
                     <span className={styles.requirementIcon}><Icon name={["search", "document", "shield", "people", "chart"][index % 5]} /></span>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
                     <h3>{item}</h3>
                   </article>
                 ))}

@@ -18,19 +18,22 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
+  const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
+
   useEffect(() => {
     cb.current = onToken;
   }, [onToken]);
 
   const mount = useCallback(() => {
-    if (!ref.current || !window.turnstile || idRef.current) return;
+    if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;
     idRef.current = window.turnstile.render(ref.current, {
-      sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+      sitekey: siteKey,
       callback: (t: string) => cb.current(t),
       "expired-callback": () => cb.current(""),
       "error-callback": () => cb.current(""),
     });
-  }, []);
+  }, [isConfigured, siteKey]);
 
   useEffect(() => {
     mount();
@@ -49,11 +52,15 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
 
   return (
     <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-        strategy="afterInteractive"
-        onLoad={mount}
-      />
+      {isConfigured ? (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          strategy="afterInteractive"
+          onLoad={mount}
+        />
+      ) : (
+        <p role="alert">Security verification is temporarily unavailable.</p>
+      )}
       <div ref={ref} />
     </>
   );

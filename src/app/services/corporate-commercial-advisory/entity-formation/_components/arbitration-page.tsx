@@ -170,9 +170,8 @@ export default function ArbitrationPage({ data }: { data: EntityFormationPageDat
             <p>{data.processDescription}</p>
           </div>
           <ol className={styles.processGrid}>
-            {data.process.map(([title, description], index) => (
+            {data.process.map(([title, description]) => (
               <li key={title}>
-                <span className={styles.stepNumber}>{index + 1}</span>
                 <h3>{title}</h3>
                 <p>{description}</p>
               </li>

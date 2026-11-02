@@ -31,7 +31,6 @@ export default function IntellectualPropertyPage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         title="Explore our capabilities"
         items={directory.map((category) => ({
           id: category.categorySlug,

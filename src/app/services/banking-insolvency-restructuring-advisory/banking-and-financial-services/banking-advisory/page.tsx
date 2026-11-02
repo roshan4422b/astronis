@@ -122,9 +122,8 @@ export default function BankingAdvisoryPage() {
             <p>Whether you are arranging, providing or receiving finance, we help clarify the legal work involved.</p>
           </div>
           <div className={styles.audienceGrid}>
-            {audience.map(([title, description], index) => (
+            {audience.map(([title, description]) => (
               <article className={styles.infoCard} key={title}>
-                <span className={styles.cardNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <h3>{title}</h3>
                 <p>{description}</p>
               </article>
@@ -173,9 +172,8 @@ export default function BankingAdvisoryPage() {
             <p>We align the legal work to your transaction priorities and the information available.</p>
           </div>
           <ol className={styles.processList}>
-            {process.map(([title, description], index) => (
+            {process.map(([title, description]) => (
               <li className={styles.processStep} key={title}>
-                <span className={styles.processNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <div><h3>{title}</h3><p>{description}</p></div>
               </li>
             ))}
@@ -191,9 +189,8 @@ export default function BankingAdvisoryPage() {
             <p>The relevant records vary by transaction. These are common starting points, not a fixed checklist.</p>
           </div>
           <div className={styles.documentList}>
-            {documentGroups.map(([title, description], index) => (
+            {documentGroups.map(([title, description]) => (
               <article className={styles.documentItem} key={title}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
                 <div><h3>{title}</h3><p>{description}</p></div>
               </article>
             ))}
