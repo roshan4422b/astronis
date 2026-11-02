@@ -109,15 +109,16 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
     readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/202611020001_testimonial_media_notifications.sql", import.meta.url), "utf8"),
   ]);
-  const verificationCheck = route.indexOf("await consumeFormVerification(");
+  const verificationCheck = route.indexOf("await consumeEmailVerification(");
   const insert = route.indexOf('serviceClient.from("cms_content").insert(');
 
   assert.ok(verificationCheck >= 0);
   assert.ok(insert > verificationCheck);
   assert.match(route, /const serviceClient = getTestimonialMediaService\(\)/);
-  assert.match(route, /await consumeFormVerification\(\s*request,\s*get\("email"\),\s*get\("captchaToken"\),\s*get\("emailVerificationToken"\),\s*\)/);
-  assert.match(form, /data\.get\("captchaToken"\)/);
-  assert.doesNotMatch(form, /data\.delete\("captchaToken"\)/);
+  assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
+  assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.doesNotMatch(form, /captchaToken/);
   assert.doesNotMatch(route, /request\.json\(\)/);
   assert.match(migration, /drop policy if exists "Public testimonial submissions" on public\.cms_content;/i);
   assert.match(migration, /revoke insert on table public\.cms_content from public,\s*anon;/i);
@@ -140,16 +141,21 @@ test("reports missing testimonial Supabase service configuration without exposin
   assert.doesNotMatch(service, /console\.(?:log|error|warn)\([^)]*serviceRoleKey/);
   assert.doesNotMatch(service, /NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY/);
   assert.match(route, /Secure testimonial submission is not configured\. Please try again later\./);
-  assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeFormVerification("));
+  assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeEmailVerification("));
 });
 
-test("refreshes expired Turnstile and blocks testimonial submission without a fresh token", async () => {
+test("keeps Turnstile visible but non-blocking in testimonial forms", async () => {
   const [widget, form] = await Promise.all([
     readFile(new URL("../src/components/TurnstileWidget.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(widget, /"expired-callback": \(\) => \{\s*reportError\("The CAPTCHA expired\.[\s\S]*?window\.turnstile\?\.reset\(idRef\.current\)/);
-  assert.match(form, /if \(!String\(data\.get\("captchaToken"\) \|\| ""\)\.trim\(\)\) \{\s*setStatus\("The CAPTCHA expired\.[\s\S]*?return;/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.doesNotMatch(form, /captchaToken|CAPTCHA expired/);
+  const verification = await readFile(new URL("../src/app/_components/email-otp-verification.tsx", import.meta.url), "utf8");
+  assert.match(verification, /captchaDisplayOnly \? \(\) => \{\} : updateCaptchaToken/);
+  assert.match(verification, /captchaDisplayOnly \? undefined : setStatus/);
+  assert.match(verification, /!captchaDisplayOnly && <input type="hidden" name="captchaToken"/);
 });
 
 test("protects source-defined CMS testimonials and shared media from deletion", async () => {
