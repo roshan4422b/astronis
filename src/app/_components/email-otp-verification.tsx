@@ -19,11 +19,13 @@ export default function EmailOtpVerification({
   onCaptchaToken,
   resetKey = 0,
   captchaOptional = false,
+  captchaDisplayOnly = false,
 }: {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
   resetKey?: number;
   captchaOptional?: boolean;
+  captchaDisplayOnly?: boolean;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const codeInputId = useId();
@@ -163,7 +165,11 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget onToken={updateCaptchaToken} onError={setStatus} resetKey={resetKey + captchaReset} />
+        <TurnstileWidget
+          onToken={captchaDisplayOnly ? () => {} : updateCaptchaToken}
+          onError={captchaDisplayOnly ? undefined : setStatus}
+          resetKey={resetKey + captchaReset}
+        />
         <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
@@ -190,7 +196,7 @@ export default function EmailOtpVerification({
       </div>
       {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
+      {!captchaDisplayOnly && <input type="hidden" name="captchaToken" value={captchaToken} readOnly />}
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );
