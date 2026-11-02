@@ -142,7 +142,10 @@ export default function TestimonialForm({
     const form = e.currentTarget;
     const data = new FormData(form);
     data.set("format", format);
-    data.delete("captchaToken");
+    if (!String(data.get("captchaToken") || "").trim()) {
+      setStatus("The CAPTCHA expired. Please complete it again before submitting.");
+      return;
+    }
     if (format === "video" && video)
       data.set("video", new File([video], `testimonial.${video.type.split(";")[0] === "video/mp4" ? "mp4" : video.type.split(";")[0] === "video/quicktime" ? "mov" : "webm"}`, { type: video.type }));
     if (format === "video") data.set("videoSource", recorded ? "recorded" : "uploaded");

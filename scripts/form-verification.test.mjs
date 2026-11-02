@@ -104,17 +104,20 @@ const {
 } = await import("../src/lib/testimonial-media.ts");
 
 test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
-  const [route, migration] = await Promise.all([
+  const [route, form, migration] = await Promise.all([
     readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/202611020001_testimonial_media_notifications.sql", import.meta.url), "utf8"),
   ]);
-  const otpCheck = route.indexOf("await consumeEmailVerification(");
+  const verificationCheck = route.indexOf("await consumeFormVerification(");
   const insert = route.indexOf('serviceClient.from("cms_content").insert(');
 
-  assert.ok(otpCheck >= 0);
-  assert.ok(insert > otpCheck);
+  assert.ok(verificationCheck >= 0);
+  assert.ok(insert > verificationCheck);
   assert.match(route, /const serviceClient = getTestimonialMediaService\(\)/);
-  assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
+  assert.match(route, /await consumeFormVerification\(\s*request,\s*get\("email"\),\s*get\("captchaToken"\),\s*get\("emailVerificationToken"\),\s*\)/);
+  assert.match(form, /data\.get\("captchaToken"\)/);
+  assert.doesNotMatch(form, /data\.delete\("captchaToken"\)/);
   assert.doesNotMatch(route, /request\.json\(\)/);
   assert.match(migration, /drop policy if exists "Public testimonial submissions" on public\.cms_content;/i);
   assert.match(migration, /revoke insert on table public\.cms_content from public,\s*anon;/i);
@@ -123,6 +126,30 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.doesNotMatch(migration, /revoke\s+(?:all|insert)\s+on table public\.cms_content from[^;]*\bauthenticated\b/i);
   assert.doesNotMatch(migration, /drop policy[^;]*"Admins manage content"/i);
   assert.doesNotMatch(migration, /create policy "Public testimonial submissions"/i);
+});
+
+test("reports missing testimonial Supabase service configuration without exposing credentials", async () => {
+  const [service, route] = await Promise.all([
+    readFile(new URL("../src/lib/supabase/service.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(service, /import "server-only"/);
+  assert.match(service, /process\.env\.NEXT_PUBLIC_SUPABASE_URL/);
+  assert.match(service, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(service, /if \(!url \|\| !serviceRoleKey\) return null/);
+  assert.doesNotMatch(service, /console\.(?:log|error|warn)\([^)]*serviceRoleKey/);
+  assert.doesNotMatch(service, /NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(route, /Secure testimonial submission is not configured\. Please try again later\./);
+  assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeFormVerification("));
+});
+
+test("refreshes expired Turnstile and blocks testimonial submission without a fresh token", async () => {
+  const [widget, form] = await Promise.all([
+    readFile(new URL("../src/components/TurnstileWidget.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(widget, /"expired-callback": \(\) => \{\s*reportError\("The CAPTCHA expired\.[\s\S]*?window\.turnstile\?\.reset\(idRef\.current\)/);
+  assert.match(form, /if \(!String\(data\.get\("captchaToken"\) \|\| ""\)\.trim\(\)\) \{\s*setStatus\("The CAPTCHA expired\.[\s\S]*?return;/);
 });
 
 test("protects source-defined CMS testimonials and shared media from deletion", async () => {
@@ -235,6 +262,24 @@ test("rejects invalid CAPTCHA and missing email proof at the form submission bou
 
   const missingProof = await consumeFormVerification(request, email, "valid-captcha", "");
   assert.equal(missingProof.ok, false);
+});
+
+test("rejects expired CAPTCHA without consuming email proof, then accepts a fresh token", async () => {
+  entries.clear();
+  deliver.code = "";
+  await sendEmailOtp(email, deliver);
+  const verified = await verifyEmailOtp(email, deliver.code);
+  assert.equal(verified.ok, true);
+  if (!verified.ok) return;
+
+  const expired = await consumeFormVerification(request, email, "expired-captcha", verified.proof);
+  assert.deepEqual(expired, {
+    ok: false,
+    status: 400,
+    message: "Please complete the CAPTCHA verification and try again.",
+  });
+  const accepted = await consumeFormVerification(request, email, "valid-captcha", verified.proof);
+  assert.equal(accepted.ok, true);
 });
 
 test("checks Turnstile hostname against the forwarded public host", async () => {
