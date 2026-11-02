@@ -541,6 +541,49 @@
 @media(max-width:900px) { .sectionNav[data-theme="taxation"] .navMobile .mobileServiceSelects select { background:#123654; color:#fff; } }
 
 @media(max-width:900px) {
+  .page[data-service-template] { min-width:0; overflow-x:clip; }
+  .detailLayout { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; padding-block:28px 56px; }
+  .detailAside { position:sticky; top:var(--service-header-offset); z-index:20; order:0; width:100%; max-height:none; overflow:visible; padding:0; background:#fff; }
+  .detailContent { grid-row:2; width:100%; min-width:0; }
+  .sidebarHelp,.sidebarNav .navDesktop { display:none; }
+  .sidebarNav .navMobile { display:block; padding:12px; }
+  .sidebarNav label { display:block; margin-bottom:5px; }
+  .sidebarNav { border-top:0; box-shadow:0 4px 15px #04163c0a; }
+  .groupGrid,.considerations,.knowledgeGrid,.enquiryGrid { grid-template-columns:minmax(0,1fr); gap:28px; }
+  .groupGrid .groupCopy,.groupGrid .childList { min-width:0; }
+  .relatedCards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media(max-width:560px) {
+  .detailLayout { gap:18px; padding-block:18px 42px; }
+  .groupSection { padding:44px 0; }
+  .groupMeta { gap:12px; }
+  .considerations { gap:16px; }
+  .relatedCards,.pagination>div { grid-template-columns:minmax(0,1fr); }
+  .relatedCardContent { padding:16px; }
+  .assistance { padding:20px; }
+}
+
+@media(hover:hover) and (pointer:fine) {
+  .groupSection .childList a:hover,
+  .groupSection .childList a:focus-visible {
+    border-left-color:#93c5fd;
+    background:#0751db;
+    color:#fff;
+  }
+  .groupSection .childList a:hover > span,
+  .groupSection .childList a:focus-visible > span,
+  .groupSection .childList a:hover > svg,
+  .groupSection .childList a:focus-visible > svg,
+  .groupSection .childList a:hover .rowMarker,
+  .groupSection .childList a:focus-visible .rowMarker,
+  .groupSection .childList a:hover .rowMarker small,
+  .groupSection .childList a:focus-visible .rowMarker small {
+    color:#fff;
+  }
+}
+
+@media(max-width:900px) {
   .sectionNav { position:static; top:auto; z-index:auto; }
 }
 

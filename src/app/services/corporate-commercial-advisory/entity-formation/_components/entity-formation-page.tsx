@@ -10,6 +10,7 @@ import ServiceCards from "./service-cards";
 import ServiceChildTestimonial from "@/app/services/_template/service-child-testimonial";
 import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
 import styles from "./entity-formation-page.module.css";
+import ArbitrationPage from "./arbitration-page";
 
 function Heading({
   eyebrow,
@@ -32,6 +33,10 @@ function Heading({
 }
 
 export default function EntityFormationPage({ data }: { data: EntityFormationPageData }) {
+  if (data.pageVariant === "arbitration-screenshot") {
+    return <ArbitrationPage data={data} />;
+  }
+
   if (
     data.pageVariant === "securities-appellate-screenshot"
     || data.pageVariant === "consumer-commissions-screenshot"
@@ -46,7 +51,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
     return <SecuritiesAppellatePage data={data} />;
   }
 
-  if (data.pageVariant === "nclt-screenshot" || data.pageVariant === "tribunal-screenshot" || data.pageVariant === "arbitration-screenshot") {
+  if (data.pageVariant === "nclt-screenshot" || data.pageVariant === "tribunal-screenshot") {
     return <NcltScreenshotPage data={data} />;
   }
 
