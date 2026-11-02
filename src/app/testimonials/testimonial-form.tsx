@@ -5,6 +5,12 @@ import { practices } from "@/content/site";
 import Icon from "../_components/icon";
 import EmailOtpVerification from "../_components/email-otp-verification";
 import styles from "./testimonial-form.module.css";
+import {
+  testimonialImageMaxBytes,
+  testimonialImageTypes,
+  testimonialVideoMaxBytes,
+  testimonialVideoTypes,
+} from "@/lib/testimonial-media";
 export default function TestimonialForm({
   initialFormat = "written",
 }: {
@@ -15,17 +21,26 @@ export default function TestimonialForm({
     [busy, setBusy] = useState(false),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
+    [recorded, setRecorded] = useState(false),
     [preview, setPreview] = useState(""),
     [photoSelected, setPhotoSelected] = useState(false),
     [photoName, setPhotoName] = useState(""),
     [videoName, setVideoName] = useState(""),
+    [uploadProgress, setUploadProgress] = useState<number | null>(null),
     [testimonialText, setTestimonialText] = useState("");
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     live = useRef<HTMLVideoElement>(null),
+    photoInput = useRef<HTMLInputElement>(null),
+    videoInput = useRef<HTMLInputElement>(null),
+    discardRecording = useRef(false),
+    recordingAttempt = useRef(0),
     submissionInFlight = useRef(false);
   useEffect(
-    () => () => stream.current?.getTracks().forEach((t) => t.stop()),
+    () => () => {
+      recordingAttempt.current += 1;
+      stream.current?.getTracks().forEach((t) => t.stop());
+    },
     [],
   );
   useEffect(
@@ -36,14 +51,31 @@ export default function TestimonialForm({
   );
   async function start() {
     setStatus("");
+    const attempt = ++recordingAttempt.current;
     try {
       if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
         throw new Error("unsupported");
-      stream.current = await navigator.mediaDevices.getUserMedia({
+      setVideo(null);
+      setRecorded(false);
+      discardRecording.current = false;
+      setPreview("");
+      setVideoName("");
+      if (videoInput.current) videoInput.current.value = "";
+      const cameraStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
-      const r = new MediaRecorder(stream.current);
+      if (attempt !== recordingAttempt.current) {
+        cameraStream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      stream.current = cameraStream;
+      const preferredType = [
+        "video/webm;codecs=vp9,opus",
+        "video/webm;codecs=vp8,opus",
+        "video/mp4",
+      ].find((type) => MediaRecorder.isTypeSupported(type));
+      const r = new MediaRecorder(cameraStream, preferredType ? { mimeType: preferredType } : undefined);
       recorder.current = r;
       const chunks: BlobPart[] = [];
       r.ondataavailable = (e) => {
@@ -51,11 +83,21 @@ export default function TestimonialForm({
       };
       r.onstop = () => {
         const blob = new Blob(chunks, { type: r.mimeType });
-        setVideo(blob);
-        setPreview(URL.createObjectURL(blob));
         setRecording(false);
         stream.current?.getTracks().forEach((t) => t.stop());
         if (live.current) live.current.srcObject = null;
+        if (discardRecording.current) {
+          discardRecording.current = false;
+          return;
+        }
+        if (!testimonialVideoTypes.has(blob.type.split(";")[0]) || !blob.size || blob.size > testimonialVideoMaxBytes) {
+          setStatus("The recording format is unsupported or the video exceeds 20 MB. Please record again or choose an MP4, MOV or WebM file.");
+          return;
+        }
+        setVideo(blob);
+        setRecorded(true);
+        setVideoName("Recorded video");
+        setPreview(URL.createObjectURL(blob));
       };
       r.start();
       setRecording(true);
@@ -63,21 +105,33 @@ export default function TestimonialForm({
         live.current.srcObject = stream.current;
         await live.current.play();
       }
-    } catch {
+    } catch (error) {
       if (recorder.current?.state === "recording") recorder.current.stop();
       setRecording(false);
       stream.current?.getTracks().forEach((t) => t.stop());
       setStatus(
-        "Camera access is unavailable. You can upload an existing video instead.",
+        error instanceof Error && error.message === "unsupported"
+          ? "This browser does not support video recording. You can upload an MP4, MOV or WebM video instead."
+          : "Camera or microphone access is unavailable. You can upload an existing video instead.",
       );
     }
   }
   function changeFormat(next: string) {
+    if (next === format) return;
+    recordingAttempt.current += 1;
+    if (recorder.current?.state === "recording") discardRecording.current = true;
     if (recorder.current?.state === "recording") recorder.current.stop();
+    else stream.current?.getTracks().forEach((t) => t.stop());
     setFormat(next);
+    setVideo(null);
+    setRecorded(false);
+    setPreview("");
     setPhotoSelected(false);
     setPhotoName("");
     setVideoName("");
+    setUploadProgress(null);
+    if (photoInput.current) photoInput.current.value = "";
+    if (videoInput.current) videoInput.current.value = "";
     setTestimonialText("");
     setStatus("");
   }
@@ -90,29 +144,35 @@ export default function TestimonialForm({
     data.set("format", format);
     data.delete("captchaToken");
     if (format === "video" && video)
-      data.set(
-        "video",
-        new File(
-          [video],
-          `testimonial.${video.type.includes("mp4") ? "mp4" : "webm"}`,
-          { type: video.type },
-        ),
-      );
+      data.set("video", new File([video], `testimonial.${video.type.split(";")[0] === "video/mp4" ? "mp4" : video.type.split(";")[0] === "video/quicktime" ? "mov" : "webm"}`, { type: video.type }));
+    if (format === "video") data.set("videoSource", recorded ? "recorded" : "uploaded");
     const upload = data.get("video");
     if (format === "video" && (!(upload instanceof File) || !upload.size)) {
       setStatus("Please record or upload a video first.");
       return;
     }
-    if (upload instanceof File && upload.size > 20 * 1024 * 1024) {
+    if (upload instanceof File && (!testimonialVideoTypes.has(upload.type.split(";")[0]) || upload.size > testimonialVideoMaxBytes)) {
       setStatus("Please use a video smaller than 20 MB.");
+      return;
+    }
+    const photo = data.get("photo");
+    if (photo instanceof File && photo.size && (!testimonialImageTypes.has(photo.type) || photo.size > testimonialImageMaxBytes)) {
+      setStatus("Please choose a supported JPG, PNG, WebP or AVIF photograph up to 3 MB.");
       return;
     }
     submissionInFlight.current = true;
     setBusy(true);
+    setUploadProgress(0);
     try {
-      const res = await fetch("/api/testimonials", {
-        method: "POST",
-        body: data,
+      const res = await new Promise<Response>((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.open("POST", "/api/testimonials");
+        request.upload.onprogress = (progress) => {
+          if (progress.lengthComputable) setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
+        };
+        request.onload = () => resolve(new Response(request.responseText, { status: request.status }));
+        request.onerror = () => reject(new Error("network"));
+        request.send(data);
       });
       const result = await res.json();
       const message = typeof result.message === "string"
@@ -122,11 +182,14 @@ export default function TestimonialForm({
       if (res.ok) {
         form.reset();
         setVideo(null);
+        setRecorded(false);
         setPreview("");
         setPhotoSelected(false);
         setPhotoName("");
         setVideoName("");
         setTestimonialText("");
+        if (photoInput.current) photoInput.current.value = "";
+        if (videoInput.current) videoInput.current.value = "";
       }
     } catch {
       setStatus(
@@ -135,6 +198,7 @@ export default function TestimonialForm({
     } finally {
       submissionInFlight.current = false;
       setBusy(false);
+      setUploadProgress(null);
     }
   }
   return (
@@ -244,9 +308,10 @@ export default function TestimonialForm({
                 <label className="full">
                   Photograph (optional · JPG/PNG · maximum 3 MB)
                   <input
+                    ref={photoInput}
                     name="photo"
                     type="file"
-                    accept="image/jpeg,image/png"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
                     onChange={(event) => {
                       const file = event.target.files?.[0];
                       if (!file) {
@@ -254,11 +319,11 @@ export default function TestimonialForm({
                         setPhotoName("");
                         return;
                       }
-                      if (!["image/jpeg", "image/png"].includes(file.type) || file.size > 3 * 1024 * 1024) {
+                      if (!testimonialImageTypes.has(file.type) || file.size > testimonialImageMaxBytes) {
                         event.target.value = "";
                         setPhotoSelected(false);
                         setPhotoName("");
-                        setStatus("Please choose a JPG or PNG photograph up to 3 MB.");
+                        setStatus("Please choose a supported JPG, PNG, WebP or AVIF photograph up to 3 MB.");
                         return;
                       }
                       setPhotoSelected(true);
@@ -291,7 +356,7 @@ export default function TestimonialForm({
                     onClick={start}
                   >
                     <Icon name="play" />
-                    Record Now
+                    {recorded ? "Record Again" : "Record Video Testimonial"}
                   </button>
                   {recording && (
                     <button
@@ -318,34 +383,46 @@ export default function TestimonialForm({
                     src={preview}
                     controls
                     playsInline
-                    aria-label="Preview your recorded testimonial"
+                    aria-label={recorded ? "Preview your recorded video testimonial" : "Preview the selected video testimonial"}
                   />
+                )}
+                {preview && !recording && (
+                  <button type="button" className="button secondary" onClick={() => {
+                    setVideo(null);
+                    setRecorded(false);
+                    setPreview("");
+                    setVideoName("");
+                    if (videoInput.current) videoInput.current.value = "";
+                  }}>Remove video</button>
                 )}
                 <label>
                   Or upload an existing video (any duration · maximum 20 MB · MP4, MOV or WebM)
                   <input
+                    ref={videoInput}
                     name="video"
                     type="file"
                     accept="video/mp4,video/webm,video/quicktime"
                     onChange={(event) => {
                       setVideo(null);
+                      setRecorded(false);
                       setPreview("");
                       const file = event.target.files?.[0];
                       if (!file) {
                         setVideoName("");
                         return;
                       }
-                      if (!["video/mp4", "video/webm", "video/quicktime"].includes(file.type) || file.size > 20 * 1024 * 1024) {
+                      if (!testimonialVideoTypes.has(file.type) || file.size > testimonialVideoMaxBytes) {
                         event.target.value = "";
                         setVideoName("");
                         setStatus("Please choose an MP4, MOV or WebM video up to 20 MB.");
                         return;
                       }
                       setVideoName(file.name);
+                      setPreview(URL.createObjectURL(file));
                       setStatus("");
                     }}
                   />
-                  {videoName && <span className={styles.uploadSuccess} role="status">✓ {videoName} selected for submission</span>}
+                  {videoName && <span className={styles.uploadSuccess} role="status">{recorded ? "✓ Recorded video ready to submit" : `✓ ${videoName} selected for submission`}</span>}
                 </label>
               </div>
             )}
@@ -391,6 +468,9 @@ export default function TestimonialForm({
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>
+          {uploadProgress !== null ? (
+            <p className="form-status" role="status">Uploading testimonial… {uploadProgress}%</p>
+          ) : null}
           {status && (
             <div className="form-status" role="status">
               {status}

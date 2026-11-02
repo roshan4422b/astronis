@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -17,6 +18,11 @@ import {
 import { useAdminState } from "./admin-state";
 import type { AdminEnquiry, AdminTestimonial } from "./admin-state";
 import type { EnquiryStatus, TestimonialApprovalStatus } from "../admin-data";
+import {
+  TestimonialMediaFields,
+  type TestimonialMediaValue,
+} from "./testimonial-media-fields";
+import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
 
 const pageSize = 5;
 
@@ -324,11 +330,18 @@ export function TestimonialsManagement() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState(false);
   const [savingTestimonial, setSavingTestimonial] = useState(false);
+  const [uploadingTestimonialMedia, setUploadingTestimonialMedia] = useState(false);
   const [savingDecision, setSavingDecision] = useState(false);
+  const [deletingTestimonial, setDeletingTestimonial] = useState(false);
+  const deletingTestimonialRef = useRef(false);
   const [testimonialEdit, setTestimonialEdit] = useState({
     name: "", email: "", title: "", company: "", designation: "", service: "", text: "", internalNotes: "",
+    format: "written" as "written" | "video",
+    photoPublicationConsent: false,
+    imagePath: "", imageUrl: "", videoPath: "", videoUrl: "", videoSource: "",
   });
   const [pendingDecision, setPendingDecision] = useState<{ id: string; status: TestimonialApprovalStatus } | null>(null);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const triggerRef = useRef<HTMLElement | null>(null);
   const filtered = testimonials.filter((testimonial) => {
@@ -360,10 +373,23 @@ export function TestimonialsManagement() {
           service: testimonial.service || "",
           text: testimonial.text,
           internalNotes: testimonial.internalNotes || "",
+          format: testimonial.format === "video" ? "video" : "written",
+          photoPublicationConsent: testimonial.photoPublicationConsent === true,
+          imagePath: testimonial.imagePath || "",
+          imageUrl: testimonial.imageUrl || "",
+          videoPath: testimonial.videoPath || "",
+          videoUrl: testimonial.videoUrl || "",
+          videoSource: testimonial.videoSource || (testimonial.videoUrl ? "url" : ""),
         });
         setEditingTestimonial(true);
         setSelectedId(testimonial.id);
       }}>Edit</button>
+      {!testimonial.sourceDefined ? (
+        <button type="button" className="admin-text-action admin-reject-action" onClick={(event) => {
+          triggerRef.current = event.currentTarget;
+          setPendingDeleteId(testimonial.id);
+        }} aria-label={`Delete ${testimonial.name}`}>Delete</button>
+      ) : null}
       {testimonial.approvalStatus === "Pending" ? (
         <>
           <button type="button" className="admin-text-action" disabled={testimonial.consentStatus !== "Granted" || !testimonial.identityPublicationConsent} title={testimonial.consentStatus !== "Granted" ? "Publication consent is required." : "Identity publication consent is required."} onClick={(event) => { triggerRef.current = event.currentTarget; setPendingDecision({ id: testimonial.id, status: "Approved" }); }} aria-label={`Approve ${testimonial.name}`}>Approve</button>
@@ -378,6 +404,9 @@ export function TestimonialsManagement() {
   const target = pendingDecision
     ? testimonials.find((testimonial) => testimonial.id === pendingDecision.id)
     : undefined;
+  const deleteTarget = pendingDeleteId
+    ? testimonials.find((testimonial) => testimonial.id === pendingDeleteId)
+    : undefined;
 
   function closeDetails() {
     setSelectedId(null);
@@ -386,11 +415,19 @@ export function TestimonialsManagement() {
   }
 
   async function saveTestimonialEdits() {
-    if (!selected || savingTestimonial) return;
+    if (!selected || savingTestimonial || uploadingTestimonialMedia) return;
     const name = testimonialEdit.name.trim();
     const text = testimonialEdit.text.trim();
-    if (name.length < 2 || name.length > 120 || text.length < 10 || text.length > 5000) {
-      setNotice("Use a name of 2–120 characters and testimonial text of 10–5000 characters.");
+    const hasVideo = Boolean(testimonialEdit.videoPath || (testimonialEdit.videoSource === "url" && isSupportedTestimonialVideoUrl(testimonialEdit.videoUrl)));
+    if (
+      name.length < 2 ||
+      name.length > 120 ||
+      text.length > 5000 ||
+      (testimonialEdit.format === "written" && text.length < 10) ||
+      (testimonialEdit.format === "video" && !hasVideo) ||
+      (testimonialEdit.imagePath && !testimonialEdit.photoPublicationConsent)
+    ) {
+      setNotice("Provide a valid name, written text or video, and supported media.");
       return;
     }
     setSavingTestimonial(true);
@@ -409,6 +446,13 @@ export function TestimonialsManagement() {
             service: testimonialEdit.service.trim(),
             text,
             internalNotes: testimonialEdit.internalNotes.trim(),
+            format: testimonialEdit.format,
+            imagePath: testimonialEdit.imagePath,
+            videoPath: testimonialEdit.videoPath,
+            videoUrl: testimonialEdit.videoSource === "url" ? testimonialEdit.videoUrl.trim() : "",
+            videoSource: testimonialEdit.videoSource,
+            mediaSubmitted: Boolean(testimonialEdit.imagePath || testimonialEdit.videoPath || testimonialEdit.videoUrl),
+            photoPublicationConsent: testimonialEdit.photoPublicationConsent,
           },
         }),
       });
@@ -420,6 +464,11 @@ export function TestimonialsManagement() {
         ...saved.data,
         id: saved.id,
         date: saved.created_at || item.date,
+        imageUrl: saved.data.imageUrl || "",
+        imagePath: saved.data.imagePath || "",
+        videoUrl: saved.data.videoUrl || "",
+        videoPath: saved.data.videoPath || "",
+        videoSource: saved.data.videoSource || "",
         consentStatus: saved.data.consent === true && saved.data.identityPublicationConsent === true ? "Granted" : "Not granted",
         identityPublicationConsent: saved.data.identityPublicationConsent === true,
         approvalStatus: saved.status === "published" ? "Approved" : saved.status === "rejected" ? "Rejected" : saved.status === "archived" ? "Archived" : "Pending",
@@ -457,13 +506,46 @@ export function TestimonialsManagement() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not update testimonial.");
       setTestimonials((current) => current.map((item) => item.id === pendingDecision.id ? { ...item, approvalStatus: pendingDecision.status } : item));
-      setNotice(`Testimonial status saved as ${pendingDecision.status}.`);
+      const emailNotice = pendingDecision.status === "Approved" || pendingDecision.status === "Rejected"
+        ? result.notificationStatus === "failed"
+          ? " The decision was saved, but the customer email could not be sent."
+          : result.notificationStatus === "skipped"
+            ? " The decision was saved, but no verified customer email was available."
+            : ""
+        : "";
+      setNotice(`Testimonial status saved as ${pendingDecision.status}.${emailNotice}`);
       setSelectedId(null);
       setPendingDecision(null);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not update testimonial.");
     } finally {
       setSavingDecision(false);
+    }
+  }
+
+  async function confirmTestimonialDelete() {
+    if (deletingTestimonialRef.current || !pendingDeleteId) return;
+    const targetRecord = testimonials.find((item) => item.id === pendingDeleteId);
+    if (!targetRecord) {
+      setPendingDeleteId(null);
+      setNotice("That testimonial is no longer available.");
+      return;
+    }
+    deletingTestimonialRef.current = true;
+    setDeletingTestimonial(true);
+    try {
+      const response = await fetch(`/api/admin/data?id=${encodeURIComponent(targetRecord.id)}`, { method: "DELETE" });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Testimonial could not be deleted.");
+      setTestimonials((current) => current.filter((item) => item.id !== targetRecord.id));
+      setPendingDeleteId(null);
+      if (selectedId === targetRecord.id) setSelectedId(null);
+      setNotice(`${targetRecord.name} was permanently deleted.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Testimonial could not be deleted.");
+    } finally {
+      deletingTestimonialRef.current = false;
+      setDeletingTestimonial(false);
     }
   }
 
@@ -535,12 +617,29 @@ export function TestimonialsManagement() {
                   <label className="admin-field"><span>Company</span><input value={testimonialEdit.company} onChange={(event) => setTestimonialEdit((current) => ({ ...current, company: event.target.value }))} /></label>
                   <label className="admin-field"><span>Designation</span><input value={testimonialEdit.designation} onChange={(event) => setTestimonialEdit((current) => ({ ...current, designation: event.target.value }))} /></label>
                   <label className="admin-field"><span>Service</span><input value={testimonialEdit.service} onChange={(event) => setTestimonialEdit((current) => ({ ...current, service: event.target.value }))} /></label>
-                  <label className="admin-field admin-content-full"><span>Testimonial Text <i>*</i></span><textarea rows={7} value={testimonialEdit.text} onChange={(event) => setTestimonialEdit((current) => ({ ...current, text: event.target.value }))} /></label>
+                  <label className="admin-field"><span>Testimonial Type</span><select value={testimonialEdit.format} onChange={(event) => setTestimonialEdit((current) => ({ ...current, format: event.target.value as "written" | "video" }))}><option value="written">Written testimonial</option><option value="video">Video testimonial</option></select></label>
+                  <label className="admin-field admin-content-full"><span>{testimonialEdit.format === "video" ? "Supporting Text (optional)" : "Testimonial Text"}{testimonialEdit.format === "written" ? <i> *</i> : null}</span><textarea rows={7} value={testimonialEdit.text} onChange={(event) => setTestimonialEdit((current) => ({ ...current, text: event.target.value }))} /></label>
+                  <TestimonialMediaFields
+                    value={testimonialEdit}
+                    onChange={(media: TestimonialMediaValue) => setTestimonialEdit((current) => ({
+                      ...current,
+                      ...media,
+                      ...(current.imagePath !== media.imagePath ? { photoPublicationConsent: false } : {}),
+                    }))}
+                    onUploadingChange={setUploadingTestimonialMedia}
+                    disabled={savingTestimonial || uploadingTestimonialMedia}
+                  />
+                  {testimonialEdit.imagePath ? (
+                    <label className="admin-field admin-content-full">
+                      <span>Customer image publication consent <i>*</i></span>
+                      <span><input type="checkbox" checked={testimonialEdit.photoPublicationConsent} onChange={(event) => setTestimonialEdit((current) => ({ ...current, photoPublicationConsent: event.target.checked }))} /> Consent to publish this customer image is on file.</span>
+                    </label>
+                  ) : null}
                   <label className="admin-field admin-content-full"><span>Internal Admin Notes</span><textarea rows={3} value={testimonialEdit.internalNotes} onChange={(event) => setTestimonialEdit((current) => ({ ...current, internalNotes: event.target.value }))} /></label>
                   <p className="admin-detail-note">Consent records are not editable here. Approval still requires the original consent flags.</p>
                   <div className="admin-modal-actions">
-                    <button type="button" className="admin-button admin-button-secondary" disabled={savingTestimonial} onClick={() => setEditingTestimonial(false)}>Cancel Edit</button>
-                    <button type="button" className="admin-button" disabled={savingTestimonial} onClick={() => void saveTestimonialEdits()}>{savingTestimonial ? "Saving…" : "Save Testimonial"}</button>
+                    <button type="button" className="admin-button admin-button-secondary" disabled={savingTestimonial || uploadingTestimonialMedia} onClick={() => setEditingTestimonial(false)}>Cancel Edit</button>
+                    <button type="button" className="admin-button" disabled={savingTestimonial || uploadingTestimonialMedia} onClick={() => void saveTestimonialEdits()}>{savingTestimonial ? "Saving…" : uploadingTestimonialMedia ? "Uploading media…" : "Save Testimonial"}</button>
                   </div>
                 </div>
               ) : (
@@ -555,26 +654,51 @@ export function TestimonialsManagement() {
                 <div><dt>Submission date</dt><dd>{displayDate(selected.date)}</dd></div>
                 <div><dt>Consent status</dt><dd><StatusBadge status={selected.consentStatus} /></dd></div>
                 <div><dt>Identity publication consent</dt><dd>{selected.identityPublicationConsent ? "Granted" : "Not granted"}</dd></div>
+                {selected.imagePath || selected.photoPublicationConsent || (selected.mediaSubmitted && selected.format === "written") ? <div><dt>Customer image consent</dt><dd>{selected.photoPublicationConsent ? "Granted" : "Not granted"}</dd></div> : null}
                 <div><dt>Approval status</dt><dd><StatusBadge status={selected.approvalStatus} /></dd></div>
-                <div className="admin-detail-message"><dt>Full testimonial</dt><dd>{selected.text}</dd></div>
+                <div className="admin-detail-message"><dt>Full testimonial</dt><dd>{selected.text || "Video testimonial"}</dd></div>
+                {selected.imageUrl && safeVideoUrl(selected.imageUrl) ? (
+                  <div className="admin-detail-message">
+                    <dt>Customer image</dt>
+                    <dd><Image src={safeVideoUrl(selected.imageUrl)} alt={`${selected.name} testimonial`} width={96} height={96} unoptimized className="admin-testimonial-image-preview" /></dd>
+                  </div>
+                ) : null}
                 {selected.videoUrl && safeVideoUrl(selected.videoUrl) ? (
                   <div className="admin-detail-message">
                     <dt>Video preview</dt>
-                    <dd><video src={safeVideoUrl(selected.videoUrl)} controls preload="metadata" playsInline className="video-preview" /></dd>
+                    <dd>
+                      <video src={safeVideoUrl(selected.videoUrl)} controls preload="metadata" playsInline className="video-preview" />
+                      {selected.videoSource ? <small>{selected.videoSource === "recorded" ? "Recorded by the customer" : selected.videoSource === "url" ? "Provided as a video URL" : "Uploaded video"}</small> : null}
+                    </dd>
                   </div>
                 ) : selected.mediaSubmitted ? (
                   <div className="admin-detail-message">
                     <dt>Media attachment</dt>
-                    <dd>{selected.format === "video" ? "A video was submitted through the configured delivery integration. No playback URL is stored in the CMS." : "A photograph was submitted through the configured delivery integration. No preview URL is stored in the CMS."}</dd>
+                    <dd>Media was submitted but no playable media reference is available.</dd>
                   </div>
                 ) : null}
                 {selected.internalNotes ? <div className="admin-detail-message"><dt>Internal notes</dt><dd>{selected.internalNotes}</dd></div> : null}
               </dl>
               <div className="admin-moderation-actions">
                 <button type="button" className="admin-button admin-button-secondary" onClick={() => {
-                  setTestimonialEdit({ name: selected.name, email: selected.email || "", title: selected.title || "", company: selected.company || "", designation: selected.designation || "", service: selected.service || "", text: selected.text, internalNotes: selected.internalNotes || "" });
+                  setTestimonialEdit({
+                    name: selected.name, email: selected.email || "", title: selected.title || "",
+                    company: selected.company || "", designation: selected.designation || "",
+                    service: selected.service || "", text: selected.text, internalNotes: selected.internalNotes || "",
+                    format: selected.format === "video" ? "video" : "written",
+                    photoPublicationConsent: selected.photoPublicationConsent === true,
+                    imagePath: selected.imagePath || "", imageUrl: selected.imageUrl || "",
+                    videoPath: selected.videoPath || "", videoUrl: selected.videoUrl || "",
+                    videoSource: selected.videoSource || (selected.videoUrl ? "url" : ""),
+                  });
                   setEditingTestimonial(true);
                 }}>Edit Testimonial</button>
+                {!selected.sourceDefined ? (
+                  <button type="button" className="admin-button admin-button-secondary admin-reject-button" onClick={() => {
+                    setPendingDeleteId(selected.id);
+                    setSelectedId(null);
+                  }}>Delete Testimonial</button>
+                ) : null}
                 {(["Pending", "Approved", "Rejected", "Archived"] as const).map((status) => (
                   <button
                     key={status}
@@ -611,6 +735,26 @@ export function TestimonialsManagement() {
           <div className="admin-modal-actions">
             <button type="button" className="admin-button admin-button-secondary" disabled={savingDecision} onClick={() => setPendingDecision(null)}>Cancel</button>
             <button type="button" className="admin-button" disabled={!target || savingDecision} onClick={confirmApprovalChange}>{savingDecision ? "Saving…" : "Confirm status change"}</button>
+          </div>
+        </AccessibleDialog>
+      ) : null}
+      {pendingDeleteId ? (
+        <AccessibleDialog
+          title="Permanently delete testimonial?"
+          labelledBy="testimonial-delete-title"
+          onClose={() => {
+            if (!deletingTestimonial) setPendingDeleteId(null);
+          }}
+          className="admin-confirmation-layer"
+        >
+          <p className="admin-detail-confirmation">
+            {deleteTarget
+              ? `Permanently delete ${deleteTarget.name}${deleteTarget.company ? ` of ${deleteTarget.company}` : ""} and remove this testimonial from the CMS? This cannot be undone.`
+              : "This testimonial is no longer available."}
+          </p>
+          <div className="admin-modal-actions">
+            <button type="button" className="admin-button admin-button-secondary" disabled={deletingTestimonial} onClick={() => setPendingDeleteId(null)}>Cancel</button>
+            <button type="button" className="admin-button admin-button-secondary admin-reject-button" disabled={!deleteTarget || deletingTestimonial} onClick={() => void confirmTestimonialDelete()}>{deletingTestimonial ? "Deleting…" : "Delete Permanently"}</button>
           </div>
         </AccessibleDialog>
       ) : null}

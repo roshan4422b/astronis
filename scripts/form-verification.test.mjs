@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 process.env.UPSTASH_REDIS_REST_URL = "https://redis.test";
@@ -93,8 +94,66 @@ const {
   sendEmailOtp,
   verifyEmailOtp,
   verifyTurnstile,
+  createVerifiedTestimonialEmailProof,
+  isVerifiedTestimonialEmail,
 } = await import("../src/lib/form-verification.server.ts");
 const { getFormVerification } = await import("../src/lib/form-verification.client.ts");
+const {
+  isSupportedTestimonialVideoUrl,
+  isTestimonialMediaPath,
+} = await import("../src/lib/testimonial-media.ts");
+
+test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
+  const [route, migration] = await Promise.all([
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/202611020001_testimonial_media_notifications.sql", import.meta.url), "utf8"),
+  ]);
+  const otpCheck = route.indexOf("await consumeEmailVerification(");
+  const insert = route.indexOf('serviceClient.from("cms_content").insert(');
+
+  assert.ok(otpCheck >= 0);
+  assert.ok(insert > otpCheck);
+  assert.match(route, /const serviceClient = getTestimonialMediaService\(\)/);
+  assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
+  assert.doesNotMatch(route, /request\.json\(\)/);
+  assert.match(migration, /drop policy if exists "Public testimonial submissions" on public\.cms_content;/i);
+  assert.match(migration, /revoke insert on table public\.cms_content from public,\s*anon;/i);
+  assert.match(migration, /grant insert on table public\.cms_content to service_role;/i);
+  assert.doesNotMatch(migration, /grant insert on table public\.cms_content to (?:public|anon|authenticated)\b/i);
+  assert.doesNotMatch(migration, /revoke\s+(?:all|insert)\s+on table public\.cms_content from[^;]*\bauthenticated\b/i);
+  assert.doesNotMatch(migration, /drop policy[^;]*"Admins manage content"/i);
+  assert.doesNotMatch(migration, /create policy "Public testimonial submissions"/i);
+});
+
+test("protects source-defined CMS testimonials and shared media from deletion", async () => {
+  const [adminRoute, mediaHelper] = await Promise.all([
+    readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/lib/testimonial-media.server.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(adminRoute, /existing\.data\?\.sourceDefined === true\s*\|\|\s*getSourceContentRecords\(existing\.collection\)\.some\(\(record\) => record\.slug === existing\.slug\)/);
+  assert.match(adminRoute, /if \(references\.referenced\) continue;/);
+  assert.match(mediaHelper, /\.contains\("data", \{ \[field\]: path \}\)/);
+});
+
+test("binds moderation-email eligibility to an OTP-secret proof for the verified address", () => {
+  const acceptedAt = "2026-11-02T10:00:00.000Z";
+  const proof = createVerifiedTestimonialEmailProof(email, acceptedAt);
+  assert.equal(isVerifiedTestimonialEmail(email.toUpperCase(), acceptedAt, proof), true);
+  assert.equal(isVerifiedTestimonialEmail("other@example.com", acceptedAt, proof), false);
+  assert.equal(isVerifiedTestimonialEmail(email, "2026-11-02T10:00:01.000Z", proof), false);
+  assert.equal(isVerifiedTestimonialEmail(email, acceptedAt, "untrusted"), false);
+});
+
+test("accepts only safe testimonial storage paths and direct HTTPS video URLs", () => {
+  assert.equal(
+    isTestimonialMediaPath("testimonials/10000000-0000-4000-8000-000000000001/10000000-0000-4000-8000-000000000002.mp4"),
+    true,
+  );
+  assert.equal(isTestimonialMediaPath("../../other/video.mp4"), false);
+  assert.equal(isSupportedTestimonialVideoUrl("https://media.example/video.webm"), true);
+  assert.equal(isSupportedTestimonialVideoUrl("javascript:alert(1)"), false);
+  assert.equal(isSupportedTestimonialVideoUrl("https://example.com/watch"), false);
+});
 
 test("classifies missing Upstash configuration without attempting a storage request", async () => {
   const saved = {

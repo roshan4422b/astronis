@@ -2779,6 +2779,16 @@
   object-fit: cover;
 }
 
+.root :global(.admin-testimonial-image-preview) {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin-block: 10px;
+  border: 1px solid #e1e7f0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .root :global(.admin-insight-form-actions) {
   display: flex;
   align-items: center;

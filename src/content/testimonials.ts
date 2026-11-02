@@ -6,6 +6,7 @@ export type Testimonial = {
   service: string;
   quote?: string;
   rating?: number;
+  imageUrl?: string;
   videoUrl?: string;
   duration?: string;
   publicationConsent: boolean;
