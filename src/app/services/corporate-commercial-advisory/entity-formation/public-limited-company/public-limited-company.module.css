@@ -458,3 +458,7 @@
 .page .services .businessDecisionHeading h2:hover {
   color: var(--blue) !important;
 }
+
+.page .services .businessSetupHeading h2:hover {
+  color: #000 !important;
+}

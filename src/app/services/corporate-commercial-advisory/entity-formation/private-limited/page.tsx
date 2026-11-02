@@ -120,14 +120,16 @@ function Heading({
   title,
   text,
   light = false,
+  className,
 }: {
   eyebrow: string;
   title: string;
   text?: string;
   light?: boolean;
+  className?: string;
 }) {
   return (
-    <div className={`${styles.heading} ${light ? styles.lightHeading : ""}`}>
+    <div className={`${styles.heading} ${light ? styles.lightHeading : ""} ${className ?? ""}`}>
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       {text && <p>{text}</p>}
@@ -180,6 +182,7 @@ export default function PrivateLimitedCompanyPage() {
         <section className={styles.services}>
         <div className="container">
           <Heading
+            className={styles.businessSetupHeading}
             eyebrow="PRIVATE LIMITED COMPANY"
             title="Build a strong, credible and scalable business"
             text="Build a strong, credible and scalable business with formation support connected to its ownership, governance and operating needs."
