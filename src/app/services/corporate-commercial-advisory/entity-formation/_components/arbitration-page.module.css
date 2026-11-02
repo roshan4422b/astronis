@@ -333,21 +333,6 @@
   line-height: 1.5;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .serviceCard:hover {
-    transform: translateY(-3px);
-    border-color: #0751db !important;
-    background: #0751db !important;
-    box-shadow: 0 8px 20px rgb(6 30 59 / 12%);
-  }
-
-  .serviceGrid .serviceCard:hover h3,
-  .serviceGrid .serviceCard:hover p,
-  .serviceGrid .serviceCard:hover svg {
-    color: #fff !important;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .serviceCard {
     transition: none;

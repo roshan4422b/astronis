@@ -430,9 +430,7 @@
 }
 
 .resourceCard:hover,
-.resourceCard:focus-visible,
-.relatedCard:hover,
-.relatedCard:focus-visible {
+.resourceCard:focus-visible {
   transform: translateY(-3px);
   border-color: #0751db;
   background: #0751db;
@@ -446,11 +444,7 @@
 .resourceCard:focus-visible h3,
 .resourceCard:focus-visible p,
 .resourceCard:focus-visible > span:first-child,
-.resourceCard:focus-visible .resourceAction,
-.relatedCard:hover > span:first-child,
-.relatedCard:hover p,
-.relatedCard:focus-visible > span:first-child,
-.relatedCard:focus-visible p {
+.resourceCard:focus-visible .resourceAction {
   color: #fff;
 }
 
@@ -474,11 +468,6 @@
   padding-top: 18px;
   color: #0751db;
   font-size: 18px;
-}
-
-.relatedCard:hover .relatedArrow,
-.relatedCard:focus-visible .relatedArrow {
-  color: #fff;
 }
 
 .consultation {
