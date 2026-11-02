@@ -197,3 +197,18 @@
 .reasonGrid p { color:#c3d1e3; }
 .reasonGrid svg { color:var(--gold); }
 @media (prefers-reduced-motion:reduce) { .card:hover img,.insight:hover img,.insight:hover,.insight:hover .insightFooter svg { transform:none; } .insight:hover .insightImageArrow { transform:rotate(-35deg); } }
+
+@media(max-width:639px) {
+  .centralNode { inset:39%; box-shadow:0 12px 30px #0004,0 0 0 4px #a8c7e010; }
+  .centralNode strong { font-size:13px; }
+  .ecosystem > .node:nth-of-type(1) { left:50%; top:15%; }
+  .ecosystem > .node:nth-of-type(2) { left:84%; top:28%; padding-inline:5px; }
+  .ecosystem > .node:nth-of-type(3) { left:89.5%; top:50%; }
+  .ecosystem > .node:nth-of-type(4) { left:82%; top:70%; padding-inline:4px; }
+  .ecosystem > .node:nth-of-type(5) { left:50%; top:85%; }
+  .ecosystem > .node:nth-of-type(6) { left:23%; top:70%; padding-inline:5px; }
+  .ecosystem > .node:nth-of-type(7) { left:18%; top:50%; }
+  .ecosystem > .node:nth-of-type(8) { left:18%; top:28%; }
+  .ecosystemCaption { bottom:-26px; }
+  .heroGrid { gap:48px; }
+}
