@@ -52,7 +52,12 @@ export type AdminTestimonial = {
   title?: string;
   internalNotes?: string;
   identityPublicationConsent?: boolean;
+  photoPublicationConsent?: boolean;
+  imagePath?: string;
+  imageUrl?: string;
+  videoPath?: string;
   videoUrl?: string;
+  videoSource?: string;
   mediaSubmitted?: boolean;
   format?: string;
 };
@@ -253,7 +258,12 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
           approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
           identityPublicationConsent: row.data.identityPublicationConsent === true, internalNotes: text(row.data.internalNotes),
+          photoPublicationConsent: row.data.photoPublicationConsent === true,
+          imagePath: text(row.data.imagePath),
+          imageUrl: text(row.data.imageUrl),
+          videoPath: text(row.data.videoPath),
           videoUrl: text(row.data.videoUrl),
+          videoSource: text(row.data.videoSource),
           mediaSubmitted: row.data.mediaSubmitted === true,
           format: text(row.data.format),
         }));

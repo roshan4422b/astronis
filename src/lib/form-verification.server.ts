@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, randomInt } from "node:crypto";
+import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { MailtrapClient } from "mailtrap";
 
 const OTP_TTL_SECONDS = 300;
@@ -190,23 +190,70 @@ function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
+export function createVerifiedTestimonialEmailProof(email: string, acceptedAt: string) {
+  const secret = process.env.EMAIL_OTP_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new EmailOtpFailure("configuration", "Email verification signing is not configured.");
+  }
+  return createHmac("sha256", secret)
+    .update(`${normalizeEmail(email)}:${acceptedAt}`)
+    .digest("hex");
+}
+
+export function isVerifiedTestimonialEmail(
+  email: unknown,
+  acceptedAt: unknown,
+  proof: unknown,
+) {
+  if (
+    typeof email !== "string" ||
+    typeof acceptedAt !== "string" ||
+    typeof proof !== "string" ||
+    !isValidVerificationEmail(email) ||
+    !Number.isFinite(Date.parse(acceptedAt)) ||
+    !/^[a-f0-9]{64}$/i.test(proof)
+  ) return false;
+  try {
+    const expected = Buffer.from(createVerifiedTestimonialEmailProof(email, acceptedAt), "hex");
+    const actual = Buffer.from(proof, "hex");
+    return expected.length === actual.length && timingSafeEqual(expected, actual);
+  } catch {
+    return false;
+  }
+}
+
 export function isValidVerificationEmail(email: string) {
   return email.length <= 254 && emailPattern.test(email);
 }
 
-async function sendOtpWithMailtrap(email: string, code: string) {
+export async function sendMailtrapTransactionalEmail(email: string, subject: string, text: string) {
   const apiKey = process.env.MAILTRAP_API_KEY;
   const from = process.env.MAILTRAP_FROM_EMAIL;
   if (!apiKey || !from) {
-    throw new EmailOtpFailure("configuration", "Mailtrap API credentials or sender address are missing.");
+    throw new Error("Mailtrap API credentials or sender address are missing.");
   }
   const mailtrap = new MailtrapClient({ token: apiKey });
   await mailtrap.send({
     from: { name: "Astronis Global", email: from },
     to: [{ email }],
-    subject: "Your Astronis Global verification code",
-    text: `Your email verification code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
+    subject,
+    text,
   });
+}
+
+async function sendOtpWithMailtrap(email: string, code: string) {
+  try {
+    await sendMailtrapTransactionalEmail(
+      email,
+      "Your Astronis Global verification code",
+      `Your email verification code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
+    );
+  } catch (error) {
+    if (error instanceof Error && error.message === "Mailtrap API credentials or sender address are missing.") {
+      throw new EmailOtpFailure("configuration", error.message, { cause: error });
+    }
+    throw error;
+  }
 }
 
 export async function verifyTurnstile(token: string, request: Request): Promise<boolean> {

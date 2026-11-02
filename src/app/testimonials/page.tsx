@@ -21,6 +21,8 @@ export default async function TestimonialsPage({
     service: item.service,
     quote: item.testimonial_text,
     rating: 5,
+    imageUrl: item.image_url,
+    videoUrl: item.video_url,
     publicationConsent: true,
     status: "approved" as const,
   }));
