@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { insightsCategories } from "../admin-data";
-import { EnquiriesManagement, EnquiryDetailsDialog, TestimonialsManagement } from "./admin-engagement";
+import { EnquiriesManagement, TestimonialsManagement } from "./admin-engagement";
 import AdminContentManagement from "./admin-content-management";
 import {
   AdminIcon,
@@ -60,50 +60,39 @@ function formatDemoDate(value: string) {
 }
 
 function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
-  const { enquiries, insights, testimonials, setEnquiries } = useAdminState();
-  const [selectedEnquiryId, setSelectedEnquiryId] = useState<string | null>(null);
-  const enquiryRows = enquiries.slice(0, 3).map((item) => [
-    <strong className="admin-cell-primary" key="name">{item.name}</strong>,
-    <span className="admin-cell-secondary" key="email">{item.email}</span>,
-    item.subject,
-    formatDemoDate(item.date),
-    <StatusBadge key="status" status={item.status} />,
-    <button key="action" className="admin-text-action" type="button" onClick={() => setSelectedEnquiryId(item.id)}>View details</button>,
-  ]);
-  const testimonialRows = testimonials.slice(0, 3).map((item) => [
-    <strong className="admin-cell-primary" key="name">{item.name}</strong>,
-    <span className="admin-excerpt" key="excerpt">{item.excerpt || item.text}</span>,
-    formatDemoDate(item.date),
-    <StatusBadge key="status" status={item.approvalStatus} />,
-    <Link key="action" className="admin-text-action" href="/admin/testimonials">Open</Link>,
-  ]);
+  const { enquiries, insights, testimonials } = useAdminState();
+  const [selectedSection, setSelectedSection] = useState<"enquiries" | "testimonials" | "insights" | null>(null);
+  if (selectedSection) {
+    return (
+      <>
+        <div className="admin-dashboard-return">
+          <button type="button" className="admin-button admin-button-secondary" onClick={() => setSelectedSection(null)}>
+            <AdminIcon name="arrow" size={15} /> Back to dashboard
+          </button>
+        </div>
+        {selectedSection === "enquiries"
+          ? <EnquiriesManagement />
+          : selectedSection === "testimonials"
+            ? <TestimonialsManagement />
+            : <CollectionPage section="insights" onNotice={onNotice} />}
+      </>
+    );
+  }
+
   return <>
     <PageHeading title="Dashboard" description="A clear overview of your website content and engagement workspace." />
     <div className="admin-stat-grid">
-      <StatCard label="New enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Current CMS inbox" icon="inbox" />
-      <StatCard label="Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" />
-      <StatCard label="Published insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" />
+      <StatCard label="New enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Current CMS inbox" icon="inbox" onClick={() => setSelectedSection("enquiries")} />
+      <StatCard label="Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" onClick={() => setSelectedSection("testimonials")} />
+      <StatCard label="Published insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" onClick={() => setSelectedSection("insights")} />
     </div>
-    <div className="admin-dashboard-grid">
-      <section className="admin-panel admin-panel-wide"><div className="admin-panel-heading"><div><h2>Recent enquiries</h2><p>Latest persisted enquiries</p></div><Link href="/admin/enquiries">View all <AdminIcon name="arrow" size={14} /></Link></div><DataTable columns={["Name", "Email", "Subject", "Date", "Status", ""]} rows={enquiryRows} /></section>
-      <section className="admin-panel admin-panel-wide"><div className="admin-panel-heading"><div><h2>Recent testimonials</h2><p>Latest submitted testimonials</p></div><Link href="/admin/testimonials">View all <AdminIcon name="arrow" size={14} /></Link></div><DataTable columns={["Contributor", "Testimonial", "Date", "Status", ""]} rows={testimonialRows} /></section>
-      <section className="admin-panel admin-quick-panel"><div className="admin-panel-heading"><div><h2>Quick actions</h2><p>Shortcuts to common tasks</p></div></div><div className="admin-quick-actions"><Link href="/admin/testimonials/new"><span><AdminIcon name="plus" /></span><span><strong>Add new testimonial</strong><small>Submit a testimonial for review</small></span><AdminIcon name="arrow" size={15} /></Link><Link href="/admin/enquiries"><span><AdminIcon name="inbox" /></span><span><strong>View enquiries</strong><small>Review current inbox</small></span><AdminIcon name="arrow" size={15} /></Link></div></section>
-    </div>
-    {selectedEnquiryId ? <EnquiryDetailsDialog enquiry={enquiries.find((item) => item.id === selectedEnquiryId)} onClose={() => setSelectedEnquiryId(null)} onStatusChange={async (status) => {
-      const response = await fetch(`/api/admin/enquiries/${selectedEnquiryId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
-      const result = await response.json();
-      if (!response.ok) { onNotice(result.error || "Could not save enquiry."); return false; }
-      setEnquiries((current) => current.map((item) => item.id === selectedEnquiryId ? { ...item, status } : item));
-      onNotice("Enquiry status saved.");
-      return true;
-    }} onNotesChange={async (internalNotes) => {
-      const response = await fetch(`/api/admin/enquiries/${selectedEnquiryId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ internal_notes: internalNotes }) });
-      const result = await response.json();
-      if (!response.ok) { onNotice(result.error || "Could not save internal notes."); return false; }
-      setEnquiries((current) => current.map((item) => item.id === selectedEnquiryId ? { ...item, internalNotes } : item));
-      onNotice("Internal notes saved.");
-      return true;
-    }} /> : null}
+    <section className="admin-panel admin-quick-panel">
+      <div className="admin-panel-heading"><div><h2>Quick actions</h2><p>Shortcuts to common tasks</p></div></div>
+      <div className="admin-quick-actions">
+        <Link href="/admin/testimonials/new"><span><AdminIcon name="plus" /></span><span><strong>Add new testimonial</strong><small>Submit a testimonial for review</small></span><AdminIcon name="arrow" size={15} /></Link>
+        <Link href="/admin/enquiries"><span><AdminIcon name="inbox" /></span><span><strong>View enquiries</strong><small>Review current inbox</small></span><AdminIcon name="arrow" size={15} /></Link>
+      </div>
+    </section>
   </>;
 }
 
