@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getAuthorizedAdmin } from "@/lib/supabase/server";
 import { getSourceContentRecords } from "@/lib/cms/source-content";
-import {
-  isVerifiedTestimonialEmail,
-  sendMailtrapTransactionalEmail,
-} from "@/lib/form-verification.server";
+import { sendTestimonialModerationEmail } from "@/lib/testimonial-notifications.server";
 import {
   isSupportedTestimonialVideoUrl,
   isTestimonialMediaPath,
@@ -36,6 +33,7 @@ type AdminContentRow = {
   created_at: string | null;
   updated_at: string | null;
   source_defined?: boolean;
+  notification_status?: string;
 };
 function revalidateContent(collection: string, slug: string, sourcePath?: string) {
   if (sourcePath) revalidatePath(sourcePath);
@@ -109,73 +107,6 @@ async function cleanupUnreferencedTestimonialMedia(
   }
 }
 
-async function sendTestimonialModerationEmail(
-  supabase: NonNullable<Awaited<ReturnType<typeof getAuthorizedAdmin>>["supabase"]>,
-  record: AdminContentRow,
-  status: string,
-) {
-  if (record.collection !== "testimonials" || (status !== "published" && status !== "rejected")) return "skipped";
-  const email = typeof record.data.email === "string" ? record.data.email : "";
-  const acceptedAt = record.data.consentAcceptedAt;
-  const proof = record.data.emailVerificationProof;
-  if (!isVerifiedTestimonialEmail(email, acceptedAt, proof)) return "skipped";
-  const { data: claim, error: claimError } = await supabase
-    .from("cms_testimonial_notification_deliveries")
-    .insert({
-      testimonial_id: record.id,
-      event_status: status,
-      delivery_status: "sending",
-    })
-    .select("testimonial_id")
-    .maybeSingle();
-  if (claimError?.code === "23505") return "duplicate";
-  if (claimError || !claim) {
-    console.error("[admin-testimonials] Could not claim a moderation email delivery.", {
-      code: claimError?.code || "unknown",
-    });
-    return "failed";
-  }
-  const customerName = typeof record.data.name === "string"
-    ? record.data.name.replace(/[\r\n\x00-\x1f\x7f]/g, " ").trim().slice(0, 120)
-    : "";
-  const approved = status === "published";
-  const subject = approved
-    ? "Your Testimonial Has Been Approved — Astronis Global"
-    : "Update on Your Testimonial Submission — Astronis Global";
-  const text = approved
-    ? `Dear ${customerName || "Customer"},\n\nThank you for sharing your testimonial with Astronis Global.\n\nWe are pleased to inform you that your testimonial has been approved and is now eligible for publication on our website.\n\nWe appreciate you taking the time to share your experience with us.\n\nBest regards,\nAstronis Global Team`
-    : `Dear ${customerName || "Customer"},\n\nThank you for taking the time to share your testimonial with Astronis Global.\n\nAfter reviewing your submission, we are unable to publish it at this time.\n\nWe appreciate your interest and thank you for your understanding.\n\nBest regards,\nAstronis Global Team`;
-  try {
-    await sendMailtrapTransactionalEmail(email, subject, text);
-  } catch (error) {
-    console.error("[admin-testimonials] Moderation email delivery failed.", {
-      error: error instanceof Error ? error.name : "UnknownError",
-    });
-    const { error: updateError } = await supabase
-      .from("cms_testimonial_notification_deliveries")
-      .update({ delivery_status: "failed" })
-      .eq("testimonial_id", record.id)
-      .eq("event_status", status);
-    if (updateError) {
-      console.error("[admin-testimonials] Could not record moderation email failure.", {
-        code: updateError.code || "unknown",
-      });
-    }
-    return "failed";
-  }
-  const { error: updateError } = await supabase
-    .from("cms_testimonial_notification_deliveries")
-    .update({ delivery_status: "sent", sent_at: new Date().toISOString() })
-    .eq("testimonial_id", record.id)
-    .eq("event_status", status);
-  if (updateError) {
-    console.error("[admin-testimonials] Could not record moderation email delivery.", {
-      code: updateError.code || "unknown",
-    });
-  }
-  return "sent";
-}
-
 export async function GET(request: Request) {
   const auth = await getAuthorizedAdmin();
   if (!auth.configured) return errorResponse("Supabase is not configured.", 503);
@@ -212,6 +143,29 @@ export async function GET(request: Request) {
   for (const row of data ?? []) merged.set(`${row.collection}:${row.slug}`, row);
   const records = [...merged.values()].filter((row) => !status || row.status === status);
   const hydratedRecords = await Promise.all(records.map((record) => hydrateTestimonialMedia(auth.supabase!, record)));
+  const testimonialRows = hydratedRecords.filter((record) => record.collection === "testimonials");
+  const persistedTestimonials = testimonialRows.filter((record) =>
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(record.id),
+  );
+  if (persistedTestimonials.length) {
+    const { data: deliveries, error: deliveryError } = await auth.supabase
+      .from("cms_testimonial_notification_deliveries")
+      .select("testimonial_id, event_status, delivery_status")
+      .in("testimonial_id", persistedTestimonials.map((record) => record.id));
+    if (deliveryError) {
+      console.error("[admin-testimonials] Notification status query failed.", {
+        code: deliveryError.code || "unknown",
+      });
+      return errorResponse("Could not load testimonial notification status.", 503);
+    }
+    const deliveryByEvent = new Map(
+      (deliveries ?? []).map((delivery) => [`${delivery.testimonial_id}:${delivery.event_status}`, delivery.delivery_status]),
+    );
+    for (const record of persistedTestimonials) {
+      const eventStatus = record.status === "rejected" ? "rejected" : "published";
+      record.notification_status = deliveryByEvent.get(`${record.id}:${eventStatus}`);
+    }
+  }
   return NextResponse.json({ records: hydratedRecords });
 }
 
@@ -242,6 +196,9 @@ export async function POST(request: Request) {
     return error ? errorResponse("Could not save enquiry.", 500) : NextResponse.json({ record: row }, { status: 201 });
   }
   if (collection === "testimonials") {
+    if (typeof body.status === "string" && body.status !== "pending") {
+      return errorResponse("New testimonials must be submitted as pending for review.", 400);
+    }
     const data = body.data && typeof body.data === "object" && !Array.isArray(body.data) ? body.data as Record<string, unknown> : {};
     const name = typeof data.name === "string" ? data.name.trim().slice(0, 120) : "";
     const text = typeof data.text === "string" ? data.text.trim().slice(0, 5000) : "";
@@ -330,6 +287,7 @@ export async function PATCH(request: Request) {
     const updates: Record<string, unknown> = {};
     const allowedStatuses = sourceRecord.collection === "pages" ? pageStatuses : statuses;
     if (typeof body.status === "string" && allowedStatuses.has(body.status)) updates.status = body.status;
+    else if (typeof body.status === "string") return errorResponse("Invalid content status.", 400);
     if (body.data && typeof body.data === "object" && !Array.isArray(body.data)) updates.data = body.data;
     if (!Object.keys(updates).length) return errorResponse("No valid updates provided.", 400);
     const sourceData: Record<string, unknown> = sourceRecord.collection === "pages"
@@ -401,10 +359,14 @@ export async function PATCH(request: Request) {
       const videoPath = typeof data.videoPath === "string" ? data.videoPath.trim() : "";
       const videoUrl = typeof data.videoUrl === "string" ? data.videoUrl.trim() : "";
       const photoPublicationConsent = data.photoPublicationConsent === true;
+      const rating = Number(data.rating ?? 5);
       if (
         name.length < 2 ||
         text.length > 5000 ||
         (format === "written" && text.length < 10) ||
+        !Number.isInteger(rating) ||
+        rating < 1 ||
+        rating > 5 ||
         (format === "video" && !videoPath && !isSupportedTestimonialVideoUrl(videoUrl)) ||
         (imagePath && !isTestimonialMediaPath(imagePath)) ||
         (imagePath && !photoPublicationConsent) ||
@@ -419,6 +381,7 @@ export async function PATCH(request: Request) {
         ...data,
         name,
         text,
+        rating,
         format,
         imagePath,
         videoPath,
@@ -440,10 +403,44 @@ export async function PATCH(request: Request) {
   }
   if (existingRecord?.collection !== "pages" && body.metadata && typeof body.metadata === "object" && !Array.isArray(body.metadata)) updates.metadata = body.metadata;
   if (!Object.keys(updates).length) return errorResponse("No valid updates provided.", 400);
-  if (updates.status === "published" || updates.status === "approved") {
-    if (existingRecord.collection === "testimonials" && updates.status === "approved") {
-      return errorResponse("Use the published status to approve a testimonial.", 400);
+  const testimonialDecisionChanged = existingRecord.collection === "testimonials" &&
+    typeof updates.status === "string" &&
+    updates.status !== existingRecord.status;
+  if (testimonialDecisionChanged) {
+    const currentStatus = existingRecord.status;
+    const nextStatus = updates.status;
+    const allowedTransition =
+      currentStatus === "pending" && (nextStatus === "approved" || nextStatus === "rejected") ||
+      (currentStatus === "approved" || currentStatus === "published") && nextStatus === "archived" ||
+      currentStatus === "archived" && (nextStatus === "approved" || nextStatus === "published");
+    if (!allowedTransition) {
+      return errorResponse("This testimonial status transition is not permitted.", 409);
     }
+    if (nextStatus === "rejected") {
+      const reason = typeof body.rejectionReason === "string" ? body.rejectionReason.trim() : "";
+      if (reason.length < 3 || reason.length > 1000) {
+        return errorResponse("A rejection reason between 3 and 1000 characters is required.", 400);
+      }
+    }
+    if (nextStatus === "approved" || nextStatus === "published") {
+      const data = (updates.data as Record<string, unknown> | undefined) ?? existingRecord.data;
+      if (data.consent !== true || data.identityPublicationConsent !== true) {
+        return errorResponse("Testimonial publication requires explicit publication and identity consent.", 403);
+      }
+    }
+    if (nextStatus === "approved" || nextStatus === "published" || nextStatus === "rejected") {
+      const data = (updates.data as Record<string, unknown> | undefined) ?? existingRecord.data;
+      updates.data = {
+        ...data,
+        moderationDecisionAt: new Date().toISOString(),
+        moderationDecisionBy: auth.user.id,
+        moderationReason: nextStatus === "rejected"
+          ? (body.rejectionReason as string).trim().slice(0, 1000)
+          : "",
+      };
+    }
+  }
+  if (updates.status === "published" || updates.status === "approved") {
     if (existingRecord.collection === "testimonials" &&
       (existingRecord.data?.consent !== true || existingRecord.data?.identityPublicationConsent !== true) &&
       (!updates.data || (updates.data as Record<string, unknown>).consent !== true || (updates.data as Record<string, unknown>).identityPublicationConsent !== true)) {
@@ -463,7 +460,9 @@ export async function PATCH(request: Request) {
       : errorResponse("Record not found.", 404);
   }
   if (row.collection === "testimonials" && existingRecord.status !== row.status) {
-    const notificationStatus = await sendTestimonialModerationEmail(auth.supabase, row, row.status);
+    const notificationStatus = row.status === "approved" || row.status === "published" || row.status === "rejected"
+      ? await sendTestimonialModerationEmail(auth.supabase, row, row.status)
+      : "skipped";
     if (updates.data && existingRecord.data) {
       const oldPaths = [existingRecord.data.imagePath, existingRecord.data.videoPath]
         .filter((path): path is string => typeof path === "string");

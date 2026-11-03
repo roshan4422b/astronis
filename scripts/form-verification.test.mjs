@@ -104,9 +104,12 @@ const {
 } = await import("../src/lib/testimonial-media.ts");
 
 test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
-  const [route, form, migration] = await Promise.all([
+  const [route, form, otpComponent, sendOtpRoute, verifyOtpRoute, migration] = await Promise.all([
     readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/_components/email-otp-verification.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/verification/send-enquiry-otp/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/verification/verify-otp/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/202611020001_testimonial_media_notifications.sql", import.meta.url), "utf8"),
   ]);
   const verificationCheck = route.indexOf("await consumeEmailVerification(");
@@ -114,11 +117,26 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
 
   assert.ok(verificationCheck >= 0);
   assert.ok(insert > verificationCheck);
-  assert.match(route, /const serviceClient = getTestimonialMediaService\(\)/);
+  assert.match(route, /serviceClient = getTestimonialMediaService\(\)/);
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
   assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
-  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
+  assert.match(form, /disabled=\{busy \|\| recording \|\| !emailVerified \|\| !formValid\}/);
   assert.doesNotMatch(form, /captchaToken/);
+  assert.match(route, /missingConfiguration/);
+  assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
+  assert.match(route, /"SUPABASE_SERVICE_ROLE_KEY"/);
+  assert.match(form, /submissionInFlight\.current/);
+  assert.match(form, /new FormData\(form\)/);
+  assert.match(form, /request\.open\("POST", new URL\("\/api\/testimonials", window\.location\.origin\)\.toString\(\)\)/);
+  assert.match(otpComponent, /fetch\(new URL\("\/api\/verification\/send-enquiry-otp", window\.location\.origin\)/);
+  assert.match(otpComponent, /fetch\(new URL\("\/api\/verification\/verify-otp", window\.location\.origin\)/);
+  assert.match(route, /origin !== new URL\(request\.url\)\.origin/);
+  assert.match(sendOtpRoute, /origin !== new URL\(request\.url\)\.origin/);
+  assert.match(verifyOtpRoute, /origin !== new URL\(request\.url\)\.origin/);
+  assert.match(route, /data\.set\("status", "pending-review"\)/);
+  assert.match(route, /serviceClient\.from\("cms_content"\)\.insert\(\{\s*collection: "testimonials"/);
+  assert.match(route, /emailVerified: true/);
   assert.doesNotMatch(route, /request\.json\(\)/);
   assert.match(migration, /drop policy if exists "Public testimonial submissions" on public\.cms_content;/i);
   assert.match(migration, /revoke insert on table public\.cms_content from public,\s*anon;/i);
@@ -127,6 +145,53 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.doesNotMatch(migration, /revoke\s+(?:all|insert)\s+on table public\.cms_content from[^;]*\bauthenticated\b/i);
   assert.doesNotMatch(migration, /drop policy[^;]*"Admins manage content"/i);
   assert.doesNotMatch(migration, /create policy "Public testimonial submissions"/i);
+});
+
+test("testimonial ratings and public approved-state projection stay aligned", async () => {
+  const [form, submission, page, home, server, migration] = await Promise.all([
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/testimonials/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/home/testimonials.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/lib/supabase/server.ts", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/202611030001_testimonial_approval_ratings.sql", import.meta.url), "utf8"),
+  ]);
+  assert.match(form, /<select name="rating" required defaultValue="5">/);
+  assert.match(submission, /!\/\^\[1-5\]\$\/\.test\(get\("rating"\)\)/);
+  assert.match(submission, /rating: Number\(get\("rating"\)\)/);
+  assert.match(submission, /status: "pending"/);
+  assert.match(submission, /Thank you for sharing your experience with Astronis Global\. Your testimonial has been submitted successfully and is awaiting review by our team\./);
+  assert.match(page, /rating: item\.rating/);
+  assert.match(home, /rating: item\.rating/);
+  assert.match(server, /rating: typeof record\.rating === "number"/);
+  assert.match(migration, /content\.status in \('approved', 'published'\)/);
+  assert.match(migration, /rating integer/);
+  assert.match(migration, /content\.data->'consent' = 'true'::jsonb/);
+  assert.match(migration, /content\.data->'identityPublicationConsent' = 'true'::jsonb/);
+});
+
+test("testimonial decisions require authorized transitions and idempotent email notification", async () => {
+  const [adminRoute, notifier, retryRoute, adminUi] = await Promise.all([
+    readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/lib/testimonial-notifications.server.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/testimonials/[id]/notification/retry/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(adminRoute, /const auth = await getAuthorizedAdmin\(\)/);
+  assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "rejected"\)/);
+  assert.match(adminRoute, /A rejection reason between 3 and 1000 characters is required/);
+  assert.match(adminRoute, /moderationDecisionAt: new Date\(\)\.toISOString\(\)/);
+  assert.match(adminRoute, /moderationDecisionBy: auth\.user\.id/);
+  assert.match(adminRoute, /\.eq\("status", existingRecord\.status\)/);
+  assert.match(notifier, /isVerifiedTestimonialEmail\(email/);
+  assert.match(notifier, /\.insert\(\{[\s\S]*delivery_status: "sending"/);
+  assert.match(notifier, /\.eq\("delivery_status", "failed"\)/);
+  assert.match(notifier, /Your Testimonial Has Been Approved – Astronis Global/);
+  assert.match(notifier, /Update Regarding Your Testimonial – Astronis Global/);
+  assert.match(retryRoute, /getAuthorizedAdmin\(\)/);
+  assert.match(retryRoute, /Only a failed notification can be retried/);
+  assert.match(adminUi, /Reason for rejection/);
+  assert.match(adminUi, /Retry email notification/);
 });
 
 test("reports missing testimonial Supabase service configuration without exposing credentials", async () => {
@@ -141,21 +206,51 @@ test("reports missing testimonial Supabase service configuration without exposin
   assert.doesNotMatch(service, /console\.(?:log|error|warn)\([^)]*serviceRoleKey/);
   assert.doesNotMatch(service, /NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY/);
   assert.match(route, /Secure testimonial submission is not configured\. Please try again later\./);
+  assert.match(route, /missingConfiguration/);
+  assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
+  assert.match(route, /"SUPABASE_SERVICE_ROLE_KEY"/);
   assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeEmailVerification("));
+  assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
 });
 
 test("keeps Turnstile visible but non-blocking in testimonial forms", async () => {
-  const [widget, form] = await Promise.all([
+  const [widget, form, sendRoute, verifyRoute] = await Promise.all([
     readFile(new URL("../src/components/TurnstileWidget.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/verification/send-enquiry-otp/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/verification/verify-otp/route.ts", import.meta.url), "utf8"),
   ]);
   assert.match(widget, /"expired-callback": \(\) => \{\s*reportError\("The CAPTCHA expired\.[\s\S]*?window\.turnstile\?\.reset\(idRef\.current\)/);
-  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
   assert.doesNotMatch(form, /captchaToken|CAPTCHA expired/);
   const verification = await readFile(new URL("../src/app/_components/email-otp-verification.tsx", import.meta.url), "utf8");
   assert.match(verification, /captchaDisplayOnly \? \(\) => \{\} : updateCaptchaToken/);
   assert.match(verification, /captchaDisplayOnly \? undefined : setStatus/);
   assert.match(verification, /!captchaDisplayOnly && <input type="hidden" name="captchaToken"/);
+  assert.match(verification, /const captchaRequiredForOtp = !captchaOptional && !captchaDisplayOnly/);
+  assert.match(verification, /captchaRequiredForOtp && !captchaToken/);
+  assert.match(verification, /disabled=\{busy \|\| cooldownLeft > 0 \|\| \(captchaRequiredForOtp && !captchaToken\)\}/);
+  assert.match(verification, /fetch\(new URL\("\/api\/verification\/send-enquiry-otp", window\.location\.origin\)/);
+  assert.match(verification, /JSON\.stringify\(\{ email: nextEmail \}\)/);
+  assert.match(sendRoute, /await sendEmailOtp\(email\)/);
+  assert.doesNotMatch(sendRoute, /verifyTurnstile|captchaToken/);
+  assert.match(sendRoute, /emailOtpFailureResponse\(error\)/);
+  assert.match(verification, /Enter a valid email address before requesting a verification code/);
+  assert.match(verification, /finally \{\s*requestInFlight\.current = false;\s*setBusy\(false\);/);
+  assert.match(verification, /fetch\(new URL\("\/api\/verification\/verify-otp", window\.location\.origin\)/);
+  assert.match(verification, /JSON\.stringify\(\{ email, code \}\)/);
+  assert.match(verifyRoute, /await verifyEmailOtp\(email, code\)/);
+  assert.match(verifyRoute, /verificationToken: result\.proof/);
+
+  const [globalEnquiryRoute, applicationRoute, meetingRoute] = await Promise.all([
+    readFile(new URL("../src/app/api/global-enquiry/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/professional-application/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/route.ts", import.meta.url), "utf8"),
+  ]);
+  for (const route of [globalEnquiryRoute, applicationRoute, meetingRoute]) {
+    assert.match(route, /consumeFormVerification\(/);
+    assert.match(route, /verificationFailure\(/);
+  }
 });
 
 test("protects source-defined CMS testimonials and shared media from deletion", async () => {
@@ -201,8 +296,12 @@ test("classifies missing Upstash configuration without attempting a storage requ
       (error) => {
         assert.ok(error instanceof EmailOtpFailure);
         assert.equal(error.stage, "configuration");
+        assert.match(error.message, /UPSTASH_REDIS_REST_URL/);
         assert.equal(emailOtpFailureResponse(error).status, 503);
-        assert.match(emailOtpFailureResponse(error).message, /not configured/i);
+        assert.match(emailOtpFailureResponse(error).message, /UPSTASH_REDIS_REST_URL/);
+        assert.match(emailOtpFailureResponse(error).message, /MAILTRAP_API_KEY/);
+        assert.match(emailOtpFailureResponse(error).message, /EMAIL_OTP_SECRET/);
+        assert.doesNotMatch(emailOtpFailureResponse(error).message, /test-token|test-only-signing-secret/);
         return true;
       },
     );
@@ -210,6 +309,32 @@ test("classifies missing Upstash configuration without attempting a storage requ
     process.env.UPSTASH_REDIS_REST_URL = saved.url;
     process.env.UPSTASH_REDIS_REST_TOKEN = saved.token;
     process.env.EMAIL_OTP_SECRET = saved.secret;
+  }
+});
+
+test("reports missing Mailtrap configuration without attempting delivery", async () => {
+  const saved = {
+    apiKey: process.env.MAILTRAP_API_KEY,
+    from: process.env.MAILTRAP_FROM_EMAIL,
+  };
+  entries.clear();
+  delete process.env.MAILTRAP_API_KEY;
+  delete process.env.MAILTRAP_FROM_EMAIL;
+  try {
+    await assert.rejects(
+      sendEmailOtp(email),
+      (error) => {
+        assert.ok(error instanceof EmailOtpFailure);
+        assert.equal(error.stage, "configuration");
+        assert.match(emailOtpFailureResponse(error).message, /MAILTRAP_API_KEY, MAILTRAP_FROM_EMAIL/);
+        return true;
+      },
+    );
+  } finally {
+    if (saved.apiKey === undefined) delete process.env.MAILTRAP_API_KEY;
+    else process.env.MAILTRAP_API_KEY = saved.apiKey;
+    if (saved.from === undefined) delete process.env.MAILTRAP_FROM_EMAIL;
+    else process.env.MAILTRAP_FROM_EMAIL = saved.from;
   }
 });
 

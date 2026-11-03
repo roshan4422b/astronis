@@ -190,6 +190,7 @@ export type PublicCmsTestimonial = {
   designation: string;
   service: string;
   testimonial_text: string;
+  rating: number;
   image_url: string;
   video_url: string;
   video_source: string;
@@ -207,7 +208,8 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
     logCmsRpcError("cms_public_testimonials", "invalid_response");
     return [];
   }
-  const rows = data.filter((record): record is Omit<PublicCmsTestimonial, "image_url" | "video_url" | "video_source"> & {
+  const rows = data.filter((record): record is Omit<PublicCmsTestimonial, "image_url" | "video_url" | "video_source" | "rating"> & {
+    rating?: number;
     image_path?: string;
     video_path?: string;
     video_url?: string;
@@ -240,6 +242,9 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
     designation: record.designation,
     service: record.service,
     testimonial_text: record.testimonial_text,
+    rating: typeof record.rating === "number" && Number.isInteger(record.rating) && record.rating >= 1 && record.rating <= 5
+      ? record.rating
+      : 5,
     image_url: typeof record.image_path === "string" ? signedUrls.get(record.image_path) || "" : "",
     video_url: typeof record.video_path === "string"
       ? signedUrls.get(record.video_path) || ""
