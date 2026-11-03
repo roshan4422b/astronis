@@ -30,14 +30,10 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
     cb.current = onToken;
   }, [onToken]);
 
-  useEffect(() => {
-    onErrorRef.current = onError;
-  }, [onError]);
-
   const reportError = useCallback((message: string) => {
     cb.current("");
-    onErrorRef.current?.(message);
-  }, []);
+    onError?.(message);
+  }, [onError]);
 
   const mount = useCallback(() => {
     if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;

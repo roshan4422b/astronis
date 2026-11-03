@@ -15,6 +15,7 @@ import {
   getTestimonialMediaService,
   uploadTestimonialMedia,
 } from "@/lib/testimonial-media.server";
+import { SupabaseServiceConfigurationError } from "@/lib/supabase/service";
 
 function hasValidMediaSignature(type: string, bytes: Uint8Array) {
   if (type === "image/jpeg") return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
@@ -112,11 +113,16 @@ export async function POST(request: Request) {
   try {
     serviceClient = getTestimonialMediaService();
   } catch (error) {
-    console.error("[testimonials] Supabase service client initialization failed.", {
-      error: error instanceof Error ? error.name : "UnknownError",
-    });
+    console.error("[testimonials] Supabase service client initialization failed.",
+      error instanceof SupabaseServiceConfigurationError
+        ? { invalidConfiguration: error.variableName }
+        : { error: error instanceof Error ? error.name : "UnknownError" },
+    );
+    const message = error instanceof SupabaseServiceConfigurationError
+      ? "Secure testimonial submission has an invalid NEXT_PUBLIC_SUPABASE_URL configuration. Please contact the website team."
+      : "Secure testimonial submission is not configured. Please try again later.";
     return Response.json(
-      { message: "Secure testimonial submission is not configured. Please try again later." },
+      { message },
       { status: 503 },
     );
   }
@@ -128,8 +134,11 @@ export async function POST(request: Request) {
     console.error("[testimonials] Supabase service client is unavailable.", {
       missingConfiguration,
     });
+    const message = missingConfiguration.length
+      ? `Secure testimonial submission is not configured. Missing server variable${missingConfiguration.length === 1 ? "" : "s"}: ${missingConfiguration.join(", ")}. Please contact the website team.`
+      : "Secure testimonial submission is not configured. Please try again later.";
     return Response.json(
-      { message: "Secure testimonial submission is not configured. Please try again later." },
+      { message },
       { status: 503 },
     );
   }

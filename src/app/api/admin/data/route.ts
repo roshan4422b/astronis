@@ -410,7 +410,7 @@ export async function PATCH(request: Request) {
     const currentStatus = existingRecord.status;
     const nextStatus = updates.status;
     const allowedTransition =
-      currentStatus === "pending" && (nextStatus === "approved" || nextStatus === "rejected") ||
+      currentStatus === "pending" && (nextStatus === "approved" || nextStatus === "published" || nextStatus === "rejected") ||
       (currentStatus === "approved" || currentStatus === "published") && nextStatus === "archived" ||
       currentStatus === "archived" && (nextStatus === "approved" || nextStatus === "published");
     if (!allowedTransition) {

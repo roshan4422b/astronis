@@ -178,7 +178,10 @@ test("testimonial decisions require authorized transitions and idempotent email 
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(adminRoute, /const auth = await getAuthorizedAdmin\(\)/);
-  assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "rejected"\)/);
+  assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "rejected"\)/);
+  assert.match(adminUi, /pendingDecision\.status === "Approved" \? "published"/);
+  assert.match(adminRoute, /if \(collection === "testimonials"\) \{ revalidatePath\("\/"\); revalidatePath\("\/insights-events"\); \}/);
+  assert.match(adminRoute, /testimonials: "\/testimonials"/);
   assert.match(adminRoute, /A rejection reason between 3 and 1000 characters is required/);
   assert.match(adminRoute, /moderationDecisionAt: new Date\(\)\.toISOString\(\)/);
   assert.match(adminRoute, /moderationDecisionBy: auth\.user\.id/);
@@ -202,13 +205,20 @@ test("reports missing testimonial Supabase service configuration without exposin
   assert.match(service, /import "server-only"/);
   assert.match(service, /process\.env\.NEXT_PUBLIC_SUPABASE_URL/);
   assert.match(service, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(service, /process\.env\.NEXT_PUBLIC_SUPABASE_URL\?\.trim\(\)/);
+  assert.match(service, /process\.env\.SUPABASE_SERVICE_ROLE_KEY\?\.trim\(\)/);
   assert.match(service, /if \(!url \|\| !serviceRoleKey\) return null/);
+  assert.match(service, /new SupabaseServiceConfigurationError\("NEXT_PUBLIC_SUPABASE_URL"\)/);
   assert.doesNotMatch(service, /console\.(?:log|error|warn)\([^)]*serviceRoleKey/);
   assert.doesNotMatch(service, /NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY/);
   assert.match(route, /Secure testimonial submission is not configured\. Please try again later\./);
   assert.match(route, /missingConfiguration/);
   assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
   assert.match(route, /"SUPABASE_SERVICE_ROLE_KEY"/);
+  assert.match(route, /invalidConfiguration: error\.variableName/);
+  assert.match(route, /Missing server variable/);
+  assert.match(route, /invalid NEXT_PUBLIC_SUPABASE_URL configuration/);
+  assert.doesNotMatch(route, /SUPABASE_SERVICE_ROLE_KEY[^\n]*process\.env/);
   assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeEmailVerification("));
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
 });
