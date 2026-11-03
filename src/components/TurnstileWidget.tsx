@@ -18,13 +18,14 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
-  const errorCb = useCallback(() => cb.current(""), []);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
   useEffect(() => {
     cb.current = onToken;
   }, [onToken]);
+
+  const errorCb = useCallback(() => cb.current(""), []);
 
   const mount = useCallback(() => {
     if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;
