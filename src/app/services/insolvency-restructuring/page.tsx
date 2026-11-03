@@ -73,7 +73,6 @@ export default function InsolvencyRestructuringPage() {
 
         <SectionNavigation
           variant="bar"
-          showItemNumbers={false}
           title="Explore our capabilities"
           theme="insolvency"
           items={categories.map((category) => ({

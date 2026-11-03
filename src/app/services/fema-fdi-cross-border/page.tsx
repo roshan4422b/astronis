@@ -33,7 +33,6 @@ export default function FemaFdiCrossBorderPage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         title="Explore our capabilities"
         theme="fema"
         items={directory.map((category) => ({

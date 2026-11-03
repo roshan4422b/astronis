@@ -47,7 +47,6 @@ export default function MainServicePage({ practice }: { practice: ServicePractic
     <ServiceHero practice={practice} />
     <SectionNavigation
       variant="bar"
-      showItemNumbers={false}
       title="Explore our capabilities"
       items={navigationGroups.map(group => ({
         id: group.slug,

@@ -174,7 +174,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
               <ol className={styles.timeline}>
                 {detail.process.map((item, index) => (
                   <li key={item.title}>
-                    <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
                     <span className={styles.stepIcon}><Icon name={["people", "search", "chart", "document", "file", "calendar"][index]} /></span>
                     <h3>{item.title}</h3><p>{item.text}</p>
                   </li>
@@ -209,7 +208,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
                 {detail.precautions.map((item, index) => (
                   <article key={item}>
                     <span className={styles.requirementIcon}><Icon name={["search", "document", "shield", "people", "chart"][index % 5]} /></span>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
                     <h3>{item}</h3>
                   </article>
                 ))}

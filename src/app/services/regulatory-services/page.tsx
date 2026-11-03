@@ -30,7 +30,6 @@ export default function RegulatoryServicesPage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         title="Explore our capabilities"
         items={regulatoryServices.groups.map((group) => ({
           id: group.slug,
@@ -56,7 +55,6 @@ export default function RegulatoryServicesPage() {
                 <div className={styles.sectionMeta}>
                   <span className={styles.sectionLabel}>OUR SERVICES</span>
                   <h2>
-                    <span className={styles.sectionNumber}>{String(index + 1).padStart(2, "0")}</span>
                     {group.title}
                   </h2>
                   <span className={styles.sectionAccent} aria-hidden="true" />

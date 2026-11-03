@@ -33,7 +33,6 @@ export default function TaxationCompliancePage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         title="Explore our capabilities"
         theme="taxation"
         items={directory.map((category) => ({

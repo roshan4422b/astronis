@@ -1,7 +1,15 @@
 import { testimonials } from "@/content/testimonials";
 import styles from "./service-child-testimonial.module.css";
 
-export default function ServiceChildTestimonial() {
+export default function ServiceChildTestimonial({
+  eyebrow = "TESTIMONIALS",
+  heading = "Clear advice. Practical direction.",
+  description = "Perspectives shared with permission by clients of our advisory teams.",
+}: {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+}) {
   const approvedTestimonials = testimonials
     .filter((testimonial) => testimonial.status === "approved" && testimonial.publicationConsent && testimonial.quote)
     .slice(0, 3);
@@ -10,9 +18,9 @@ export default function ServiceChildTestimonial() {
     <section className={styles.testimonial} id="testimonials" aria-labelledby="service-testimonial-heading">
       <div className={`container ${styles.container}`}>
         <div className={styles.heading}>
-          <span>TESTIMONIALS</span>
-          <h2 id="service-testimonial-heading">Clear advice. Practical direction.</h2>
-          <p>Perspectives shared with permission by clients of our advisory teams.</p>
+          <span>{eyebrow}</span>
+          <h2 id="service-testimonial-heading">{heading}</h2>
+          <p>{description}</p>
         </div>
         <div className={styles.grid}>
           {approvedTestimonials.map((testimonial) => (
