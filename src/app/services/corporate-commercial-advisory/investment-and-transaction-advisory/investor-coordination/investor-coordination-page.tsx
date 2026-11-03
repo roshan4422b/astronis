@@ -13,7 +13,10 @@ const data: EntityFormationPageData | undefined = investmentData
       slug: "investor-coordination",
       title: "Investor Coordination",
       shortTitle: "Investor Coordination",
-      image: "/images/services/hero.webp",
+      heroImage:
+        "/services/child page of services/Corporate & Commercial/Global Business Partnership In Blue.png",
+      image:
+        "/services/child page of services/Corporate & Commercial/Global Business Partnership In Blue.png",
       imageAlt:
         "Business leaders coordinating an investment transaction in a modern office",
       heroStatement:
@@ -177,7 +180,7 @@ const data: EntityFormationPageData | undefined = investmentData
         ["Can you coordinate cross-border investment discussions?", "Coordination can include international stakeholders. Applicable foreign investment, exchange control, tax and sector requirements should be assessed for the specific transaction."],
       ],
       relatedPages: [
-        ["Start-Up/MSME Investment Advisory", "/services/business-advisory-contracts#investment-and-transaction-advisory"],
+        ["Start-Up/MSME Investment Advisory", "/services/business-advisory-contracts/investment-and-transaction-advisory/start-up-msme-investment-advisory"],
         ["Investment Transactions", "/services/corporate-commercial-advisory/investment-transactions"],
         ["India Entry Strategy", "/services/corporate-commercial-advisory/investment-and-transaction-advisory/india-entry-strategy"],
       ],

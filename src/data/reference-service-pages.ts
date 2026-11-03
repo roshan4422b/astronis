@@ -2183,7 +2183,7 @@ const pages: ReferenceServicePage[] = [
       "CAT Hearing Preparation Guide",
     ],
     relatedPages: [
-      ["AFT & CAT Advisory", `${litigationService}/tribunals-dispute-resolution/aft-and-cat-advisory`],
+      ["AFT & CAT Advisory", `${litigationService}/tribunals-dispute-resolution/aft-cat-advisory`],
       ["Regulatory & Administrative Investigations", `${litigationService}/tribunals-dispute-resolution/regulatory-administrative-investigations`],
       ["Central Government Service Matters", `${litigationService}/tribunals-dispute-resolution`],
       ["Mediation & Conciliation Cell", `${litigationService}/tribunals-dispute-resolution/mediation-conciliation-cell`],
@@ -5415,7 +5415,7 @@ export function getReferenceServicePageMetadata(route: string): Metadata | undef
   const page = pages.find((item) => item.route === route || item.routeAliases?.includes(route));
   if (!page) return undefined;
   return {
-    title: `${page.title} | Astronis Global`,
+    title: page.title,
     description: page.description,
     alternates: { canonical: page.route },
   };

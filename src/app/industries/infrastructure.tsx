@@ -19,10 +19,10 @@ const benefits = [
 ];
 const challenges = [
  ["Land Acquisition and Rehabilitation", "Infrastructure & Projects .png", "Coordinating land, title and rehabilitation advisory with project development priorities.", "rera-and-real-estate-advisory"],
- ["Renewable Energy and Green Transition", "nergy, Power & Renewables .png", "Supporting project development and commercial arrangements for the energy transition.", "esg-and-sustainability-advisory"],
+ ["Renewable Energy and Green Transition", "nergy, Power & Renewables .png", "Supporting project development and commercial arrangements for the energy transition.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
  ["Regulatory Approvals and Environmental Clearances", "Real Estate & Construction .png", "Planning approval and environmental advisory work around your project and location.", "licensing-and-registrations"],
  ["Project Financing and Viability", "Banking & Financial Services .png", "Connecting project structures, investment priorities and commercial documentation.", "corporate-advisory/corporate-structuring"],
- ["Climate Change and Sustainability Compliance", "Banner-Energy, Power & Renewables .png", "Bringing sustainability priorities into project planning and ongoing operations.", "esg-and-sustainability-advisory"],
+ ["Climate Change and Sustainability Compliance", "Banner-Energy, Power & Renewables .png", "Bringing sustainability priorities into project planning and ongoing operations.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const solutions = [
  ["building", "Regulatory Approvals & Clearances", "licensing-and-registrations"],
@@ -30,7 +30,7 @@ const solutions = [
  ["file", "Contracts & EPC Advisory", "contracts"],
  ["pin", "Land Acquisition & R&R Advisory", "rera-and-real-estate-advisory"],
  ["bulb", "Renewable Energy & Power Projects", "business-advisory-and-consulting"],
- ["globe", "Environmental & ESG Compliance", "esg-and-sustainability-advisory"],
+ ["globe", "Environmental & ESG Compliance", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
  ["scale", "Dispute Resolution & Arbitration", "arbitration-and-conciliation"],
  ["shield", "Policy & Regulatory Advisory", "regulatory-and-compliance"],
 ];

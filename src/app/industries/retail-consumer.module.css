@@ -1,2 +1,7 @@
 .hero{min-height:490px}.hero>img{object-position:center;transform:scaleX(-1)}.hero::after{background:linear-gradient(90deg,#061b3cf0 0%,#082744c7 37%,#08274458 70%,#061b37a0 100%)}.heroInner{min-height:490px}.hero h1{max-width:720px}.page :global(.enquiry-form button):hover{transform:translateY(-2px)}
 @media(max-width:600px){.hero,.heroInner{min-height:0}.hero>img{object-position:56% center}.hero::after{background:linear-gradient(90deg,#061b3cf3,#082744d9)}}
+
+.solutionGrid.solutionGrid,
+.relatedGrid.relatedGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.solutionGrid> a>svg:first-child{display:block;width:27px;height:27px;color:#0b4c9e;stroke:currentColor;visibility:visible}
+@media(max-width:540px){.solutionGrid.solutionGrid{grid-template-columns:1fr}}

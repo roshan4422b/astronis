@@ -224,7 +224,7 @@
 .businessCard span { color: #697989; font-size: max(var(--font-size-min), 14px); line-height: 1.45; }
 
 .regulatory { padding: 28px 0 20px; }
-.regulatory > .container { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.regulatory > .container { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .featureCard { display: grid; min-height: 310px; grid-template-columns: 1fr .9fr; overflow: hidden; background: #eff5fa; scroll-margin-top: 16px; }
 .featureCopy { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; padding: 26px 28px; }
 .featureCopy h2 { margin-top: 6px; font-size: max(var(--font-size-min), clamp(21px, 2vw, 27px)); line-height: 1.08; }

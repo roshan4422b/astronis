@@ -66,12 +66,12 @@ const industries = [
 ] as const;
 
 const corridors = [
-  ["UAE", "/flag/uae.png"],
-  ["Singapore", "/flag/singapore.png"],
-  ["UK", "/flag/uk.png"],
-  ["USA", "/flag/usa.png"],
-  ["EU", "/flag/eu.png"],
-  ["Middle East", "/flag/uae.png"],
+  ["UAE", "/flag/uae.png", "/global-presence/uae"],
+  ["Singapore", "/flag/singapore.png", "/global-presence/singapore"],
+  ["UK", "/flag/uk.png", "/global-presence/uk"],
+  ["USA", "/flag/usa.png", "/global-presence/usa"],
+  ["EU", "/flag/eu.png", "/global-presence/european-union"],
+  ["Middle East", "/flag/uae.png", "/global-presence/middle-east"],
 ] as const;
 
 const journey = [
@@ -134,7 +134,7 @@ const jurisdictionTiles = [
   ["Singapore", "/flag/singapore.png", "/global-presence/singapore"],
   ["UK", "/flag/uk.png", "/global-presence/uk"],
   ["USA", "/flag/usa.png", "/global-presence/usa"],
-  ["EU", "/flag/eu.png", "/global-presence/eu"],
+  ["EU", "/flag/eu.png", "/global-presence/european-union"],
   ["Middle East", "/flag/uae.png", "/global-presence/middle-east"],
 ] as const;
 
@@ -197,7 +197,7 @@ export default async function IndiaPage() {
             <span aria-current="page">India</span>
           </nav>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>Global Presence</span>
+            <span className={styles.eyebrow}>Country Desk</span>
             <h1 id="india-title">{title}</h1>
             <h2>Local Depth. Global Perspective.</h2>
             <p>{description}</p>
@@ -335,8 +335,8 @@ export default async function IndiaPage() {
             <span className={styles.eyebrow}>India&apos;s Global Business Corridors</span>
             <h2 id="corridors-title">Connecting India to key global markets.</h2>
             <div className={styles.corridorList}>
-              {corridors.map(([name, flag]) => (
-                <Link href="/global-presence" key={name} aria-label={`Explore ${name}`}>
+              {corridors.map(([name, flag, href]) => (
+                <Link href={href} key={name} aria-label={`Explore ${name}`}>
                   <span className={styles.flagCircle}>
                     <AssetImage src={flag} alt="" fill sizes="44px" />
                   </span>

@@ -21,7 +21,7 @@ const challenges = [
   ["Regulatory Approvals & Clearances", "Infrastructure & Projects .png", "Plan the advisory work around your project location, development plans and approval priorities.", "licensing-and-registrations"],
   ["Project Financing & Investment Structures", "Banking & Financial Services .png", "Align financing arrangements, investment structures and commercial documentation with your project objectives.", "corporate-advisory/corporate-structuring"],
   ["Contract Management & Dispute Resolution", "Part-6 .png", "Clarify responsibilities, project milestones and the approach to resolving contractual disagreements.", "litigation-and-dispute-resolution"],
-  ["Sustainable & ESG-Compliant Development", "nergy, Power & Renewables .png", "Bring environmental, social and governance considerations into project planning and ongoing operations.", "esg-and-sustainability-advisory"],
+  ["Sustainable & ESG-Compliant Development", "nergy, Power & Renewables .png", "Bring environmental, social and governance considerations into project planning and ongoing operations.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const solutions = [
   ["pin", "Land & Title Advisory", "rera-and-real-estate-advisory"],
@@ -32,7 +32,7 @@ const solutions = [
   ["chart", "Real Estate Investment & REIT Advisory", "rera-and-real-estate-advisory"],
   ["scale", "Dispute Resolution & Arbitration", "arbitration-and-conciliation"],
   ["file", "Leasing, Licensing & Occupancy", "contracts/commercial-contracts"],
-  ["globe", "Environment, ESG & Sustainability", "esg-and-sustainability-advisory"],
+  ["globe", "Environment, ESG & Sustainability", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
   ["chart", "Taxation, Stamp Duty & Incentives", "rera-and-real-estate-advisory"],
   ["search", "Due Diligence & Risk Assessment", "corporate-transactions/due-diligence"],
   ["shield", "Ongoing Compliance & Advisory", "regulatory-and-compliance"],

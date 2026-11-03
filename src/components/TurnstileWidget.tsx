@@ -22,7 +22,7 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
-  const errorCb = useRef(onError);
+  const onErrorRef = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
@@ -31,12 +31,12 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   }, [onToken]);
 
   useEffect(() => {
-    errorCb.current = onError;
+    onErrorRef.current = onError;
   }, [onError]);
 
   const reportError = useCallback((message: string) => {
     cb.current("");
-    errorCb.current?.(message);
+    onErrorRef.current?.(message);
   }, []);
 
   const mount = useCallback(() => {
@@ -44,7 +44,10 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
     idRef.current = window.turnstile.render(ref.current, {
       sitekey: siteKey,
       callback: (t: string) => cb.current(t),
-      "expired-callback": () => reportError("Security verification expired. Please try again."),
+      "expired-callback": () => {
+        reportError("The CAPTCHA expired. Please try again.");
+        window.turnstile?.reset(idRef.current ?? undefined);
+      },
       "error-callback": () => reportError("Security verification failed. Please try again."),
     });
   }, [isConfigured, reportError, siteKey]);

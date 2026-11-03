@@ -121,19 +121,6 @@ const journeySteps = [
   "Expand Further",
 ];
 
-const expertiseNodes = [
-  "Corporate & Commercial",
-  "FEMA / FDI",
-  "Taxation",
-  "Regulatory",
-  "Banking & Financial Services",
-  "Technology & Privacy",
-  "Intellectual Property",
-  "Employment",
-  "Risk",
-  "Sector Advisory",
-];
-
 const industryCards = industries.slice(0, 8);
 
 const professionalFeatures = [
@@ -255,59 +242,22 @@ export default async function GlobalPresencePage() {
           <div className={styles.mapLayout}>
             <div className={styles.mapPanel}>
               <div className={styles.mapBackground} aria-hidden="true" />
-              <div className={styles.mapPoint} style={{ left: "52%", top: "58%" }}>
-                <span>India</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "68%", top: "46%" }}>
-                <span>UAE</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "79%", top: "72%" }}>
-                <span>Singapore</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "36%", top: "29%" }}>
-                <span>UK</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "18%", top: "39%" }}>
-                <span>USA</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "47%", top: "20%" }}>
-                <span>EU</span>
-              </div>
-              <div className={styles.mapPoint} style={{ left: "60%", top: "39%" }}>
-                <span>Middle East</span>
-              </div>
-            </div>
-
-            <div className={styles.mapInfo}>
-              {displayRegions.map((region) => (
-                <article key={region.name} className={styles.regionInfo}>
-                  <div className={styles.regionInfoHeader}>
-                    <AssetImage className={styles.countryFlag} src={region.flag} alt={`${region.name} flag`} width={36} height={24} />
-                    <h3>{region.name}</h3>
-                  </div>
-                  <p>{region.description}</p>
-                </article>
-              ))}
-              {additionalJurisdictions.map((item) => (
-                <Link key={item.slug} href={`/global-presence/${item.slug}`} className={styles.regionCard}>
-                  <div className={styles.regionBody}>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                    <span className={styles.cardLink}>Explore {item.title}<Icon name="arrow" /></span>
-                  </div>
-                </Link>
-              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.section}>
+      <section id="countries" className={styles.section}>
         <div className={styles.container}>
           <div className={styles.sectionHeading}>
             <div>
               <span className={styles.sectionLabel}>Country & Jurisdiction Desks</span>
               <h2>Explore Our Key Markets</h2>
+              <p className={styles.sectionIntro}>
+                Explore our country desks and key markets for local context,
+                market-entry considerations and cross-border support tailored
+                to your business.
+              </p>
             </div>
           </div>
 
@@ -327,6 +277,23 @@ export default async function GlobalPresencePage() {
                   </div>
                   <span className={styles.cardLink}>
                     Explore {region.name} Desk
+                    <Icon name="arrow" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+            {additionalJurisdictions.map((item) => (
+              <Link key={item.slug} href={`/global-presence/${item.slug}`} className={styles.regionCard}>
+                {item.featuredImage ? (
+                  <div className={styles.regionImage}>
+                    <Image src={item.featuredImage} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" />
+                  </div>
+                ) : null}
+                <div className={styles.regionBody}>
+                  <h3>{item.title}</h3>
+                  {item.description ? <p>{item.description}</p> : null}
+                  <span className={styles.cardLink}>
+                    Explore {item.title}
                     <Icon name="arrow" />
                   </span>
                 </div>
@@ -372,6 +339,12 @@ export default async function GlobalPresencePage() {
             <div>
               <span className={styles.sectionLabel}>Supporting the Growth Journey</span>
               <h2>Supporting Businesses Across the International Growth Journey</h2>
+              <p className={styles.sectionIntro}>
+                From assessing a market and choosing a structure to establishing
+                operations, executing transactions and maintaining compliance,
+                we help coordinate the decisions that support international
+                growth.
+              </p>
             </div>
           </div>
 
