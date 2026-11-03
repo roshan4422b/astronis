@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 process.env.UPSTASH_REDIS_REST_URL = "https://redis.test";
@@ -93,8 +94,99 @@ const {
   sendEmailOtp,
   verifyEmailOtp,
   verifyTurnstile,
+  createVerifiedTestimonialEmailProof,
+  isVerifiedTestimonialEmail,
 } = await import("../src/lib/form-verification.server.ts");
 const { getFormVerification } = await import("../src/lib/form-verification.client.ts");
+const {
+  isSupportedTestimonialVideoUrl,
+  isTestimonialMediaPath,
+} = await import("../src/lib/testimonial-media.ts");
+
+test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
+  const [route, form, migration] = await Promise.all([
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/202611020001_testimonial_media_notifications.sql", import.meta.url), "utf8"),
+  ]);
+  const verificationCheck = route.indexOf("await consumeEmailVerification(");
+  const insert = route.indexOf('serviceClient.from("cms_content").insert(');
+
+  assert.ok(verificationCheck >= 0);
+  assert.ok(insert > verificationCheck);
+  assert.match(route, /const serviceClient = getTestimonialMediaService\(\)/);
+  assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
+  assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.doesNotMatch(form, /captchaToken/);
+  assert.doesNotMatch(route, /request\.json\(\)/);
+  assert.match(migration, /drop policy if exists "Public testimonial submissions" on public\.cms_content;/i);
+  assert.match(migration, /revoke insert on table public\.cms_content from public,\s*anon;/i);
+  assert.match(migration, /grant insert on table public\.cms_content to service_role;/i);
+  assert.doesNotMatch(migration, /grant insert on table public\.cms_content to (?:public|anon|authenticated)\b/i);
+  assert.doesNotMatch(migration, /revoke\s+(?:all|insert)\s+on table public\.cms_content from[^;]*\bauthenticated\b/i);
+  assert.doesNotMatch(migration, /drop policy[^;]*"Admins manage content"/i);
+  assert.doesNotMatch(migration, /create policy "Public testimonial submissions"/i);
+});
+
+test("reports missing testimonial Supabase service configuration without exposing credentials", async () => {
+  const [service, route] = await Promise.all([
+    readFile(new URL("../src/lib/supabase/service.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(service, /import "server-only"/);
+  assert.match(service, /process\.env\.NEXT_PUBLIC_SUPABASE_URL/);
+  assert.match(service, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(service, /if \(!url \|\| !serviceRoleKey\) return null/);
+  assert.doesNotMatch(service, /console\.(?:log|error|warn)\([^)]*serviceRoleKey/);
+  assert.doesNotMatch(service, /NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(route, /Secure testimonial submission is not configured\. Please try again later\./);
+  assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeEmailVerification("));
+});
+
+test("keeps Turnstile visible but non-blocking in testimonial forms", async () => {
+  const [widget, form] = await Promise.all([
+    readFile(new URL("../src/components/TurnstileWidget.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(widget, /"expired-callback": \(\) => \{\s*reportError\("The CAPTCHA expired\.[\s\S]*?window\.turnstile\?\.reset\(idRef\.current\)/);
+  assert.match(form, /<EmailOtpVerification captchaDisplayOnly \/>/);
+  assert.doesNotMatch(form, /captchaToken|CAPTCHA expired/);
+  const verification = await readFile(new URL("../src/app/_components/email-otp-verification.tsx", import.meta.url), "utf8");
+  assert.match(verification, /captchaDisplayOnly \? \(\) => \{\} : updateCaptchaToken/);
+  assert.match(verification, /captchaDisplayOnly \? undefined : setStatus/);
+  assert.match(verification, /!captchaDisplayOnly && <input type="hidden" name="captchaToken"/);
+});
+
+test("protects source-defined CMS testimonials and shared media from deletion", async () => {
+  const [adminRoute, mediaHelper] = await Promise.all([
+    readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/lib/testimonial-media.server.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(adminRoute, /existing\.data\?\.sourceDefined === true\s*\|\|\s*getSourceContentRecords\(existing\.collection\)\.some\(\(record\) => record\.slug === existing\.slug\)/);
+  assert.match(adminRoute, /if \(references\.referenced\) continue;/);
+  assert.match(mediaHelper, /\.contains\("data", \{ \[field\]: path \}\)/);
+});
+
+test("binds moderation-email eligibility to an OTP-secret proof for the verified address", () => {
+  const acceptedAt = "2026-11-02T10:00:00.000Z";
+  const proof = createVerifiedTestimonialEmailProof(email, acceptedAt);
+  assert.equal(isVerifiedTestimonialEmail(email.toUpperCase(), acceptedAt, proof), true);
+  assert.equal(isVerifiedTestimonialEmail("other@example.com", acceptedAt, proof), false);
+  assert.equal(isVerifiedTestimonialEmail(email, "2026-11-02T10:00:01.000Z", proof), false);
+  assert.equal(isVerifiedTestimonialEmail(email, acceptedAt, "untrusted"), false);
+});
+
+test("accepts only safe testimonial storage paths and direct HTTPS video URLs", () => {
+  assert.equal(
+    isTestimonialMediaPath("testimonials/10000000-0000-4000-8000-000000000001/10000000-0000-4000-8000-000000000002.mp4"),
+    true,
+  );
+  assert.equal(isTestimonialMediaPath("../../other/video.mp4"), false);
+  assert.equal(isSupportedTestimonialVideoUrl("https://media.example/video.webm"), true);
+  assert.equal(isSupportedTestimonialVideoUrl("javascript:alert(1)"), false);
+  assert.equal(isSupportedTestimonialVideoUrl("https://example.com/watch"), false);
+});
 
 test("classifies missing Upstash configuration without attempting a storage request", async () => {
   const saved = {
@@ -176,6 +268,24 @@ test("rejects invalid CAPTCHA and missing email proof at the form submission bou
 
   const missingProof = await consumeFormVerification(request, email, "valid-captcha", "");
   assert.equal(missingProof.ok, false);
+});
+
+test("rejects expired CAPTCHA without consuming email proof, then accepts a fresh token", async () => {
+  entries.clear();
+  deliver.code = "";
+  await sendEmailOtp(email, deliver);
+  const verified = await verifyEmailOtp(email, deliver.code);
+  assert.equal(verified.ok, true);
+  if (!verified.ok) return;
+
+  const expired = await consumeFormVerification(request, email, "expired-captcha", verified.proof);
+  assert.deepEqual(expired, {
+    ok: false,
+    status: 400,
+    message: "Please complete the CAPTCHA verification and try again.",
+  });
+  const accepted = await consumeFormVerification(request, email, "valid-captcha", verified.proof);
+  assert.equal(accepted.ok, true);
 });
 
 test("checks Turnstile hostname against the forwarded public host", async () => {

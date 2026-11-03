@@ -19,11 +19,13 @@ export default function EmailOtpVerification({
   onCaptchaToken,
   resetKey = 0,
   captchaOptional = false,
+  captchaDisplayOnly = false,
 }: {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
   resetKey?: number;
   captchaOptional?: boolean;
+  captchaDisplayOnly?: boolean;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const codeInputId = useId();
@@ -42,16 +44,6 @@ export default function EmailOtpVerification({
     setCaptchaToken(token);
     onCaptchaToken?.(token);
   }, [onCaptchaToken]);
-
-  useEffect(() => {
-    if (!captchaToken) return;
-    const timer = window.setTimeout(() => {
-      updateCaptchaToken("");
-      setCaptchaReset((current) => current + 1);
-      setStatus("The CAPTCHA expired. Please complete it again before continuing.");
-    }, 240_000);
-    return () => window.clearTimeout(timer);
-  }, [captchaToken, updateCaptchaToken]);
 
   useEffect(() => {
     if (!cooldownUntil) return;
@@ -173,7 +165,11 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
+        <TurnstileWidget
+          onToken={captchaDisplayOnly ? () => {} : updateCaptchaToken}
+          onError={captchaDisplayOnly ? undefined : setStatus}
+          resetKey={resetKey + captchaReset}
+        />
         <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
@@ -200,7 +196,7 @@ export default function EmailOtpVerification({
       </div>
       {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
+      {!captchaDisplayOnly && <input type="hidden" name="captchaToken" value={captchaToken} readOnly />}
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );
