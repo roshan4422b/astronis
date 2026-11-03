@@ -18,6 +18,7 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
+  const errorCb = useCallback(() => cb.current(""), []);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
@@ -30,10 +31,10 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
     idRef.current = window.turnstile.render(ref.current, {
       sitekey: siteKey,
       callback: (t: string) => cb.current(t),
-      "expired-callback": () => cb.current(""),
-      "error-callback": () => cb.current(""),
+      "expired-callback": errorCb,
+      "error-callback": errorCb,
     });
-  }, [isConfigured, siteKey]);
+  }, [errorCb, isConfigured, siteKey]);
 
   useEffect(() => {
     mount();
