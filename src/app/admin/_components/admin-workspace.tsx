@@ -206,7 +206,7 @@ function CollectionPage({ section, onNotice }: { section: Exclude<Section, "dash
 }
 
 export default function AdminWorkspace({ section }: { section: Section }) {
-  const { feedback, setFeedback, loadState, loadError } = useAdminState();
+  const { feedback, setFeedback, loadState, loadError, loadWarning } = useAdminState();
   const renderContent = () => {
     if (section === "dashboard") return <Dashboard onNotice={setFeedback} />;
     if (section === "enquiries") return <EnquiriesManagement />;
@@ -218,5 +218,5 @@ export default function AdminWorkspace({ section }: { section: Section }) {
     }
     return <CollectionPage section={section} onNotice={setFeedback} />;
   };
-  return <>{loadState === "loading" ? <p role="status" className="admin-detail-note">Loading saved CMS data…</p> : null}{loadState === "error" ? <div className="admin-insight-feedback" role="alert"><span>CMS data is unavailable: {loadError}</span></div> : null}{feedback ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{feedback}</span><button type="button" onClick={() => setFeedback("")}>Dismiss</button></div> : null}{renderContent()}</>;
+  return <>{loadState === "loading" ? <p role="status" className="admin-detail-note">Loading saved CMS data…</p> : null}{loadState === "error" ? <div className="admin-insight-feedback" role="alert"><span>CMS data is unavailable: {loadError}</span></div> : null}{loadState === "ready" && loadWarning ? <div className="admin-insight-feedback" role="status"><span>{loadWarning}</span></div> : null}{feedback ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{feedback}</span><button type="button" onClick={() => setFeedback("")}>Dismiss</button></div> : null}{renderContent()}</>;
 }
