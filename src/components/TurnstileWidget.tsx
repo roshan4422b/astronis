@@ -22,31 +22,32 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
-  const onErrorRef = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
   useEffect(() => {
     cb.current = onToken;
   }, [onToken]);
-  useEffect(() => {
-    onErrorRef.current = onError;
-  }, [onError]);
 
   const reportError = useCallback((message: string) => {
     cb.current("");
-    onErrorRef.current?.(message);
-  }, []);
+    onError?.(message);
+  }, [onError]);
 
   const mount = useCallback(() => {
     if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;
     idRef.current = window.turnstile.render(ref.current, {
       sitekey: siteKey,
       callback: (t: string) => cb.current(t),
-      "expired-callback": () => cb.current(""),
-      "error-callback": () => cb.current(""),
+      "expired-callback": () => {
+        reportError("The CAPTCHA expired. Please complete it again before continuing.");
+        if (idRef.current) window.turnstile?.reset(idRef.current);
+      },
+      "error-callback": () => {
+        reportError("CAPTCHA could not be verified. Check the site key and allowed domain, then try again.");
+      },
     });
-  }, [isConfigured, siteKey]);
+  }, [isConfigured, reportError, siteKey]);
 
   useEffect(() => {
     mount();
