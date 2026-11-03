@@ -996,16 +996,6 @@
   color: #000;
 }
 
-.pageContent :global(section[class*="services"]) :global([class*="heading"] h2),
-.pageContent :global(section[class*="process"]) :global([class*="heading"] h2) {
-  transition: color 220ms ease;
-}
-
-.pageContent :global(section[class*="services"]) :global([class*="heading"] h2:hover),
-.pageContent :global(section[class*="process"]) :global([class*="heading"] h2:hover) {
-  color: var(--service-blue);
-}
-
 .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a),
 .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:hover),
 .pageContent :global(section[class*="knowledge"]) :global([class*="resourceGrid"] > a:focus-visible) {

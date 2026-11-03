@@ -21,16 +21,14 @@ function Heading({
   title,
   text,
   light = false,
-  className,
 }: {
   eyebrow: string;
   title: string;
   text?: string;
   light?: boolean;
-  className?: string;
 }) {
   return (
-    <div className={`${styles.heading} ${light ? styles.lightHeading : ""} ${className ?? ""}`}>
+    <div className={`${styles.heading} ${light ? styles.lightHeading : ""}`}>
       <span>{eyebrow}</span>
       <h2>{title}</h2>
       {text && <p>{text}</p>}
@@ -106,7 +104,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
           <section className={styles.services} id="services" data-section-layout="full-width">
             <div className="container">
               <Heading
-                className={styles.businessDecisionHeading}
                 eyebrow={`OUR SERVICES IN ${detail.title.toUpperCase()}`}
                 title="Integrated advisory for your next business decision"
                 text="A coordinated set of strategic, commercial and implementation workstreams shaped around your objectives."
