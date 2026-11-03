@@ -18,7 +18,7 @@ const benefits = [
 const challenges = [
   ["Regulatory Approvals & Clearances", "Manufacturing & Industrial .png", "Plan your approvals around your location, product and operating model. Our team helps identify the scope of advice and coordinate the next steps.", "licensing-and-registrations"],
   ["Supply Chain Resilience", "Logistics, Transportation & Warehousing .png", "Build clarity into supplier relationships, procurement agreements and commercial dependencies to support continuity as your business grows.", "contracts"],
-  ["Environmental & Sustainability Priorities", "nergy, Power & Renewables .png", "Connect environmental and sustainability priorities with your operating plans, internal responsibilities and wider governance approach.", "esg-and-sustainability-advisory"],
+  ["Environmental & Sustainability Priorities", "nergy, Power & Renewables .png", "Connect environmental and sustainability priorities with your operating plans, internal responsibilities and wider governance approach.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
   ["Export & International Expansion", "Infrastructure & Projects .png", "Bring together commercial, contractual and regulatory perspectives when evaluating new markets and cross-border business relationships.", "cross-border-and-international-business-support"],
   ["Technology & Innovation Protection", "Technology, IT & ITES .png", "Consider ownership, confidentiality and licensing arrangements as you invest in technology, automation and new partnerships.", "intellectual-property-rights"],
 ];
@@ -29,7 +29,7 @@ const solutions = [
   ["file", "Contracts & Commercial Advisory", "Clear agreements across the manufacturing value chain.", "contracts"],
   ["people", "Labour, HR & Employment", "Support for your workforce and workplace arrangements.", "hr-and-employment-advisory"],
   ["bulb", "IP & Technology Protection", "Advice for the ideas and technology behind your business.", "intellectual-property-rights"],
-  ["globe", "ESG & Sustainability", "Connect responsible operations with long-term ambitions.", "esg-and-sustainability-advisory"],
+  ["globe", "ESG & Sustainability", "Connect responsible operations with long-term ambitions.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
   ["scale", "Dispute Resolution & Arbitration", "A commercial approach to resolving business disputes.", "litigation-and-dispute-resolution"],
 ];
 const steps = [["Understand your operations", "We start with your products, facilities, markets and business priorities."], ["Map the requirements", "Together, we identify the legal, regulatory and commercial workstreams."], ["Build a practical roadmap", "We agree priorities, responsibilities and the scope of advisory support."], ["Support implementation", "Our team works with yours as plans move into day-to-day operations."]];

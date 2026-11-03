@@ -2471,7 +2471,8 @@ textarea::placeholder {
   transform: translateY(-3px);
 }
 .floating-contact.call {
-  left: 19px;
+  right: 19px;
+  bottom: 82px;
 }
 .floating-contact.whatsapp {
   right: 19px;
@@ -3856,7 +3857,8 @@ textarea::placeholder {
     bottom: 17px;
   }
   .floating-contact.call {
-    left: 13px;
+    right: 13px;
+    bottom: 70px;
   }
   .floating-contact.whatsapp {
     right: 13px;

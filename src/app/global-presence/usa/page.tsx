@@ -157,7 +157,7 @@ const otherMarkets = [
   ["UAE", "/images/uae-dubai-skyline.jpg", "/global-presence/uae"],
   ["Singapore", "/images/market-singapore.jpg", "/global-presence/singapore"],
   ["UK", "/images/market-uk.jpg", "/global-presence/uk"],
-  ["EU", "/images/market-eu.jpg", "/global-presence/eu"],
+  ["EU", "/images/market-eu.jpg", "/global-presence/european-union"],
   ["Middle East", "/images/uae-dubai-skyline.jpg", "/global-presence/middle-east"],
 ] as const;
 
@@ -219,7 +219,7 @@ export default async function UsaPage() {
             <span aria-current="page">USA</span>
           </nav>
           <div className={indiaStyles.heroCopy}>
-            <span className={indiaStyles.eyebrow}>Global Presence</span>
+            <span className={indiaStyles.eyebrow}>Country Desk</span>
             <h1 id="usa-title">{title}</h1>
             <h2>Opportunity. Innovation.<br />Global Impact.</h2>
             <p>{description}</p>

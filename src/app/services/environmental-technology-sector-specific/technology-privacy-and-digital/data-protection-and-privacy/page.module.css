@@ -1,0 +1,39 @@
+.route {
+  display: contents;
+}
+
+.route :global(section[class*="comparison"]) :global([class*="tableWrap"]) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.route :global(section[class*="comparison"]) :global([class*="tableWrap"]) table {
+  min-width: 640px !important;
+}
+
+@media (min-width: 901px) {
+  .route :global(section[class*="comparison"]) :global([class*="tableWrap"]) table {
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .route :global(section[class*="comparison"]) :global([class*="tableWrap"]) table col:first-child {
+    width: 130px !important;
+  }
+
+  .route :global(section[class*="comparison"]) :global([class*="tableWrap"]) th,
+  .route :global(section[class*="comparison"]) :global([class*="tableWrap"]) td {
+    padding: 10px 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 900px) {
+  .route :global(section[class*="comparison"]) :global([class*="tableWrap"]) table {
+    min-width: 600px !important;
+  }
+}

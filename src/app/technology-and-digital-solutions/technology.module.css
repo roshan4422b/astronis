@@ -197,7 +197,7 @@
 .faqSection :is(h2, p, summary, summary span, .eyebrow) { color: #000 !important; }
 .faqSection p { font-size: 14px; }
 .enquirySection { padding-block: 72px; color: white; background: radial-gradient(ellipse at 0% 0%, #164668, transparent 65%), #061a31; }
-.enquiryGrid { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(30px, 6vw, 90px); align-items: start; }
+.enquiryGrid { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
 .enquiryCopy .eyebrow { color: #e9c486; }
 .enquiryCopy h2 { font-size: max(var(--font-size-min), clamp(32px, 3.2vw, 48px)); max-width: 530px; }
 .enquiryCopy > p { color: #c4d4e6; line-height: 1.7; margin: 22px 0 28px; max-width: 520px; }
@@ -236,6 +236,7 @@
 }
 @media (max-width: 800px) {
   .specialists, .faqSection, .enquiryGrid { grid-template-columns: 1fr; }
+  .enquiryGrid { align-items: stretch; }
   .insightGrid { gap: 15px; }
   .insightImage { height: 175px; }
   .insightGrid h3 { font-size: max(var(--font-size-min), 21px); }

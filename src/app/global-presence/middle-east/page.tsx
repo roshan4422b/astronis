@@ -221,7 +221,7 @@ export default async function MiddleEastPage() {
             <span aria-current="page">Middle East</span>
           </nav>
           <div className={indiaStyles.heroCopy}>
-            <span className={indiaStyles.eyebrow}>Global Presence</span>
+            <span className={indiaStyles.eyebrow}>Regional Desk</span>
             <h1 id="middle-east-title">{title}</h1>
             <h2>Opportunity. Partnership. Growth.</h2>
             <p>{description}</p>

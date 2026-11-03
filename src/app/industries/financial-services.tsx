@@ -28,7 +28,7 @@ const solutions = [
   ["document", "Insurance regulatory support", "regulatory-and-compliance"],
   ["people", "Contracts & commercial advisory", "contracts"],
   ["scale", "Dispute resolution & litigation", "litigation-and-dispute-resolution"],
-  ["bulb", "ESG & sustainable finance", "esg-and-sustainability-advisory"],
+  ["bulb", "ESG & sustainable finance", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const related = [
   ["Real Estate & Construction", "real-estate-and-construction", "/Real Estate & Construction .png"],

@@ -576,6 +576,50 @@
   line-height: 1.65;
 }
 
+.relatedPages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin-top: 30px;
+}
+
+.relatedPages > span {
+  flex: 0 0 100%;
+  color: var(--navy);
+  font-size: max(var(--font-size-min), 13px);
+  font-weight: 700;
+}
+
+.relatedPages a {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid #cbd9e8;
+  color: #174b84;
+  background: #f5f9fe;
+  font-size: max(var(--font-size-min), 13px);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color .2s ease, background-color .2s ease, color .2s ease;
+}
+
+.relatedPages a:hover,
+.relatedPages a:focus-visible {
+  border-color: #0751db;
+  color: #0751db;
+  background: #eaf2fc;
+}
+
+.relatedPages a svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+}
+
 .benefits {
   background: #f3f7fb;
 }
@@ -603,6 +647,11 @@
   overflow: hidden;
   margin: 0;
   background: #123557;
+}
+
+.benefitImage {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
 }
 
 .benefitImage::after,
@@ -816,6 +865,8 @@
 }
 
 .tableWrap {
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid #d9e3ef;
   overscroll-behavior-inline: contain;
@@ -824,14 +875,11 @@
 
 .tableWrap table {
   width: 100%;
-  min-width: 950px;
+  min-width: 560px;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: max(var(--font-size-min), 15px);
   line-height: 1.55;
-}
-
-.comparisonPanels .tableWrap table {
-  min-width: 560px;
 }
 
 .tableWrap th,
@@ -850,11 +898,7 @@
 }
 
 .tableWrap th:first-child {
-  min-width: 160px;
-}
-
-.tableWrap th:not(:first-child) {
-  min-width: 170px;
+  width: 200px;
 }
 
 .tableWrap td:first-child {
@@ -901,7 +945,9 @@
 
 .structuringDetail figure {
   position: relative;
-  min-height: 190px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
   margin: 0 0 18px;
   overflow: hidden;
   background: #eaf2fc;
@@ -1037,6 +1083,7 @@
   display: grid;
   width: 56px;
   height: 56px;
+  margin-inline: auto;
   place-items: center;
   border: 1px solid #c8d9eb;
   border-radius: 50%;
@@ -2037,6 +2084,11 @@
   .benefitImage,
   .structureImage {
     min-height: 290px;
+  }
+
+  .benefitImage {
+    aspect-ratio: 16 / 10;
+    min-height: 0;
   }
 
   .serviceGrid,

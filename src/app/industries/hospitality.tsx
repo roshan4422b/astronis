@@ -18,21 +18,21 @@ const benefits = [
  ["shield", "Brand Protection", "Protecting brands, logos, trade dress and IP in the hospitality and travel space."],
 ];
 const challenges = [
- ["Growing Tourism Demand", "Hospitality, Travel & Tourism .png", "Leveraging rising domestic and international travel for new business models.", "business-advisory-and-consulting"],
- ["Regulatory & Licensing Complexity", "Aviation, Aerospace & Defence .png", "Navigating multi-layered approvals and changing regulations.", "licensing-and-registrations"],
- ["Franchise & Management Contracts", "Banners-hospitality, Travel & Touris .png", "Structuring sustainable and equitable commercial arrangements.", "contracts"],
- ["Sustainability & Responsible Tourism", "nergy, Power & Renewables .png", "Integrating ESG and responsible tourism practices into business strategy.", "esg-and-sustainability-advisory"],
- ["Global Expansion", "Logistics, Transportation & Warehousing .png", "Supporting market entry, partnerships and cross-border operations.", "cross-border-and-international-business-support"],
+ ["Growing Tourism Demand", "Hospitality, Travel & Tourism .png", "Leveraging rising domestic and international travel for new business models.", "business-advisory-contracts/business-strategy/business-growth-expansion-advisory"],
+ ["Regulatory & Licensing Complexity", "Aviation, Aerospace & Defence .png", "Navigating multi-layered approvals and changing regulations.", "licensing-registrations/business-registrations/trade-health-licence"],
+ ["Franchise & Management Contracts", "Banners-hospitality, Travel & Touris .png", "Structuring sustainable and equitable commercial arrangements.", "business-advisory-contracts/commercial-contracts/franchise-agreements"],
+ ["Sustainability & Responsible Tourism", "nergy, Power & Renewables .png", "Integrating ESG and responsible tourism practices into business strategy.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
+ ["Global Expansion", "Logistics, Transportation & Warehousing .png", "Supporting market entry, partnerships and cross-border operations.", "fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment"],
 ];
 const solutions = [
- ["document", "Licensing & Statutory Approvals", "licensing-and-registrations"],
- ["building", "Hotel & Resort Project Advisory", "rera-and-real-estate-advisory"],
- ["people", "Franchise & Management Agreements", "contracts/commercial-contracts"],
- ["shield", "Food Safety & FSSAI Compliance", "regulatory-and-compliance/fssai"],
- ["file", "Contracts, Procurement & Vendor Management", "contracts/vendor-agreements"],
- ["shield", "IPR, Brand Protection & Anti-Counterfeiting", "intellectual-property/brand-protection"],
- ["scale", "Dispute Resolution & Arbitration", "arbitration-and-conciliation"],
- ["globe", "Sustainability & ESG Advisory", "esg-and-sustainability-advisory"],
+ ["document", "Licensing & Statutory Approvals", "licensing-registrations/business-registrations/trade-health-licence"],
+ ["building", "Hotel & Resort Project Advisory", "business-advisory-contracts/investment-and-transaction-advisory/commercial-due-diligence"],
+ ["people", "Franchise & Management Agreements", "business-advisory-contracts/commercial-contracts/franchise-agreements"],
+ ["shield", "Food Safety & FSSAI Compliance", "regulatory-services/consumer-regulatory-services/food-safety-regulatory-advisory"],
+ ["file", "Contracts, Procurement & Vendor Management", "business-advisory-contracts/commercial-contracts/vendor-supply-agreements"],
+ ["shield", "IPR, Brand Protection & Anti-Counterfeiting", "intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
+ ["scale", "Dispute Resolution & Arbitration", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
+ ["globe", "Sustainability & ESG Advisory", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const faqs = [
  ["What licences are required to start a hotel or resort in India?", "Share your proposed location, property details and services with our team. We can help scope the licensing and approval questions for your hotel or resort and plan the relevant advisory work."],
@@ -67,7 +67,7 @@ export default function Hospitality() {
 
     <section id="challenges" className={`${styles.section} ${styles.pale}`} aria-labelledby="challenges-title"><div className="container"><div className={styles.sectionHeading}><Heading eyebrow="Our Perspective" title="Key Opportunities & Challenges" id="challenges-title" /><TextLink href="#enquire">Discuss Your Requirements</TextLink></div><div className={styles.challengeGrid}>{challenges.map(([title, photo, text, path], index) => <article key={title} className={styles.challengeCard}><div className={styles.challengeImage}><Image src={`/${photo}`} alt="" fill sizes="(max-width: 600px) 100vw, (max-width: 1100px) 33vw, 20vw" /><span>0{index + 1}</span></div><details><summary><h3>{title}</h3><span className={styles.plus}>+</span></summary><div className={styles.challengeDetail}><p>{text}</p><TextLink href={`/services/${path}`}>Explore Support</TextLink></div></details></article>)}</div></div></section>
 
-    <section id="solutions" className={styles.section} aria-labelledby="solutions-title"><div className="container"><div className={styles.sectionHeading}><Heading eyebrow="Our Solutions" title="Expertise Across Your Business" id="solutions-title" /><p>Comprehensive advisory across the hospitality, travel and tourism ecosystem.</p></div><div className={estate.solutions}>{solutions.map(([icon, title, path]) => <Link className={estate.solution} href={`/services/${path}`} key={title}><Icon name={icon} /><h3>{title}</h3><Icon name="arrow" /></Link>)}</div></div></section>
+    <section id="solutions" className={styles.section} aria-labelledby="solutions-title"><div className="container"><div className={styles.sectionHeading}><Heading eyebrow="Our Solutions" title="Expertise Across Your Business" id="solutions-title" /><p>Comprehensive advisory across the hospitality, travel and tourism ecosystem.</p></div><div className={`${estate.solutions} ${hospitality.solutionGrid}`}>{solutions.map(([icon, title, path]) => <Link className={estate.solution} href={`/services/${path}`} key={title}><Icon name={icon} /><h3>{title}</h3><Icon name="arrow" /></Link>)}</div></div></section>
 
     <section id="regulatory" className={estate.regulatory} aria-labelledby="regulatory-title"><div className={`container ${estate.regulatoryGrid}`}><div><Heading eyebrow="Regulatory Landscape" title="Clarity from Destination to Daily Operations" id="regulatory-title" /><p>Connected support across licensing, project development, operator agreements, food safety and ongoing business advisory.</p><TextLink href="/services/regulatory-and-compliance">Explore Regulatory Advisory</TextLink></div><div className={estate.lifecycle}>{[["01", "Plan & Establish", "Hotel and resort projects, licences and approvals"], ["02", "Operate & Protect", "Operator agreements, food safety and brand protection"], ["03", "Collaborate & Grow", "Franchises, investment and international partnerships"]].map(([n, title, text]) => <div key={n}><span>{n}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></div></section>
 

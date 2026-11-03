@@ -934,7 +934,7 @@ export function getServiceChildPageMetadata(slug: string): Metadata {
   const config = configs.find((page) => page.slug === slug);
   if (!config) throw new Error(`Unknown service child page: ${slug}`);
   return {
-    title: `${config.title} | Astronis Global`,
+    title: config.title,
     description: config.description,
     alternates: { canonical: config.route },
   };

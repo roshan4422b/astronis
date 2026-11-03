@@ -21,14 +21,14 @@ const challenges = [
   ["Sustainability & ESG", "Move toward cleaner fleets and more responsible supply chains.", "/nergy, Power & Renewables .png"],
 ];
 const solutions = [
-  ["file", "Regulatory approvals & licensing", "regulatory-and-compliance"],
-  ["globe", "Customs & EXIM compliance", "regulatory-and-compliance"],
-  ["document", "Contracts & vendor management", "contracts"],
-  ["building", "Warehouse & land structuring", "contracts"],
-  ["shield", "Transport & fleet compliance", "regulatory-and-compliance"],
-  ["scale", "Dispute resolution & arbitration", "litigation-and-dispute-resolution"],
-  ["chart", "Technology & automation advisory", "business-advisory-and-consulting"],
-  ["bulb", "ESG & sustainability advisory", "esg-and-sustainability-advisory"],
+  ["file", "Regulatory approvals & licensing", "regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+  ["globe", "Customs & EXIM compliance", "licensing-registrations/business-registrations/import-export"],
+  ["document", "Contracts & vendor management", "business-advisory-contracts/commercial-contracts/vendor-supply-agreements"],
+  ["building", "Warehouse & land structuring", "business-advisory-contracts/investment-and-transaction-advisory/commercial-due-diligence"],
+  ["shield", "Transport & fleet compliance", "regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+  ["scale", "Dispute resolution & arbitration", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
+  ["chart", "Technology & automation advisory", "environmental-technology-sector-specific/technology-privacy-and-digital/digital-business-advisory"],
+  ["bulb", "ESG & sustainability advisory", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const related = [
   ["Manufacturing & Industrial", "manufacturing", "/Manufacturing & Industrial .png"],
@@ -59,8 +59,8 @@ export default function Logistics() {
       <main className={styles.main}>
         <section id="overview" className={styles.block}><span className={styles.eyebrow}>Industry overview</span><h2>Driving commerce.<br /><em>Delivering possibilities.</em></h2><p className={styles.lead}>India’s logistics, transportation and warehousing sector connects businesses, communities and global markets. We help operators, transporters, fleet owners and supply chain companies navigate regulation, manage risk and create room to grow.</p><div className={styles.capabilities}>{capabilities.map(([icon, title, description]) => <article key={title}><Icon name={icon} /><h3>{title}</h3><p>{description}</p></article>)}</div></section>
         <section id="challenges" className={styles.block}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Our perspective</span><h2>Opportunities & challenges</h2></div><span>Move forward with clarity <Icon name="arrow" /></span></div><div className={styles.challengeGrid}>{challenges.map(([title, description, image]) => <article key={title}><div className={styles.challengeImage}><Image src={image} alt="" fill sizes="(max-width: 700px) 80vw, 18vw" /></div><div className={styles.challengeBody}><h3>{title}</h3><p>{description}</p><Icon name="arrow" /></div></article>)}</div></section>
-        <section id="solutions" className={styles.block}><span className={styles.eyebrow}>Integrated expertise</span><h2>Our solutions</h2><p className={styles.intro}>Connected advice across the logistics, transportation and warehousing ecosystem.</p><div className={styles.solutionGrid}>{solutions.map(([icon, title, path]) => <Link href={`/services/${path}`} key={title}><Icon name={icon} /><span>{title}</span><Icon name="arrow" /></Link>)}</div></section>
-        <section id="regulatory" className={styles.regulatory}><div><span className={styles.eyebrow}>Regulatory landscape</span><h2>Confidence across every connection.</h2><p>From customs and cargo movement to facilities and fleet operations, we bring legal, regulatory and commercial considerations together.</p><Link href="/services/regulatory-and-compliance">Explore regulatory advisory <Icon name="arrow" /></Link></div></section>
+        <section id="solutions" className={styles.block}><span className={styles.eyebrow}>Integrated expertise</span><h2>Our Solutions</h2><p className={styles.intro}>Connected advice across the logistics, transportation and warehousing ecosystem.</p><div className={styles.solutionGrid}>{solutions.map(([icon, title, path]) => <Link href={`/services/${path}`} key={title}><Icon name={icon} /><span>{title}</span><Icon name="arrow" /></Link>)}</div></section>
+        <section id="regulatory" className={styles.regulatory}><div><span className={styles.eyebrow}>Regulatory landscape</span><h2>Confidence across every connection.</h2><p>From customs and cargo movement to facilities and fleet operations, we bring legal, regulatory and commercial considerations together.</p><Link href="/services/regulatory-services/corporate-regulatory/regulatory-compliance-review">Explore regulatory advisory <Icon name="arrow" /></Link></div></section>
       </main>
       <section className={styles.relatedSection} aria-labelledby="related-title"><span className={styles.eyebrow}>Connected expertise</span><h2 id="related-title">Related industries</h2><div className={styles.relatedGrid}>{related.map(([title, slug, image]) => <Link href={`/industries/${slug}`} key={title}><span className={styles.relatedImage}><Image src={image} alt="" fill sizes="(max-width: 600px) 45vw, 25vw" /></span><span className={styles.relatedTitle}>{title}<Icon name="arrow" /></span></Link>)}</div></section>
       <section id="insights" className={styles.insightSection} aria-labelledby="insight-title"><div className={styles.insightImage}><Image src="/Banners-Logistics, Transportation & Warehousing .png" alt="Freight and port operations" fill sizes="(max-width: 800px) 100vw, 45vw" /></div><div className={styles.insightCopy}><span className={styles.eyebrow}>Featured insight</span><h2 id="insight-title">The future of logistics in India</h2><p>Explore the trends shaping transport, trade and supply chain resilience.</p><Link href="/insights">View all insights <Icon name="arrow" /></Link></div></section>

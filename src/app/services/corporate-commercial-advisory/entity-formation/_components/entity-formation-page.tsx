@@ -99,6 +99,21 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       ? ["Section 8 Company", "Private Limited Company", "LLP", "Partnership"]
       : ["LLP", "Private Limited Company", "One Person Company", "Partnership"];
   const comparisonHeaders = data.comparisonHeaders ?? defaultAlternatives;
+  const comparisonHasRowHeader = data.comparison.some((row) => row.length > comparisonHeaders.length);
+  const comparisonTableHeaders = comparisonHasRowHeader
+    ? ["Features", ...comparisonHeaders]
+    : comparisonHeaders;
+  const comparisonTableMinWidth = `${Math.max(560, 200 + (comparisonTableHeaders.length - 1) * 176)}px`;
+  const comparisonPanels = data.comparisonPanels?.map((panel) => {
+    const rowCellCount = Math.max(0, ...panel.rows.map((row) => row.length));
+    const hasRowHeader = rowCellCount > panel.headers.length;
+    const headers = hasRowHeader ? [panel.rowHeader ?? "Parameter", ...panel.headers] : panel.headers;
+    return {
+      ...panel,
+      headers,
+      tableMinWidth: `${Math.max(560, 200 + (headers.length - 1) * 176)}px`,
+    };
+  });
   const showInsights = data.showInsights ?? true;
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
@@ -186,7 +201,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             />
           </div>
           <figure className={styles.benefitImage}>
-            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
+            <Image src={heroImage} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
             <figcaption>{data.shortTitle}<br /><strong>Considered for your next chapter.</strong></figcaption>
           </figure>
           <div className={`${styles.benefitGrid} ${data.benefitCards ? styles.benefitCards : ""} ${data.benefitCardsStacked ? styles.benefitCardsStacked : ""} ${data.benefitCardsThreeColumns ? styles.benefitCardsThreeColumns : ""} ${data.benefitCardsFourColumns ? styles.benefitCardsFourColumns : ""}`}>
@@ -233,13 +248,14 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           />
           {data.comparisonPanels ? (
             <div className={styles.comparisonPanels}>
-              {data.comparisonPanels.map((panel) => (
+              {comparisonPanels?.map((panel) => (
                 <article className={styles.comparisonPanel} key={panel.heading}>
                   <h3>{panel.heading}</h3>
                   {panel.description && <p>{panel.description}</p>}
                   <div className={styles.tableWrap} role="region" aria-label={`${panel.heading} comparison`} tabIndex={0}>
-                    <table>
-                      <thead><tr><th>{panel.rowHeader ?? "Parameter"}</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
+                    <table style={{ minWidth: panel.tableMinWidth }}>
+                      <colgroup><col style={{ width: 200 }} />{panel.headers.slice(1).map((header) => <col key={header} />)}</colgroup>
+                      <thead><tr>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
                       <tbody>{panel.rows.map((row) => (
                         <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                       ))}</tbody>
@@ -250,8 +266,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </div>
           ) : (
             <div className={styles.tableWrap} role="region" aria-label={`${data.shortTitle} structure comparison`} tabIndex={0}>
-              <table>
-                <thead><tr><th>Features</th>{comparisonHeaders.map((item, index) => <th className={highlightIndex !== null && index === highlightIndex ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
+              <table style={{ minWidth: comparisonTableMinWidth }}>
+                <colgroup><col style={{ width: 200 }} />{comparisonTableHeaders.slice(1).map((item) => <col key={item} />)}</colgroup>
+                <thead><tr>{comparisonTableHeaders.map((item, index) => <th className={!comparisonHasRowHeader && highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
                 <tbody>{data.comparison.map((row) => (
                   <tr key={row[0]}>{row.map((cell, index) => <td className={highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                 ))}</tbody>

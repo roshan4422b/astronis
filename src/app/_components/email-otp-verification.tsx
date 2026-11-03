@@ -184,9 +184,11 @@ export default function EmailOtpVerification({
           onError={captchaDisplayOnly ? undefined : setStatus}
           resetKey={resetKey + captchaReset}
         />
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (captchaRequiredForOtp && !captchaToken)}>
-          {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
-        </button>
+        {!verificationToken && (
+          <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (captchaRequiredForOtp && !captchaToken)}>
+            {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
+          </button>
+        )}
         {codeSent && !verificationToken && (
           <div className={styles.codeRow}>
             <label className={styles.srOnly} htmlFor={codeInputId}>6-digit email verification code</label>

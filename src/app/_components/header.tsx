@@ -135,6 +135,13 @@ export default function Header() {
     hoverTimer.current = window.setTimeout(() => setOpen(null), 180);
   };
 
+  const cancelScheduledMenuClose = () => {
+    if (hoverTimer.current) {
+      window.clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+  };
+
   useEffect(() => {
     if (mobile) {
       document.body.style.overflow = "hidden";
@@ -245,8 +252,8 @@ export default function Header() {
             <Fragment key={n.href}>
               <div
                 className={open === n.label ? "nav-item is-open" : "nav-item"}
-                onMouseEnter={() => scheduleOpen(n.label)}
-                onMouseLeave={scheduleClose}
+                onMouseEnter={() => n.label === "Technology & Digital" ? cancelScheduledMenuClose() : scheduleOpen(n.label)}
+                onMouseLeave={n.label === "Technology & Digital" ? undefined : scheduleClose}
               >
                 <div className="nav-label">
                   <Link
@@ -263,7 +270,10 @@ export default function Header() {
                     aria-haspopup="true"
                     aria-controls={"menu-" + slugify(n.label)}
                     onClick={() => {
-                      if (window.innerWidth > 1250) {
+                      if (n.label === "Technology & Digital") {
+                        cancelScheduledMenuClose();
+                        toggleMenu(n.label);
+                      } else if (window.innerWidth > 1250) {
                         setOpen(n.label);
                       } else {
                         toggleMenu(n.label);

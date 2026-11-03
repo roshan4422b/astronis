@@ -13,7 +13,10 @@ const data: EntityFormationPageData | undefined = investmentTransactions
       slug: "investment-structuring",
       title: "Investment Structuring",
       shortTitle: "Investment Structuring",
-      image: "/images/services/hero.webp",
+      heroImage:
+        "/services/child page of services/Corporate & Commercial/Global Finance in Blue Light.png",
+      image:
+        "/services/child page of services/Corporate & Commercial/Global Finance in Blue Light.png",
       imageAlt:
         "Business leaders reviewing investment and capital structure options",
       heroStatement:
