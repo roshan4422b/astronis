@@ -286,7 +286,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <ol className={styles.timeline}>
             {data.process.map(([title, description], index) => (
               <li key={title}>
-                {data.processNumbers && <span className={styles.stepNumber}>{String(index + 1).padStart(2, "0")}</span>}
                 <span className={styles.stepIcon}><Icon name={processIcons[index] ?? "calendar"} /></span>
                 <h3>{title}</h3><p>{description}</p>
               </li>
@@ -821,8 +820,8 @@ function SecuritiesAppellatePage({ data }: { data: EntityFormationPageData }) {
                 <article className={styles.satPanel} id="appeals-process">
                   <Heading eyebrow={isConsumerCommissions ? "COMPLAINT & APPEAL PROCESS" : isEconomicOffences ? "COMPLAINT & INVESTIGATION PROCESS" : isRegulatoryInvestigations || isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satProcessEyebrow ?? "OUR INVESTIGATION PROCESS") : "APPEALS PROCESS"} title={isConsumerCommissions ? "Complaint & Appeal Process" : isEconomicOffences ? "Investigation Process" : isRegulatoryInvestigations ? "From Assessment to Resolution" : isFdiStructuring || isForeignCollaboration || isCrossBorderMa || isCrossBorderCorporateStructuring || isFemaCrossBorder ? (data.satProcessHeading ?? "Our Collaboration Process") : "Appeal Steps"} />
                   <ol className={styles.satSteps}>
-                    {appealSteps.map(([title, description], index) => (
-                      <li key={title}><span>{index + 1}</span><p><strong>{title}</strong><small>{description}</small></p></li>
+                    {appealSteps.map(([title, description]) => (
+                      <li key={title}><p><strong>{title}</strong><small>{description}</small></p></li>
                     ))}
                   </ol>
                 </article>

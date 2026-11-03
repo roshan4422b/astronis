@@ -49,7 +49,7 @@ export default function RelatedInsights({
         </div>
         {articles.length === 0 && <p>Explore our regulatory updates and resources in the <Link href="/insights/legal-updates">Insights centre</Link>. Browse the available updates and guidance to prepare for your next regulatory discussion.</p>}
         <div className={styles.grid}>
-          {articles.map((article, index) => {
+          {articles.map((article) => {
             const words = (article.sections?.flat().join(" ") || article.title).trim().split(/\s+/).length;
             const minutes = Math.max(1, Math.ceil(words / 200));
             return (
@@ -70,7 +70,6 @@ export default function RelatedInsights({
                     {article.publishedAt && <time dateTime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" })}</time>}
                     <div className={styles.insightFooter}>
                       <span>Read Article <Icon name="arrow" /></span>
-                      <span className={styles.insightIndex} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                     </div>
                   </div>
                 </Link>
