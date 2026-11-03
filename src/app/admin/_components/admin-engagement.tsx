@@ -682,6 +682,7 @@ export function TestimonialsManagement() {
   const [savingTestimonial, setSavingTestimonial] = useState(false);
   const [uploadingTestimonialMedia, setUploadingTestimonialMedia] = useState(false);
   const [savingDecision, setSavingDecision] = useState(false);
+  const [retryingNotificationId, setRetryingNotificationId] = useState<string | null>(null);
   const [deletingTestimonial, setDeletingTestimonial] = useState(false);
   const deletingTestimonialRef = useRef(false);
   const [testimonialEdit, setTestimonialEdit] = useState({
@@ -691,6 +692,7 @@ export function TestimonialsManagement() {
     imagePath: "", imageUrl: "", videoPath: "", videoUrl: "", videoSource: "",
   });
   const [pendingDecision, setPendingDecision] = useState<{ id: string; status: TestimonialApprovalStatus } | null>(null);
+  const [rejectionReason, setRejectionReason] = useState("");
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -704,6 +706,7 @@ export function TestimonialsManagement() {
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize).map((testimonial) => [
     <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
     <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
+    <span key="rating" aria-label={`${testimonial.rating ?? 5} out of 5 stars`}>{"★".repeat(testimonial.rating ?? 5)}</span>,
     displayDate(testimonial.date),
     <StatusBadge key="consent" status={testimonial.consentStatus} />,
     <StatusBadge key="approval" status={testimonial.approvalStatus} />,
@@ -742,12 +745,10 @@ export function TestimonialsManagement() {
       ) : null}
       {testimonial.approvalStatus === "Pending" ? (
         <>
-          <button type="button" className="admin-text-action" disabled={testimonial.consentStatus !== "Granted" || !testimonial.identityPublicationConsent} title={testimonial.consentStatus !== "Granted" ? "Publication consent is required." : "Identity publication consent is required."} onClick={(event) => { triggerRef.current = event.currentTarget; setPendingDecision({ id: testimonial.id, status: "Approved" }); }} aria-label={`Approve ${testimonial.name}`}>Approve</button>
-          <button type="button" className="admin-text-action admin-reject-action" onClick={(event) => { triggerRef.current = event.currentTarget; setPendingDecision({ id: testimonial.id, status: "Rejected" }); }} aria-label={`Reject ${testimonial.name}`}>Reject</button>
+          <button type="button" className="admin-text-action" disabled={testimonial.consentStatus !== "Granted" || !testimonial.identityPublicationConsent} title={testimonial.consentStatus !== "Granted" ? "Publication consent is required." : "Identity publication consent is required."} onClick={(event) => { triggerRef.current = event.currentTarget; updateApproval(testimonial, "Approved"); }} aria-label={`Approve ${testimonial.name}`}>Approve</button>
+          <button type="button" className="admin-text-action admin-reject-action" onClick={(event) => { triggerRef.current = event.currentTarget; updateApproval(testimonial, "Rejected"); }} aria-label={`Reject ${testimonial.name}`}>Reject</button>
         </>
-      ) : (
-        <button type="button" className="admin-text-action" onClick={(event) => { triggerRef.current = event.currentTarget; setPendingDecision({ id: testimonial.id, status: "Pending" }); }} aria-label={`Return ${testimonial.name} to pending`}>Return to Pending</button>
-      )}
+      ) : null}
     </div>,
   ]);
   const selected = testimonials.find((testimonial) => testimonial.id === selectedId);
@@ -821,7 +822,7 @@ export function TestimonialsManagement() {
         videoSource: saved.data.videoSource || "",
         consentStatus: saved.data.consent === true && saved.data.identityPublicationConsent === true ? "Granted" : "Not granted",
         identityPublicationConsent: saved.data.identityPublicationConsent === true,
-        approvalStatus: saved.status === "published" ? "Approved" : saved.status === "rejected" ? "Rejected" : saved.status === "archived" ? "Archived" : "Pending",
+        approvalStatus: saved.status === "published" || saved.status === "approved" ? "Approved" : saved.status === "rejected" ? "Rejected" : saved.status === "archived" ? "Archived" : "Pending",
       } : item));
       setEditingTestimonial(false);
       setNotice("Testimonial changes saved.");
@@ -833,6 +834,7 @@ export function TestimonialsManagement() {
   }
 
   function updateApproval(testimonial: AdminTestimonial, status: TestimonialApprovalStatus) {
+    if (status === "Rejected") setRejectionReason("");
     setPendingDecision({ id: testimonial.id, status });
   }
 
@@ -851,16 +853,32 @@ export function TestimonialsManagement() {
     }
     try {
       setSavingDecision(true);
-      const status = pendingDecision.status === "Approved" ? "published" : pendingDecision.status === "Rejected" ? "rejected" : pendingDecision.status === "Archived" ? "archived" : "pending";
-      const response = await fetch("/api/admin/data", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: pendingDecision.id, status }) });
+      const status = pendingDecision.status === "Approved" ? "approved" : pendingDecision.status === "Rejected" ? "rejected" : "archived";
+      const response = await fetch("/api/admin/data", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: pendingDecision.id,
+          status,
+          ...(pendingDecision.status === "Rejected" ? { rejectionReason } : {}),
+        }),
+      });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not update testimonial.");
-      setTestimonials((current) => current.map((item) => item.id === pendingDecision.id ? { ...item, approvalStatus: pendingDecision.status } : item));
+      setTestimonials((current) => current.map((item) => item.id === pendingDecision.id ? {
+        ...item,
+        approvalStatus: pendingDecision.status,
+        rejectionReason: pendingDecision.status === "Rejected" ? rejectionReason.trim() : "",
+        decisionAt: result.record?.data?.moderationDecisionAt || item.decisionAt,
+        notificationStatus: result.notificationStatus || item.notificationStatus,
+      } : item));
       const emailNotice = pendingDecision.status === "Approved" || pendingDecision.status === "Rejected"
         ? result.notificationStatus === "failed"
-          ? " The decision was saved, but the customer email could not be sent."
+          ? " The decision was saved, but the notification could not be sent. Retry it from the testimonial details."
           : result.notificationStatus === "skipped"
             ? " The decision was saved, but no verified customer email was available."
+            : result.notificationStatus === "sent-unrecorded"
+              ? " The email was sent, but its delivery could not be recorded. Avoid retrying to prevent a duplicate."
             : ""
         : "";
       setNotice(`Testimonial status saved as ${pendingDecision.status}.${emailNotice}`);
@@ -870,6 +888,26 @@ export function TestimonialsManagement() {
       setNotice(error instanceof Error ? error.message : "Could not update testimonial.");
     } finally {
       setSavingDecision(false);
+    }
+  }
+
+  async function retryNotification(testimonial: AdminTestimonial) {
+    if (retryingNotificationId) return;
+    setRetryingNotificationId(testimonial.id);
+    try {
+      const response = await fetch(`/api/admin/testimonials/${encodeURIComponent(testimonial.id)}/notification/retry`, {
+        method: "POST",
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "The notification could not be retried.");
+      setTestimonials((current) => current.map((item) => item.id === testimonial.id
+        ? { ...item, notificationStatus: result.notificationStatus }
+        : item));
+      setNotice("The moderation notification was delivered successfully.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "The notification could not be retried.");
+    } finally {
+      setRetryingNotificationId(null);
     }
   }
 
@@ -946,7 +984,7 @@ export function TestimonialsManagement() {
             : null}
         </div>
         <DataTable
-          columns={["Name", "Testimonial Excerpt", "Submission Date", "Consent Status", "Approval Status", "Actions"]}
+          columns={["Name", "Testimonial Excerpt", "Rating", "Submission Date", "Consent Status", "Approval Status", "Actions"]}
           rows={rows}
           emptyMessage="No testimonials match these filters."
         />
@@ -1001,11 +1039,15 @@ export function TestimonialsManagement() {
                 {selected.company ? <div><dt>Company</dt><dd>{selected.company}</dd></div> : null}
                 {selected.designation ? <div><dt>Designation</dt><dd>{selected.designation}</dd></div> : null}
                 {selected.service ? <div><dt>Service</dt><dd>{selected.service}</dd></div> : null}
+                <div><dt>Rating</dt><dd>{"★".repeat(selected.rating ?? 5)} ({selected.rating ?? 5}/5)</dd></div>
                 <div><dt>Submission date</dt><dd>{displayDate(selected.date)}</dd></div>
                 <div><dt>Consent status</dt><dd><StatusBadge status={selected.consentStatus} /></dd></div>
                 <div><dt>Identity publication consent</dt><dd>{selected.identityPublicationConsent ? "Granted" : "Not granted"}</dd></div>
                 {selected.imagePath || selected.photoPublicationConsent || (selected.mediaSubmitted && selected.format === "written") ? <div><dt>Customer image consent</dt><dd>{selected.photoPublicationConsent ? "Granted" : "Not granted"}</dd></div> : null}
                 <div><dt>Approval status</dt><dd><StatusBadge status={selected.approvalStatus} /></dd></div>
+                {selected.decisionAt ? <div><dt>Decision date</dt><dd>{displayDate(selected.decisionAt)}</dd></div> : null}
+                {selected.rejectionReason ? <div className="admin-detail-message"><dt>Rejection reason</dt><dd>{selected.rejectionReason}</dd></div> : null}
+                {selected.notificationStatus ? <div><dt>Notification status</dt><dd><StatusBadge status={selected.notificationStatus} /></dd></div> : null}
                 <div className="admin-detail-message"><dt>Full testimonial</dt><dd>{selected.text || "Video testimonial"}</dd></div>
                 {selected.imageUrl && safeVideoUrl(selected.imageUrl) ? (
                   <div className="admin-detail-message">
@@ -1049,7 +1091,7 @@ export function TestimonialsManagement() {
                     setSelectedId(null);
                   }}>Delete Testimonial</button>
                 ) : null}
-                {(["Pending", "Approved", "Rejected", "Archived"] as const).map((status) => (
+                {selected.approvalStatus === "Pending" ? (["Approved", "Rejected"] as const).map((status) => (
                   <button
                     key={status}
                     type="button"
@@ -1057,9 +1099,25 @@ export function TestimonialsManagement() {
                     disabled={selected.approvalStatus === status || (status === "Approved" && (selected.consentStatus !== "Granted" || !selected.identityPublicationConsent))}
                     onClick={() => updateApproval(selected, status)}
                   >
-                    {status === "Pending" ? "Return to Pending" : status === "Archived" ? "Archive" : status}
+                    {status}
                   </button>
-                ))}
+                )) : null}
+                {selected.approvalStatus === "Approved" ? (
+                  <button type="button" className="admin-button admin-button-secondary" onClick={() => updateApproval(selected, "Archived")}>Archive</button>
+                ) : null}
+                {selected.approvalStatus === "Archived" ? (
+                  <button type="button" className="admin-button admin-button-secondary" onClick={() => updateApproval(selected, "Approved")}>Restore Approved</button>
+                ) : null}
+                {selected.notificationStatus === "failed" ? (
+                  <button
+                    type="button"
+                    className="admin-button"
+                    disabled={retryingNotificationId === selected.id}
+                    onClick={() => void retryNotification(selected)}
+                  >
+                    {retryingNotificationId === selected.id ? "Retrying…" : "Retry email notification"}
+                  </button>
+                ) : null}
               </div>
                 </>
               )}
@@ -1082,9 +1140,22 @@ export function TestimonialsManagement() {
               ? `Change the approval status for ${target.name} to ${pendingDecision.status}? Approval is permitted only when required publication and identity consent have been granted.`
               : "This testimonial is no longer available."}
           </p>
+          {pendingDecision.status === "Rejected" ? (
+            <label className="admin-field admin-content-full">
+              <span>Reason for rejection <i>*</i></span>
+              <textarea
+                rows={4}
+                maxLength={1000}
+                required
+                value={rejectionReason}
+                onChange={(event) => setRejectionReason(event.target.value)}
+                placeholder="Provide a clear reason to include in the visitor notification."
+              />
+            </label>
+          ) : null}
           <div className="admin-modal-actions">
             <button type="button" className="admin-button admin-button-secondary" disabled={savingDecision} onClick={() => setPendingDecision(null)}>Cancel</button>
-            <button type="button" className="admin-button" disabled={!target || savingDecision} onClick={confirmApprovalChange}>{savingDecision ? "Saving…" : "Confirm status change"}</button>
+            <button type="button" className="admin-button" disabled={!target || savingDecision || (pendingDecision.status === "Rejected" && rejectionReason.trim().length < 3)} onClick={confirmApprovalChange}>{savingDecision ? "Saving…" : "Confirm status change"}</button>
           </div>
         </AccessibleDialog>
       ) : null}

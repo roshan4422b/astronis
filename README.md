@@ -119,7 +119,7 @@ All public enquiry, professional application, consultation, testimonial and subs
 
 Configure `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and the matching server-only `TURNSTILE_SECRET_KEY` from the same Cloudflare Turnstile widget in the repository-root `.env.local`. Add the hostname you use (including `localhost` for local development) to that widget's allowed hostnames. Because Next.js embeds `NEXT_PUBLIC_*` values into the client bundle, restart the development server after changing the site key and rebuild/redeploy after changing it for production.
 
-Set the existing `MAILTRAP_API_KEY` and `MAILTRAP_FROM_EMAIL` values, plus these server-only production variables:
+For local development and production, set the server-only `MAILTRAP_API_KEY`, `MAILTRAP_FROM_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and `EMAIL_OTP_SECRET` values. OTP sending and proof verification will fail closed if these are missing. Restart the local development server after changing `.env.local`.
 
 ```dotenv
 UPSTASH_REDIS_REST_URL=https://your-database.upstash.io

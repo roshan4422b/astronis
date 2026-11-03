@@ -15,7 +15,7 @@ export default async function Testimonials() {
     designation: item.designation,
     service: item.service,
     quote: item.testimonial_text,
-    rating: 5,
+    rating: item.rating,
     imageUrl: item.image_url,
     videoUrl: item.video_url,
     publicationConsent: true,

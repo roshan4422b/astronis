@@ -19,6 +19,8 @@ export default function TestimonialForm({
   const [format, setFormat] = useState(initialFormat),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false),
+    [emailVerified, setEmailVerified] = useState(false),
+    [formValid, setFormValid] = useState(false),
     [recording, setRecording] = useState(false),
     [video, setVideo] = useState<Blob | null>(null),
     [recorded, setRecorded] = useState(false),
@@ -31,11 +33,30 @@ export default function TestimonialForm({
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     live = useRef<HTMLVideoElement>(null),
+    formElement = useRef<HTMLFormElement>(null),
     photoInput = useRef<HTMLInputElement>(null),
     videoInput = useRef<HTMLInputElement>(null),
     discardRecording = useRef(false),
     recordingAttempt = useRef(0),
     submissionInFlight = useRef(false);
+  useEffect(() => {
+    const form = formElement.current;
+    if (!form) return;
+    const updateValidity = () => {
+      const hasRequiredMedia = format !== "video" || Boolean(video || videoInput.current?.files?.[0]);
+      setFormValid(form.matches(":valid") && hasRequiredMedia);
+    };
+    const updateValidityAfterReset = () => window.setTimeout(updateValidity, 0);
+    form.addEventListener("input", updateValidity);
+    form.addEventListener("change", updateValidity);
+    form.addEventListener("reset", updateValidityAfterReset);
+    updateValidity();
+    return () => {
+      form.removeEventListener("input", updateValidity);
+      form.removeEventListener("change", updateValidity);
+      form.removeEventListener("reset", updateValidityAfterReset);
+    };
+  }, [format, photoSelected, testimonialText, video]);
   useEffect(
     () => () => {
       recordingAttempt.current += 1;
@@ -142,6 +163,10 @@ export default function TestimonialForm({
     const form = e.currentTarget;
     const data = new FormData(form);
     data.set("format", format);
+    if (!String(data.get("emailVerificationToken") || "").trim()) {
+      setStatus("Verify your email address before submitting this form.");
+      return;
+    }
     if (format === "video" && video)
       data.set("video", new File([video], `testimonial.${video.type.split(";")[0] === "video/mp4" ? "mp4" : video.type.split(";")[0] === "video/quicktime" ? "mov" : "webm"}`, { type: video.type }));
     if (format === "video") data.set("videoSource", recorded ? "recorded" : "uploaded");
@@ -165,7 +190,7 @@ export default function TestimonialForm({
     try {
       const res = await new Promise<Response>((resolve, reject) => {
         const request = new XMLHttpRequest();
-        request.open("POST", "/api/testimonials");
+        request.open("POST", new URL("/api/testimonials", window.location.origin).toString());
         request.upload.onprogress = (progress) => {
           if (progress.lengthComputable) setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
         };
@@ -230,7 +255,7 @@ export default function TestimonialForm({
             Video Testimonial
           </button>
         </div>
-        <form className="enquiry-form" onSubmit={submit}>
+        <form ref={formElement} className="enquiry-form" onSubmit={submit}>
           <div className="form-grid">
             <label>
               Name *
@@ -287,6 +312,16 @@ export default function TestimonialForm({
                 {practices.map((p) => (
                   <option key={p.slug}>{p.title}</option>
                 ))}
+              </select>
+            </label>
+            <label>
+              Your Rating *
+              <select name="rating" required defaultValue="5">
+                <option value="5">5 — Excellent</option>
+                <option value="4">4 — Very good</option>
+                <option value="3">3 — Good</option>
+                <option value="2">2 — Fair</option>
+                <option value="1">1 — Needs improvement</option>
               </select>
             </label>
             {format === "written" ? (
@@ -462,8 +497,8 @@ export default function TestimonialForm({
               </span>
             </label>
           </div>
-          <EmailOtpVerification captchaDisplayOnly />
-          <button className="button" type="submit" disabled={busy || recording}>
+          <EmailOtpVerification captchaDisplayOnly onVerificationChange={setEmailVerified} />
+          <button className="button" type="submit" disabled={busy || recording || !emailVerified || !formValid}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>

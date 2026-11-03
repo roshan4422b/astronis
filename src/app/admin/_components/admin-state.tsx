@@ -62,6 +62,10 @@ export type AdminTestimonial = {
   videoSource?: string;
   mediaSubmitted?: boolean;
   format?: string;
+  rating?: number;
+  rejectionReason?: string;
+  decisionAt?: string;
+  notificationStatus?: string;
 };
 
 export type AdminContentSection = "pages" | "services" | "industries" | "professionals" | "global-presence" | "technology";
@@ -138,6 +142,7 @@ type CmsRow = {
   created_at: string | null;
   updated_at: string | null;
   source_defined?: boolean;
+  notification_status?: string;
 };
 type EnquiryRow = {
   id: string;
@@ -259,7 +264,11 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, name: text(row.data.name), email: text(row.data.email), title: text(row.data.title),
           text: text(row.data.text), excerpt: text(row.data.excerpt), company: text(row.data.company), designation: text(row.data.designation), service: text(row.data.service), date: row.created_at ?? "",
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
-          approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
+          approvalStatus: row.status === "published" || row.status === "approved" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
+          rating: typeof row.data.rating === "number" && Number.isInteger(row.data.rating) ? row.data.rating : 5,
+          rejectionReason: text(row.data.moderationReason),
+          decisionAt: text(row.data.moderationDecisionAt),
+          notificationStatus: row.notification_status,
           identityPublicationConsent: row.data.identityPublicationConsent === true, internalNotes: text(row.data.internalNotes),
           photoPublicationConsent: row.data.photoPublicationConsent === true,
           imagePath: text(row.data.imagePath),

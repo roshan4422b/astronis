@@ -31,12 +31,12 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   }, [onToken]);
 
   useEffect(() => {
-    errorCb.current = onError;
+    onErrorRef.current = onError;
   }, [onError]);
 
   const reportError = useCallback((message: string) => {
     cb.current("");
-    errorCb.current?.(message);
+    onErrorRef.current?.(message);
   }, []);
 
   const mount = useCallback(() => {
