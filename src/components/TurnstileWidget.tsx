@@ -22,6 +22,7 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
+  const onErrorRef = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
@@ -29,12 +30,12 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
     cb.current = onToken;
   }, [onToken]);
   useEffect(() => {
-    errorCb.current = onError;
+    onErrorRef.current = onError;
   }, [onError]);
 
   const reportError = useCallback((message: string) => {
     cb.current("");
-    errorCb.current?.(message);
+    onErrorRef.current?.(message);
   }, []);
 
   const mount = useCallback(() => {
