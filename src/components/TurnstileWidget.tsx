@@ -22,12 +22,14 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
+  const errorCb = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
   useEffect(() => {
     cb.current = onToken;
   }, [onToken]);
+
   useEffect(() => {
     errorCb.current = onError;
   }, [onError]);
@@ -37,17 +39,15 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
     errorCb.current?.(message);
   }, []);
 
-  const errorCb = useCallback(() => cb.current(""), []);
-
   const mount = useCallback(() => {
     if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;
     idRef.current = window.turnstile.render(ref.current, {
       sitekey: siteKey,
       callback: (t: string) => cb.current(t),
-      "expired-callback": errorCb,
-      "error-callback": errorCb,
+      "expired-callback": () => reportError("Security verification expired. Please try again."),
+      "error-callback": () => reportError("Security verification failed. Please try again."),
     });
-  }, [errorCb, isConfigured, siteKey]);
+  }, [isConfigured, reportError, siteKey]);
 
   useEffect(() => {
     mount();
