@@ -60,6 +60,7 @@ export async function POST(request: Request) {
     !get("service") ||
     get("consent") !== "yes" ||
     get("identityPublicationConsent") !== "yes" ||
+    !/^[1-5]$/.test(get("rating")) ||
     !["written", "video"].includes(format) ||
     ["name", "email", "company", "designation", "phone", "service"].some(
       (k) => get(k).length > 200,
@@ -107,12 +108,31 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
-  const serviceClient = getTestimonialMediaService();
-  if (!serviceClient)
+  let serviceClient: ReturnType<typeof getTestimonialMediaService>;
+  try {
+    serviceClient = getTestimonialMediaService();
+  } catch (error) {
+    console.error("[testimonials] Supabase service client initialization failed.", {
+      error: error instanceof Error ? error.name : "UnknownError",
+    });
     return Response.json(
       { message: "Secure testimonial submission is not configured. Please try again later." },
       { status: 503 },
     );
+  }
+  if (!serviceClient) {
+    const missingConfiguration = [
+      !process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ? "NEXT_PUBLIC_SUPABASE_URL" : "",
+      !process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() ? "SUPABASE_SERVICE_ROLE_KEY" : "",
+    ].filter(Boolean);
+    console.error("[testimonials] Supabase service client is unavailable.", {
+      missingConfiguration,
+    });
+    return Response.json(
+      { message: "Secure testimonial submission is not configured. Please try again later." },
+      { status: 503 },
+    );
+  }
   if (webhook) {
     try {
       if (new URL(webhook).protocol !== "https:") throw new Error("HTTPS required");
@@ -192,6 +212,7 @@ export async function POST(request: Request) {
     company: get("company"),
     designation: get("designation"),
     service: get("service"),
+    rating: Number(get("rating")),
     format,
     text: get("message"),
     excerpt: get("message").slice(0, 240),
@@ -230,7 +251,7 @@ export async function POST(request: Request) {
     if (!webhook)
       return Response.json({
         submissionSaved: true,
-        message: "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
+          message: "Thank you for sharing your experience with Astronis Global. Your testimonial has been submitted successfully and is awaiting review by our team. You will receive an email notification once a decision has been made.",
       });
     if (new URL(webhook).protocol !== "https:")
       throw new Error("HTTPS required");
@@ -246,7 +267,7 @@ export async function POST(request: Request) {
     return Response.json({
       submissionSaved: true,
       message:
-        "Thank you. Your testimonial has been submitted for review. It will only be published after approval.",
+        "Thank you for sharing your experience with Astronis Global. Your testimonial has been submitted successfully and is awaiting review by our team. You will receive an email notification once a decision has been made.",
     });
   } catch {
     console.error("[testimonials] Submission saved, but webhook delivery failed.");
