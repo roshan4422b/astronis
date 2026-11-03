@@ -1108,14 +1108,19 @@ export function TestimonialsManagement() {
                 {selected.approvalStatus === "Archived" ? (
                   <button type="button" className="admin-button admin-button-secondary" onClick={() => updateApproval(selected, "Approved")}>Restore Approved</button>
                 ) : null}
-                {selected.notificationStatus === "failed" ? (
+                {selected.notificationStatus === "failed" ||
+                (!selected.notificationStatus && (selected.approvalStatus === "Approved" || selected.approvalStatus === "Rejected")) ? (
                   <button
                     type="button"
                     className="admin-button"
                     disabled={retryingNotificationId === selected.id}
                     onClick={() => void retryNotification(selected)}
                   >
-                    {retryingNotificationId === selected.id ? "Retrying…" : "Retry email notification"}
+                    {retryingNotificationId === selected.id
+                      ? "Sending…"
+                      : selected.notificationStatus === "failed"
+                        ? "Retry email notification"
+                        : "Send email notification"}
                   </button>
                 ) : null}
               </div>

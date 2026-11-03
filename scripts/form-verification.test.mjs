@@ -192,7 +192,11 @@ test("testimonial decisions require authorized transitions and idempotent email 
   assert.match(notifier, /Your Testimonial Has Been Approved – Astronis Global/);
   assert.match(notifier, /Update Regarding Your Testimonial – Astronis Global/);
   assert.match(retryRoute, /getAuthorizedAdmin\(\)/);
-  assert.match(retryRoute, /Only a failed notification can be retried/);
+  assert.match(retryRoute, /This notification was already sent/);
+  assert.match(retryRoute, /delivery\?\.delivery_status === "failed" \? \{ retry: true \} : \{\}/);
+  assert.match(retryRoute, /Apply the testimonial notification migration/);
+  assert.match(adminRoute, /email notification status is unavailable \(\$\{code\}\)/);
+  assert.match(adminUi, /"Send email notification"/);
   assert.match(adminUi, /Reason for rejection/);
   assert.match(adminUi, /Retry email notification/);
 });
@@ -208,7 +212,7 @@ test("admin testimonial records remain visible when notification status lookup f
     adminRoute.indexOf("return NextResponse.json({ records: hydratedRecords"),
   );
   assert.match(notificationLookup, /Notification status query failed/);
-  assert.match(notificationLookup, /warning = "Testimonials loaded/);
+  assert.match(notificationLookup, /warning = `Testimonials loaded/);
   assert.doesNotMatch(notificationLookup, /return errorResponse/);
   assert.match(adminRoute, /return NextResponse\.json\(\{ records: hydratedRecords, \.\.\.\(warning \? \{ warning \} : \{\}\) \}\)/);
   assert.match(adminState, /loadWarning: text\(contentPayload\.warning\)/);

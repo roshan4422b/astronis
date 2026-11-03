@@ -154,10 +154,16 @@ export async function GET(request: Request) {
       .select("testimonial_id, event_status, delivery_status")
       .in("testimonial_id", persistedTestimonials.map((record) => record.id));
     if (deliveryError) {
+      const code = deliveryError.code || "unknown";
       console.error("[admin-testimonials] Notification status query failed.", {
-        code: deliveryError.code || "unknown",
+        code,
       });
-      warning = "Testimonials loaded, but email notification status is unavailable. Check that the testimonial notification migration and admin permissions are configured.";
+      const cause = code === "42P01" || code === "PGRST205"
+        ? "The notification table is missing; apply the testimonial notification migration."
+        : code === "42501"
+          ? "The admin account lacks access to the notification table; check its admin RLS policy and grants."
+          : "Check the testimonial notification migration and admin permissions.";
+      warning = `Testimonials loaded, but email notification status is unavailable (${code}). ${cause}`;
     } else {
       const deliveryByEvent = new Map(
         (deliveries ?? []).map((delivery) => [`${delivery.testimonial_id}:${delivery.event_status}`, delivery.delivery_status]),
