@@ -12,9 +12,13 @@ declare global {
   }
 }
 
-type Props = { onToken: (token: string) => void; resetKey?: number };
+type Props = {
+  onToken: (token: string) => void;
+  onError?: (message: string) => void;
+  resetKey?: number;
+};
 
-export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
+export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
@@ -24,6 +28,14 @@ export default function TurnstileWidget({ onToken, resetKey = 0 }: Props) {
   useEffect(() => {
     cb.current = onToken;
   }, [onToken]);
+  useEffect(() => {
+    errorCb.current = onError;
+  }, [onError]);
+
+  const reportError = useCallback((message: string) => {
+    cb.current("");
+    errorCb.current?.(message);
+  }, []);
 
   const mount = useCallback(() => {
     if (!isConfigured || !siteKey || !ref.current || !window.turnstile || idRef.current) return;

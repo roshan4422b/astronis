@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { testimonials, type Testimonial } from "@/content/testimonials";
 import { Heading } from "../_components/ui";
 import Icon from "../_components/icon";
+import Image from "@/app/_components/asset-image";
 
 export default function TestimonialGallery({
   cmsTestimonials = [],
@@ -49,6 +50,15 @@ export default function TestimonialGallery({
                 <h3 className="testimonial-column-title">{title}</h3>
                 {items.length ? items.map((item) => (
                   <article className="directory-card" key={item.id}>
+                    {item.imageUrl ? (
+                      <Image
+                        src={item.imageUrl}
+                        alt={`${item.name}`}
+                        width={52}
+                        height={52}
+                        className="testimonial-customer-image"
+                      />
+                    ) : null}
                     <h3>{item.name}</h3>
                     <p>{[item.designation, item.company].filter(Boolean).join(" · ")}</p>
                     {index ? (

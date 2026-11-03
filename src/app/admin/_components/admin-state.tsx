@@ -34,6 +34,8 @@ export type AdminEnquiry = {
   message: string;
   phone?: string;
   internalNotes?: string;
+  data?: Record<string, unknown>;
+  updatedAt?: string;
 };
 
 export type AdminTestimonial = {
@@ -52,7 +54,12 @@ export type AdminTestimonial = {
   title?: string;
   internalNotes?: string;
   identityPublicationConsent?: boolean;
+  photoPublicationConsent?: boolean;
+  imagePath?: string;
+  imageUrl?: string;
+  videoPath?: string;
   videoUrl?: string;
+  videoSource?: string;
   mediaSubmitted?: boolean;
   format?: string;
 };
@@ -144,6 +151,7 @@ type EnquiryRow = {
   message: string;
   internal_notes: string;
   data: Record<string, unknown>;
+  updated_at: string | null;
 };
 const text = (value: unknown) => typeof value === "string" ? value : "";
 
@@ -253,7 +261,12 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
           approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
           identityPublicationConsent: row.data.identityPublicationConsent === true, internalNotes: text(row.data.internalNotes),
+          photoPublicationConsent: row.data.photoPublicationConsent === true,
+          imagePath: text(row.data.imagePath),
+          imageUrl: text(row.data.imageUrl),
+          videoPath: text(row.data.videoPath),
           videoUrl: text(row.data.videoUrl),
+          videoSource: text(row.data.videoSource),
           mediaSubmitted: row.data.mediaSubmitted === true,
           format: text(row.data.format),
         }));
@@ -261,7 +274,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         const enquiries: AdminEnquiry[] = enquiryRows.map((row) => ({
           id: row.id, name: row.name, email: row.email, subject: row.subject, date: row.created_at,
           status: row.status, company: row.company, formType: row.form_type, message: row.message,
-          phone: text(row.data.phone), internalNotes: row.internal_notes,
+          phone: text(row.data.phone), internalNotes: row.internal_notes, data: row.data, updatedAt: row.updated_at ?? "",
         }));
         snapshot = { ...snapshot, contentRecords, insights, testimonials, enquiries, loadState: "ready", loadError: "" };
         notify();

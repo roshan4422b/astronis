@@ -1,6 +1,30 @@
 import { TESTIMONIAL_AGREEMENT_VERSION } from "@/lib/testimonial-consent";
-import { consumeEmailVerification, verificationFailure } from "@/lib/form-verification.server";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  consumeEmailVerification,
+  createVerifiedTestimonialEmailProof,
+  verificationFailure,
+} from "@/lib/form-verification.server";
+import {
+  testimonialImageMaxBytes,
+  testimonialImageTypes,
+  testimonialMediaBucket,
+  testimonialVideoMaxBytes,
+  testimonialVideoTypes,
+} from "@/lib/testimonial-media";
+import {
+  getTestimonialMediaService,
+  uploadTestimonialMedia,
+} from "@/lib/testimonial-media.server";
+
+function hasValidMediaSignature(type: string, bytes: Uint8Array) {
+  if (type === "image/jpeg") return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  if (type === "image/png") return bytes.slice(0, 8).join(",") === "137,80,78,71,13,10,26,10";
+  if (type === "image/webp") return String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+  if (type === "image/avif") return String.fromCharCode(...bytes.slice(4, 12)).includes("ftypavif");
+  if (type === "video/webm") return bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3;
+  if (type === "video/mp4" || type === "video/quicktime") return String.fromCharCode(...bytes.slice(4, 8)) === "ftyp";
+  return false;
+}
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -60,10 +84,8 @@ export async function POST(request: Request) {
     format === "video" &&
     (!(video instanceof File) ||
       !video.size ||
-      video.size > 20 * 1024 * 1024 ||
-      !["video/mp4", "video/webm", "video/quicktime"].includes(
-        video.type.split(";")[0],
-      ))
+      video.size > testimonialVideoMaxBytes ||
+      !testimonialVideoTypes.has(video.type.split(";")[0]))
   )
     return Response.json(
       { message: "Please submit an MP4, WebM or MOV video under 20 MB." },
@@ -72,11 +94,11 @@ export async function POST(request: Request) {
   if (
     photo instanceof File &&
     photo.size &&
-    (photo.size > 3 * 1024 * 1024 ||
-      !["image/jpeg", "image/png"].includes(photo.type))
+    (photo.size > testimonialImageMaxBytes ||
+      !testimonialImageTypes.has(photo.type))
   )
     return Response.json(
-      { message: "Please use a JPG or PNG photograph under 3 MB." },
+      { message: "Please use a JPG, PNG, WebP or AVIF photograph under 3 MB." },
       { status: 400 },
     );
   if (photo instanceof File && photo.size && get("photoPublicationConsent") !== "yes")
@@ -85,15 +107,10 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   const webhook = process.env.TESTIMONIAL_WEBHOOK_URL;
-  const hasMedia =
-    (video instanceof File && video.size > 0) ||
-    (photo instanceof File && photo.size > 0);
-  if (hasMedia && !webhook)
+  const serviceClient = getTestimonialMediaService();
+  if (!serviceClient)
     return Response.json(
-      {
-        message:
-          "Media submissions are not configured yet. Please remove attachments or try again later.",
-      },
+      { message: "Secure testimonial submission is not configured. Please try again later." },
       { status: 503 },
     );
   if (webhook) {
@@ -111,6 +128,7 @@ export async function POST(request: Request) {
     await consumeEmailVerification(get("email"), get("emailVerificationToken")),
   );
   if (verificationResponse) return verificationResponse;
+  const submissionId = crypto.randomUUID();
   data.set("status", "pending-review");
   const consentAcceptedAt = new Date().toISOString();
   data.set("submittedAt", consentAcceptedAt);
@@ -121,10 +139,53 @@ export async function POST(request: Request) {
   data.set("materialType", format === "video" ? "video" : "written-testimonial");
   data.set("photoPublicationConsent", get("photoPublicationConsent") === "yes" ? "yes" : "no");
   data.set("identityPublicationConsent", get("identityPublicationConsent"));
-  const supabase = await createSupabaseServerClient();
-  if (!supabase)
-    return Response.json({ message: "Testimonial submission is not configured yet. Please try again later." }, { status: 503 });
-  const submissionId = crypto.randomUUID();
+  const emailVerificationProof = createVerifiedTestimonialEmailProof(get("email"), consentAcceptedAt);
+  const uploadedPaths: string[] = [];
+  let imagePath = "";
+  let videoPath = "";
+  const cleanupUploadedMedia = async () => {
+    if (!uploadedPaths.length) return;
+    const { error } = await serviceClient.storage.from(testimonialMediaBucket).remove(uploadedPaths);
+    if (error) {
+      console.error("[testimonials] Uploaded media cleanup failed.", {
+        code: error.name || "unknown",
+      });
+    }
+  };
+  try {
+    if (photo instanceof File && photo.size) {
+      const photoType = photo.type.split(";")[0];
+      if (!hasValidMediaSignature(photoType, new Uint8Array(await photo.arrayBuffer()))) {
+        return Response.json({ message: "The photograph content does not match its file type." }, { status: 415 });
+      }
+      imagePath = await uploadTestimonialMedia(serviceClient, photo, submissionId);
+      uploadedPaths.push(imagePath);
+    }
+    if (format === "video" && video instanceof File) {
+      const videoType = video.type.split(";")[0];
+      if (!hasValidMediaSignature(videoType, new Uint8Array(await video.arrayBuffer()))) {
+        await cleanupUploadedMedia();
+        return Response.json({ message: "The video content does not match its file type." }, { status: 415 });
+      }
+      videoPath = await uploadTestimonialMedia(serviceClient, video, submissionId);
+      uploadedPaths.push(videoPath);
+    }
+  } catch (error) {
+    await cleanupUploadedMedia();
+    console.error("[testimonials] Private media upload failed.", {
+      error: error instanceof Error ? error.name : "UnknownError",
+    });
+    return Response.json(
+      { message: "We could not securely store your media. Please try again later." },
+      { status: 503 },
+    );
+  }
+  if (imagePath) data.set("imagePath", imagePath);
+  if (videoPath) data.set("videoPath", videoPath);
+  const videoSource = videoPath
+    ? get("videoSource") === "recorded" ? "recorded" : "uploaded"
+    : "";
+  if (videoSource) data.set("videoSource", videoSource);
   const testimonial = {
     name: get("name"),
     email: get("email"),
@@ -138,16 +199,22 @@ export async function POST(request: Request) {
     identityPublicationConsent: get("identityPublicationConsent") === "yes",
     consentAcceptedAt,
     agreementVersion: TESTIMONIAL_AGREEMENT_VERSION,
+    emailVerified: true,
+    emailVerificationProof,
     photoPublicationConsent: get("photoPublicationConsent") === "yes",
+    imagePath,
+    videoPath,
+    videoSource,
     mediaSubmitted: Boolean((video instanceof File && video.size) || (photo instanceof File && photo.size)),
   };
-  const { error: persistenceError } = await supabase.from("cms_content").insert({
+  const { error: persistenceError } = await serviceClient.from("cms_content").insert({
     collection: "testimonials",
     slug: `submission-${submissionId}`,
     status: "pending",
     data: testimonial,
   });
   if (persistenceError) {
+    await cleanupUploadedMedia();
     const code = persistenceError.code || "unknown";
     console.error("[testimonials] CMS insert failed.", { code });
     const message = code === "42501"

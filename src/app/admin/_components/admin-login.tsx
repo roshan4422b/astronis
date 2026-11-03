@@ -57,13 +57,17 @@ export default function AdminLogin() {
   }
 
   return <section className="admin-login-card">
-    <Link href="/admin" className="admin-login-brand"><span className="admin-login-mark">A</span><span><strong>ASTRONIS</strong><small>GLOBAL · ADMIN</small></span></Link>
+    <Link href="/admin" className="admin-login-brand" aria-label="Astronis Global admin access">
+      <img src="/astronis_logo.jpeg" alt="Astronis Global" className="admin-login-logo" />
+    </Link>
     <div className="admin-login-heading"><span>ADMINISTRATOR WORKSPACE</span><h1>Welcome back</h1><p>Sign in to continue to your workspace.</p></div>
     <form onSubmit={submit} noValidate>
       <label className="admin-login-field"><span>Email address</span><div className="admin-login-input"><AdminIcon name="mail" size={17} /><input aria-label="Email address" aria-describedby={errors.email ? "admin-email-error" : undefined} autoComplete="username" type="email" value={email} onChange={(event) => { setEmail(event.target.value); setErrors((current) => ({ ...current, email: "" })); }} placeholder="you@company.com" aria-invalid={Boolean(errors.email)} /></div>{errors.email ? <small id="admin-email-error" className="admin-login-error">{errors.email}</small> : null}</label>
       <label className="admin-login-field"><span>Password</span><div className="admin-login-input"><AdminIcon name="lock" size={17} /><input aria-label="Password" aria-describedby={errors.password ? "admin-password-error" : undefined} autoComplete="current-password" type={visible ? "text" : "password"} value={password} onChange={(event) => { setPassword(event.target.value); setErrors((current) => ({ ...current, password: "" })); }} placeholder="Enter your password" aria-invalid={Boolean(errors.password)} /><button type="button" aria-label={visible ? "Hide password" : "Show password"} onClick={() => setVisible(!visible)}><AdminIcon name="eye" size={17} /></button></div>{errors.password ? <small id="admin-password-error" className="admin-login-error">{errors.password}</small> : null}</label>
-      <Link className="admin-login-return" href="/auth/reset-password">Forgot password?</Link>
-      <label className="admin-remember"><input type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} /><span>Remember me</span></label>
+      <div className="admin-login-row">
+        <Link className="admin-login-return" href="/auth/reset-password">Forgot password?</Link>
+        <label className="admin-remember"><input type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} /><span>Remember me</span></label>
+      </div>
       <button className="admin-button admin-login-submit" type="submit" disabled={submitting || configured === false}>{submitting ? "Signing in…" : "Sign in"} <AdminIcon name="arrow" size={16} /></button>
       {message ? <p className="admin-login-message" role="status">{message}</p> : null}
     </form>

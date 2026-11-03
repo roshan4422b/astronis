@@ -55,8 +55,11 @@ export function StatusBadge({ status }: { status: string }) {
   return <span className={`admin-status admin-status-${tone}`}><span />{status}</span>;
 }
 
-export function StatCard({ label, value, change, icon }: { label: string; value: string; change: string; icon: string }) {
-  return <article className="admin-stat-card"><div className="admin-stat-top"><span>{label}</span><span className="admin-stat-icon"><AdminIcon name={icon} size={19} /></span></div><strong>{value}</strong><small>{change}</small></article>;
+export function StatCard({ label, value, change, icon, onClick }: { label: string; value: string; change: string; icon: string; onClick?: () => void }) {
+  const content = <><div className="admin-stat-top"><span>{label}</span><span className="admin-stat-icon"><AdminIcon name={icon} size={19} /></span></div><strong>{value}</strong><small>{change}</small></>;
+  return onClick
+    ? <button className="admin-stat-card admin-stat-card-action" type="button" onClick={onClick}>{content}</button>
+    : <article className="admin-stat-card">{content}</article>;
 }
 
 export function SearchInput({ value, onChange, placeholder = "Search records..." }: { value: string; onChange: (value: string) => void; placeholder?: string }) {

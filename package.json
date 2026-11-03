@@ -10,12 +10,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:admin-enquiries": "node --experimental-strip-types --test scripts/admin-enquiries.test.mjs",
     "test:verification": "node --experimental-strip-types --test scripts/form-verification.test.mjs",
     "test:form-apis": "node scripts/public-form-smoke.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
+    "exceljs": "^4.4.0",
     "mailtrap": "^5.0.0",
     "next": "16.3.4",
     "react": "19.2.8",

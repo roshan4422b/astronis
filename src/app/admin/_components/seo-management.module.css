@@ -8,7 +8,7 @@
 
 .recordCount {
   color: #748197;
-  font-size: 12px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
@@ -99,7 +99,7 @@
   border-radius: 6px;
   color: #25344c;
   background: #fff;
-  font-size: 13px;
+  font-size: 11px;
   outline: none;
 }
 
@@ -121,7 +121,7 @@
 
 .editorForm :global(.admin-field > span > small) {
   color: #8390a3;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 400;
 }
 
@@ -138,7 +138,7 @@
 
 .guidance,
 .error {
-  font-size: 11px;
+  font-size: 9px;
   line-height: 1.45;
 }
 
@@ -163,13 +163,13 @@
 .robotsFieldset legend {
   padding: 0 6px;
   color: #37465d;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
 }
 
 .robotsFieldset legend small {
   color: #8390a3;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 400;
 }
 
@@ -179,7 +179,7 @@
   gap: 8px;
   color: #536178;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .robotsFieldset input {
@@ -200,12 +200,12 @@
 .previewCard h2 {
   margin-top: 3px !important;
   color: #293850;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .eyebrow {
   color: #7f8ba0;
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
   letter-spacing: .12em;
 }
@@ -219,7 +219,7 @@
 .searchResult small {
   overflow: hidden;
   color: #39734c;
-  font-size: 12px;
+  font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -227,7 +227,7 @@
 .searchResult strong {
   overflow: hidden;
   color: #1a55a0;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 500;
   text-overflow: ellipsis;
 }
@@ -236,7 +236,7 @@
   display: -webkit-box;
   overflow: hidden;
   color: #4c5665;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.5;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -244,7 +244,7 @@
 
 .disclaimer {
   color: #78869a;
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .savedMessage {
@@ -253,7 +253,7 @@
   border-radius: 6px;
   color: #276643;
   background: #f1faf4;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .formActions {
@@ -267,7 +267,7 @@
 
 .formActions > span {
   color: #748197;
-  font-size: 11px;
+  font-size: 9px;
 }
 
 .formActions > div {
@@ -311,7 +311,7 @@
 .dialogHeading h2 {
   margin-top: 4px !important;
   color: #25344c;
-  font-size: 19px;
+  font-size: 17px;
 }
 
 .iconButton {

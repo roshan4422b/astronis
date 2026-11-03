@@ -10,6 +10,11 @@ import { useAdminState } from "./admin-state";
 import {
   PageHeading,
 } from "./admin-ui";
+import {
+  TestimonialMediaFields,
+  type TestimonialMediaValue,
+} from "./testimonial-media-fields";
+import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -223,8 +228,16 @@ export function AdminTestimonialForm() {
   const { setTestimonials, setFeedback } = useAdminState();
   const submitting = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMediaUploading, setIsMediaUploading] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [media, setMedia] = useState<TestimonialMediaValue>({
+    imagePath: "",
+    imageUrl: "",
+    videoPath: "",
+    videoUrl: "",
+    videoSource: "",
+  });
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -233,9 +246,11 @@ export function AdminTestimonialForm() {
     designation: "",
     service: "",
     text: "",
+    format: "written" as "written" | "video",
     date: todayInputDate(),
     consentVerified: false,
     identityConsentVerified: false,
+    photoConsentVerified: false,
     internalNotes: "",
   });
 
@@ -249,6 +264,7 @@ export function AdminTestimonialForm() {
   }
 
   function validate() {
+    const hasVideo = Boolean(media.videoPath || (media.videoSource === "url" && isSupportedTestimonialVideoUrl(media.videoUrl)));
     const normalized = {
       name: form.name.trim(),
       email: form.email.trim(),
@@ -264,7 +280,11 @@ export function AdminTestimonialForm() {
       email: !normalized.email || emailPattern.test(normalized.email)
         ? ""
         : "Enter a valid email address or leave this field blank.",
-      text: normalized.text.length >= 10 ? "" : "Enter at least 10 characters of testimonial text.",
+      text: form.format === "video" || normalized.text.length >= 10
+        ? ""
+        : "Enter at least 10 characters of testimonial text.",
+      video: form.format !== "video" || hasVideo ? "" : "Upload a video or provide a supported HTTPS video URL.",
+      imageConsent: !media.imagePath || form.photoConsentVerified ? "" : "Confirm that customer image publication consent is on file.",
       consentVerified: form.consentVerified ? "" : "Verify that publication consent is recorded.",
       identityConsentVerified: form.identityConsentVerified ? "" : "Verify that identity publication consent is recorded.",
       date: normalized.date && !Number.isNaN(Date.parse(normalized.date))
@@ -277,7 +297,7 @@ export function AdminTestimonialForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (submitting.current) return;
+    if (submitting.current || isMediaUploading) return;
     const { valid, normalized } = validate();
     if (!valid) return;
 
@@ -292,13 +312,21 @@ export function AdminTestimonialForm() {
           designation: normalized.designation, service: normalized.service, text: normalized.text,
           excerpt, date: dateAsIso(normalized.date), consent: form.consentVerified,
           identityPublicationConsent: form.identityConsentVerified, internalNotes: form.internalNotes.trim(),
+          format: form.format,
+          imagePath: media.imagePath,
+          videoPath: media.videoPath,
+          videoUrl: media.videoSource === "url" ? media.videoUrl.trim() : "",
+          videoSource: media.videoSource,
+          mediaSubmitted: Boolean(media.imagePath || media.videoPath || media.videoUrl),
+          photoPublicationConsent: form.photoConsentVerified,
         },
       }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Testimonial could not be saved.");
       const row = result.record;
       setTestimonials((current) => [{
-        ...row.data, id: row.id, date: row.created_at, consentStatus: "Granted",
+        ...row.data, imageUrl: media.imageUrl, videoUrl: media.videoUrl,
+        id: row.id, date: row.created_at, consentStatus: "Granted",
         approvalStatus: "Pending", identityPublicationConsent: true,
       }, ...current]);
       setFeedback("Testimonial saved for review.");
@@ -311,14 +339,14 @@ export function AdminTestimonialForm() {
   }
 
   function cancel() {
-    if (isSubmitting) return;
+    if (isSubmitting || isMediaUploading) return;
     if (dirty && !window.confirm("Discard the testimonial details you entered? This cannot be undone.")) return;
     router.push("/admin/testimonials");
   }
 
   return (
     <>
-      <PageHeading title="Add New Testimonial" description="Record a client testimonial only after confirming written publication consent." />
+      <PageHeading title="Add New Testimonial" description="Record a written or video testimonial after confirming publication consent." />
       <form className="admin-form-layout admin-engagement-form" noValidate onSubmit={submit}>
         <section className="admin-panel admin-form-panel">
           <div className="admin-panel-heading">
@@ -346,9 +374,35 @@ export function AdminTestimonialForm() {
             <FormField id="testimonial-date" label="Submission Date" required error={errors.date}>
               <input id="testimonial-date" type="date" value={form.date} aria-invalid={Boolean(errors.date)} aria-describedby={errors.date ? "testimonial-date-error" : undefined} onChange={(event) => update("date", event.target.value)} />
             </FormField>
-            <FormField id="testimonial-text" label="Testimonial Text" required error={errors.text}>
+            <FormField id="testimonial-format" label="Testimonial Type" required>
+              <select id="testimonial-format" value={form.format} onChange={(event) => update("format", event.target.value as "written" | "video")}>
+                <option value="written">Written testimonial</option>
+                <option value="video">Video testimonial</option>
+              </select>
+            </FormField>
+            <FormField id="testimonial-text" label={form.format === "video" ? "Supporting Text (optional)" : "Testimonial Text"} required={form.format === "written"} error={errors.text}>
               <textarea id="testimonial-text" rows={7} value={form.text} aria-invalid={Boolean(errors.text)} aria-describedby={errors.text ? "testimonial-text-error" : undefined} onChange={(event) => update("text", event.target.value)} />
             </FormField>
+            {errors.video ? <small className="admin-field-error admin-content-full" role="alert">{errors.video}</small> : null}
+            <TestimonialMediaFields
+              value={media}
+              onChange={(value) => {
+                setDirty(true);
+                if (media.imagePath !== value.imagePath) {
+                  setForm((current) => ({ ...current, photoConsentVerified: false }));
+                }
+                setMedia(value);
+              }}
+              onUploadingChange={setIsMediaUploading}
+              disabled={isSubmitting || isMediaUploading}
+            />
+            {media.imagePath ? (
+              <label className="admin-field admin-content-full">
+                <span>Customer image publication consent <i>*</i></span>
+                <span><input type="checkbox" checked={form.photoConsentVerified} onChange={(event) => update("photoConsentVerified", event.target.checked)} /> Consent to publish this customer image is on file.</span>
+                {errors.imageConsent ? <small className="admin-field-error" role="alert">{errors.imageConsent}</small> : null}
+              </label>
+            ) : null}
             <label className="admin-field"><span>Publication consent verification <i>*</i></span><span><input type="checkbox" checked={form.consentVerified} onChange={(event) => update("consentVerified", event.target.checked)} /> Written consent for the testimonial is on file.</span>{errors.consentVerified ? <small className="admin-field-error" role="alert">{errors.consentVerified}</small> : null}</label>
             <label className="admin-field"><span>Identity publication consent <i>*</i></span><span><input type="checkbox" checked={form.identityConsentVerified} onChange={(event) => update("identityConsentVerified", event.target.checked)} /> Consent covers publication of the contributor’s name and identity.</span>{errors.identityConsentVerified ? <small className="admin-field-error" role="alert">{errors.identityConsentVerified}</small> : null}</label>
             <FormField id="testimonial-notes" label="Internal Admin Notes">
@@ -358,8 +412,8 @@ export function AdminTestimonialForm() {
           <div className="admin-form-actions admin-engagement-form-actions">
             <span>Saved as pending review; the website displays only approved records with consent.</span>
             <div>
-              <button type="button" className="admin-button admin-button-secondary" disabled={isSubmitting} onClick={cancel}>Cancel</button>
-              <button type="submit" className="admin-button" disabled={isSubmitting}>{isSubmitting ? "Saving..." : "Save Testimonial"}</button>
+              <button type="button" className="admin-button admin-button-secondary" disabled={isSubmitting || isMediaUploading} onClick={cancel}>Cancel</button>
+              <button type="submit" className="admin-button" disabled={isSubmitting || isMediaUploading}>{isSubmitting ? "Saving..." : isMediaUploading ? "Uploading media..." : "Save Testimonial"}</button>
             </div>
           </div>
         </section>

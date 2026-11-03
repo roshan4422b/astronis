@@ -4,6 +4,8 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getSourceContentRecords } from "@/lib/cms/source-content";
+import { getTestimonialMediaService, signTestimonialMedia } from "@/lib/testimonial-media.server";
+import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
 
 export const adminRememberCookie = "astronis-admin-remember";
 const persistentSessionAge = 60 * 60 * 24 * 30;
@@ -188,6 +190,9 @@ export type PublicCmsTestimonial = {
   designation: string;
   service: string;
   testimonial_text: string;
+  image_url: string;
+  video_url: string;
+  video_source: string;
 };
 
 export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
@@ -202,7 +207,12 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
     logCmsRpcError("cms_public_testimonials", "invalid_response");
     return [];
   }
-  return data.filter((record): record is PublicCmsTestimonial =>
+  const rows = data.filter((record): record is Omit<PublicCmsTestimonial, "image_url" | "video_url" | "video_source"> & {
+    image_path?: string;
+    video_path?: string;
+    video_url?: string;
+    video_source?: string;
+  } =>
     record !== null &&
     typeof record === "object" &&
     typeof record.slug === "string" &&
@@ -212,6 +222,32 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
     typeof record.service === "string" &&
     typeof record.testimonial_text === "string",
   );
+  const paths = rows.flatMap((record) => [
+    typeof record.image_path === "string" ? record.image_path : "",
+    typeof record.video_path === "string" ? record.video_path : "",
+  ]).filter(Boolean);
+  const service = paths.length ? getTestimonialMediaService() : null;
+  if (paths.length && !service) {
+    console.error("[testimonials] Private media URL signing is unavailable.", {
+      reason: "service_role_key_missing",
+    });
+  }
+  const signedUrls = service ? await signTestimonialMedia(service, paths) : new Map<string, string>();
+  return rows.map((record) => ({
+    slug: record.slug,
+    name: record.name,
+    company: record.company,
+    designation: record.designation,
+    service: record.service,
+    testimonial_text: record.testimonial_text,
+    image_url: typeof record.image_path === "string" ? signedUrls.get(record.image_path) || "" : "",
+    video_url: typeof record.video_path === "string"
+      ? signedUrls.get(record.video_path) || ""
+      : typeof record.video_url === "string" && isSupportedTestimonialVideoUrl(record.video_url)
+        ? record.video_url
+        : "",
+    video_source: typeof record.video_source === "string" ? record.video_source : "",
+  }));
 }
 
 export type PublishedCmsPage = {

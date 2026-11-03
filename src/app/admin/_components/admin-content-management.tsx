@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, ReactNode } from "react";
 import {
-  professionalRows,
+  getProfessionalExpertiseCategory,
+  professionalExpertiseOptions,
+} from "@/data/professional-application-taxonomy";
+import {
   serviceRows,
   technologyPages,
 } from "../admin-data";
@@ -19,6 +23,7 @@ import {
   SearchInput,
   StatusBadge,
 } from "./admin-ui";
+import styles from "./admin.module.css";
 
 const sectionConfig: Record<AdminEditableContentSection, { title: string; description: string; addLabel: string; search: string }> = {
   services: {
@@ -57,7 +62,7 @@ const statusOptions: AdminContentStatus[] = ["Draft", "Published", "Archived"];
 const serviceCategories = [...new Set(serviceRows.map((item) => item.category).filter(Boolean))];
 const industryCategories = ["Industry directory"];
 const technologyCategories = [...new Set(technologyPages.map((item) => item.category))];
-const expertiseOptions = [...new Set(professionalRows.map((item) => item.expertise).filter(Boolean))];
+const expertiseOptions = professionalExpertiseOptions;
 
 function createSlug(value: string) {
   return value
@@ -192,7 +197,9 @@ function ContentEditor({
   onCancel: () => void;
   onSave: (record: AdminEditableContentRecord) => Promise<boolean>;
 }) {
-  const [form, setForm] = useState(initial);
+  const [form, setForm] = useState(() => section === "professionals"
+    ? { ...initial, expertise: getProfessionalExpertiseCategory(initial.expertise, initial.designation) }
+    : initial);
   const [slugEdited, setSlugEdited] = useState(Boolean(initial.id));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState(false);
@@ -339,8 +346,10 @@ function ContentEditor({
                 </label>
                 <label className="admin-field">
                   <span>Expertise <i>*</i></span>
-                  <input list="content-expertise-options" value={form.expertise} onChange={(event) => update("expertise", event.target.value)} aria-invalid={Boolean(errors.expertise)} />
-                  <datalist id="content-expertise-options">{expertiseOptions.map((option) => <option key={option} value={option} />)}</datalist>
+                  <select value={form.expertise} onChange={(event) => update("expertise", event.target.value)} aria-invalid={Boolean(errors.expertise)}>
+                    <option value="">Select expertise category</option>
+                    {expertiseOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
                   {required(errors.expertise)}
                 </label>
                 <label className="admin-field">
@@ -453,6 +462,154 @@ function ContentDetails({
   );
 }
 
+function ProfessionalNamePreview({ record }: { record: AdminEditableContentRecord }) {
+  const [open, setOpen] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [position, setPosition] = useState({ top: 12, left: 12 });
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const closeTimer = useRef<number | null>(null);
+
+  const clearCloseTimer = useCallback(() => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const closePreview = useCallback(() => {
+    clearCloseTimer();
+    setOpen(false);
+    setPinned(false);
+  }, [clearCloseTimer]);
+
+  function showPreview(anchor: HTMLButtonElement, pin = false) {
+    clearCloseTimer();
+    triggerRef.current = anchor;
+    setOpen(true);
+    if (pin) setPinned(true);
+  }
+
+  function scheduleClose() {
+    clearCloseTimer();
+    if (pinned) return;
+    closeTimer.current = window.setTimeout(() => {
+      setOpen(false);
+      closeTimer.current = null;
+    }, 240);
+  }
+
+  useEffect(() => {
+    if (!open) return;
+    const updatePosition = () => {
+      const anchor = triggerRef.current;
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      const panel = panelRef.current?.getBoundingClientRect();
+      const width = panel?.width || Math.min(380, window.innerWidth - 24);
+      const height = panel?.height || 300;
+      const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+      const below = rect.bottom + 8;
+      const top = below + height <= window.innerHeight - 12
+        ? below
+        : Math.max(12, rect.top - height - 8);
+      setPosition({ top, left });
+    };
+    const frame = window.requestAnimationFrame(updatePosition);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || !pinned) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (triggerRef.current?.contains(target) || panelRef.current?.contains(target)) return;
+      closePreview();
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closePreview();
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, pinned, closePreview]);
+
+  useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
+
+  return (
+    <>
+      <button
+        className={`admin-cell-primary ${styles.enquiryNameTrigger}`}
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="admin-professional-hover-details"
+        aria-expanded={open}
+        onMouseEnter={(event) => showPreview(event.currentTarget)}
+        onMouseLeave={scheduleClose}
+        onFocus={(event) => showPreview(event.currentTarget)}
+        onBlur={(event) => {
+          if (event.relatedTarget instanceof Node && panelRef.current?.contains(event.relatedTarget)) return;
+          if (pinned) closePreview();
+          else scheduleClose();
+        }}
+        onClick={(event) => showPreview(event.currentTarget, true)}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") closePreview();
+        }}
+      >
+        {record.title}
+      </button>
+      {open && typeof document !== "undefined" ? createPortal(
+        <div
+          ref={panelRef}
+          className={styles.enquiryHoverCard}
+          id="admin-professional-hover-details"
+          role="dialog"
+          aria-label={`${record.title} professional details`}
+          style={{ top: position.top, left: position.left }}
+          onMouseEnter={clearCloseTimer}
+          onMouseLeave={scheduleClose}
+          onFocus={clearCloseTimer}
+          onBlur={(event) => {
+            if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
+              if (pinned) closePreview();
+              else scheduleClose();
+            }
+          }}
+        >
+          <div className={styles.enquiryHoverHeader}>
+            <strong>{record.title}</strong>
+            <button type="button" aria-label="Close professional details" onClick={closePreview}>×</button>
+          </div>
+          <dl className={styles.enquiryHoverDetails}>
+            {record.designation ? <div><dt>Designation</dt><dd>{record.designation}</dd></div> : null}
+            {record.expertise ? <div><dt>Expertise</dt><dd>{record.expertise}</dd></div> : null}
+            {record.jurisdiction ? <div><dt>Jurisdiction</dt><dd>{record.jurisdiction}</dd></div> : null}
+            {record.education ? <div><dt>Education</dt><dd>{record.education}</dd></div> : null}
+            {record.enrolment ? <div><dt>Professional enrolment</dt><dd>{record.enrolment}</dd></div> : null}
+            {record.status ? <div><dt>Status</dt><dd>{record.status}</dd></div> : null}
+            <div className={styles.enquiryHoverMessage}>
+              <dt>Profile</dt>
+              <dd>{record.description || record.content || "No profile description available."}</dd>
+            </div>
+          </dl>
+        </div>,
+        document.body,
+      ) : null}
+    </>
+  );
+}
+
 export default function AdminContentManagement({ section }: { section: AdminEditableContentSection }) {
   const { contentRecords, setContentRecords, setFeedback } = useAdminState();
   const config = sectionConfig[section];
@@ -465,14 +622,14 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
   const [adding, setAdding] = useState(false);
   const [selected, setSelected] = useState<{ record: AdminEditableContentRecord; preview: boolean } | null>(null);
   const pageSize = 6;
-  const categories = [...new Set(section === "professionals"
-    ? records.flatMap((record) => [record.designation, record.expertise]).filter(Boolean)
-    : records.map((record) => record.category).filter(Boolean))];
+  const categories = section === "professionals"
+    ? expertiseOptions
+    : [...new Set(records.map((record) => record.category).filter(Boolean))];
   const filtered = records.filter((record) => {
     const terms = [record.title, record.slug, record.description, record.category, record.designation, record.expertise, record.jurisdiction].join(" ").toLowerCase();
     return terms.includes(query.trim().toLowerCase())
       && (categoryFilter === "All categories" || (section === "professionals"
-        ? record.designation === categoryFilter || record.expertise === categoryFilter
+        ? getProfessionalExpertiseCategory(record.expertise, record.designation) === categoryFilter
         : record.category === categoryFilter))
       && (statusFilter === "All statuses" || record.status === statusFilter);
   });
@@ -532,24 +689,25 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
         <button type="button" aria-label={`Delete ${record.title}`} title="Delete CMS record" onClick={() => void deleteRecord(record)}><AdminIcon name="close" size={16} /></button>
       </div>
     );
-    const title = <strong className="admin-cell-primary" key="title">{record.title}</strong>;
+    const title = section === "professionals"
+      ? <ProfessionalNamePreview key="title" record={record} />
+      : <strong className="admin-cell-primary" key="title">{record.title}</strong>;
     const description = <span className="admin-excerpt" key="description">{record.description}</span>;
     const status = <StatusBadge key="status" status={record.status} />;
     const updated = formatDate(record.updated);
     switch (section) {
       case "services": return [title, record.category, description, updated, status, actions];
       case "industries": return [title, description, updated, status, actions];
-      case "professionals": return [title, record.designation, record.expertise, record.jurisdiction || "Not specified", status, actions];
+      case "professionals": return [title, record.designation, getProfessionalExpertiseCategory(record.expertise, record.designation) || "Not specified", record.jurisdiction || "Not specified", status, actions];
       case "global-presence": return [title, toPublicPath(section, record.slug), description, updated, status, actions];
       case "technology": return [title, record.category, description, updated, status, actions];
     }
   });
-  const headingAction = <button className="admin-button" type="button" onClick={() => setAdding(true)}><AdminIcon name="plus" size={16} />{config.addLabel}</button>;
   const filterLabel = section === "professionals" ? "Filter by designation or expertise" : "Filter by category";
 
   return (
     <>
-      <PageHeading title={config.title} description={config.description} action={headingAction} />
+      <PageHeading title={config.title} description={config.description} />
       <section className="admin-panel admin-list-panel">
         <div className="admin-toolbar">
           <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder={config.search} />
