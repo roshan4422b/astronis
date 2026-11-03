@@ -147,6 +147,7 @@ export async function GET(request: Request) {
   const persistedTestimonials = testimonialRows.filter((record) =>
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(record.id),
   );
+  let warning: string | undefined;
   if (persistedTestimonials.length) {
     const { data: deliveries, error: deliveryError } = await auth.supabase
       .from("cms_testimonial_notification_deliveries")
@@ -156,17 +157,18 @@ export async function GET(request: Request) {
       console.error("[admin-testimonials] Notification status query failed.", {
         code: deliveryError.code || "unknown",
       });
-      return errorResponse("Could not load testimonial notification status.", 503);
-    }
-    const deliveryByEvent = new Map(
-      (deliveries ?? []).map((delivery) => [`${delivery.testimonial_id}:${delivery.event_status}`, delivery.delivery_status]),
-    );
-    for (const record of persistedTestimonials) {
-      const eventStatus = record.status === "rejected" ? "rejected" : "published";
-      record.notification_status = deliveryByEvent.get(`${record.id}:${eventStatus}`);
+      warning = "Testimonials loaded, but email notification status is unavailable. Check that the testimonial notification migration and admin permissions are configured.";
+    } else {
+      const deliveryByEvent = new Map(
+        (deliveries ?? []).map((delivery) => [`${delivery.testimonial_id}:${delivery.event_status}`, delivery.delivery_status]),
+      );
+      for (const record of persistedTestimonials) {
+        const eventStatus = record.status === "rejected" ? "rejected" : "published";
+        record.notification_status = deliveryByEvent.get(`${record.id}:${eventStatus}`);
+      }
     }
   }
-  return NextResponse.json({ records: hydratedRecords });
+  return NextResponse.json({ records: hydratedRecords, ...(warning ? { warning } : {}) });
 }
 
 export async function POST(request: Request) {

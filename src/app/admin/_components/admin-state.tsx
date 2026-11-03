@@ -119,6 +119,7 @@ type AdminStateValue = {
   setContentRecords: Dispatch<SetStateAction<AdminContentRecord[]>>;
   loadState: "loading" | "ready" | "error";
   loadError: string;
+  loadWarning: string;
 };
 
 const AdminStateContext = createContext<AdminStateValue | null>(null);
@@ -132,6 +133,7 @@ type AdminSnapshot = {
   contentRecords: AdminContentRecord[];
   loadState: "loading" | "ready" | "error";
   loadError: string;
+  loadWarning: string;
 };
 type CmsRow = {
   id: string;
@@ -169,6 +171,7 @@ const initialSnapshot: AdminSnapshot = {
   contentRecords: [],
   loadState: "loading",
   loadError: "",
+  loadWarning: "",
 };
 let snapshot = initialSnapshot;
 const listeners = new Set<() => void>();
@@ -285,11 +288,25 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           status: row.status, company: row.company, formType: row.form_type, message: row.message,
           phone: text(row.data.phone), internalNotes: row.internal_notes, data: row.data, updatedAt: row.updated_at ?? "",
         }));
-        snapshot = { ...snapshot, contentRecords, insights, testimonials, enquiries, loadState: "ready", loadError: "" };
+        snapshot = {
+          ...snapshot,
+          contentRecords,
+          insights,
+          testimonials,
+          enquiries,
+          loadState: "ready",
+          loadError: "",
+          loadWarning: text(contentPayload.warning),
+        };
         notify();
       } catch (error) {
         if (!active) return;
-        snapshot = { ...snapshot, loadState: "error", loadError: error instanceof Error ? error.message : "Could not load CMS data." };
+        snapshot = {
+          ...snapshot,
+          loadState: "error",
+          loadError: error instanceof Error ? error.message : "Could not load CMS data.",
+          loadWarning: "",
+        };
         notify();
       }
     };
