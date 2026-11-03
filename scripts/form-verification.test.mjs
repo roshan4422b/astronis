@@ -216,6 +216,9 @@ test("reports missing testimonial Supabase service configuration without exposin
   assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
   assert.match(route, /"SUPABASE_SERVICE_ROLE_KEY"/);
   assert.match(route, /invalidConfiguration: error\.variableName/);
+  assert.match(route, /Missing server variable/);
+  assert.match(route, /invalid NEXT_PUBLIC_SUPABASE_URL configuration/);
+  assert.doesNotMatch(route, /SUPABASE_SERVICE_ROLE_KEY[^\n]*process\.env/);
   assert.ok(route.indexOf("if (!serviceClient)") < route.indexOf("await consumeEmailVerification("));
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
 });
