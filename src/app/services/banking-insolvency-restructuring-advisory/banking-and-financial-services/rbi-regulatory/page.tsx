@@ -1,54 +1,23 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "@/app/_components/asset-image";
-import Icon from "@/app/_components/icon";
-import { getServiceChildHeroImage } from "@/data/services";
-import ServiceChildPageLayout from "@/app/services/_template/service-child-page-layout";
-import PageStyles from "@/app/services/corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
+import { notFound } from "next/navigation";
+import EntityFormationPage from "../../../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
+import { financialRegulatoryAdvisoryPages } from "@/data/financial-regulatory-advisory-pages";
+
+const data = financialRegulatoryAdvisoryPages.find(
+  (page) => page.slug === "rbi-regulatory-advisory",
+);
 
 export const metadata: Metadata = {
-  title: "RBI Regulatory | Banking & Financial Services | Astronis",
-  description: "RBI regulatory advisory: interpretation, licensing, inspections and compliance reporting for banks, NBFCs and payment businesses.",
-  alternates: { canonical: "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/rbi-regulatory" },
+  title: "RBI Regulatory Advisory | Astronis Global",
+  description:
+    "RBI regulatory advisory for licensing, approvals, compliance frameworks and financial services operations in India.",
+  alternates: {
+    canonical:
+      "/services/banking-insolvency-restructuring-advisory/banking-and-financial-services/rbi-regulatory",
+  },
 };
 
-export default function RbiRegulatoryPage() {
-  const heroImage = getServiceChildHeroImage("rbi-regulatory", "banking-insolvency-restructuring-advisory");
-  const services = [
-    ["file", "RBI Regulatory Interpretation & Advisory", "Interpret RBI acts, regulations and master directions relevant to business models."],
-    ["shield", "Licensing, Registration & Approval Advisory", "Support eligibility assessment, application preparation and approvals."],
-    ["people", "RBI Compliance & Regulatory Reporting", "Assist with ongoing compliance, statutory returns and internal controls."],
-    ["chart", "Inspections, Notices & Supervisory Response", "Support responses to supervisory notices and inspection findings."],
-  ];
-
-  return (
-    <div className={PageStyles.page}>
-      <section className={`${PageStyles.hero} service-child-page-hero`} id="overview">
-        <Image src={heroImage} alt="RBI advisory" fill priority className={PageStyles.heroImage} />
-        <div className={`container ${PageStyles.heroInner}`}>
-          <nav className={PageStyles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/services">Services</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory">Banking, Insolvency & Restructuring Advisory</Link><span>/</span><Link href="/services/banking-insolvency-restructuring-advisory#banking-and-financial-services">Banking &amp; Financial Services</Link><span>/</span><span aria-current="page">RBI Regulatory</span></nav>
-          <div className={PageStyles.heroCopy}><span className={PageStyles.eyebrow}>BANKING &amp; FINANCIAL SERVICES · REGULATORY</span><h1>RBI Regulatory</h1><h2 className="service-child-hero-subtitle">Navigating RBI Regulations. Strengthening Financial Compliance.</h2><div className={PageStyles.actions}><Link className={PageStyles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link></div></div>
-        </div>
-      </section>
-
-      <ServiceChildPageLayout items={[{ id: "services", label: "Services" }]}>
-      <section className={PageStyles.services} id="services">
-        <div className="container">
-          <div className={PageStyles.heading}><span className={PageStyles.eyebrow}>OUR RBI REGULATORY SERVICES</span><h2>Interpretation and supervisory response</h2><p>Practical regulatory mapping and support for licensing, reporting, governance and supervisory engagement with RBI frameworks.</p></div>
-
-          <div className={PageStyles.serviceGrid}>
-            {services.map(([icon, title, description]) => (
-              <article className={PageStyles.serviceCard} key={String(title)}>
-                <span className={PageStyles.icon}><Icon name={String(icon)} /></span>
-                <h3>{String(title)}</h3>
-                <p>{String(description)}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      </ServiceChildPageLayout>
-
-    </div>
-  );
+export default function RbiRegulatoryAdvisoryPage() {
+  if (!data) notFound();
+  return <EntityFormationPage data={data} />;
 }
