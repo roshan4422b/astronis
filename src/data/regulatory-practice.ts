@@ -31,14 +31,35 @@ export const regulatoryServices: ServicePractice = {
   visual: "regulatory",
   darkGroupIndex: 2,
   badges: ["Companies Act", "MCA / ROC", "Corporate Compliance", "RBI", "SEBI", "NBFC", "FinTech", "Legal Metrology", "BIS"],
-  groups: hierarchy[1].subServices.map((group, index) => ({
-    title: group.title, shortTitle: group.title, slug: group.slug,
-    ...metadata[index],
-    seoTitle: ["Corporate Regulatory Services | Astronis", "Regulatory Compliance Services | Astronis", "Financial Regulatory Advisory | Astronis", "Sector Regulatory Advisory | Astronis"][index],
-    cta: `Explore ${group.title}`,
-    children: group.children.map((title, childIndex) => ({ title, slug: serviceAnchor(title), ...regulatoryContent[index][childIndex] })),
-    faqs: [{ question: metadata[index].question, answer: metadata[index].answer }, { question: "How is the advisory scope agreed?", answer: "The scope is based on your activities, available records and intended outcome. We identify the workstreams, internal responsibilities and specialist inputs needed before agreeing the engagement. Any authority review or approval follows the applicable process and cannot be guaranteed." }],
-  })),
+  groups: hierarchy[1].subServices.map((group, index) => {
+    const groupMetadata = group.slug === "banking-nbfc-advisory-services"
+      ? metadata[2]
+      : group.slug === "consumer-regulatory-services"
+        ? metadata[3]
+        : metadata[index];
+    const groupContent = group.slug === "consumer-regulatory-services"
+      ? regulatoryContent[2]
+      : group.slug === "banking-nbfc-advisory-services"
+        ? regulatoryContent[3]
+        : regulatoryContent[index] ?? [];
+
+    return {
+      title: group.title, shortTitle: group.title, slug: group.slug,
+      ...groupMetadata,
+      seoTitle: group.slug === "banking-nbfc-advisory-services"
+        ? "Financial Regulatory Advisory | Astronis"
+        : group.slug === "consumer-regulatory-services"
+          ? "Sector Regulatory Advisory | Astronis"
+          : "Corporate Regulatory Services | Astronis",
+      cta: `Explore ${group.title}`,
+      children: group.children.map((title, childIndex) => ({
+        title,
+        slug: serviceAnchor(title),
+        ...(groupContent[childIndex] ?? {}),
+      })),
+      faqs: [{ question: groupMetadata.question, answer: groupMetadata.answer }, { question: "How is the advisory scope agreed?", answer: "The scope is based on your activities, available records and intended outcome. We identify the workstreams, internal responsibilities and specialist inputs needed before agreeing the engagement. Any authority review or approval follows the applicable process and cannot be guaranteed." }],
+    };
+  }),
   knowledgeTitle: "Regulatory Knowledge Centre",
   knowledgeCTA: "Explore Regulatory Knowledge Centre",
   knowledgeLinks: [

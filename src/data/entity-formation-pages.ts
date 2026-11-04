@@ -895,13 +895,14 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Suitability", "Long-term market presence", "Short / medium-term projects", "Scalable and independent business", "Strategic collaboration", "Market research & liaison"],
     ],
     process: [
-      ["Initial Consultation & Strategy", "Review the India business plan, proposed activities and suitable establishment route."],
-      ["RBI Approval", "Prepare and submit the application; approval usually takes 2Ã¢â‚¬â€œ4 weeks."],
-      ["Document Preparation", "Compile overseas company, board, representative and office documents."],
-      ["Filing with ROC", "Complete the applicable ROC registration and filings, generally in 1Ã¢â‚¬â€œ2 weeks."],
-      ["PAN, TAN & Bank Account Opening", "Coordinate tax identifiers and bank account documentation."],
-      ["Statutory Registrations", "Coordinate GST, ESIC, EPFO and other applicable registrations."],
-      ["Commencement of Operations", "Confirm readiness to commence the activities permitted for the Branch Office."],
+      ["Initial Consultation & Scope", "Understand the company's objectives, proposed activities and requirements in India."],
+      ["RBI Application", "Prepare the application and supporting information for the applicable approval route."],
+      ["Documentation & Due Diligence", "Compile and review the foreign company's records and proposed India-office details."],
+      ["RBI Approval", "Address any queries and obtain the required approval before proceeding."],
+      ["ROC Registration", "Complete the applicable registration and filings with the Registrar of Companies."],
+      ["Tax & Bank Setup", "Coordinate PAN, TAN and bank account documentation, as applicable."],
+      ["Post-Approval Compliance", "Identify tax, employee and other registrations relevant to the office's activities."],
+      ["Ongoing Support", "Plan recurring filings and compliance support based on applicable requirements."],
     ],
     documents: [
       "Certificate of incorporation of foreign company",
@@ -920,7 +921,7 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["people", "Authorised Representative", "Required (Indian resident)"],
       ["pin", "Registered Office", "In India (physical address with valid proof)"],
       ["shield", "RBI Approval", "Mandatory before ROC filing"],
-      ["clock", "Incorporation Timeline", "Usually 4Ã¢â‚¬â€œ8 weeks (subject to RBI approval and document readiness)"],
+      ["clock", "Establishment Timeline", "Timing depends on the applicable approval process, document readiness and authority review."],
     ],
     faqs: [
       ["What is a Branch Office of a foreign company?", "It is an approved Indian office of a foreign company that operates as an extension of that overseas entity, subject to permitted activities and applicable requirements."],
@@ -936,9 +937,9 @@ const businessStructurePages: EntityFormationPageData[] = [
       ["Excellent advisory support on regulatory, tax and operational matters. Their ongoing compliance support has been invaluable.", "Client", "Professional Services", "UK", 5],
     ],
     insights: [
-      ["Setting Up a Branch Office in India Ã¢â‚¬â€œ Key Considerations", "12 Sep 2025", "Foreign Investment"],
-      ["RBI Guidelines for Foreign Companies in India", "05 Sep 2025", "RBI & Regulatory"],
-      ["Taxation and Compliance for Branch Offices", "28 Aug 2025", "Tax & Compliance"],
+      ["RBI Guidelines for Branch Offices: Key Updates 2024", "", "Regulatory Update"],
+      ["How Foreign Companies Can Expand in India", "", "Business Insight"],
+      ["India: A Growing Hub for Global Businesses", "", "Market Update"],
     ],
     resources: [
       ["CHECKLIST", "Branch Office Registration (PDF)", "file"],

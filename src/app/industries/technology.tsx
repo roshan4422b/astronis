@@ -30,7 +30,7 @@ const solutions = [
   ["file", "IP, software, brands & copyrights", "/services/intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
   ["people", "Employment & workforce advisory", "/services/industrial-employment-forensics-advisory/employment-and-labour/employment-advisory"],
   ["scale", "Regulatory approvals & licensing", "/services/regulatory-services/corporate-regulatory/regulatory-compliance-review"],
-  ["chart", "M&A, investment & fundraising", "/services/corporate-commercial-advisory/mergers-acquisitions"],
+  ["chart", "M&A, investment & fundraising", "/services/corporate-commercial-advisory/mergers-acquisitions-and-transactions/mergers-acquisitions"],
   ["building", "Dispute resolution & risk management", "/services/litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
   ["globe", "Global expansion & cross-border advisory", "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment"],
 ];

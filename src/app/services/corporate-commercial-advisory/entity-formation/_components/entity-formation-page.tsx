@@ -118,6 +118,18 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
   const showFeatures = data.showFeatures ?? true;
+  const relatedPages = data.relatedPages ?? [];
+  const investorCoordination = [
+    "Investor Coordination",
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
+  ] as const;
+  const investmentRelatedPages = data.categoryTitle === "Investment & Transaction Advisory"
+    ? [
+        ...relatedPages.filter(([title]) => title.toLowerCase() !== investorCoordination[0].toLowerCase()),
+        investorCoordination,
+      ]
+    : relatedPages;
+  const isCorporateGovernance = data.categoryTitle === "Corporate Governance";
   const heroServiceSlug = data.serviceHref?.split("/")[2]
     ?? data.categoryHref?.split("/")[2]
     ?? parentService?.canonicalSlug;
@@ -172,7 +184,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       </PageSectionLayout>}
 
       <PageSectionLayout variant="full-width">
-        <section className={styles.services}>
+        <section className={`${styles.services} ${data.slug === "branch-office" ? styles.branchOfficeServices : ""}`}>
         <div className="container">
           <Heading
             eyebrow={`OUR SERVICES FOR ${data.shortTitle.toUpperCase()}`}
@@ -180,10 +192,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             text={data.servicesDescription ?? "Bring the formation steps and connected requirements into one considered plan."}
           />
           <ServiceCards services={data.services} threeColumns={data.serviceCardsThreeColumns} />
-          {data.relatedPages && (
+          {(investmentRelatedPages.length > 0 || data.relatedPages) && (
             <nav className={styles.relatedPages} aria-label="Related services">
               <span>Explore related services</span>
-              {data.relatedPages.map(([title, href]) => (
+              {investmentRelatedPages.map(([title, href]) => (
                 <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
               ))}
             </nav>
@@ -200,7 +212,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               text={data.introduction}
             />
           </div>
-          <figure className={styles.benefitImage}>
+          <figure className={`${styles.benefitImage} ${data.slug === "branch-office" ? styles.branchOfficeBenefitImage : ""}`}>
             <Image src={heroImage} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
             <figcaption>{data.shortTitle}<br /><strong>Considered for your next chapter.</strong></figcaption>
           </figure>
@@ -232,7 +244,13 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </ul>
           </div>
           <figure className={styles.structureImage}>
-            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 42vw" />
+            <Image
+              src={data.image}
+              alt={data.imageAlt}
+              fill
+              sizes="(max-width: 850px) 100vw, 42vw"
+              loading={data.slug === "start-up-msme-investment-advisory" ? "eager" : undefined}
+            />
             <figcaption>Structure for today.<br /><strong>Clarity for what comes next.</strong></figcaption>
           </figure>
         </div>
@@ -283,13 +301,13 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <section className={styles.structuringDetails} id="structure">
           <div className={`container ${styles.structuringDetailsGrid}`}>
             {data.structureSections.map((section) => (
-              <article className={styles.structuringDetail} key={section.title}>
-                <Heading eyebrow={section.eyebrow} title={section.title} text={section.description} />
+              <article className={`${styles.structuringDetail} ${section.image ? styles.structuringDetailWithImage : ""}`} key={section.title}>
                 {section.image && (
                   <figure>
                     <Image src={section.image} alt={section.imageAlt ?? ""} fill sizes="(max-width: 700px) 100vw, 40vw" />
                   </figure>
                 )}
+                <Heading eyebrow={section.eyebrow} title={section.title} text={section.description} />
                 <ul>{section.items.map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul>
               </article>
             ))}
@@ -297,12 +315,17 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </section>
       )}
 
-        <section className={styles.process} id="process">
+        <section className={styles.process} id="process" data-process-icon-right={isCorporateGovernance || undefined}>
         <div className="container">
           <Heading eyebrow={data.processEyebrow ?? (data.slug === "foreign-company-setup" ? "SETUP PROCESS" : data.slug === "partnership-firm" || data.slug === "proprietorship" ? data.slug === "partnership-firm" ? "INCORPORATION PROCESS" : "REGISTRATION PROCESS" : "INCORPORATION PROCESS")} title={data.processHeading ?? "Simple, transparent and timely"} text={data.processDescription ?? "A clear sequence of decisions and filings, coordinated around complete information and authority processing."} />
-          <ol className={styles.timeline}>
+          <ol className={`${styles.timeline} ${data.slug === "branch-office" ? styles.branchTimeline : ""}`}>
             {data.process.map(([title, description], index) => (
               <li key={title}>
+                {data.processNumbers && (
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                )}
                 <span className={styles.stepIcon}><Icon name={processIcons[index] ?? "calendar"} /></span>
                 <h3>{title}</h3><p>{description}</p>
               </li>

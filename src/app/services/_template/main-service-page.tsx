@@ -36,7 +36,13 @@ export default function MainServicePage({ practice }: { practice: ServicePractic
         children: group.children.map(child => ({
           title: child,
           url: group.childRoutes?.[child] || `/services/${service.canonicalSlug}/${group.slug}/${childSlug(child)}`,
-          summary: `Explore advisory support for ${child.toLowerCase()} within ${group.title.toLowerCase()}.`,
+          summary: service.canonicalSlug === "regulatory-services"
+            ? practice.groups
+                .find(practiceGroup => practiceGroup.slug === group.slug)
+                ?.children.find(practiceChild => practiceChild.title === child)
+                ?.paragraphs?.[0]
+              ?? `Explore advisory support for ${child.toLowerCase()} within ${group.title.toLowerCase()}.`
+            : `Explore advisory support for ${child.toLowerCase()} within ${group.title.toLowerCase()}.`,
         })),
       }));
   const navigationGroups = service.canonicalSlug === "corporate-commercial-advisory"

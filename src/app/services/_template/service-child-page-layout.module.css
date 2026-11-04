@@ -56,6 +56,29 @@
   transition: background-color .2s ease, border-color .2s ease, transform .25s ease, box-shadow .25s ease;
 }
 
+.pageContent .blueHoverCard:hover,
+.pageContent .blueHoverCard:focus-visible {
+  border-color: #0751db !important;
+  background: #0751db !important;
+  color: #fff !important;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgb(6 30 59 / 18%);
+}
+
+.pageContent .blueHoverCard:hover h3,
+.pageContent .blueHoverCard:hover p,
+.pageContent .blueHoverCard:focus-visible h3,
+.pageContent .blueHoverCard:focus-visible p {
+  color: #fff !important;
+}
+
+.pageContent :global(section[class*="services"]) .blueHoverCard[class*="serviceCard"]:hover :global(svg),
+.pageContent :global(section[class*="services"]) .blueHoverCard[class*="serviceCard"]:hover :global([class*="icon"]),
+.pageContent :global(section[class*="services"]) .blueHoverCard[class*="serviceCard"]:focus-visible :global(svg),
+.pageContent :global(section[class*="services"]) .blueHoverCard[class*="serviceCard"]:focus-visible :global([class*="icon"]) {
+  color: #fff !important;
+}
+
 .pageContent :global(section[class*="faq"]) :global([class*="faqList"] > details) {
   padding: 19px 20px;
 }
@@ -1196,6 +1219,33 @@
 .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article:hover > [class*="priceButton"] *),
 .pageLayout .pageContent :global(section[class*="pricing"]) :global([class*="priceGrid"] > article > [class*="priceButton"]:hover *) {
   color: #0751db !important;
+}
+
+.pageContent :global(section[class*="structuringDetails"]) {
+  background: #f3f7fb !important;
+  color: #0a2949 !important;
+}
+
+.pageContent :global(section[class*="structuringDetails"] h2),
+.pageContent :global(section[class*="structuringDetails"] h3),
+.pageContent :global(section[class*="structuringDetails"] p),
+.pageContent :global(section[class*="structuringDetails"] li),
+.pageContent :global(section[class*="structuringDetails"] strong) {
+  color: #0a2949 !important;
+}
+
+.pageContent :global(section[class*="structuringDetails"] [class*="heading"] > span) {
+  color: #0751db !important;
+}
+
+.pageContent :global(section[class*="structuringDetails"] [class*="structuringDetail"]) {
+  border-color: #dbe4ef !important;
+  background: #fff !important;
+}
+
+.pageContent :global(section[data-process-icon-right="true"]) :global([class*="timeline"]) > li > :global([class*="stepIcon"]) {
+  grid-column: 2;
+  justify-self: end;
 }
 
 @media (hover: hover) and (pointer: fine) {
