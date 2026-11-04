@@ -36,6 +36,11 @@ import {
   getReferenceServicePageData,
   getReferenceServicePageMetadata,
 } from "@/data/reference-service-pages";
+import {
+  getRequestedServicePage,
+  getRequestedServicePageMetadata,
+  getRequestedServicePageStaticParams,
+} from "@/data/requested-service-pages";
 import { entityFormationPages, type EntityFormationPageData } from "@/data/entity-formation-pages";
 import { commercialContractPages } from "@/data/commercial-contract-pages";
 import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
