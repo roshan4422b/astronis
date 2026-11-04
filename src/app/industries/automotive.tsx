@@ -26,7 +26,7 @@ const solutions = [
  ["people", "Supply Chain & Contracts", "contracts"],
  ["scale", "Dispute Resolution", "litigation-and-dispute-resolution"],
  ["shield", "IPR & Technology Protection", "intellectual-property-rights"],
- ["globe", "ESG & Sustainability", "esg-and-sustainability-advisory"],
+ ["globe", "ESG & Sustainability", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const insights = [
  ["India's EV Policy Landscape: Key Regulatory Developments", "Automotive & Mobility .png", "Plan your advisory priorities around your vehicle offering, operating model and intended markets. Discuss approval requirements and infrastructure arrangements with your advisors before committing to expansion.", "regulatory-and-compliance"],

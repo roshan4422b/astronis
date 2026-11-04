@@ -25,14 +25,14 @@ const challenges = [
   ["Talent & operations", "Professional & Business Services .png", "Align people, vendors and processes as your business scales."],
 ];
 const solutions = [
-  ["document", "Technology contracts & commercial advisory", "/services/contracts"],
-  ["shield", "Data protection & privacy compliance", "/services/regulatory-and-compliance/data-protection"],
-  ["file", "IP, software, brands & copyrights", "/services/intellectual-property-rights"],
-  ["people", "Employment & workforce advisory", "/services/employment-and-labour"],
-  ["scale", "Regulatory approvals & licensing", "/services/licensing-and-registrations"],
-  ["chart", "M&A, investment & fundraising", "/services/corporate-transactions"],
-  ["building", "Dispute resolution & risk management", "/services/arbitration-and-conciliation"],
-  ["globe", "Global expansion & cross-border advisory", "/services/business-advisory-and-consulting"],
+  ["document", "Technology contracts & commercial advisory", "/services/environmental-technology-sector-specific/technology-privacy-and-digital/technology-contracts"],
+  ["shield", "Data protection & privacy compliance", "/services/environmental-technology-sector-specific/technology-privacy-and-digital/data-protection-and-privacy"],
+  ["file", "IP, software, brands & copyrights", "/services/intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
+  ["people", "Employment & workforce advisory", "/services/industrial-employment-forensics-advisory/employment-and-labour/employment-advisory"],
+  ["scale", "Regulatory approvals & licensing", "/services/regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+  ["chart", "M&A, investment & fundraising", "/services/corporate-commercial-advisory/mergers-acquisitions"],
+  ["building", "Dispute resolution & risk management", "/services/litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
+  ["globe", "Global expansion & cross-border advisory", "/services/fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment"],
 ];
 const related = [
   ["Financial services", "Banking & Financial Services .png", "financial-services"],
@@ -75,4 +75,3 @@ export default function Technology() {
     <section id="enquire" className={styles.enquirySection}><div className={`container ${styles.enquiryGrid}`}><div className={styles.enquiryCopy}><span className={styles.eyebrow}>Partner with us</span><h2>Talk to our technology industry experts.</h2><p>Get tailored legal, regulatory and business advisory support for your technology, IT and ITES business.</p><div className={styles.enquiryImage}><Image src="/Banner-Technology, IT & ITES .png" alt="Technology professionals working together" fill sizes="(max-width: 900px) 100vw, 40vw" /></div><a href="tel:+919311664455"><Icon name="phone" /> +91 93116 64455</a><a href="mailto:advisory@astronisglobal.com"><Icon name="mail" /> advisory@astronisglobal.com</a></div><div className={styles.enquiryForm}><EnquiryForm /></div></div></section>
   </div>;
 }
-

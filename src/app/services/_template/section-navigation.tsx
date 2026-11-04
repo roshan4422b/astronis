@@ -8,7 +8,7 @@ import styles from "./service-template.module.css";
 type NavChild = { title: string; url: string };
 type Item = { id: string; title: string; icon?: string; href?: string; description?: string; children?: NavChild[] };
 
-export default function SectionNavigation({ items, title, variant = "sidebar", showItemNumbers = true, theme }: { items: Item[]; title: string; variant?: "sidebar" | "bar"; showItemNumbers?: boolean; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" }) {
+export default function SectionNavigation({ items, title, variant = "sidebar", theme }: { items: Item[]; title: string; variant?: "sidebar" | "bar"; theme?: "licensing" | "fema" | "taxation" | "banking" | "insolvency" }) {
   const visibleItems = useMemo(
     () => variant === "sidebar"
       ? items.filter(item => item.id !== "overview" && item.title.trim().toLowerCase() !== "overview")
@@ -124,7 +124,7 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
       <div className={styles.navDesktop}>
         <p className={styles.navTitle}>{title}</p>
         <ol className={styles.navList}>
-          {visibleItems.map((item, index) => {
+          {visibleItems.map((item) => {
             const hasChildren = Boolean(item.children?.length);
             const isOpen = openId === item.id;
             const panelId = `${item.id}-panel`;
@@ -152,7 +152,6 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
                       <>
                         <span className={styles.navIcon}><Icon name={item.icon || "file"} /></span>
                         <span className={styles.navItemText}>
-                          {showItemNumbers && <small>{`0${index + 1} / EXPLORE`}</small>}
                           <strong>{item.title}</strong>
                         </span>
                         {hasChildren && (
@@ -164,7 +163,6 @@ export default function SectionNavigation({ items, title, variant = "sidebar", s
                       </>
                     ) : (
                       <>
-                        <span>{String(index + 1).padStart(2, "0")}</span>
                         {item.title}
                         <span aria-hidden="true">&#8599;</span>
                       </>

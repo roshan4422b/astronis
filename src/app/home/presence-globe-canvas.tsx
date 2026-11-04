@@ -35,7 +35,10 @@ export default function PresenceGlobeCanvas({ locations, selectedId, onSelect }:
   }, []);
 
   useEffect(() => {
-    setWebglAvailable(checkWebGL());
+    const frame = window.requestAnimationFrame(() => {
+      setWebglAvailable(checkWebGL());
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [checkWebGL]);
 
   useEffect(() => {

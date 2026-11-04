@@ -29,6 +29,8 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
   const [enquiryAgreementAccepted, setEnquiryAgreementAccepted] = useState(false);
   const [enquiryAgreementError, setEnquiryAgreementError] = useState("");
 
+  if (success) return <p role="status" className={styles.success}>{status}</p>;
+
   function addFiles(incoming: FileList | File[]) {
     const next = [...files, ...Array.from(incoming)];
     if (next.length > 3 || next.some(file => file.size > 10 * 1024 * 1024 || !acceptedExtensions.includes(file.name.split(".").pop()?.toLowerCase() || "")) || next.reduce((total, file) => total + file.size, 0) > 20 * 1024 * 1024) {
@@ -64,14 +66,6 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
       const result = await response.json();
       setStatus(response.ok && networkApplication ? "Thank you. Your professional profile has been received. Our team will review it and follow up." : result.message);
       setSuccess(response.ok);
-      if (response.ok) {
-        form.reset();
-        setFiles([]);
-        setEnquiryAgreementAccepted(false);
-        setMessage("");
-        setRequestType("general");
-        setMode("email");
-      }
     } catch {
       setStatus("Your enquiry could not be sent. Please try again or email advisory@astronisglobal.com.");
       setSuccess(false);

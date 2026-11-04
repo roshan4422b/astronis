@@ -125,7 +125,6 @@ export default function ConsumerRegulatoryDetailPage({
           <div className={styles.serviceGrid}>
             {detail.services.map((item, index) => (
               <article className={styles.serviceCard} key={item.title}>
-                <span className={styles.serviceNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <span className={styles.icon}><Icon name={detail.highlights[index % detail.highlights.length].icon} /></span>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -186,8 +185,7 @@ export default function ConsumerRegulatoryDetailPage({
           <ol className={styles.timeline}>
             {detail.process.map((item, index) => (
               <li key={item.title}>
-                <span className={styles.stepNumber}>{String(index + 1).padStart(2, "0")}</span>
-                <span className={styles.stepIcon}><Icon name={["search", "scale", "document", "file", "calendar"][index % 5]} /></span>
+              <span className={styles.stepIcon}><Icon name={["search", "scale", "document", "file", "calendar"][index % 5]} /></span>
                 <h3>{item.title}</h3><p>{item.text}</p>
               </li>
             ))}

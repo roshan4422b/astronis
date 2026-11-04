@@ -38,13 +38,15 @@ The Word document explicitly requires approved client logos and publication cons
 
 ## Supabase CMS setup
 
-The CMS uses Supabase Auth, Postgres and Storage. Only the project URL and **publishable/anon key** are used by the application. Do not add a service-role key to this project or expose one as a `NEXT_PUBLIC_*` variable. RLS is enabled for every CMS table and storage object.
+The CMS uses Supabase Auth, Postgres and Storage. Public and administrator database access uses the project URL and **publishable/anon key** under the existing RLS policies. Public testimonial submissions are verified by the server-side email OTP flow and then persisted with a server-only Supabase service-role client; the migration revokes direct anonymous `cms_content` inserts so clients cannot bypass OTP verification. The same key is used for private testimonial media upload and signed playback, must never be exposed as `NEXT_PUBLIC_*`, and is not used for administrator CMS mutations.
 
 Required environment variables (local `.env.local` or your hosting provider's environment configuration):
 
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
+# Server-only; required for OTP-verified testimonial persistence, private media upload, and signed playback.
+SUPABASE_SERVICE_ROLE_KEY=
 APP_BASE_URL=
 
 # Optional email notifications for persisted enquiries
@@ -56,15 +58,15 @@ TESTIMONIAL_WEBHOOK_URL=
 TESTIMONIAL_WEBHOOK_TOKEN=
 ```
 
-The values are intentionally blank here; obtain them from your own Supabase project. Both variables must be set for CMS and admin functionality. Without them, admin login and write APIs report an explicit configuration error and public pages continue using source-defined content.
+The values are intentionally blank here; obtain them from your own Supabase project. The URL and anon key are required for CMS and admin functionality. The service-role key is required for all public testimonial submissions (including text-only submissions), private photo/video uploads, and signed URLs. Without it, testimonial submissions fail explicitly; configure it only in server-side environments.
 
 Password recovery uses `http://localhost:3000` automatically during local development. For production, set the server-only `APP_BASE_URL` to the site's canonical HTTPS origin (for example, `https://www.astronisglobal.com`, without a path). In Supabase Auth URL Configuration, set the Site URL to the production site and add the local and production `/auth/callback` URLs to the allowed redirect URLs.
 
 ### Project and administrator bootstrap
 
 1. Create a Supabase project and configure its Auth email/password provider. Disable public sign-ups; administrators must be invited by an operator.
-2. Review and apply the migrations in order: `supabase/migrations/202610230001_cms.sql`, `supabase/migrations/202610230002_cms_public_pages.sql`, then `supabase/migrations/202610260001_cms_content_anon_permissions.sql`. The first creates CMS tables, policies, indexes, functions and storage buckets. The second exposes only allowlisted public page fields through a function and prevents anonymous direct reads of page JSON. The third limits anonymous `cms_content` table access to inserts governed by RLS, and permits video testimonial submissions that carry media without written testimonial text.
-3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to local and production environments, then restart/redeploy the application.
+2. Review and apply every missing migration in timestamp order, through `supabase/migrations/202611020001_testimonial_media_notifications.sql`. The latest migration extends the existing private asset bucket's media allowlist and size limit without changing its Storage RLS policies, revokes direct anonymous testimonial inserts so public submissions must pass through the OTP-verified server route, adds the moderation-email deduplication ledger, and exposes media references only for published testimonials.
+3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to local and production environments. Add `SUPABASE_SERVICE_ROLE_KEY` only to server-side environments for OTP-verified testimonial persistence, media upload, and signed URL creation. Restart/redeploy the application after configuring them.
 4. Invite the first administrator using Supabase Auth's dashboard. After the invited user has accepted, obtain that user's Auth UUID and run this operator-only SQL:
 
    ```sql
@@ -77,9 +79,9 @@ Password recovery uses `http://localhost:3000` automatically during local develo
 
 For password recovery, add `http://localhost:3000/auth/callback` and `https://<your-production-host>/auth/callback` to Supabase Auth's allowed redirect URLs. Keep the Site URL set to the production site; the application explicitly supplies its local or production callback destination when requesting a recovery email. The callback returns to `/auth/reset-password` after exchanging the one-time code. If you customize the Reset Password email template, keep its link based on Supabase's `{{ .ConfirmationURL }}` so Supabase can verify the one-time code and forward to the allowed callback URL.
 
-The migration creates a public-read `cms-assets` bucket for approved website assets. Admin uploads are restricted to JPG, PNG, WebP, AVIF, or PDF, checked against file signatures, and limited to 10 MB. Test storage policy behavior and configure backups, retention, monitoring, request limits, and any required malware scanning before production.
+The existing `cms-assets` bucket remains public-read for approved website assets. Testimonial photos and videos use the existing private `cms-private-assets` bucket and signed URLs; supported formats are checked on both client and server, with 3 MB image and 20 MB video limits. The latest migration updates bucket MIME/size constraints but does not weaken its administrator-only storage policies. Test storage behavior and configure backups, retention, monitoring, request limits, and any required malware scanning before production.
 
-The repository currently contains SQL migrations but no `supabase/config.toml`. Check the target project's migration history and schema before applying anything; do not rerun an already-recorded migration. Apply only missing migrations in order. If migrations 001 and 002 are already applied, review and apply only `202610260001_cms_content_anon_permissions.sql`. For a project with only migration 001 applied, review and apply 002 then 003. For a new project, review and apply all three migrations in order. If using the CLI, install the Supabase CLI, run `supabase init` if this checkout has not been initialized, link the intended project with `supabase link --project-ref <project-ref>`, inspect `supabase db push --dry-run`, and apply only the required migration(s). Confirm each migration is recorded and the tables, policies, functions and buckets exist before configuring the app.
+The repository currently contains SQL migrations but no `supabase/config.toml`. Check the target project's migration history and schema before applying anything; do not rerun an already-recorded migration. Apply only missing migrations in order, and confirm the notification table, storage settings, RLS policy, and public testimonial function exist. If using the CLI, link the intended project, inspect `supabase db push --dry-run`, and apply only the required migration(s). The migration has not been applied by this code change.
 
 ### CMS behavior and deployment
 
@@ -89,7 +91,9 @@ Existing hardcoded content has **not** been bulk-imported into Supabase. A parti
 
 The migration exposes source-record status only (collection, slug and status) through a narrow database function. This allows the homepage and testimonials page to suppress a source testimonial that has been archived or moved to draft without making unpublished content publicly readable. Other source-backed collections may still fall back to static content if archived; test each route before relying on archive/unpublish behavior there. CMS insight and testimonial publishing revalidates the affected paths.
 
-Website enquiry submissions are validated and persisted to `cms_enquiries`; Resend is an optional notification integration, not the durable store. Admin enquiry status and internal notes stay in that operational table and are not website content. Admin login's Remember me option persists the Supabase session cookie for 30 days; otherwise it remains a browser-session cookie. Testimonial submissions are stored as pending and require recorded testimonial and identity publication consent before approval; public testimonial output includes only published records with both consent gates. Photo/video testimonial delivery still requires `TESTIMONIAL_WEBHOOK_URL`; media submissions fail closed if the webhook is absent. Configure its HTTPS endpoint and optional server-only `TESTIMONIAL_WEBHOOK_TOKEN` only if accepting those media formats.
+Website enquiry submissions are validated and persisted to `cms_enquiries`; Resend is an optional notification integration, not the durable store. Admin enquiry status and internal notes stay in that operational table and are not website content. Admin login's Remember me option persists the Supabase session cookie for 30 days; otherwise it remains a browser-session cookie. Testimonial submissions are stored as pending and require recorded testimonial and identity publication consent before approval; public testimonial output includes only published records with both consent gates. Photos and uploaded/recorded videos are stored in the existing private Supabase bucket; approved public and authenticated admin views receive short-lived signed URLs. Direct video URLs are restricted to HTTPS MP4, MOV or WebM links. The existing testimonial webhook remains optional for its configured delivery integration and is not the CMS media store.
+
+Moderation emails reuse the existing Mailtrap transactional email configuration. Approval/rejection decisions are saved before sending; a unique per-testimonial/status notification ledger prevents repeat deliveries. Existing testimonials without a verifiable OTP proof are not sent moderation email. Mailtrap production delivery depends on a production-enabled account and a verified sender configured in `MAILTRAP_API_KEY` and `MAILTRAP_FROM_EMAIL`.
 
 The CMS is not production-configured in this repository. Before launch, apply the migration to the intended Supabase project, set the two required environment variables in every deployment environment, configure Auth email delivery/invitations, verify RLS and storage policies, configure testimonial media handling if needed, and test backups, monitoring, abuse controls and recovery. Never use test content as approved/public content.
 
@@ -105,11 +109,17 @@ The CMS is not production-configured in this repository. Before launch, apply th
 
 The enquiry form retains browser/server validation, consent, a honeypot, same-origin checks and field limits. A successful response is returned only after the enquiry is inserted in the configured Supabase database. Without Supabase configuration or if persistence fails, the API returns an explicit error and does not claim success. Set `RESEND_API_KEY` and `RESEND_FROM_EMAIL` as server-only variables if email notifications are wanted; their absence does not prevent an enquiry from being saved to the admin inbox.
 
+## Admin enquiry management
+
+The existing `/admin/enquiries` inbox exports genuine `.xlsx` workbooks through admin-authorized, paginated server queries. “Download Excel” exports all enquiries regardless of active filters; “Download Filtered” applies the current search, status, and date filters. Each record can also be exported individually. Hovering or focusing an enquiry name opens its authorized full-details preview; clicking or tapping keeps it open.
+
 ## Public form verification
 
-All public enquiry, professional application, consultation, testimonial and subscription forms require a verified email OTP and a server-checked, short-lived, single-use proof before submission. A 6-digit one-time code is delivered with the existing Mailtrap transactional email API integration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Public form submission does not depend on Cloudflare Turnstile.
+All public enquiry, professional application, consultation, testimonial and subscription forms require a verified email OTP and a server-checked, short-lived, single-use proof before submission. A 6-digit one-time code is delivered with the existing Mailtrap transactional email API integration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Global and professional enquiries, professional applications, consultations, and subscriptions also require a Cloudflare Turnstile token verified server-side. The testimonial form displays Turnstile but does not require its token; testimonial submissions remain protected by the one-time email proof.
 
-Set the existing `MAILTRAP_API_KEY` and `MAILTRAP_FROM_EMAIL` values, plus these server-only production variables:
+Configure `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and the matching server-only `TURNSTILE_SECRET_KEY` from the same Cloudflare Turnstile widget in the repository-root `.env.local`. Add the hostname you use (including `localhost` for local development) to that widget's allowed hostnames. Because Next.js embeds `NEXT_PUBLIC_*` values into the client bundle, restart the development server after changing the site key and rebuild/redeploy after changing it for production.
+
+For local development and production, set the server-only `MAILTRAP_API_KEY`, `MAILTRAP_FROM_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and `EMAIL_OTP_SECRET` values. OTP sending and proof verification will fail closed if these are missing. Restart the local development server after changing `.env.local`.
 
 ```dotenv
 UPSTASH_REDIS_REST_URL=https://your-database.upstash.io

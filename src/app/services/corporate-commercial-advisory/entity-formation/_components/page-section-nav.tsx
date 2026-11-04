@@ -106,6 +106,7 @@ export default function PageSectionNav({
     <aside
       className={styles.pageSectionNavWrap}
       aria-label="Page sections"
+      data-mobile-open={isMobileNavOpen}
     >
       {branded && (
         <>

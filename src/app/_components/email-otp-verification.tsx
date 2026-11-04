@@ -17,15 +17,20 @@ function getVerificationScope(element: HTMLDivElement | null) {
 export default function EmailOtpVerification({
   emailAddress,
   onCaptchaToken,
+  onVerificationChange,
   resetKey = 0,
   captchaOptional = false,
+  captchaDisplayOnly = false,
 }: {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
+  onVerificationChange?: (verified: boolean) => void;
   resetKey?: number;
   captchaOptional?: boolean;
+  captchaDisplayOnly?: boolean;
 }) {
   const container = useRef<HTMLDivElement>(null);
+  const requestInFlight = useRef(false);
   const codeInputId = useId();
   const [captchaToken, setCaptchaToken] = useState("");
   const [captchaReset, setCaptchaReset] = useState(0);
@@ -38,6 +43,7 @@ export default function EmailOtpVerification({
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [now, setNow] = useState(0);
   const cooldownLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
+  const captchaRequiredForOtp = !captchaOptional && !captchaDisplayOnly;
   const updateCaptchaToken = useCallback((token: string) => {
     setCaptchaToken(token);
     onCaptchaToken?.(token);
@@ -63,6 +69,7 @@ export default function EmailOtpVerification({
       setEmail("");
       setCode("");
       setVerificationToken("");
+      onVerificationChange?.(false);
       setCodeSent(false);
       setStatus("");
       setCooldownUntil(0);
@@ -86,6 +93,7 @@ export default function EmailOtpVerification({
     const clearProofWhenEmailChanges = () => {
       if (emailInput.value.trim().toLowerCase() !== email) {
         setVerificationToken("");
+        onVerificationChange?.(false);
         setCodeSent(false);
         setCode("");
         setEmail("");
@@ -98,9 +106,10 @@ export default function EmailOtpVerification({
       if (form instanceof HTMLFormElement) form.removeEventListener("submit", resetCaptchaAfterSubmit);
       emailInput.removeEventListener("input", clearProofWhenEmailChanges);
     };
-  }, [email, updateCaptchaToken]);
+  }, [email, onVerificationChange, updateCaptchaToken]);
 
   async function sendCode() {
+    if (requestInFlight.current) return;
     try {
       const form = getVerificationScope(container.current);
       const emailInput = form?.querySelector<HTMLInputElement>('input[type="email"]');
@@ -110,10 +119,11 @@ export default function EmailOtpVerification({
         emailInput?.focus();
         return;
       }
+      requestInFlight.current = true;
       setBusy(true);
       setStatus("");
       setEmail(nextEmail);
-      const response = await fetch("/api/verification/send-enquiry-otp", {
+      const response = await fetch(new URL("/api/verification/send-enquiry-otp", window.location.origin), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: nextEmail }),
@@ -122,25 +132,29 @@ export default function EmailOtpVerification({
       if (!response.ok) throw new Error(result.message || "We could not send your verification code.");
       setCodeSent(true);
       setVerificationToken("");
+      onVerificationChange?.(false);
       setStatus(result.message || "A verification code has been sent.");
       setNow(Date.now());
       setCooldownUntil(Date.now() + (result.retryAfter ?? 60) * 1000);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "We could not send your verification code.");
     } finally {
+      requestInFlight.current = false;
       setBusy(false);
     }
   }
 
   async function verifyCode() {
+    if (requestInFlight.current) return;
     if (!email || !/^\d{6}$/.test(code)) {
       setStatus("Enter the 6-digit code sent to your email address.");
       return;
     }
+    requestInFlight.current = true;
     setBusy(true);
     setStatus("");
     try {
-      const response = await fetch("/api/verification/verify-otp", {
+      const response = await fetch(new URL("/api/verification/verify-otp", window.location.origin), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code }),
@@ -150,10 +164,12 @@ export default function EmailOtpVerification({
         throw new Error(result.message || "We could not verify that code.");
       }
       setVerificationToken(result.verificationToken);
+      onVerificationChange?.(true);
       setStatus(result.message || "Your email address is verified.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "We could not verify that code.");
     } finally {
+      requestInFlight.current = false;
       setBusy(false);
     }
   }
@@ -163,10 +179,16 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget onToken={updateCaptchaToken} resetKey={resetKey + captchaReset} />
-        <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (!captchaOptional && !captchaToken)}>
-          {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
-        </button>
+        <TurnstileWidget
+          onToken={captchaDisplayOnly ? () => {} : updateCaptchaToken}
+          onError={captchaDisplayOnly ? undefined : setStatus}
+          resetKey={resetKey + captchaReset}
+        />
+        {!verificationToken && (
+          <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (captchaRequiredForOtp && !captchaToken)}>
+            {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
+          </button>
+        )}
         {codeSent && !verificationToken && (
           <div className={styles.codeRow}>
             <label className={styles.srOnly} htmlFor={codeInputId}>6-digit email verification code</label>
@@ -190,7 +212,7 @@ export default function EmailOtpVerification({
       </div>
       {verificationToken && <p className={styles.success}>Email verified. You can now submit the form.</p>}
       {status && <p className={verificationToken ? styles.success : styles.status} role="status" aria-live="polite">{status}</p>}
-      <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
+      {!captchaDisplayOnly && <input type="hidden" name="captchaToken" value={captchaToken} readOnly />}
       <input type="hidden" name="emailVerificationToken" value={verificationToken} readOnly />
     </section>
   );

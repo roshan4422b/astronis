@@ -54,7 +54,6 @@ export default function BankingRbiFinancialServicesPage() {
 
       <SectionNavigation
         variant="bar"
-        showItemNumbers={false}
         title="Explore our capabilities"
         theme="banking"
         items={categoryGroups.map((category) => ({

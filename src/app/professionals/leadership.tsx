@@ -117,25 +117,32 @@ export const professionals: ProfessionalRecord[] = [
       "Supports clients with licensing, business acquisitions, corporate due diligence, and BIS and ISI compliance.",
   },
 ];
-type CmsProfessional = Pick<ProfessionalRecord, "slug" | "name" | "role" | "expertise"> &
-  Partial<Omit<ProfessionalRecord, "slug" | "name" | "role" | "expertise">>;
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string; description?: string };
+type LeadershipProps = {
+  limit?: number;
+  cmsProfessionals?: CmsProfessional[];
+  suppressedSlugs?: string[];
+  variant?: "default" | "premium";
+  people?: ProfessionalRecord[];
+};
 
 export default function Leadership({
   limit,
   cmsProfessionals = [],
-  variant = "standard",
-  people = [],
-}: {
-  limit?: number;
-  cmsProfessionals?: CmsProfessional[];
-  variant?: "standard" | "premium";
-  people?: ProfessionalRecord[];
-}) {
+  suppressedSlugs = [],
+  variant = "default",
+  people,
+}: LeadershipProps) {
+  const sourceProfessionals = people ?? professionals;
+  const suppressed = new Set(suppressedSlugs);
   const merged = [
     ...cmsProfessionals,
-    ...professionals.filter((person) => !cmsProfessionals.some((item) => item.slug === person.slug)),
+    ...sourceProfessionals.filter((person) =>
+      !suppressed.has(person.slug) &&
+      !cmsProfessionals.some((item) => item.slug === person.slug),
+    ),
   ];
-  const visibleProfessionals = variant === "premium" ? people : limit ? merged.slice(0, limit) : merged;
+  const visibleProfessionals = limit ? merged.slice(0, limit) : merged;
 
   return (
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>

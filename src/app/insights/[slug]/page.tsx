@@ -19,7 +19,7 @@ import BusinessUpdates from "../business-updates";
 import LegalUpdates from "../legal-updates";
 import ArticlesAndResources from "../articles-and-resources";
 import RbiSbrArticle from "../articles-and-resources/rbi-scale-based-regulation-nbfcs/rbi-sbr-article";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 const categories = [...new Set([...siteMenu.insights, ...insightCategories])];
 export function generateStaticParams() {
@@ -80,11 +80,16 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const cmsArticle = (await getPublishedContent("insights")).find((item) => item.slug === slug);
+  const [publishedArticles, suppressedSlugs] = await Promise.all([
+    getPublishedContent("insights"),
+    getUnpublishedSourceContentSlugs("insights"),
+  ]);
+  const cmsArticle = publishedArticles.find((item) => item.slug === slug);
   if (cmsArticle) {
     const article = cmsArticle.data as Record<string, string>;
     return <><Banner title={article.title || "Insight"} text={article.description || ""} image={article.featuredImage || "/Part-14 .png"} eyebrow={article.category || "Insights & Resources"} variant="insights" /><article className="section"><div className="container narrow">{article.author ? <p><strong>{article.author}</strong></p> : null}{article.content ? <div style={{ whiteSpace: "pre-wrap" }}>{article.content}</div> : null}<Button href="/contact">Discuss Your Requirements</Button></div></article></>;
   }
+  if (suppressedSlugs.has(slug)) notFound();
   const article = corporateArticles.find(a => a.slug === slug);
   const advisoryInsight = corporateAdvisoryInsights.find((item) => item.slug === slug);
   const regulatoryInsight = regulatoryInsights.find((item) => item.slug === slug);

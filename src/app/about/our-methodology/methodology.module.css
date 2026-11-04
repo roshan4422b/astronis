@@ -67,7 +67,7 @@
 .outcomes h2 { font-size: max(var(--font-size-min), clamp(26px, 2.3vw, 32px)); }
 .outcomes ul { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 0; margin: 0; list-style: none; }
 .outcomes li { text-align: center; padding: 20px 12px; border: 1px solid #dce7f3; border-radius: 13px; background: linear-gradient(145deg, #fff, #edf5fd); }
-.outcomes li svg { width: 32px; height: 32px; color: #0879d2; margin-bottom: 12px; }
+.outcomes li svg { display: block; width: 32px; height: 32px; color: #0879d2; margin: 0 auto 12px; }
 .outcomes h3 { font-size: max(var(--font-size-min), 13px); font-weight: 500; line-height: 1.5; }
 .cta { background: linear-gradient(90deg, #003367ee, #00559bd9, #003367ee), url('/images/our-story/mountain-journey.jpg') center 50% / cover; color: #fff; }
 .ctaInner { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding-block: 30px; }

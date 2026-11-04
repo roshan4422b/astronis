@@ -20,6 +20,7 @@ export default function Icon({
       </>
     ),
     target: <><circle cx="11" cy="13" r="8" /><circle cx="11" cy="13" r="4" /><path d="m11 13 9-9m-3 0h3v3" /></>,
+    check: <path d="m5 12 4 4L19 6" />,
     gem: <><path d="M3 8 7 3h10l4 5-9 13L3 8Z" /><path d="M3 8h18M7 3l3 5 2 13 2-13 3-5" /></>,
     network: <><circle cx="12" cy="4" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="19" r="2" /><path d="m11 6-5 11m7-11 5 11M7 19h10" /></>,
     checklist: <><path d="m9 6 2 2 4-4M9 12l2 2 4-4M9 18l2 2 4-4" /><path d="M5 6h.01M5 12h.01M5 18h.01M19 6h2M19 12h2M19 18h2" /></>,

@@ -25,7 +25,7 @@ import FemaCrossBorderDetailPage, { femaCrossBorderMetadata } from "../fema-fdi-
 import ConsumerRegulatoryDetailPage from "../regulatory-services/consumer-regulatory-detail";
 import { regulatoryServices } from "@/data/regulatory-practice";
 import EntityFormationPage from "../corporate-commercial-advisory/entity-formation/_components/entity-formation-page";
-import { getPublishedContent, getPublishedContentMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedContentMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsContentPage from "@/app/_components/cms-content-page";
 import PrivateStyleAdvisoryPage from "../_template/private-style-advisory-page";
 import {
@@ -103,6 +103,7 @@ export function generateStaticParams() {
     ...getIntellectualPropertyServiceStaticParams(),
     ...getAdditionalServiceDetailStaticParams(),
     ...getPrivateStyleAdvisoryStaticParams(),
+    ...getRequestedServicePageStaticParams(),
   ];
 }
 
@@ -120,6 +121,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       openGraph: { title: privateStylePage.title, description: privateStylePage.description, url: canonical, type: "website" },
     };
   }
+  const requestedMetadata = getRequestedServicePageMetadata(`/services/${slugs.join("/")}`);
+  if (requestedMetadata) return requestedMetadata;
   const referenceServiceMetadata = getReferenceServicePageMetadata(`/services/${slugs.join("/")}`);
   if (referenceServiceMetadata) return referenceServiceMetadata;
   const hierarchy = resolveHierarchy(slugs);
@@ -238,7 +241,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string[] }> }) {
   const slugs = (await params).slug;
-  const cmsService = slugs.length === 1 ? (await getPublishedContent("services")).find((item) => item.slug === slugs[0]) : undefined;
+  const [publishedServices, suppressedSlugs] = await Promise.all([
+    slugs.length === 1 ? getPublishedContent("services") : Promise.resolve([]),
+    getUnpublishedSourceContentSlugs("services"),
+  ]);
+  const cmsService = publishedServices.find((item) => item.slug === slugs[0]);
+  if (suppressedSlugs.has(slugs[0])) notFound();
   if (cmsService?.data.sourceDefined === true) {
     const sourcePractice = resolvePractice(slugs)?.practice;
     if (sourcePractice) {
@@ -254,6 +262,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   if (cmsService) return <CmsContentPage record={cmsService} eyebrow="Services" />;
   const privateStylePage = getPrivateStyleAdvisoryPage(slugs);
   if (privateStylePage) return <PrivateStyleAdvisoryPage data={privateStylePage} />;
+  const requestedPage = getRequestedServicePage(`/services/${slugs.join("/")}`);
+  if (requestedPage) return <EntityFormationPage data={requestedPage} />;
   const referenceServicePage = getReferenceServicePageData(`/services/${slugs.join("/")}`);
   if (referenceServicePage) return <EntityFormationPage data={referenceServicePage} />;
   const hierarchy = resolveHierarchy(slugs);
@@ -261,7 +271,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
     const childRoute = group.childRoutes?.[child];
-    if (childRoute && childRoute.split("/").at(-1) !== slugs[2]) permanentRedirect(childRoute);
+    const currentChildRoute = `/services/${service.canonicalSlug}/${group.slug}/${slugs[2]}`;
+    if (childRoute && childRoute !== currentChildRoute) permanentRedirect(childRoute);
     const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
     if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
     const hierarchyPageData = getHierarchyPageData(

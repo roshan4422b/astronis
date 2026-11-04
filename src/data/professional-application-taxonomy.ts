@@ -11,6 +11,49 @@ export const categories: TaxonomyOption[] = [
   { code: "GN", label: "Global Network & International" },
 ];
 
+export const professionalExpertiseOptions = categories.map(({ label, code }) => `${label} (${code})`);
+
+export function getProfessionalExpertiseCategory(expertise: string, designation = "") {
+  const values = [designation, expertise].map((value) => value.trim().toLowerCase()).filter(Boolean);
+
+  for (const value of values) {
+    const exactOption = professionalExpertiseOptions.find((option) => option.toLowerCase() === value);
+    if (exactOption) return exactOption;
+    const exactLabel = categories.find((category) => category.label.toLowerCase() === value);
+    if (exactLabel) return `${exactLabel.label} (${exactLabel.code})`;
+  }
+
+  const explicitMatches = categories.flatMap((category) => {
+    const labelIndex = values
+      .map((value) => value.indexOf(category.label.toLowerCase()))
+      .find((index) => index >= 0);
+    return labelIndex === undefined ? [] : [{ category, index: labelIndex }];
+  }).sort((left, right) => left.index - right.index);
+  if (explicitMatches[0]) {
+    const { label, code } = explicitMatches[0].category;
+    return `${label} (${code})`;
+  }
+
+  const combinedValue = values.join(" ");
+  const keywordMatches = [
+    { code: "CA", keywords: ["corporate restructuring", "corporate re-structuring", "corporate due diligence", "merger", "acquisition"] },
+    { code: "RA", keywords: ["regulatory", "licensing", "compliance", "fema"] },
+    { code: "LA", keywords: ["legal", "litigation", "civil law", "criminal", "ipr", "banking law", "employment", "labour", "family law", "matrimonial"] },
+    { code: "BA", keywords: ["business", "startup", "msme", "financing"] },
+    { code: "GN", keywords: ["international", "global network", "cross-border"] },
+  ].flatMap(({ code, keywords }) => {
+    const index = keywords
+      .map((keyword) => combinedValue.indexOf(keyword))
+      .filter((matchIndex) => matchIndex >= 0)
+      .sort((left, right) => left - right)[0];
+    const category = categories.find((item) => item.code === code);
+    return index === undefined || !category ? [] : [{ category, index }];
+  }).sort((left, right) => left.index - right.index);
+
+  const category = keywordMatches[0]?.category;
+  return category ? `${category.label} (${category.code})` : "";
+}
+
 const masterHierarchies: Record<string, string> = {
   "AG-01": "Global Leadership", "AG-02": "Senior Leadership", "AG-03": "Practice Leadership",
   "AG-04": "Director", "AG-05": "Principal", "AG-06": "Senior Advisory", "AG-07": "Management",

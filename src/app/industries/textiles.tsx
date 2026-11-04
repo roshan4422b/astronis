@@ -28,7 +28,7 @@ const solutions = [
   ["document", "Contract drafting & negotiation", "contracts"],
   ["scale", "Dispute resolution & arbitration", "litigation-and-dispute-resolution"],
   ["shield", "Intellectual property & brands", "intellectual-property-rights"],
-  ["bulb", "ESG & sustainability compliance", "esg-and-sustainability-advisory"],
+  ["bulb", "ESG & sustainability compliance", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
   ["chart", "Supply chain & vendor agreements", "contracts"],
 ];
 const related = [

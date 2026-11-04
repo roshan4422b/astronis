@@ -1821,6 +1821,15 @@ main section[class*="hero"] :is(a, button):is(
   font-size: max(var(--font-size-min), 11px);
   line-height: 1.45;
 }
+.testimonial-customer-image {
+  display: block;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  object-fit: cover;
+}
 .testimonial-invite > .icon {
   color: var(--blue);
   width: 45px;
@@ -2462,7 +2471,8 @@ textarea::placeholder {
   transform: translateY(-3px);
 }
 .floating-contact.call {
-  left: 19px;
+  right: 19px;
+  bottom: 82px;
 }
 .floating-contact.whatsapp {
   right: 19px;
@@ -3847,7 +3857,8 @@ textarea::placeholder {
     bottom: 17px;
   }
   .floating-contact.call {
-    left: 13px;
+    right: 13px;
+    bottom: 70px;
   }
   .floating-contact.whatsapp {
     right: 13px;

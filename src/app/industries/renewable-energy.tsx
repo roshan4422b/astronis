@@ -22,14 +22,14 @@ const challenges = [
   ["Financing & execution", "Coordinate funding, land, contracts and environmental requirements.", "/Infrastructure & Projects .png"],
 ];
 const solutions = [
-  ["file", "Regulatory clearances & approvals", "regulatory-and-compliance"],
-  ["document", "Project contracts: EPC, O&M, PPA", "contracts"],
-  ["building", "Land acquisition & due diligence", "corporate-advisory"],
-  ["chart", "Project financing & investment", "business-advisory-and-consulting"],
-  ["bulb", "Environmental & sustainability compliance", "esg-and-sustainability-advisory"],
-  ["scale", "Dispute resolution & arbitration", "litigation-and-dispute-resolution"],
-  ["people", "Policy & government engagement", "regulatory-and-compliance"],
-  ["globe", "M&A and strategic partnerships", "corporate-advisory"],
+  ["file", "Regulatory clearances & approvals", "regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+  ["document", "Project contracts: EPC, O&M, PPA", "business-advisory-contracts/commercial-contracts/contract-drafting-review-negotiations"],
+  ["building", "Land acquisition & due diligence", "business-advisory-contracts/investment-and-transaction-advisory/commercial-due-diligence"],
+  ["chart", "Project financing & investment", "fema-fdi-cross-border/fdi-compliance-and-support/investment-structuring"],
+  ["bulb", "Environmental & sustainability compliance", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
+  ["scale", "Dispute resolution & arbitration", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
+  ["people", "Policy & government engagement", "regulatory-services/corporate-regulatory/regulatory-change-management"],
+  ["globe", "M&A and strategic partnerships", "corporate-commercial-advisory/mergers-acquisitions-and-transactions/mergers-acquisitions"],
 ];
 const related = [
   ["Infrastructure & Projects", "infrastructure", "/Infrastructure & Projects .png"],
@@ -57,8 +57,8 @@ export default function RenewableEnergy() {
       <main className={styles.main}>
         <section id="overview" className={styles.block}><span className={styles.eyebrow}>Industry overview</span><h2>Powering a<br /><em>sustainable future.</em></h2><p className={styles.lead}>India’s energy transition is creating new opportunities across renewable generation, storage, distribution and clean mobility. We help businesses plan projects, navigate regulation and manage risk throughout the energy value chain.</p><div className={styles.capabilities}>{capabilities.map(([icon,title,description]) => <article key={title}><Icon name={icon} /><h3>{title}</h3><p>{description}</p></article>)}</div></section>
         <section id="challenges" className={styles.block}><div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Our perspective</span><h2>Opportunities & challenges</h2></div><span>What is shaping energy <Icon name="arrow" /></span></div><div className={styles.challengeGrid}>{challenges.map(([title,description,image]) => <article key={title}><div className={styles.challengeImage}><Image src={image} alt="" fill sizes="(max-width: 700px) 80vw, 18vw" /></div><div className={styles.challengeBody}><h3>{title}</h3><p>{description}</p><Icon name="arrow" /></div></article>)}</div></section>
-        <section id="solutions" className={styles.block}><span className={styles.eyebrow}>Integrated expertise</span><h2>Our solutions</h2><p className={styles.intro}>Connected advisory across the energy, power and renewables ecosystem.</p><div className={styles.solutionGrid}>{solutions.map(([icon,title,path]) => <Link href={`/services/${path}`} key={title}><Icon name={icon} /><span>{title}</span><Icon name="arrow" /></Link>)}</div></section>
-        <section id="regulatory" className={styles.regulatory}><div><span className={styles.eyebrow}>Regulatory landscape</span><h2>Clear paths to cleaner power.</h2><p>Bring approvals, land, grid access, offtake and environmental duties into a practical project plan.</p><Link href="/services/regulatory-and-compliance">Explore regulatory advisory <Icon name="arrow" /></Link></div></section>
+        <section id="solutions" className={styles.block}><span className={styles.eyebrow}>Integrated expertise</span><h2>Our Solutions</h2><p className={styles.intro}>Connected advisory across the energy, power and renewables ecosystem.</p><div className={styles.solutionGrid}>{solutions.map(([icon,title,path]) => <Link href={`/services/${path}`} key={title}><Icon name={icon} /><span>{title}</span><Icon name="arrow" /></Link>)}</div></section>
+        <section id="regulatory" className={styles.regulatory}><div><span className={styles.eyebrow}>Regulatory landscape</span><h2>Clear paths to cleaner power.</h2><p>Bring approvals, land, grid access, offtake and environmental duties into a practical project plan.</p><Link href="/services/regulatory-services/corporate-regulatory/regulatory-compliance-review">Explore regulatory advisory <Icon name="arrow" /></Link></div></section>
       </main>
       <section id="related" className={styles.relatedSection} aria-labelledby="related-title"><span className={styles.eyebrow}>Connected expertise</span><h2 id="related-title">Related industries</h2><div className={styles.relatedGrid}>{related.map(([title,slug,image]) => <Link href={`/industries/${slug}`} key={title}><span className={styles.relatedImage}><Image src={image} alt="" fill sizes="(max-width: 600px) 45vw, 25vw" /></span><span className={styles.relatedTitle}>{title}<Icon name="arrow" /></span></Link>)}</div></section>
       <section id="insights" className={styles.insightSection} aria-labelledby="insight-title"><div className={styles.insightImage}><Image src="/nergy, Power & Renewables .png" alt="Renewable energy facilities" fill sizes="(max-width: 800px) 100vw, 45vw" /></div><div className={styles.insightCopy}><span className={styles.eyebrow}>Featured insight</span><h2 id="insight-title">India’s renewable energy journey</h2><p>Explore the regulatory trends and opportunities shaping clean energy development.</p><Link href="/insights">View all insights <Icon name="arrow" /></Link></div></section>

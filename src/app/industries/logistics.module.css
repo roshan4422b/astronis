@@ -77,6 +77,10 @@
 @media(max-width:600px){.heroFocusColumns ul{grid-template-columns:repeat(2,minmax(0,1fr))}.heroFocusColumns li strong{font-size: max(var(--font-size-min), 14px)}}
 @media(max-width:400px){.heroFocusColumns ul{grid-template-columns:1fr}}
 
+.page .solutionGrid,
+.page .relatedGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:600px){.page .solutionGrid{grid-template-columns:1fr}}
+
 /* Match the established industry hero panels at every breakpoint. */
 .heroFocus{padding:22px 0 22px 24px}
 .heroFocus>span{font-size: max(var(--font-size-min), 14px);letter-spacing:.13em;margin-bottom:16px;text-transform:uppercase}

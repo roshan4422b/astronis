@@ -122,6 +122,8 @@ for (const [file, collection] of publicReaders) {
 assert.match(testimonialForm, /name="identityPublicationConsent"[\s\S]*?type="checkbox"[\s\S]*?required/);
 assert.match(testimonialRoute, /get\("identityPublicationConsent"\)\s*!==\s*"yes"/);
 assert.match(testimonialRoute, /identityPublicationConsent:\s*get\("identityPublicationConsent"\)\s*===\s*"yes"/);
+assert.match(testimonialRoute, /consumeEmailVerification\(get\("email"\),\s*get\("emailVerificationToken"\)\)/);
+assert.doesNotMatch(testimonialRoute, /consumeFormVerification|captchaToken/);
 assert.match(server, /function safeCanonical/);
 assert.match(server, /openGraph:[\s\S]*?ogTitle/);
 assert.match(server, /robots:\s*\{\s*index:\s*data\.robotsIndex/);

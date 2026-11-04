@@ -34,6 +34,8 @@ export type AdminEnquiry = {
   message: string;
   phone?: string;
   internalNotes?: string;
+  data?: Record<string, unknown>;
+  updatedAt?: string;
 };
 
 export type AdminTestimonial = {
@@ -52,6 +54,18 @@ export type AdminTestimonial = {
   title?: string;
   internalNotes?: string;
   identityPublicationConsent?: boolean;
+  photoPublicationConsent?: boolean;
+  imagePath?: string;
+  imageUrl?: string;
+  videoPath?: string;
+  videoUrl?: string;
+  videoSource?: string;
+  mediaSubmitted?: boolean;
+  format?: string;
+  rating?: number;
+  rejectionReason?: string;
+  decisionAt?: string;
+  notificationStatus?: string;
 };
 
 export type AdminContentSection = "pages" | "services" | "industries" | "professionals" | "global-presence" | "technology";
@@ -105,6 +119,7 @@ type AdminStateValue = {
   setContentRecords: Dispatch<SetStateAction<AdminContentRecord[]>>;
   loadState: "loading" | "ready" | "error";
   loadError: string;
+  loadWarning: string;
 };
 
 const AdminStateContext = createContext<AdminStateValue | null>(null);
@@ -118,6 +133,7 @@ type AdminSnapshot = {
   contentRecords: AdminContentRecord[];
   loadState: "loading" | "ready" | "error";
   loadError: string;
+  loadWarning: string;
 };
 type CmsRow = {
   id: string;
@@ -128,6 +144,7 @@ type CmsRow = {
   created_at: string | null;
   updated_at: string | null;
   source_defined?: boolean;
+  notification_status?: string;
 };
 type EnquiryRow = {
   id: string;
@@ -141,6 +158,7 @@ type EnquiryRow = {
   message: string;
   internal_notes: string;
   data: Record<string, unknown>;
+  updated_at: string | null;
 };
 const text = (value: unknown) => typeof value === "string" ? value : "";
 
@@ -153,6 +171,7 @@ const initialSnapshot: AdminSnapshot = {
   contentRecords: [],
   loadState: "loading",
   loadError: "",
+  loadWarning: "",
 };
 let snapshot = initialSnapshot;
 const listeners = new Set<() => void>();
@@ -248,20 +267,46 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, name: text(row.data.name), email: text(row.data.email), title: text(row.data.title),
           text: text(row.data.text), excerpt: text(row.data.excerpt), company: text(row.data.company), designation: text(row.data.designation), service: text(row.data.service), date: row.created_at ?? "",
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
-          approvalStatus: row.status === "published" ? "Approved" : row.status === "rejected" ? "Rejected" : "Pending",
+          approvalStatus: row.status === "published" || row.status === "approved" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",
+          rating: typeof row.data.rating === "number" && Number.isInteger(row.data.rating) ? row.data.rating : 5,
+          rejectionReason: text(row.data.moderationReason),
+          decisionAt: text(row.data.moderationDecisionAt),
+          notificationStatus: row.notification_status,
           identityPublicationConsent: row.data.identityPublicationConsent === true, internalNotes: text(row.data.internalNotes),
+          photoPublicationConsent: row.data.photoPublicationConsent === true,
+          imagePath: text(row.data.imagePath),
+          imageUrl: text(row.data.imageUrl),
+          videoPath: text(row.data.videoPath),
+          videoUrl: text(row.data.videoUrl),
+          videoSource: text(row.data.videoSource),
+          mediaSubmitted: row.data.mediaSubmitted === true,
+          format: text(row.data.format),
         }));
         const enquiryRows: EnquiryRow[] = Array.isArray(enquiryPayload.records) ? enquiryPayload.records : [];
         const enquiries: AdminEnquiry[] = enquiryRows.map((row) => ({
           id: row.id, name: row.name, email: row.email, subject: row.subject, date: row.created_at,
           status: row.status, company: row.company, formType: row.form_type, message: row.message,
-          phone: text(row.data.phone), internalNotes: row.internal_notes,
+          phone: text(row.data.phone), internalNotes: row.internal_notes, data: row.data, updatedAt: row.updated_at ?? "",
         }));
-        snapshot = { ...snapshot, contentRecords, insights, testimonials, enquiries, loadState: "ready", loadError: "" };
+        snapshot = {
+          ...snapshot,
+          contentRecords,
+          insights,
+          testimonials,
+          enquiries,
+          loadState: "ready",
+          loadError: "",
+          loadWarning: text(contentPayload.warning),
+        };
         notify();
       } catch (error) {
         if (!active) return;
-        snapshot = { ...snapshot, loadState: "error", loadError: error instanceof Error ? error.message : "Could not load CMS data." };
+        snapshot = {
+          ...snapshot,
+          loadState: "error",
+          loadError: error instanceof Error ? error.message : "Could not load CMS data.",
+          loadWarning: "",
+        };
         notify();
       }
     };

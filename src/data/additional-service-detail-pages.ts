@@ -822,7 +822,7 @@ const configs: ServiceDetailConfig[] = [
       ["Arbitration and Conciliation Act, 1996", "May govern disputes covered by an arbitration agreement."],
     ],
     comparisonHeading: "Corporate litigation forums",
-    comparisonHeaders: ["Parameter", "NCLT / NCLAT", "Commercial courts", "Arbitration"],
+    comparisonHeaders: ["NCLT / NCLAT", "Commercial courts", "Arbitration"],
     comparison: [
       ["Jurisdiction", "Company-law matters assigned by statute", "Specified commercial disputes", "Disputes within arbitration agreement"],
       ["Common matters", "Oppression, mismanagement and company remedies", "Contracts and commercial claims", "Private contractual disputes"],

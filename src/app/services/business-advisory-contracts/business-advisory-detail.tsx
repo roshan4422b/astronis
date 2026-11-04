@@ -4,6 +4,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
+import advisoryStyles from "./business-advisory-detail.module.css";
 import type { BusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getServiceChildHeroImage } from "@/data/services";
 
@@ -180,10 +181,9 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
                 title="A clear path from assessment to implementation"
                 text="Workstreams, responsibilities and timing are agreed to suit the business and the decisions ahead."
               />
-              <ol className={styles.timeline}>
+              <ol className={`${styles.timeline} ${advisoryStyles.processTimeline}`}>
                 {detail.process.map((item, index) => (
                   <li key={item.title}>
-                    <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
                     <span className={styles.stepIcon}><Icon name={["people", "search", "chart", "document", "file", "calendar"][index]} /></span>
                     <h3>{item.title}</h3><p>{item.text}</p>
                   </li>
@@ -218,7 +218,6 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
                 {detail.precautions.map((item, index) => (
                   <article key={item}>
                     <span className={styles.requirementIcon}><Icon name={["search", "document", "shield", "people", "chart"][index % 5]} /></span>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
                     <h3>{item}</h3>
                   </article>
                 ))}

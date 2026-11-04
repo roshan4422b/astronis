@@ -15,7 +15,9 @@ export default async function Testimonials() {
     designation: item.designation,
     service: item.service,
     quote: item.testimonial_text,
-    rating: 5,
+    rating: item.rating,
+    imageUrl: item.image_url,
+    videoUrl: item.video_url,
     publicationConsent: true,
     status: "approved" as const,
   }));
@@ -42,6 +44,15 @@ export default async function Testimonials() {
         <div className="home-testimonial-grid">
           {displayTestimonials.map((testimonial) => (
             <article className="home-testimonial-card" key={testimonial.id}>
+              {testimonial.imageUrl ? (
+                <Image
+                  src={testimonial.imageUrl}
+                  alt={`${testimonial.name}`}
+                  width={52}
+                  height={52}
+                  className="testimonial-customer-image"
+                />
+              ) : null}
               <div className="testimonial-rating" role="img" aria-label={`${testimonial.rating ?? 0} out of 5 stars`}>
                 {"★".repeat(testimonial.rating ?? 0)}
                 <span>{"★".repeat(5 - (testimonial.rating ?? 0))}</span>

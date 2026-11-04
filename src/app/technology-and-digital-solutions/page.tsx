@@ -3,7 +3,7 @@ import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
 import Enquiry from "./enquiry";
 import styles from "./technology.module.css";
-import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedPageMetadata, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 import CmsPageRoute from "@/app/_components/cms-page-route";
 
 export const dynamic = "force-dynamic";
@@ -49,7 +49,11 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
 }
 
 export default async function TechnologySolutionsPage() {
-  const cmsSolutions = (await getPublishedContent("technology")).map((item) => ({
+  const [publishedSolutions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("technology"),
+    getUnpublishedSourceContentSlugs("technology"),
+  ]);
+  const cmsSolutions = publishedSolutions.map((item) => ({
     slug: item.slug,
     title: String(item.data.title || ""),
     category: String(item.data.category || ""),
@@ -63,7 +67,9 @@ export default async function TechnologySolutionsPage() {
     "legal-technology": "legal-technology",
     "data-ai": "data-ai-and-automation",
   };
-  const displaySolutions = solutions.map((solution) => {
+  const displaySolutions = solutions.filter((solution) =>
+    !suppressedSlugs.has(solutionSlugs[solution.id]),
+  ).map((solution) => {
     const cms = cmsSolutions.find((item) => item.slug === solutionSlugs[solution.id]);
     return cms ? {
       ...solution,

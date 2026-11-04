@@ -19,7 +19,10 @@ const data: EntityFormationPageData | undefined = foreignCompanySetup
         "Astronis Global provides end-to-end India entry strategy advisory to international businesses, investors and global companies, helping them establish a compliant, efficient and commercially successful presence in India.",
       introduction:
         "We assist international businesses in evaluating market-entry models, foreign investment eligibility, entity structures, licensing, taxation, commercial agreements and ongoing compliance to establish and expand their presence in India with clarity.",
-      image: "/images/services/hero.webp",
+      heroImage:
+        "/services/child page of services/Corporate & Commercial/India Market Entry Strategy.png",
+      image:
+        "/services/child page of services/Corporate & Commercial/India Market Entry Strategy.png",
       imageAlt:
         "International business professionals planning a market entry strategy",
       categoryTitle: "Investment & Transaction Advisory",

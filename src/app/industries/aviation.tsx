@@ -35,7 +35,7 @@ const solutions = [
   ["shield", "MRO & operational compliance", "/services/regulatory-and-compliance"],
   ["bulb", "Technology transfer & IP", "/services/intellectual-property-rights"],
   ["scale", "Dispute resolution", "/services/litigation-and-dispute-resolution"],
-  ["chart", "ESG & sustainable growth", "/services/esg-and-sustainability-advisory"],
+  ["chart", "ESG & sustainable growth", "/services/environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const related = [
   ["Manufacturing & industrial", "manufacturing", "/Manufacturing & Industrial .png"],

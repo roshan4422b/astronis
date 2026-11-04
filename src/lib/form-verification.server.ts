@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, randomInt } from "node:crypto";
+import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { MailtrapClient } from "mailtrap";
 
 const OTP_TTL_SECONDS = 300;
@@ -102,9 +102,16 @@ export function logEmailOtpFailure(error: unknown) {
 export function emailOtpFailureResponse(error: unknown) {
   if (error instanceof EmailOtpFailure) {
     if (error.stage === "configuration") {
+      const missingConfiguration = error.message.startsWith("Required server configuration is missing:")
+        ? error.message.slice("Required server configuration is missing:".length).trim()
+        : "";
       return {
         status: 503,
-        message: "Email delivery is not configured. Please contact the website administrator.",
+        message: [
+          "Email verification is not configured.",
+          missingConfiguration ? `Missing server configuration: ${missingConfiguration}` : "",
+          "Required server-only variables: MAILTRAP_API_KEY, MAILTRAP_FROM_EMAIL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, EMAIL_OTP_SECRET.",
+        ].filter(Boolean).join(" "),
       };
     }
     if (error.stage === "storage") {
@@ -125,13 +132,18 @@ export function emailOtpFailureResponse(error: unknown) {
 }
 
 function getRedisConfig() {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  const secret = process.env.EMAIL_OTP_SECRET;
+  const url = process.env.UPSTASH_REDIS_REST_URL?.trim();
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+  const secret = process.env.EMAIL_OTP_SECRET?.trim();
   if (!url || !token || !secret || secret.length < 32) {
+    const missingConfiguration = [
+      !url ? "UPSTASH_REDIS_REST_URL" : "",
+      !token ? "UPSTASH_REDIS_REST_TOKEN" : "",
+      !secret || secret.length < 32 ? "EMAIL_OTP_SECRET (at least 32 characters)" : "",
+    ].filter(Boolean);
     throw new EmailOtpFailure(
       "configuration",
-      "Required Upstash Redis REST or OTP signing configuration is missing.",
+      `Required server configuration is missing: ${missingConfiguration.join(", ")}.`,
     );
   }
   let parsedUrl: URL;
@@ -190,23 +202,74 @@ function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
+export function createVerifiedTestimonialEmailProof(email: string, acceptedAt: string) {
+  const secret = process.env.EMAIL_OTP_SECRET?.trim();
+  if (!secret || secret.length < 32) {
+    throw new EmailOtpFailure("configuration", "Email verification signing is not configured.");
+  }
+  return createHmac("sha256", secret)
+    .update(`${normalizeEmail(email)}:${acceptedAt}`)
+    .digest("hex");
+}
+
+export function isVerifiedTestimonialEmail(
+  email: unknown,
+  acceptedAt: unknown,
+  proof: unknown,
+) {
+  if (
+    typeof email !== "string" ||
+    typeof acceptedAt !== "string" ||
+    typeof proof !== "string" ||
+    !isValidVerificationEmail(email) ||
+    !Number.isFinite(Date.parse(acceptedAt)) ||
+    !/^[a-f0-9]{64}$/i.test(proof)
+  ) return false;
+  try {
+    const expected = Buffer.from(createVerifiedTestimonialEmailProof(email, acceptedAt), "hex");
+    const actual = Buffer.from(proof, "hex");
+    return expected.length === actual.length && timingSafeEqual(expected, actual);
+  } catch {
+    return false;
+  }
+}
+
 export function isValidVerificationEmail(email: string) {
   return email.length <= 254 && emailPattern.test(email);
 }
 
-async function sendOtpWithMailtrap(email: string, code: string) {
-  const apiKey = process.env.MAILTRAP_API_KEY;
-  const from = process.env.MAILTRAP_FROM_EMAIL;
+export async function sendMailtrapTransactionalEmail(email: string, subject: string, text: string) {
+  const apiKey = process.env.MAILTRAP_API_KEY?.trim();
+  const from = process.env.MAILTRAP_FROM_EMAIL?.trim();
   if (!apiKey || !from) {
-    throw new EmailOtpFailure("configuration", "Mailtrap API credentials or sender address are missing.");
+    const missingConfiguration = [
+      !apiKey ? "MAILTRAP_API_KEY" : "",
+      !from ? "MAILTRAP_FROM_EMAIL" : "",
+    ].filter(Boolean);
+    throw new Error(`Required server configuration is missing: ${missingConfiguration.join(", ")}.`);
   }
   const mailtrap = new MailtrapClient({ token: apiKey });
   await mailtrap.send({
     from: { name: "Astronis Global", email: from },
     to: [{ email }],
-    subject: "Your Astronis Global verification code",
-    text: `Your email verification code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
+    subject,
+    text,
   });
+}
+
+async function sendOtpWithMailtrap(email: string, code: string) {
+  try {
+    await sendMailtrapTransactionalEmail(
+      email,
+      "Your Astronis Global verification code",
+      `Your email verification code is ${code}. It expires in 5 minutes. If you did not request this code, you can ignore this email.`,
+    );
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith("Required server configuration is missing:")) {
+      throw new EmailOtpFailure("configuration", error.message, { cause: error });
+    }
+    throw error;
+  }
 }
 
 export async function verifyTurnstile(token: string, request: Request): Promise<boolean> {
@@ -245,7 +308,10 @@ export async function verifyTurnstile(token: string, request: Request): Promise<
     hostname?: string;
     "error-codes"?: unknown;
   };
-  const expectedHostname = new URL(request.url).hostname.toLowerCase();
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const expectedHostname = new URL(
+    forwardedHost ? `https://${forwardedHost}` : request.url,
+  ).hostname.toLowerCase();
   const hostname = typeof result.hostname === "string" ? result.hostname.toLowerCase() : "";
   const errorCodes = Array.isArray(result["error-codes"])
     ? result["error-codes"].filter(

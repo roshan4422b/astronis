@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import AssetImage from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import IndiaQuickNav from "./india-quick-nav";
 import styles from "./page.module.css";
+import { getPublishedContent, getUnpublishedSourceContentSlugs } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "India Legal, Regulatory & Business Advisory",
@@ -64,12 +66,12 @@ const industries = [
 ] as const;
 
 const corridors = [
-  ["UAE", "/flag/uae.png"],
-  ["Singapore", "/flag/singapore.png"],
-  ["UK", "/flag/uk.png"],
-  ["USA", "/flag/usa.png"],
-  ["EU", "/flag/eu.png"],
-  ["Middle East", "/flag/uae.png"],
+  ["UAE", "/flag/uae.png", "/global-presence/uae"],
+  ["Singapore", "/flag/singapore.png", "/global-presence/singapore"],
+  ["UK", "/flag/uk.png", "/global-presence/uk"],
+  ["USA", "/flag/usa.png", "/global-presence/usa"],
+  ["EU", "/flag/eu.png", "/global-presence/european-union"],
+  ["Middle East", "/flag/uae.png", "/global-presence/middle-east"],
 ] as const;
 
 const journey = [
@@ -132,7 +134,7 @@ const jurisdictionTiles = [
   ["Singapore", "/flag/singapore.png", "/global-presence/singapore"],
   ["UK", "/flag/uk.png", "/global-presence/uk"],
   ["USA", "/flag/usa.png", "/global-presence/usa"],
-  ["EU", "/flag/eu.png", "/global-presence/eu"],
+  ["EU", "/flag/eu.png", "/global-presence/european-union"],
   ["Middle East", "/flag/uae.png", "/global-presence/middle-east"],
 ] as const;
 
@@ -159,13 +161,27 @@ const faqs = [
   ],
 ] as const;
 
-export default function IndiaPage() {
+export default async function IndiaPage() {
+  const [publishedJurisdictions, suppressedSlugs] = await Promise.all([
+    getPublishedContent("global-presence"),
+    getUnpublishedSourceContentSlugs("global-presence"),
+  ]);
+  if (suppressedSlugs.has("india")) notFound();
+  const cms = publishedJurisdictions.find((item) => item.slug === "india");
+  const title = typeof cms?.data.title === "string" && cms.data.title ? cms.data.title : "India";
+  const description = typeof cms?.data.description === "string" && cms.data.description
+    ? cms.data.description
+    : "Trusted legal, regulatory and business advisory support for a stronger, more competitive India.";
+  const image = typeof cms?.data.featuredImage === "string" && cms.data.featuredImage
+    ? cms.data.featuredImage
+    : "/Shri Ram Mandir for India Presentation .png";
+  const content = typeof cms?.data.content === "string" ? cms.data.content : "";
   return (
     <div className={styles.page}>
       <section className={`${styles.hero} ${styles.indiaHero}`} aria-labelledby="india-title">
         <div className={styles.heroPhoto}>
           <AssetImage
-            src="/Shri Ram Mandir for India Presentation .png"
+            src={image}
             alt="Shri Ram Mandir in Ayodhya"
             fill
             priority
@@ -181,13 +197,10 @@ export default function IndiaPage() {
             <span aria-current="page">India</span>
           </nav>
           <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}>Global Presence</span>
-            <h1 id="india-title">India</h1>
+            <span className={styles.eyebrow}>Country Desk</span>
+            <h1 id="india-title">{title}</h1>
             <h2>Local Depth. Global Perspective.</h2>
-            <p>
-              Trusted legal, regulatory and business advisory support for a
-              stronger, more competitive India.
-            </p>
+            <p>{description}</p>
             <div className={styles.heroActions}>
               <Link className={styles.primaryButton} href="#capabilities">
                 Explore India Capabilities <Icon name="arrow" />
@@ -205,6 +218,7 @@ export default function IndiaPage() {
         </div>
       </section>
 
+      {content.trim() ? <section className={styles.overview}><div className={styles.container}><div className={styles.overviewCopy}><span className={styles.eyebrow}>Additional jurisdiction information</span><div style={{ whiteSpace: "pre-wrap" }}>{content}</div></div></div></section> : null}
       <IndiaQuickNav items={quickLinks} />
 
       <section className={styles.overview} id="overview" aria-labelledby="overview-title">
@@ -321,8 +335,8 @@ export default function IndiaPage() {
             <span className={styles.eyebrow}>India&apos;s Global Business Corridors</span>
             <h2 id="corridors-title">Connecting India to key global markets.</h2>
             <div className={styles.corridorList}>
-              {corridors.map(([name, flag]) => (
-                <Link href="/global-presence" key={name} aria-label={`Explore ${name}`}>
+              {corridors.map(([name, flag, href]) => (
+                <Link href={href} key={name} aria-label={`Explore ${name}`}>
                   <span className={styles.flagCircle}>
                     <AssetImage src={flag} alt="" fill sizes="44px" />
                   </span>

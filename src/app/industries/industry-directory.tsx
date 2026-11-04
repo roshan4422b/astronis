@@ -3,11 +3,21 @@ import { useState } from "react";
 import Image from "@/app/_components/asset-image";
 import { industries } from "@/content/site";
 import { Heading, TextLink } from "../_components/ui";
-type DirectoryIndustry = { slug: string; title: string; image: string };
-export default function IndustryDirectory({ cmsIndustries = [] }: { cmsIndustries?: DirectoryIndustry[] }) {
+type DirectoryIndustry = { slug: string; title: string; image: string; description?: string };
+export default function IndustryDirectory({
+  cmsIndustries = [],
+  suppressedSlugs = [],
+}: {
+  cmsIndustries?: DirectoryIndustry[];
+  suppressedSlugs?: string[];
+}) {
   const [search, setSearch] = useState("");
-  const merged = [...cmsIndustries, ...industries.filter((industry) => !cmsIndustries.some((item) => item.slug === industry.slug))];
-  const results = merged.filter((industry) => industry.title.toLowerCase().includes(search.toLowerCase()));
+  const suppressed = new Set(suppressedSlugs);
+  const merged = [...cmsIndustries, ...industries.filter((industry) => !suppressed.has(industry.slug) && !cmsIndustries.some((item) => item.slug === industry.slug))];
+  const results = merged.filter((industry) => {
+    const description = "description" in industry && typeof industry.description === "string" ? industry.description : "";
+    return `${industry.title} ${description}`.toLowerCase().includes(search.toLowerCase());
+  });
   return (
     <section className="section industry-directory">
       <div className="container">
@@ -43,6 +53,7 @@ export default function IndustryDirectory({ cmsIndustries = [] }: { cmsIndustrie
                   {String(merged.indexOf(i) + 1).padStart(2, "0")}
                 </span>
                 <h3>{i.title}</h3>
+                {"description" in i && typeof i.description === "string" && i.description ? <p>{i.description}</p> : null}
                 <TextLink href={"/industries/" + i.slug}>
                   Explore industry
                 </TextLink>
