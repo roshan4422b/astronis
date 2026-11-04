@@ -853,7 +853,7 @@ export function TestimonialsManagement() {
     }
     try {
       setSavingDecision(true);
-      const status = pendingDecision.status === "Approved" ? "approved" : pendingDecision.status === "Rejected" ? "rejected" : "archived";
+      const status = pendingDecision.status === "Approved" ? "published" : pendingDecision.status === "Rejected" ? "rejected" : "archived";
       const response = await fetch("/api/admin/data", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
