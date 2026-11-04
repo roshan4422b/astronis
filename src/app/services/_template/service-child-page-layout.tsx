@@ -17,7 +17,7 @@ export default function ServiceChildPageLayout({
   items: SectionNavItem[];
   includeTestimonial?: boolean;
 }) {
-  const navItems = items.some((item) => item.id === "testimonials")
+  const navItems = items.some((item) => item.id === "testimonials") || !includeTestimonial
     ? items
     : [...items, { id: "testimonials", label: "Testimonials" }];
 

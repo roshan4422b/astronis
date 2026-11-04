@@ -81,13 +81,22 @@ export default function FemaCrossBorderDetailPage({ detail }: { detail: FemaCros
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>FEMA, FDI &amp; CROSS-BORDER · {groupTitle.toUpperCase()}</span>
             <h1>{detail.title}</h1>
-            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
+            <h2>{detail.subtitle}</h2>
+            <p>{detail.description}</p>
             <div className={styles.actions}>
-              <Link className={styles.secondary} href="/contact">
-                Schedule a Consultation <Icon name="calendar" />
+              <Link className={styles.primary} href="/professionals/enquiry">
+                Schedule a Consultation <Icon name="arrow" />
+              </Link>
+              <Link className={styles.secondary} href={groupHref}>
+                Explore {groupTitle} <Icon name="arrow" />
               </Link>
             </div>
           </div>
+          <aside className={styles.heroNote}>
+            <span>CROSS-BORDER ADVISORY</span>
+            <strong>Structure transactions.<br />Meet obligations.</strong>
+            <p>FEMA, RBI, FDI and corporate requirements considered together.</p>
+          </aside>
         </div>
       </section>
 

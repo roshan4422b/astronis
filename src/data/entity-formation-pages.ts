@@ -84,6 +84,14 @@ export type EntityFormationPageData = {
   heroNoteEyebrow?: string;
   heroNoteTitle?: string;
   heroNoteDescription?: string;
+  showImageOverview?: boolean;
+  overviewPanelEyebrow?: string;
+  overviewPanelTitle?: string;
+  overviewPanelDescription?: string;
+  audienceDescription?: string;
+  audiences?: [string, string, string][];
+  highlights?: [string, string, string][];
+  showPricing?: boolean;
   servicesHeading?: string;
   servicesDescription?: string;
   serviceCardsThreeColumns?: boolean;
