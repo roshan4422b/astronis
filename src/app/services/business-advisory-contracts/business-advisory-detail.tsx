@@ -17,6 +17,8 @@ const sections = [
   ["Documents & Preparation", "documents"],
   ["FAQs", "faqs"],
 ];
+const processIcons = ["people", "search", "chart", "document", "file", "calendar"] as const;
+
 function Heading({
   eyebrow,
   title,
@@ -184,7 +186,8 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
               <ol className={`${styles.timeline} ${advisoryStyles.processTimeline}`}>
                 {detail.process.map((item, index) => (
                   <li key={item.title}>
-                    <span className={styles.stepIcon}><Icon name={["people", "search", "chart", "document", "file", "calendar"][index]} /></span>
+                    <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
+                    <span className={styles.stepIcon}><Icon name={processIcons[index % processIcons.length] ?? "calendar"} /></span>
                     <h3>{item.title}</h3><p>{item.text}</p>
                   </li>
                 ))}

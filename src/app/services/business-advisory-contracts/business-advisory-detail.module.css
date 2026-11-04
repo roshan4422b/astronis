@@ -11,8 +11,24 @@
   min-width: 0;
 }
 
-.processTimeline.processTimeline > li > span:first-child {
+.processTimeline.processTimeline > li > span[class*="stepIcon"] {
   margin-inline: auto;
+}
+
+.processTimeline.processTimeline > li > span[class*="stepNum"] {
+  position: absolute;
+  z-index: 2;
+  top: -25px;
+  left: calc(50% - 11px);
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 2px solid #edf4fb;
+  border-radius: 50%;
+  background: #0751db;
+  color: #fff;
+  font: 700 10px/1 Arial, sans-serif;
 }
 
 .processTimeline.processTimeline h3,
@@ -29,8 +45,13 @@
     display: none;
   }
 
-  .processTimeline.processTimeline > li > span:first-child {
+  .processTimeline.processTimeline > li > span[class*="stepIcon"] {
     margin-inline: 0;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepNum"] {
+    top: -25px;
+    left: 0;
   }
 
   .processTimeline.processTimeline h3,
@@ -64,11 +85,18 @@
     padding: 17px 0;
   }
 
-  .processTimeline.processTimeline > li > span:first-child {
+  .processTimeline.processTimeline > li > span[class*="stepIcon"] {
     grid-row: span 2;
     width: 52px;
     height: 52px;
     margin: 0;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepNum"] {
+    top: -6px;
+    left: 0;
+    width: 22px;
+    height: 22px;
   }
 
   .processTimeline.processTimeline h3 {

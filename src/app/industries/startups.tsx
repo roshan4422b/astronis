@@ -24,14 +24,14 @@ const challenges = [
   ["Expansion & Partnerships", "Banner-Startups & Emerging Businesses .png", "Plan new market entry, commercial alliances and cross-border growth.", "business-advisory-and-consulting"],
 ];
 const solutions = [
-  ["building", "Company Formation & Structuring", "corporate-advisory/corporate-structuring"],
-  ["chart", "Fundraising & Investor Documentation", "startup-and-investment-advisory"],
-  ["shield", "Regulatory & Compliance Advisory", "regulatory-and-compliance"],
-  ["file", "Contracts & Commercial Advisory", "contracts"],
-  ["bulb", "IP Strategy & Protection", "intellectual-property-rights"],
-  ["people", "Employment & ESOP Structuring", "hr-and-employment-advisory"],
-  ["globe", "Cross-Border Expansion", "cross-border-and-international-business-support"],
-  ["scale", "Dispute Resolution & Risk", "litigation-and-dispute-resolution"],
+  ["building", "Company Formation & Structuring", "corporate-commercial-advisory/entity-formation/private-limited"],
+  ["chart", "Fundraising & Investor Documentation", "business-advisory-contracts/business-strategy/fundraising-support"],
+  ["shield", "Regulatory & Compliance Advisory", "regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+  ["file", "Contracts & Commercial Advisory", "business-advisory-contracts/commercial-contracts/contract-drafting-review-negotiations"],
+  ["bulb", "IP Strategy & Protection", "intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
+  ["people", "Employment & ESOP Structuring", "industrial-employment-forensics-advisory/employment-and-labour/employment-advisory"],
+  ["globe", "Cross-Border Expansion", "fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment"],
+  ["scale", "Dispute Resolution & Risk", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
 ];
 const phases = [
   ["01", "Launch", "Entity formation, founder arrangements and early contracts"],

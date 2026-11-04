@@ -4,6 +4,7 @@ import type { EntityFormationPageData } from "./entity-formation-pages";
 type RequestedServicePage = {
   route: string;
   routeAliases?: string[];
+  relatedPages?: [string, string][];
   serviceTitle: string;
   serviceHref: string;
   categoryTitle: string;
@@ -316,10 +317,10 @@ const pages: RequestedServicePage[] = [
     categoryTitle: "Copyright",
     categorySlug: "copyright",
     slug: "assignment",
-    title: "Assignment",
+    title: "Copyright Assignment",
     shortTitle: "Copyright Assignment",
     eyebrow: "INTELLECTUAL PROPERTY RIGHT SERVICES · COPYRIGHT",
-    statement: "Practical guidance for Assignment, shaped around your organisation and requirements.",
+    statement: "Transfer Copyright Ownership with Clear Terms and a Documented Chain of Title.",
     description: "Copyright assignment support helps creators, businesses and rights owners document transfers of copyright clearly. We provide end-to-end support for assignment structure, documentation and continuing rights management.",
     introduction: "A copyright assignment should identify the work, rights being transferred, territory, duration, consideration and permitted uses. Clear drafting and due diligence help parties understand the scope of the transfer and avoid uncertainty in future commercial use.",
     image: "/legal-professionals-hero.png",
@@ -394,6 +395,11 @@ const pages: RequestedServicePage[] = [
       ["Rights Verification Checklist", "Documents to organise when confirming ownership.", "Due diligence"],
       ["Copyright Agreement Overview", "An outline of common assignment agreement provisions.", "Documentation"],
     ],
+    relatedPages: [
+      ["Copyright Registration", `${ip}/copyright/copyright-registration`],
+      ["Copyright Enforcement", `${ip}/copyright/enforcement`],
+      ["Copyright Licensing", `${ip}/copyright/licensing`],
+    ],
   },
   {
     route: `${ip}/designs/enforcement`,
@@ -402,10 +408,10 @@ const pages: RequestedServicePage[] = [
     categoryTitle: "Designs",
     categorySlug: "designs",
     slug: "enforcement",
-    title: "Enforcement",
+    title: "Design Enforcement",
     shortTitle: "Design Enforcement",
     eyebrow: "INTELLECTUAL PROPERTY RIGHT SERVICES · DESIGNS",
-    statement: "Practical guidance for Enforcement, shaped around your organisation and requirements.",
+    statement: "Protect Registered Product Designs. Preserve Evidence. Choose a Proportionate Enforcement Route.",
     description: "Design enforcement services help owners investigate suspected infringement, protect commercial rights and pursue proportionate remedies. Our support spans evidence gathering, notices, customs and court processes, online monitoring and resolution strategy.",
     introduction: "Effective enforcement starts with confirming ownership and registration, documenting the alleged infringement and assessing the commercial context. A measured strategy can help protect design rights while considering cost, evidence, timing and business objectives.",
     image: "/legal-professionals-hero.png",
@@ -414,9 +420,9 @@ const pages: RequestedServicePage[] = [
     services: [
       ["search", "IP Infringement Investigation", "Detect and investigate infringements across online, digital and offline channels."],
       ["document", "Cease & Desist Notices", "Draft and issue notices to stop unauthorised use and trade."],
-      ["shield", "Customs Recordal & Border Measures", "Work with customs to block infringing goods at the border."],
+      ["shield", "Border Measure Assessment", "Assess whether any applicable border procedures are relevant to the specific design and goods."],
       ["people", "Search & Monitoring", "Monitor the market and online platforms for design infringements."],
-      ["scale", "Litigation Support", "Strategic support in court and before relevant tribunals."],
+      ["scale", "Civil Proceedings Coordination", "Coordinate legal review of available civil remedies and court proceedings."],
       ["globe", "Online Takedown & Digital Enforcement", "Remove infringing content and listings from digital platforms."],
     ],
     benefitsHeading: "Protect Your IP Rights with Effective Enforcement",
@@ -424,7 +430,7 @@ const pages: RequestedServicePage[] = [
       ["shield", "Stops infringement and misuse", "Respond to unauthorised use of protected designs."],
       ["people", "Protects brand value and reputation", "Address market confusion and misuse of product identity."],
       ["checklist", "Deters future violations", "Use proportionate steps to communicate and enforce rights."],
-      ["chart", "Recovers financial losses", "Assess available remedies and commercial outcomes."],
+      ["chart", "Supports remedy assessment", "Review available relief and commercial options without assuming a particular outcome."],
       ["target", "Enables market competitiveness", "Protect the value of design investment and innovation."],
       ["scale", "Comprehensive end-to-end support", "Coordinate investigation, action and follow-through."],
     ],
@@ -440,10 +446,10 @@ const pages: RequestedServicePage[] = [
     frameworkHeaders: ["Area", "What it covers"],
     frameworkRows: [
       ["Designs Act, 2000", "Registration, ownership and available civil remedies"],
-      ["Design Rules, 2001", "Applicable procedural and registration requirements"],
-      ["Customs recordal", "Border measures against suspected infringing imports"],
-      ["Civil remedies", "Injunctions, damages or account of profits, as applicable"],
-      ["Digital platforms", "Notice and takedown processes for online infringement"],
+      ["Designs Act, 2000", "Registered design rights and applicable civil remedies"],
+      ["Designs Rules, 2001", "Procedural requirements relevant to the registration and rights"],
+      ["Evidence and ownership", "Registration status, proprietor details and facts of the alleged conduct"],
+      ["Border and online channels", "Assess any separate procedure that may apply to the particular goods or platform"],
     ],
     scopeRows: [
       ["Evidence and ownership", "Review registration, product features, dates and proof of use."],
@@ -452,12 +458,11 @@ const pages: RequestedServicePage[] = [
     ],
     processHeading: "Design Enforcement Process",
     process: [
-      ["Identify & investigate", "Document suspected infringement and gather available evidence."],
-      ["Issue notice", "Assess and prepare an appropriate notice or initial communication."],
-      ["Customs recordal", "Consider border measures where the facts and rules support them."],
-      ["Legal action", "Evaluate court or other formal remedies with the client."],
-      ["Monitor & takedown", "Pursue online takedowns and market monitoring where suitable."],
-      ["Enforce & resolve", "Seek appropriate undertakings, remedies or settlement."],
+      ["Verify rights and ownership", "Confirm registration status, proprietor, protected design and relevant records."],
+      ["Assess the suspected conduct", "Compare the product, dates, locations and available evidence with the registered design."],
+      ["Preserve evidence", "Secure product samples, dated listings, photographs, invoices and communications."],
+      ["Plan a proportionate response", "Consider notice, negotiation, platform or border procedures, and civil proceedings as appropriate."],
+      ["Coordinate action and follow-up", "Proceed with approved steps and track responses, compliance and repeat concerns."],
     ],
     documents: ["Design registration certificate and details", "Proof of ownership and chain of title", "Samples or images of the protected design", "Evidence of suspected infringement", "Purchase or test-purchase records", "Notices and correspondence", "Sales, loss or commercial impact information", "Prior enforcement or settlement records"],
     requirements: [
@@ -466,10 +471,10 @@ const pages: RequestedServicePage[] = [
       ["scale", "Proportionate response", "Choose steps that fit the evidence, risk and business objective."],
     ],
     faqs: [
-      ["How long does design enforcement take?", "Timing varies with the evidence, response, forum and remedy pursued."],
-      ["Can infringing products be stopped at the border?", "Customs measures may be available where applicable requirements and recordal steps are met."],
+      ["Can every similar product be challenged?", "No. The registered design, article, evidence, applicable law and potential defences must be assessed."],
+      ["Can infringing products be stopped at the border?", "Any border measure depends on the relevant goods, available procedure and applicable requirements."],
       ["What evidence should be preserved?", "Keep dated product images, listings, samples, communications and relevant registration records."],
-      ["Can online design infringement be addressed?", "Platform notice and takedown channels may be available, depending on the platform and evidence."],
+      ["Can online design infringement be addressed?", "Platform procedures may be available depending on the platform, evidence and reported conduct."],
       ["How can Astronis Global assist?", "We support evidence review, notices, strategy, proceedings and enforcement follow-up."],
     ],
     finalHeading: "Commercialise and Protect Your Designs with Confidence",
@@ -478,6 +483,12 @@ const pages: RequestedServicePage[] = [
       ["IP Enforcement Checklist", "Evidence and information to organise before action.", "Enforcement"],
       ["Design Rights Guide", "An overview of design protection and enforcement options.", "Designs"],
       ["Online Takedown Guide", "A practical summary of platform enforcement steps.", "Digital rights"],
+    ],
+    relatedPages: [
+      ["Design Registration", `${ip}/designs/design-registration`],
+      ["Design Renewal", `${ip}/designs/renewal`],
+      ["Design Assignment", `${ip}/designs/assignment`],
+      ["IP Enforcement Strategy", `${ip}/ip-and-brand-advisory/ip-enforcement-strategy`],
     ],
   },
   {
@@ -1717,6 +1728,7 @@ function toPageData(page: RequestedServicePage): EntityFormationPageData {
     finalHeading: page.finalHeading,
     finalDescription: page.finalDescription,
     finalAction: "Schedule a Consultation",
+    relatedPages: page.relatedPages,
     insights: page.resources,
     resources: page.resources,
     resourcesDescription: `Helpful ${page.shortTitle} checklists and guidance for initial planning.`,

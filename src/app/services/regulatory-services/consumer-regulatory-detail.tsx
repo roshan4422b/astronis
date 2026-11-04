@@ -185,6 +185,9 @@ export default function ConsumerRegulatoryDetailPage({
           <ol className={styles.timeline}>
             {detail.process.map((item, index) => (
               <li key={item.title}>
+                <span className={styles.stepNumber} aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               <span className={styles.stepIcon}><Icon name={["search", "scale", "document", "file", "calendar"][index % 5]} /></span>
                 <h3>{item.title}</h3><p>{item.text}</p>
               </li>
