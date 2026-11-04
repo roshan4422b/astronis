@@ -36,12 +36,7 @@ import {
   getReferenceServicePageData,
   getReferenceServicePageMetadata,
 } from "@/data/reference-service-pages";
-import {
-  getRequestedServicePage,
-  getRequestedServicePageMetadata,
-  getRequestedServicePageStaticParams,
-} from "@/data/requested-service-pages";
-import type { EntityFormationPageData } from "@/data/entity-formation-pages";
+import { entityFormationPages, type EntityFormationPageData } from "@/data/entity-formation-pages";
 import { commercialContractPages } from "@/data/commercial-contract-pages";
 import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
 import { businessStructuringPages } from "@/data/business-structuring-pages";
@@ -88,6 +83,14 @@ function getHierarchyPageData(
     if (groupSlug === "mergers-acquisitions-and-transactions") {
       return transactionGovernancePages.find((page) => page.slug === childSlug);
     }
+  }
+
+  if (
+    serviceSlug === "licensing-registrations"
+    && groupSlug === "ngo-institutional"
+    && childSlug === "section-8-company"
+  ) {
+    return entityFormationPages.find((page) => page.slug === childSlug);
   }
 }
 

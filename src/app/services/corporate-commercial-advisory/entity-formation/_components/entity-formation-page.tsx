@@ -91,7 +91,16 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         ["Fees", "fees"],
         ["FAQs", "faqs"],
       ];
+  if (data.audiences) navItems.splice(1, 0, ["Services", "services"], ["Who We Assist", "audience"]);
+  if (data.showPricing === false) {
+    const pricingIndex = navItems.findIndex(([, id]) => id === "fees");
+    if (pricingIndex >= 0) navItems.splice(pricingIndex, 1);
+  }
+  const showTestimonials = data.showTestimonials ?? true;
   const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
+  if (showTestimonials && !sectionNavItems.some((item) => item.id === "testimonials")) {
+    sectionNavItems.push({ id: "testimonials", label: "Testimonials" });
+  }
   const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
   const defaultAlternatives = data.slug === "opc"
     ? ["One Person Company", "Private Limited Company", "LLP", "Partnership"]
@@ -118,6 +127,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
   const showFeatures = data.showFeatures ?? true;
+  const showPricing = data.showPricing ?? true;
   const heroServiceSlug = data.serviceHref?.split("/")[2]
     ?? data.categoryHref?.split("/")[2]
     ?? parentService?.canonicalSlug;
@@ -125,7 +135,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id={data.showImageOverview ? undefined : "overview"}>
         <Image
           src={heroImage}
           alt={data.imageAlt}
@@ -145,34 +155,81 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2 className={`service-child-hero-subtitle ${data.heroSubtitleWrap ? styles.heroSubtitleWrap : ""}`}>{data.heroStatement}</h2>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            {data.showImageOverview && <p>{data.description}</p>}
             <div className={styles.actions}>
-              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+              {data.showImageOverview && <Link className={styles.primary} href={data.heroPrimaryHref ?? "/professionals/enquiry"}>{data.heroPrimaryAction ?? "Get Started"} <Icon name="arrow" /></Link>}
+              <Link className={styles.secondary} href={data.heroSecondaryHref ?? "/contact"}>{data.heroSecondaryAction ?? "Schedule a Consultation"} <Icon name="calendar" /></Link>
             </div>
           </div>
+          {data.heroNoteTitle && <div className={styles.heroNote}>
+            <span>{data.heroNoteEyebrow ?? "FORMATION WITH A LONG VIEW"}</span>
+            <strong>{data.heroNoteTitle}</strong>
+            {data.heroNoteDescription && <p>{data.heroNoteDescription}</p>}
+            {data.heroNoteDescription && <p>{data.heroNoteDescription}</p>}
+          </div>}
         </div>
       </section>
 
       <ServiceChildPageLayout items={sectionNavItems} includeTestimonial={false}>
+      {data.highlights && <section className={styles.highlights} aria-label={`${data.shortTitle} highlights`}>
+        <div className={`container ${styles.highlightGrid}`}>
+          {data.highlights.map(([icon, title, description]) => (
+            <article key={title}>
+              <span className={styles.icon}><Icon name={icon} /></span>
+              <div><h2>{title}</h2><p>{description}</p></div>
+            </article>
+          ))}
+        </div>
+      </section>}
+
       {data.showIntro !== false && <PageSectionLayout variant="full-width">
-        <section className={styles.intro}>
-        <div className={`container ${styles.introGrid}`}>
+        <section className={styles.intro} id={data.showImageOverview ? "overview" : undefined}>
+        <div className={`container ${styles.introGrid} ${data.showImageOverview ? styles.imageOverview : ""}`}>
+          {data.showImageOverview && <figure className={styles.overviewImage}>
+            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 42vw" />
+            <figcaption>{data.shortTitle}<br /><strong>Clarity for what comes next.</strong></figcaption>
+          </figure>}
           <div>
             <Heading eyebrow={data.shortTitle.toUpperCase()} title={data.introHeading ?? "A clear foundation for your organisation"} />
             <p>{data.description}</p>
             <p>{data.introduction}</p>
+            {data.showImageOverview && <aside className={styles.introPanel}>
+              <span>{data.overviewPanelEyebrow ?? "A CONSIDERED APPROACH"}</span>
+              <h3>{data.overviewPanelTitle ?? "Plan for the next chapter."}</h3>
+              <p>{data.overviewPanelDescription ?? data.introduction}</p>
+            </aside>}
           </div>
-          <aside className={styles.introPanel}>
+          {!data.showImageOverview && <aside className={styles.introPanel}>
             <span>{data.introPanelEyebrow ?? "FORMATION PERSPECTIVE"}</span>
             <h3>{data.introPanelHeading ?? "Start with the way you intend to work."}</h3>
             <p>{data.introPanelDescription ?? "Consider your purpose, participants, responsibilities and plans before settling the formation brief."}</p>
-          </aside>
+          </aside>}
         </div>
         </section>
       </PageSectionLayout>}
 
+      {data.audiences && <section className={styles.audience} id="audience">
+        <div className="container">
+          <Heading
+            eyebrow="WHO WE ASSIST"
+            title={`Advisory for ${data.shortTitle.toLowerCase()}`}
+            text={data.audienceDescription ?? "Support shaped around the organisations, decision-makers and stakeholders involved."}
+          />
+          <div className={styles.audienceGrid}>
+            {data.audiences.map(([icon, title, description]) => (
+              <article className={styles.serviceCard} key={title}>
+                <span className={styles.icon}><Icon name={icon} /></span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>}
+
       <PageSectionLayout variant="full-width">
-        <section className={styles.services}>
+        <section className={styles.services} id="services">
         <div className="container">
           <Heading
             eyebrow={`OUR SERVICES FOR ${data.shortTitle.toUpperCase()}`}
@@ -347,7 +404,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </section>
       )}
 
-        <section className={styles.pricing} id="fees">
+        {showPricing && <section className={styles.pricing} id="fees">
         <div className="container">
           <Heading
             eyebrow={data.pricingEyebrow ?? "OUR PROFESSIONAL FEES"}
@@ -375,7 +432,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </div>
           {data.priceNote !== null && <p className={styles.priceNote}>{data.priceNote ?? "Government charges, applicable taxes and third-party costs are confirmed separately as part of the proposed scope."}</p>}
         </div>
-        </section>
+        </section>}
       </PageSectionLayout>
 
       {showFeatures && <PageSectionLayout variant="full-width">
@@ -401,7 +458,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>
 
-      <ServiceChildTestimonial />
+      {showTestimonials && <ServiceChildTestimonial />}
 
       {showInsights && <PageSectionLayout variant="full-width">
         <section className={styles.insights}>
