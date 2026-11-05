@@ -24,7 +24,7 @@
 .portraitFrame img{object-fit:contain;object-position:center bottom;animation:portrait-reveal .7s ease-out both}
 .photoFallback{display:grid;width:100%;height:100%;min-height:400px;place-items:center;background:#e8eff5;color:#16426b;font-family:Georgia,serif;font-size:58px}
 .portraitFrame figcaption{position:absolute;right:0;bottom:0;left:0;display:grid;gap:7px;padding:15px 18px;background:linear-gradient(90deg,#102d50ed,#102d50d9);color:#fff}
-.portraitFrame figcaption strong{font-size:16px!important;line-height:1.4}.portraitFrame figcaption span{display:flex;align-items:center;gap:7px;color:#d5e6f5;font-size:16px!important}.portraitFrame figcaption svg{width:17px;height:17px}
+.portraitFrame figcaption strong{font-size:16px!important;line-height:1.4;color:#fff!important}.portraitFrame figcaption span{display:flex;align-items:center;gap:7px;color:#fff!important;font-size:16px!important}.portraitFrame figcaption svg{width:17px;height:17px;color:#fff}
 .sectionNav{position:relative;display:flex;gap:4px;margin:24px 0 0;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid var(--line);background:#f6f9fc;scroll-behavior:smooth}
 .sectionNav a{flex:none;padding:15px 18px;border-bottom:3px solid transparent;color:#345a7e!important;font-size:16px!important;font-weight:650;text-decoration:none;white-space:nowrap}
 .sectionNav a:hover,.sectionNav a:focus-visible{border-bottom-color:#2b75af;background:#e9f2fa;color:#102d50!important}
