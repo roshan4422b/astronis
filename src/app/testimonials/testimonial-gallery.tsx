@@ -44,7 +44,9 @@ export default function TestimonialGallery({
         <Heading title="Voices of Trust. Stories of Impact." text="Hear from the businesses, professionals and organisations we support." />
         <div className="testimonial-columns">
           {["Written Testimonials", "Video Testimonials"].map((title, index) => {
-            const items = approved.filter((item) => index ? !!item.videoUrl : !!item.quote);
+            const items = approved.filter((item) => index
+              ? Boolean(item.videoUrl)
+              : !item.videoUrl && Boolean(item.quote));
             return (
               <div key={title}>
                 <h3 className="testimonial-column-title">{title}</h3>

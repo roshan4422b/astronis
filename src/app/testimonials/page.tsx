@@ -21,8 +21,12 @@ export default async function TestimonialsPage({
     service: item.service,
     quote: item.testimonial_text,
     rating: item.rating,
-    imageUrl: item.image_url,
-    videoUrl: item.video_url,
+    imageUrl: item.image_url
+      ? `/api/testimonials/${encodeURIComponent(item.slug)}/media/image`
+      : "",
+    videoUrl: item.video_url
+      ? `/api/testimonials/${encodeURIComponent(item.slug)}/media/video`
+      : "",
     publicationConsent: true,
     status: "approved" as const,
   }));

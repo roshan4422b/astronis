@@ -47,8 +47,45 @@ export async function GET(
     });
     return NextResponse.json({ error: "Could not open testimonial video." }, { status: 500 });
   }
-
-  const response = NextResponse.redirect(new URL(data.signedUrl), 307);
-  response.headers.set("Cache-Control", "private, no-store");
-  return response;
+  try {
+    const upstream = await fetch(data.signedUrl, {
+      headers: {
+        ...(typeof _request.headers.get("range") === "string"
+          ? { Range: _request.headers.get("range") as string }
+          : {}),
+      },
+      cache: "no-store",
+    });
+    if (!upstream.ok && upstream.status !== 206) {
+      return NextResponse.json(
+        { error: "The uploaded video is unavailable in Storage." },
+        { status: upstream.status === 404 ? 404 : 502 },
+      );
+    }
+    const contentType = upstream.headers.get("content-type")
+      || (videoPath.endsWith(".mov") ? "video/quicktime"
+        : videoPath.endsWith(".webm") ? "video/webm"
+          : "video/mp4");
+    const response = new NextResponse(upstream.body, {
+      status: upstream.status,
+      headers: {
+        "Content-Type": contentType,
+        "Content-Disposition": "inline",
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "private, no-store",
+        ...(upstream.headers.get("content-range")
+          ? { "Content-Range": upstream.headers.get("content-range") as string }
+          : {}),
+        ...(upstream.headers.get("content-length")
+          ? { "Content-Length": upstream.headers.get("content-length") as string }
+          : {}),
+      },
+    });
+    return response;
+  } catch {
+    return NextResponse.json(
+      { error: "Could not stream the uploaded video. Please try again." },
+      { status: 502 },
+    );
+  }
 }
