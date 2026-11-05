@@ -18,7 +18,7 @@
 .hero .eyebrow, .hero .action, .commitment .eyebrow, .cta .eyebrow { color: #d9edff; }
 .hero h1 { font-size: max(var(--font-size-min), clamp(42px, 5vw, 70px)); line-height: 1.02; }
 .heroCopy p { max-width: 480px; color: #e6f0ff; font-size: max(var(--font-size-min), 14px); }
-.heroCopy .action { margin-top: 12px; color: #0068b8; background: #fff; border-color: #fff; }
+.heroCopy .action { margin-top: 12px; color: #000; background: #fff; border-color: #fff; }
 .heroNote { padding: 13px 0 13px 28px; border-left: 1px solid #d6eaff70; color: #fff; font: 400 24px/1.35 Georgia, serif; letter-spacing: .08em; text-transform: uppercase; }
 .heroNote .rule { margin-bottom: 0; }
 .overview { display: grid; grid-template-columns: .9fr 1.5fr; gap: 42px; align-items: center; padding-block: 42px; }

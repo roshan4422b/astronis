@@ -12,3 +12,4 @@
 @media(max-width:760px){.heroNote{position:relative;top:auto;right:auto;width:max-content;max-width:100%;margin-top:24px}.heroInner{padding-bottom:45px}.hero:after{background:linear-gradient(90deg,#f2f8fffa,#edf6ffda)}.principles{grid-template-columns:repeat(2,minmax(0,1fr))}.regionsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.heroCopy{margin-top:30px}.principles strong{font-size: max(var(--font-size-min), 16px)}.principles svg{width:25px;height:25px}.principles>div{padding:9px}.regionPhoto{height:115px}.regionBody strong{font-size: max(var(--font-size-min), 15px)}}
 @media(prefers-reduced-motion:reduce){.heroNote,.regionsGrid>a{transition:none}.heroNote:hover,.regionsGrid>a:hover{transform:none}}
+.hero h1{margin-bottom:30px}.heroActions{margin-top:46px}

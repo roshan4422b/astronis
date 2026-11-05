@@ -211,3 +211,17 @@
   .ecosystemCaption { bottom:-26px; }
   .heroGrid { gap:48px; }
 }
+
+@media(max-width:767px) {
+  .heroGrid { gap:20px; }
+  .ecosystem { max-width:360px; }
+}
+
+@media(max-width:639px) {
+  .ecosystem { max-width:280px; }
+}
+
+@media(min-width:761px) and (max-width:767px) {
+  .heroGrid { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:8px; }
+  .breadcrumb { margin-bottom:18px; }
+}

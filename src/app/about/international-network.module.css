@@ -18,7 +18,7 @@
 .rule { display: block; height: 2px; width: 45px; background: #38a6ed; margin-block: 19px; }
 .heroNote { padding-left: 23px; border-left: 1px solid #afceec80; font: 21px/1.45 Georgia, serif; text-transform: uppercase; letter-spacing: .07em; }
 .heroNote small { display: block; margin-top: 25px; font: 12px/1.6 Arial, sans-serif; text-transform: none; letter-spacing: 0; color: #d6e9fc; }
-.button { display: inline-flex; align-items: center; justify-content: center; gap: 17px; min-height: 45px; padding: 12px 22px; border: 1px solid white; border-radius: 30px; background: white; color: #005aaf; font-size: max(var(--font-size-min), 12px); font-weight: 600; transition: transform .25s, box-shadow .25s; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 17px; min-height: 45px; padding: 12px 22px; border: 1px solid white; border-radius: 30px; background: white; color: #000; font-size: max(var(--font-size-min), 12px); font-weight: 600; transition: transform .25s, box-shadow .25s; }
 .button svg, .lightLink svg, .cardAction svg { width: 17px; height: 17px; flex-shrink: 0; transition: transform .25s; }
 .blue { color: white; background: linear-gradient(110deg, #007cd3, #0050a3); border-color: #0064b8; }
 .strengths { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; padding-block: 30px; }
