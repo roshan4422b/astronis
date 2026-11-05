@@ -1833,6 +1833,21 @@ main section[class*="hero"] :is(a, button):is(
   border-radius: 50%;
   object-fit: cover;
 }
+.testimonial-customer-placeholder {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #eef4fa;
+  color: var(--muted);
+}
+.testimonial-customer-placeholder .icon {
+  width: 24px;
+  height: 24px;
+}
 .testimonial-invite > .icon {
   color: var(--blue);
   width: 45px;

@@ -696,6 +696,7 @@ export function TestimonialsManagement() {
   const [rejectionReason, setRejectionReason] = useState("");
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const [videoPlaybackError, setVideoPlaybackError] = useState<{ id: string; message: string } | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const filtered = testimonials.filter((testimonial) => {
     const search = query.trim().toLowerCase();
@@ -762,6 +763,11 @@ export function TestimonialsManagement() {
     </div>,
   ]);
   const selected = testimonials.find((testimonial) => testimonial.id === selectedId);
+  const selectedVideoUrl = selected?.videoPath
+    ? `/api/admin/testimonials/${encodeURIComponent(selected.id)}/video`
+    : selected?.videoUrl
+      ? safeVideoUrl(selected.videoUrl)
+      : "";
   const target = pendingDecision
     ? testimonials.find((testimonial) => testimonial.id === pendingDecision.id)
     : undefined;
@@ -1075,11 +1081,23 @@ export function TestimonialsManagement() {
                     <dd><Image src={safeVideoUrl(selected.imageUrl)} alt={`${selected.name} testimonial`} width={96} height={96} unoptimized className="admin-testimonial-image-preview" /></dd>
                   </div>
                 ) : null}
-                {selected.videoUrl && safeVideoUrl(selected.videoUrl) ? (
+                {selectedVideoUrl ? (
                   <div className="admin-detail-message">
                     <dt>Video preview</dt>
                     <dd>
-                      <video src={safeVideoUrl(selected.videoUrl)} controls preload="metadata" playsInline className="video-preview" />
+                      <video
+                        key={`${selected.id}-${selected.videoPath || selected.videoUrl}`}
+                        src={selectedVideoUrl}
+                        controls
+                        preload="metadata"
+                        playsInline
+                        className="video-preview"
+                        onError={() => setVideoPlaybackError({
+                          id: selected.id,
+                          message: "Video could not be loaded. Try reopening the details; the file may use a format this browser cannot play.",
+                        })}
+                      />
+                      {videoPlaybackError?.id === selected.id ? <small role="alert">{videoPlaybackError.message}</small> : null}
                       {selected.videoSource ? <small>{selected.videoSource === "recorded" ? "Recorded by the customer" : selected.videoSource === "url" ? "Provided as a video URL" : "Uploaded video"}</small> : null}
                     </dd>
                   </div>
