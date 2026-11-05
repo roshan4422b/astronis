@@ -1,8 +1,11 @@
 import { Heading, TextLink } from "../_components/ui";
 import Image from "@/app/_components/asset-image";
+import Icon from "@/app/_components/icon";
 import { testimonials } from "@/content/testimonials";
 import TestimonialInvite from "./testimonial-invite";
 import { getPublicTestimonials, getSourceTestimonialSlugs } from "@/lib/supabase/server";
+import { getHomepageTestimonials } from "@/lib/testimonial-display";
+
 export default async function Testimonials() {
   const [published, sourceSlugs] = await Promise.all([
     getPublicTestimonials(),
@@ -21,11 +24,11 @@ export default async function Testimonials() {
     publicationConsent: true,
     status: "approved" as const,
   }));
-  const cmsIds = new Set(cmsTestimonials.map((testimonial) => testimonial.id));
-  const displayTestimonials = [
-    ...testimonials.filter((testimonial) => !cmsIds.has(testimonial.id) && !sourceSlugs.has(testimonial.id)),
-    ...cmsTestimonials,
-  ];
+  const displayTestimonials = getHomepageTestimonials(
+    cmsTestimonials,
+    testimonials,
+    sourceSlugs,
+  );
   return (
     <section className="section testimonials-section">
       <Image
@@ -52,7 +55,11 @@ export default async function Testimonials() {
                   height={52}
                   className="testimonial-customer-image"
                 />
-              ) : null}
+              ) : (
+                <span className="testimonial-customer-placeholder" aria-label={`${testimonial.name} profile image`}>
+                  <Icon name="person" />
+                </span>
+              )}
               <div className="testimonial-rating" role="img" aria-label={`${testimonial.rating ?? 0} out of 5 stars`}>
                 {"★".repeat(testimonial.rating ?? 0)}
                 <span>{"★".repeat(5 - (testimonial.rating ?? 0))}</span>
