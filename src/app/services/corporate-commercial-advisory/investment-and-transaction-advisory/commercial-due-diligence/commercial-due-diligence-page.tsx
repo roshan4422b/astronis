@@ -13,7 +13,10 @@ const data: EntityFormationPageData | undefined = corporateDueDiligence
       slug: "commercial-due-diligence",
       title: "Commercial Due Diligence",
       shortTitle: "Commercial Due Diligence",
-      image: "/images/services/hero.webp",
+      heroImage:
+        "/services/child page of services/Corporate & Commercial/Commercial Due Diligence.png",
+      image:
+        "/services/child page of services/Corporate & Commercial/Commercial Due Diligence.png",
       imageAlt:
         "Business professionals reviewing commercial and transaction information",
       heroStatement:

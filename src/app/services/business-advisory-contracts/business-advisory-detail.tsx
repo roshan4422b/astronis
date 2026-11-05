@@ -4,6 +4,7 @@ import Image from "@/app/_components/asset-image";
 import Icon from "@/app/_components/icon";
 import ServiceChildPageLayout from "../_template/service-child-page-layout";
 import styles from "../corporate-commercial-advisory/entity-formation/public-limited-company/public-limited-company.module.css";
+import advisoryStyles from "./business-advisory-detail.module.css";
 import type { BusinessAdvisoryDetail } from "@/data/business-advisory-details";
 import { getServiceChildHeroImage } from "@/data/services";
 
@@ -16,6 +17,8 @@ const sections = [
   ["Documents & Preparation", "documents"],
   ["FAQs", "faqs"],
 ];
+const processIcons = ["people", "search", "chart", "document", "file", "calendar"] as const;
+
 function Heading({
   eyebrow,
   title,
@@ -71,13 +74,22 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>BUSINESS ADVISORY &amp; CONTRACTS · BUSINESS STRATEGY</span>
             <h1>{detail.title}</h1>
-            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
+            <h2>{detail.subtitle}</h2>
+            <p>{detail.description}</p>
             <div className={styles.actions}>
-              <Link className={styles.secondary} href="/contact">
-                Schedule a Consultation <Icon name="calendar" />
+              <Link className={styles.primary} href="/professionals/enquiry">
+                Request a Consultation <Icon name="arrow" />
+              </Link>
+              <Link className={styles.secondary} href="/services/business-advisory-contracts#business-strategy">
+                Explore Our Advisory Services <Icon name="arrow" />
               </Link>
             </div>
           </div>
+          <aside className={styles.heroNote}>
+            <span>STRATEGIC BUSINESS ADVISORY</span>
+            <strong>Plan with clarity.<br />Move forward with confidence.</strong>
+            <p>Commercial, financial, legal and regulatory perspectives connected to your business objectives.</p>
+          </aside>
         </div>
       </section>
 
@@ -171,10 +183,11 @@ export default function BusinessAdvisoryDetailPage({ detail }: { detail: Busines
                 title="A clear path from assessment to implementation"
                 text="Workstreams, responsibilities and timing are agreed to suit the business and the decisions ahead."
               />
-              <ol className={styles.timeline}>
+              <ol className={`${styles.timeline} ${advisoryStyles.processTimeline}`}>
                 {detail.process.map((item, index) => (
                   <li key={item.title}>
-                    <span className={styles.stepIcon}><Icon name={["people", "search", "chart", "document", "file", "calendar"][index]} /></span>
+                    <span className={styles.stepNum}>{String(index + 1).padStart(2, "0")}</span>
+                    <span className={styles.stepIcon}><Icon name={processIcons[index % processIcons.length] ?? "calendar"} /></span>
                     <h3>{item.title}</h3><p>{item.text}</p>
                   </li>
                 ))}

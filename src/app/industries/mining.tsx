@@ -20,19 +20,19 @@ const benefits = [
 const challenges = [
  ["Policy Reforms", "Mining, Metals & Natural Resources .png", "Leveraging government initiatives and auction opportunities for growth.", "regulatory-and-compliance"],
  ["Regulatory Complexity", "Manufacturing & Industrial .png", "Navigating overlapping approvals, clearances and compliance requirements.", "licensing-and-registrations"],
- ["Sustainable Mining", "Banner-Mining, Metals & Natural Resources .png", "Balancing resource extraction with environmental protection and community interests.", "esg-and-sustainability-advisory"],
+ ["Sustainable Mining", "Banner-Mining, Metals & Natural Resources .png", "Balancing resource extraction with environmental protection and community interests.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
  ["Global Demand", "Infrastructure & Projects .png", "Meeting rising demand for critical minerals and metals in a low-carbon economy.", "cross-border-and-international-business-support"],
- ["Climate & Transition Risk", "Agriculture & Agri-Business .png", "Adapting to evolving ESG and climate-related regulations and investor expectations.", "esg-and-sustainability-advisory"],
+ ["Climate & Transition Risk", "Agriculture & Agri-Business .png", "Adapting to evolving ESG and climate-related regulations and investor expectations.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const solutions = [
  ["document", "Regulatory Approvals & Compliance", "regulatory-and-compliance"],
  ["building", "Mining Leases & Concession Advisory", "licensing-and-registrations"],
- ["globe", "Environment, Forest & ESG Compliance", "esg-and-sustainability-advisory"],
+ ["globe", "Environment, Forest & ESG Compliance", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
  ["pin", "Land Acquisition & Rehabilitation", "rera-and-real-estate-advisory"],
  ["file", "Contracts & Commercial Advisory", "contracts"],
  ["people", "Joint Ventures & M&A", "corporate-transactions"],
  ["scale", "Dispute Resolution & Arbitration", "arbitration-and-conciliation"],
- ["globe", "Sustainability & Climate Advisory", "esg-and-sustainability-advisory"],
+ ["globe", "Sustainability & Climate Advisory", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const faqs = [
  ["What approvals are required to start a mining project in India?", "Share the proposed mineral, location, project stage and operating structure with our team. We can help scope the concession, approval and compliance questions for a project-specific review."],

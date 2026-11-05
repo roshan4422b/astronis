@@ -18,21 +18,21 @@ const benefits = [
  ["shield", "Brand Protection", "Protecting brands, logos, trade dress and IP in the hospitality and travel space."],
 ];
 const challenges = [
- ["Growing Tourism Demand", "Hospitality, Travel & Tourism .png", "Leveraging rising domestic and international travel for new business models.", "business-advisory-and-consulting"],
- ["Regulatory & Licensing Complexity", "Aviation, Aerospace & Defence .png", "Navigating multi-layered approvals and changing regulations.", "licensing-and-registrations"],
- ["Franchise & Management Contracts", "Banners-hospitality, Travel & Touris .png", "Structuring sustainable and equitable commercial arrangements.", "contracts"],
- ["Sustainability & Responsible Tourism", "nergy, Power & Renewables .png", "Integrating ESG and responsible tourism practices into business strategy.", "esg-and-sustainability-advisory"],
- ["Global Expansion", "Logistics, Transportation & Warehousing .png", "Supporting market entry, partnerships and cross-border operations.", "cross-border-and-international-business-support"],
+ ["Growing Tourism Demand", "Hospitality, Travel & Tourism .png", "Leveraging rising domestic and international travel for new business models.", "business-advisory-contracts/business-strategy/business-growth-expansion-advisory"],
+ ["Regulatory & Licensing Complexity", "Aviation, Aerospace & Defence .png", "Navigating multi-layered approvals and changing regulations.", "licensing-registrations/business-registrations/trade-health-licence"],
+ ["Franchise & Management Contracts", "Banners-hospitality, Travel & Touris .png", "Structuring sustainable and equitable commercial arrangements.", "business-advisory-contracts/commercial-contracts/franchise-agreements"],
+ ["Sustainability & Responsible Tourism", "nergy, Power & Renewables .png", "Integrating ESG and responsible tourism practices into business strategy.", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
+ ["Global Expansion", "Logistics, Transportation & Warehousing .png", "Supporting market entry, partnerships and cross-border operations.", "fema-fdi-cross-border/odi-compliance-and-support/overseas-direct-investment"],
 ];
 const solutions = [
- ["document", "Licensing & Statutory Approvals", "licensing-and-registrations"],
- ["building", "Hotel & Resort Project Advisory", "rera-and-real-estate-advisory"],
- ["people", "Franchise & Management Agreements", "contracts/commercial-contracts"],
- ["shield", "Food Safety & FSSAI Compliance", "regulatory-and-compliance/fssai"],
- ["file", "Contracts, Procurement & Vendor Management", "contracts/vendor-agreements"],
- ["shield", "IPR, Brand Protection & Anti-Counterfeiting", "intellectual-property/brand-protection"],
- ["scale", "Dispute Resolution & Arbitration", "arbitration-and-conciliation"],
- ["globe", "Sustainability & ESG Advisory", "esg-and-sustainability-advisory"],
+ ["document", "Licensing & Statutory Approvals", "licensing-registrations/business-registrations/trade-health-licence"],
+ ["building", "Hotel & Resort Project Advisory", "business-advisory-contracts/investment-and-transaction-advisory/commercial-due-diligence"],
+ ["people", "Franchise & Management Agreements", "business-advisory-contracts/commercial-contracts/franchise-agreements"],
+ ["shield", "Food Safety & FSSAI Compliance", "regulatory-services/consumer-regulatory-services/food-safety-regulatory-advisory"],
+ ["file", "Contracts, Procurement & Vendor Management", "business-advisory-contracts/commercial-contracts/vendor-supply-agreements"],
+ ["shield", "IPR, Brand Protection & Anti-Counterfeiting", "intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
+ ["scale", "Dispute Resolution & Arbitration", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
+ ["globe", "Sustainability & ESG Advisory", "environmental-technology-sector-specific/esg-and-sustainability/sustainability-framework"],
 ];
 const faqs = [
  ["What licences are required to start a hotel or resort in India?", "Share your proposed location, property details and services with our team. We can help scope the licensing and approval questions for your hotel or resort and plan the relevant advisory work."],

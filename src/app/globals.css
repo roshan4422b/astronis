@@ -376,6 +376,9 @@ main section[class*="hero"] :is(a, button):is(
   min-height: 36px;
   position: relative;
 }
+.utility-inner.home-utility-inner {
+  grid-template-columns: minmax(0, 1.5fr) 36px minmax(0, 1fr);
+}
 .utility-inner > span { grid-column: 1; }
 .utility-inner > .utility-contact { grid-column: 3; justify-self: end; }
 .utility-inner > .utility-search { grid-column: 2; grid-row: 1; justify-self: center; }
@@ -2471,7 +2474,8 @@ textarea::placeholder {
   transform: translateY(-3px);
 }
 .floating-contact.call {
-  left: 19px;
+  right: 19px;
+  bottom: 82px;
 }
 .floating-contact.whatsapp {
   right: 19px;
@@ -3629,17 +3633,18 @@ textarea::placeholder {
     border-radius: 0;
     min-height: 350px;
   }
+  .why-intro .relative {
+    width: 100%;
+    min-width: 0;
+  }
   .why-intro h2 {
-    font-size: max(var(--font-size-min), 54px);
+    font-size: clamp(36px, 11vw, 46px);
   }
   .why-intro p {
     max-width: 450px;
   }
   .why-intro h2 br {
-    display: none;
-  }
-  .why-intro h2 br:after {
-    content: " ";
+    display: initial;
   }
   .reasons-grid {
     padding: 15px 25px 30px;
@@ -3856,7 +3861,8 @@ textarea::placeholder {
     bottom: 17px;
   }
   .floating-contact.call {
-    left: 13px;
+    right: 13px;
+    bottom: 70px;
   }
   .floating-contact.whatsapp {
     right: 13px;
@@ -4145,7 +4151,7 @@ textarea::placeholder {
     height: 32px;
   }
   .why-intro h2 {
-    font-size: max(var(--font-size-min), 46px);
+    font-size: clamp(36px, 11vw, 42px);
   }
 }
 @media (max-width: 1050px) {
@@ -4556,6 +4562,16 @@ textarea::placeholder {
   color: var(--navy);
   box-shadow: 0 4px 0 #d2b471, 0 16px 28px #010f2c2e, 0 3px 7px #010f2c17;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.quick-grid .service-card-content {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+.quick-grid .service-card-title,
+.quick-grid .service-card-description {
+  width: 100%;
+  text-align: center;
 }
 .quick-grid .service-card::before {
   content: "";

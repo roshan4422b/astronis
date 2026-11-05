@@ -226,6 +226,18 @@ const ngoInstitutionalChildRoutes: Record<string, string> = {
     "/services/licensing-registrations/ngo-institutional/csr-related-registrations",
 };
 
+const copyrightChildRoutes: Record<string, string> = {
+  Assignment:
+    "/services/intellectual-property-right-services/copyright/assignment",
+  Licensing:
+    "/services/intellectual-property-right-services/copyright/licensing",
+};
+
+const designsChildRoutes: Record<string, string> = {
+  Enforcement:
+    "/services/intellectual-property-right-services/designs/enforcement",
+};
+
 const businessRegistrationChildRoutes: Record<string, string> = {
   "Import-Export":
     "/services/licensing-registrations/business-registrations/import-export",
@@ -485,6 +497,12 @@ export const services = hierarchy.map((service, index) => ({
       : {}),
     ...(service.slug === "licensing-registrations" && group.slug === "product-industrial"
       ? { childRoutes: productIndustrialChildRoutes }
+      : {}),
+    ...(service.slug === "intellectual-property-right-services" && group.slug === "copyright"
+      ? { childRoutes: copyrightChildRoutes }
+      : {}),
+    ...(service.slug === "intellectual-property-right-services" && group.slug === "designs"
+      ? { childRoutes: designsChildRoutes }
       : {}),
   })) as Capability[],
   highlights: service.subServices.slice(0, 4).map((group) => group.title),

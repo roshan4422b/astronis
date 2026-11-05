@@ -69,13 +69,22 @@ export default function ConsumerRegulatoryDetailPage({
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{group.title.toUpperCase()} SERVICES</span>
             <h1>{detail.title}</h1>
-            <h2 className="service-child-hero-subtitle">{detail.subtitle}</h2>
+            <h2>{detail.subtitle}</h2>
+            <p>{detail.description}</p>
             <div className={styles.actions}>
-              <Link className={styles.secondaryAction} href="/contact">
-                Schedule a Consultation <Icon name="calendar" />
+              <Link className={styles.primaryAction} href="/professionals/enquiry">
+                Request a Consultation <Icon name="arrow" />
+              </Link>
+              <Link className={styles.secondaryAction} href={groupHref}>
+                Explore Regulatory Services <Icon name="globe" />
               </Link>
             </div>
           </div>
+          <aside className={styles.heroNote}>
+            <span>REGULATORY ADVISORY</span>
+            <strong>Understand the rules.<br />Plan the next step.</strong>
+            <p>Service-specific guidance, coordinated around your organisation and operating context.</p>
+          </aside>
         </div>
       </section>
 
@@ -176,6 +185,9 @@ export default function ConsumerRegulatoryDetailPage({
           <ol className={styles.timeline}>
             {detail.process.map((item, index) => (
               <li key={item.title}>
+                <span className={styles.stepNumber} aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               <span className={styles.stepIcon}><Icon name={["search", "scale", "document", "file", "calendar"][index % 5]} /></span>
                 <h3>{item.title}</h3><p>{item.text}</p>
               </li>

@@ -41,7 +41,7 @@ import {
   getRequestedServicePageMetadata,
   getRequestedServicePageStaticParams,
 } from "@/data/requested-service-pages";
-import type { EntityFormationPageData } from "@/data/entity-formation-pages";
+import { entityFormationPages, type EntityFormationPageData } from "@/data/entity-formation-pages";
 import { commercialContractPages } from "@/data/commercial-contract-pages";
 import { contractAndRestructuringPages } from "@/data/contract-and-restructuring-pages";
 import { businessStructuringPages } from "@/data/business-structuring-pages";
@@ -88,6 +88,14 @@ function getHierarchyPageData(
     if (groupSlug === "mergers-acquisitions-and-transactions") {
       return transactionGovernancePages.find((page) => page.slug === childSlug);
     }
+  }
+
+  if (
+    serviceSlug === "licensing-registrations"
+    && groupSlug === "ngo-institutional"
+    && childSlug === "section-8-company"
+  ) {
+    return entityFormationPages.find((page) => page.slug === childSlug);
   }
 }
 
@@ -268,7 +276,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     const { service, group, child } = hierarchy;
     if (!child) permanentRedirect(`/services/${service.canonicalSlug}#${group.slug}`);
     const childRoute = group.childRoutes?.[child];
-    if (childRoute && childRoute.split("/").at(-1) !== slugs[2]) permanentRedirect(childRoute);
+    const currentChildRoute = `/services/${service.canonicalSlug}/${group.slug}/${slugs[2]}`;
+    if (childRoute && childRoute !== currentChildRoute) permanentRedirect(childRoute);
     const additionalServicePage = getAdditionalServiceDetailPage(group.slug, serviceAnchor(child));
     if (additionalServicePage) return <EntityFormationPage data={additionalServicePage} />;
     const hierarchyPageData = getHierarchyPageData(

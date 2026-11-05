@@ -222,7 +222,7 @@ export default async function EuropeanUnionPage() {
             <span aria-current="page">European Union</span>
           </nav>
           <div className={indiaStyles.heroCopy}>
-            <span className={indiaStyles.eyebrow}>Global Presence</span>
+            <span className={indiaStyles.eyebrow}>Regional Desk</span>
             <h1 id="eu-title">{title}</h1>
             <h2>A Unified Market. Expansive Opportunities.</h2>
             <p>{description}</p>

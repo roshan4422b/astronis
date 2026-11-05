@@ -1,0 +1,111 @@
+.processTimeline.processTimeline {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.processTimeline.processTimeline::before {
+  left: 8.333%;
+  right: 8.333%;
+}
+
+.processTimeline.processTimeline > li {
+  min-width: 0;
+}
+
+.processTimeline.processTimeline > li > span[class*="stepIcon"] {
+  margin-inline: auto;
+}
+
+.processTimeline.processTimeline > li > span[class*="stepNum"] {
+  position: absolute;
+  z-index: 2;
+  top: -25px;
+  left: calc(50% - 11px);
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 2px solid #edf4fb;
+  border-radius: 50%;
+  background: #0751db;
+  color: #fff;
+  font: 700 10px/1 Arial, sans-serif;
+}
+
+.processTimeline.processTimeline h3,
+.processTimeline.processTimeline p {
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .processTimeline.processTimeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .processTimeline.processTimeline::before {
+    display: none;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepIcon"] {
+    margin-inline: 0;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepNum"] {
+    top: -25px;
+    left: 0;
+  }
+
+  .processTimeline.processTimeline h3,
+  .processTimeline.processTimeline p {
+    text-align: left;
+  }
+}
+
+@media (max-width: 560px) {
+  .processTimeline.processTimeline {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 15px 0 0;
+    padding-left: 8px;
+  }
+
+  .processTimeline.processTimeline::before {
+    display: block;
+    top: 16px;
+    bottom: 30px;
+    left: 35px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+
+  .processTimeline.processTimeline > li {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    column-gap: 17px;
+    padding: 17px 0;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepIcon"] {
+    grid-row: span 2;
+    width: 52px;
+    height: 52px;
+    margin: 0;
+  }
+
+  .processTimeline.processTimeline > li > span[class*="stepNum"] {
+    top: -6px;
+    left: 0;
+    width: 22px;
+    height: 22px;
+  }
+
+  .processTimeline.processTimeline h3 {
+    grid-column: 2;
+    margin: 0 0 5px;
+    align-self: end;
+  }
+
+  .processTimeline.processTimeline p {
+    grid-column: 2;
+  }
+}

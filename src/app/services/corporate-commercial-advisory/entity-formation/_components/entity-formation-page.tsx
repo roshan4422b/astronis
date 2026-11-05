@@ -91,7 +91,16 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         ["Fees", "fees"],
         ["FAQs", "faqs"],
       ];
+  if (data.audiences) navItems.splice(1, 0, ["Services", "services"], ["Who We Assist", "audience"]);
+  if (data.showPricing === false) {
+    const pricingIndex = navItems.findIndex(([, id]) => id === "fees");
+    if (pricingIndex >= 0) navItems.splice(pricingIndex, 1);
+  }
+  const showTestimonials = data.showTestimonials ?? true;
   const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
+  if (showTestimonials && !sectionNavItems.some((item) => item.id === "testimonials")) {
+    sectionNavItems.push({ id: "testimonials", label: "Testimonials" });
+  }
   const processIcons = ["people", "search", "document", "file", "award", "building", "calendar"];
   const defaultAlternatives = data.slug === "opc"
     ? ["One Person Company", "Private Limited Company", "LLP", "Partnership"]
@@ -99,10 +108,37 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
       ? ["Section 8 Company", "Private Limited Company", "LLP", "Partnership"]
       : ["LLP", "Private Limited Company", "One Person Company", "Partnership"];
   const comparisonHeaders = data.comparisonHeaders ?? defaultAlternatives;
+  const comparisonHasRowHeader = data.comparison.some((row) => row.length > comparisonHeaders.length);
+  const comparisonTableHeaders = comparisonHasRowHeader
+    ? ["Features", ...comparisonHeaders]
+    : comparisonHeaders;
+  const comparisonTableMinWidth = `${Math.max(560, 200 + (comparisonTableHeaders.length - 1) * 176)}px`;
+  const comparisonPanels = data.comparisonPanels?.map((panel) => {
+    const rowCellCount = Math.max(0, ...panel.rows.map((row) => row.length));
+    const hasRowHeader = rowCellCount > panel.headers.length;
+    const headers = hasRowHeader ? [panel.rowHeader ?? "Parameter", ...panel.headers] : panel.headers;
+    return {
+      ...panel,
+      headers,
+      tableMinWidth: `${Math.max(560, 200 + (headers.length - 1) * 176)}px`,
+    };
+  });
   const showInsights = data.showInsights ?? true;
   const showKnowledge = data.showKnowledge ?? true;
   const showReviewActions = data.showReviewActions ?? true;
   const showFeatures = data.showFeatures ?? true;
+  const relatedPages = data.relatedPages ?? [];
+  const investorCoordination = [
+    "Investor Coordination",
+    "/services/corporate-commercial-advisory/investment-and-transaction-advisory/investor-coordination",
+  ] as const;
+  const investmentRelatedPages = data.categoryTitle === "Investment & Transaction Advisory"
+    ? [
+        ...relatedPages.filter(([title]) => title.toLowerCase() !== investorCoordination[0].toLowerCase()),
+        investorCoordination,
+      ]
+    : relatedPages;
+  const isCorporateGovernance = data.categoryTitle === "Corporate Governance";
   const heroServiceSlug = data.serviceHref?.split("/")[2]
     ?? data.categoryHref?.split("/")[2]
     ?? parentService?.canonicalSlug;
@@ -110,7 +146,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id="overview">
+      <section className={`${styles.hero} ${data.heroOverlay === false ? styles.heroNoOverlay : ""} service-child-page-hero`} id={data.showImageOverview ? undefined : "overview"}>
         <Image
           src={heroImage}
           alt={data.imageAlt}
@@ -130,34 +166,81 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}>{data.heroEyebrow ?? "CORPORATE &amp; COMMERCIAL ADVISORY · ENTITY FORMATION"}</span>
             <h1>{data.title}</h1>
-            <h2 className={`service-child-hero-subtitle ${data.heroSubtitleWrap ? styles.heroSubtitleWrap : ""}`}>{data.heroStatement}</h2>
+            <h2 className="service-child-hero-subtitle">{data.heroStatement}</h2>
+            {data.showImageOverview && <p>{data.description}</p>}
             <div className={styles.actions}>
-              <Link className={styles.secondary} href="/contact">Schedule a Consultation <Icon name="calendar" /></Link>
+              {data.showImageOverview && <Link className={styles.primary} href={data.heroPrimaryHref ?? "/professionals/enquiry"}>{data.heroPrimaryAction ?? "Get Started"} <Icon name="arrow" /></Link>}
+              <Link className={styles.secondary} href={data.heroSecondaryHref ?? "/contact"}>{data.heroSecondaryAction ?? "Schedule a Consultation"} <Icon name="calendar" /></Link>
             </div>
           </div>
+          {data.heroNoteTitle && <div className={styles.heroNote}>
+            <span>{data.heroNoteEyebrow ?? "FORMATION WITH A LONG VIEW"}</span>
+            <strong>{data.heroNoteTitle}</strong>
+            {data.heroNoteDescription && <p>{data.heroNoteDescription}</p>}
+            {data.heroNoteDescription && <p>{data.heroNoteDescription}</p>}
+          </div>}
         </div>
       </section>
 
       <ServiceChildPageLayout items={sectionNavItems} includeTestimonial={false}>
+      {data.highlights && <section className={styles.highlights} aria-label={`${data.shortTitle} highlights`}>
+        <div className={`container ${styles.highlightGrid}`}>
+          {data.highlights.map(([icon, title, description]) => (
+            <article key={title}>
+              <span className={styles.icon}><Icon name={icon} /></span>
+              <div><h2>{title}</h2><p>{description}</p></div>
+            </article>
+          ))}
+        </div>
+      </section>}
+
       {data.showIntro !== false && <PageSectionLayout variant="full-width">
-        <section className={styles.intro}>
-        <div className={`container ${styles.introGrid}`}>
+        <section className={styles.intro} id={data.showImageOverview ? "overview" : undefined}>
+        <div className={`container ${styles.introGrid} ${data.showImageOverview ? styles.imageOverview : ""}`}>
+          {data.showImageOverview && <figure className={styles.overviewImage}>
+            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 42vw" />
+            <figcaption>{data.shortTitle}<br /><strong>Clarity for what comes next.</strong></figcaption>
+          </figure>}
           <div>
             <Heading eyebrow={data.shortTitle.toUpperCase()} title={data.introHeading ?? "A clear foundation for your organisation"} />
             <p>{data.description}</p>
             <p>{data.introduction}</p>
+            {data.showImageOverview && <aside className={styles.introPanel}>
+              <span>{data.overviewPanelEyebrow ?? "A CONSIDERED APPROACH"}</span>
+              <h3>{data.overviewPanelTitle ?? "Plan for the next chapter."}</h3>
+              <p>{data.overviewPanelDescription ?? data.introduction}</p>
+            </aside>}
           </div>
-          <aside className={styles.introPanel}>
+          {!data.showImageOverview && <aside className={styles.introPanel}>
             <span>{data.introPanelEyebrow ?? "FORMATION PERSPECTIVE"}</span>
             <h3>{data.introPanelHeading ?? "Start with the way you intend to work."}</h3>
             <p>{data.introPanelDescription ?? "Consider your purpose, participants, responsibilities and plans before settling the formation brief."}</p>
-          </aside>
+          </aside>}
         </div>
         </section>
       </PageSectionLayout>}
 
+      {data.audiences && <section className={styles.audience} id="audience">
+        <div className="container">
+          <Heading
+            eyebrow="WHO WE ASSIST"
+            title={`Advisory for ${data.shortTitle.toLowerCase()}`}
+            text={data.audienceDescription ?? "Support shaped around the organisations, decision-makers and stakeholders involved."}
+          />
+          <div className={styles.audienceGrid}>
+            {data.audiences.map(([icon, title, description]) => (
+              <article className={styles.serviceCard} key={title}>
+                <span className={styles.icon}><Icon name={icon} /></span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>}
+
       <PageSectionLayout variant="full-width">
-        <section className={styles.services}>
+        <section className={`${styles.services} ${data.slug === "branch-office" ? styles.branchOfficeServices : ""}`}>
         <div className="container">
           <Heading
             eyebrow={`OUR SERVICES FOR ${data.shortTitle.toUpperCase()}`}
@@ -165,10 +248,10 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             text={data.servicesDescription ?? "Bring the formation steps and connected requirements into one considered plan."}
           />
           <ServiceCards services={data.services} threeColumns={data.serviceCardsThreeColumns} />
-          {data.relatedPages && (
+          {(investmentRelatedPages.length > 0 || data.relatedPages) && (
             <nav className={styles.relatedPages} aria-label="Related services">
               <span>Explore related services</span>
-              {data.relatedPages.map(([title, href]) => (
+              {investmentRelatedPages.map(([title, href]) => (
                 <Link key={`${title}-${href}`} href={href}>{title}<Icon name="arrow" /></Link>
               ))}
             </nav>
@@ -185,8 +268,8 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
               text={data.introduction}
             />
           </div>
-          <figure className={styles.benefitImage}>
-            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
+          <figure className={`${styles.benefitImage} ${data.slug === "branch-office" ? styles.branchOfficeBenefitImage : ""}`}>
+            <Image src={heroImage} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 38vw" />
             <figcaption>{data.shortTitle}<br /><strong>Considered for your next chapter.</strong></figcaption>
           </figure>
           <div className={`${styles.benefitGrid} ${data.benefitCards ? styles.benefitCards : ""} ${data.benefitCardsStacked ? styles.benefitCardsStacked : ""} ${data.benefitCardsThreeColumns ? styles.benefitCardsThreeColumns : ""} ${data.benefitCardsFourColumns ? styles.benefitCardsFourColumns : ""}`}>
@@ -217,7 +300,13 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </ul>
           </div>
           <figure className={styles.structureImage}>
-            <Image src={data.image} alt={data.imageAlt} fill sizes="(max-width: 850px) 100vw, 42vw" />
+            <Image
+              src={data.image}
+              alt={data.imageAlt}
+              fill
+              sizes="(max-width: 850px) 100vw, 42vw"
+              loading={data.slug === "start-up-msme-investment-advisory" ? "eager" : undefined}
+            />
             <figcaption>Structure for today.<br /><strong>Clarity for what comes next.</strong></figcaption>
           </figure>
         </div>
@@ -233,13 +322,14 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           />
           {data.comparisonPanels ? (
             <div className={styles.comparisonPanels}>
-              {data.comparisonPanels.map((panel) => (
+              {comparisonPanels?.map((panel) => (
                 <article className={styles.comparisonPanel} key={panel.heading}>
                   <h3>{panel.heading}</h3>
                   {panel.description && <p>{panel.description}</p>}
                   <div className={styles.tableWrap} role="region" aria-label={`${panel.heading} comparison`} tabIndex={0}>
-                    <table>
-                      <thead><tr><th>{panel.rowHeader ?? "Parameter"}</th>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
+                    <table style={{ minWidth: panel.tableMinWidth }}>
+                      <colgroup><col style={{ width: 200 }} />{panel.headers.slice(1).map((header) => <col key={header} />)}</colgroup>
+                      <thead><tr>{panel.headers.map((item) => <th key={item}>{item}</th>)}</tr></thead>
                       <tbody>{panel.rows.map((row) => (
                         <tr key={row[0]}>{row.map((cell, index) => <td key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                       ))}</tbody>
@@ -250,8 +340,9 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
             </div>
           ) : (
             <div className={styles.tableWrap} role="region" aria-label={`${data.shortTitle} structure comparison`} tabIndex={0}>
-              <table>
-                <thead><tr><th>Features</th>{comparisonHeaders.map((item, index) => <th className={highlightIndex !== null && index === highlightIndex ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
+              <table style={{ minWidth: comparisonTableMinWidth }}>
+                <colgroup><col style={{ width: 200 }} />{comparisonTableHeaders.slice(1).map((item) => <col key={item} />)}</colgroup>
+                <thead><tr>{comparisonTableHeaders.map((item, index) => <th className={!comparisonHasRowHeader && highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={item}>{item}</th>)}</tr></thead>
                 <tbody>{data.comparison.map((row) => (
                   <tr key={row[0]}>{row.map((cell, index) => <td className={highlightIndex !== null && index === highlightIndex + 1 ? styles.focusCol : ""} key={`${row[0]}-${index}`}>{cell}</td>)}</tr>
                 ))}</tbody>
@@ -266,13 +357,13 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           <section className={styles.structuringDetails} id="structure">
           <div className={`container ${styles.structuringDetailsGrid}`}>
             {data.structureSections.map((section) => (
-              <article className={styles.structuringDetail} key={section.title}>
-                <Heading eyebrow={section.eyebrow} title={section.title} text={section.description} />
+              <article className={`${styles.structuringDetail} ${section.image ? styles.structuringDetailWithImage : ""}`} key={section.title}>
                 {section.image && (
                   <figure>
                     <Image src={section.image} alt={section.imageAlt ?? ""} fill sizes="(max-width: 700px) 100vw, 40vw" />
                   </figure>
                 )}
+                <Heading eyebrow={section.eyebrow} title={section.title} text={section.description} />
                 <ul>{section.items.map((item) => <li key={item}><Icon name="shield" />{item}</li>)}</ul>
               </article>
             ))}
@@ -280,12 +371,17 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </section>
       )}
 
-        <section className={styles.process} id="process">
+        <section className={styles.process} id="process" data-process-icon-right={isCorporateGovernance || undefined}>
         <div className="container">
           <Heading eyebrow={data.processEyebrow ?? (data.slug === "foreign-company-setup" ? "SETUP PROCESS" : data.slug === "partnership-firm" || data.slug === "proprietorship" ? data.slug === "partnership-firm" ? "INCORPORATION PROCESS" : "REGISTRATION PROCESS" : "INCORPORATION PROCESS")} title={data.processHeading ?? "Simple, transparent and timely"} text={data.processDescription ?? "A clear sequence of decisions and filings, coordinated around complete information and authority processing."} />
-          <ol className={styles.timeline}>
+          <ol className={`${styles.timeline} ${data.slug === "branch-office" ? styles.branchTimeline : ""}`}>
             {data.process.map(([title, description], index) => (
               <li key={title}>
+                {data.processNumbers && (
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                )}
                 <span className={styles.stepIcon}><Icon name={processIcons[index] ?? "calendar"} /></span>
                 <h3>{title}</h3><p>{description}</p>
               </li>
@@ -330,7 +426,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </section>
       )}
 
-        <section className={styles.pricing} id="fees">
+        {showPricing && <section className={styles.pricing} id="fees">
         <div className="container">
           <Heading
             eyebrow={data.pricingEyebrow ?? "OUR PROFESSIONAL FEES"}
@@ -358,7 +454,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
           </div>
           {data.priceNote !== null && <p className={styles.priceNote}>{data.priceNote ?? "Government charges, applicable taxes and third-party costs are confirmed separately as part of the proposed scope."}</p>}
         </div>
-        </section>
+        </section>}
       </PageSectionLayout>
 
       {showFeatures && <PageSectionLayout variant="full-width">
@@ -384,7 +480,7 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         </section>
       </PageSectionLayout>
 
-      <ServiceChildTestimonial />
+      {showTestimonials && <ServiceChildTestimonial />}
 
       {showInsights && <PageSectionLayout variant="full-width">
         <section className={styles.insights}>

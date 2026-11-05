@@ -822,7 +822,7 @@ const configs: ServiceDetailConfig[] = [
       ["Arbitration and Conciliation Act, 1996", "May govern disputes covered by an arbitration agreement."],
     ],
     comparisonHeading: "Corporate litigation forums",
-    comparisonHeaders: ["Parameter", "NCLT / NCLAT", "Commercial courts", "Arbitration"],
+    comparisonHeaders: ["NCLT / NCLAT", "Commercial courts", "Arbitration"],
     comparison: [
       ["Jurisdiction", "Company-law matters assigned by statute", "Specified commercial disputes", "Disputes within arbitration agreement"],
       ["Common matters", "Oppression, mismanagement and company remedies", "Contracts and commercial claims", "Private contractual disputes"],
@@ -1709,6 +1709,9 @@ function toPageData(config: ServiceDetailConfig): EntityFormationPageData {
     .filter((item) => item.serviceSlug === config.serviceSlug && item.categorySlug === config.categorySlug && item.slug !== config.slug)
     .slice(0, 5)
     .map((item) => [item.title, `${serviceHref}/${item.categorySlug}/${item.slug}`] as [string, string]);
+  if (config.serviceSlug === litigationService && config.categorySlug === "litigation-justice-delivery") {
+    relatedPages.push(["Civil Litigation", `${serviceHref}/litigation-justice-delivery/civil-litigation`]);
+  }
 
   return {
     slug: config.slug,

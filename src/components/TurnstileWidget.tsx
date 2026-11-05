@@ -22,6 +22,7 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
+  const onErrorRef = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
@@ -40,12 +41,10 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
       sitekey: siteKey,
       callback: (t: string) => cb.current(t),
       "expired-callback": () => {
-        reportError("The CAPTCHA expired. Please complete it again before continuing.");
-        if (idRef.current) window.turnstile?.reset(idRef.current);
+        reportError("The CAPTCHA expired. Please try again.");
+        window.turnstile?.reset(idRef.current ?? undefined);
       },
-      "error-callback": () => {
-        reportError("CAPTCHA could not be verified. Check the site key and allowed domain, then try again.");
-      },
+      "error-callback": () => reportError("Security verification failed. Please try again."),
     });
   }, [isConfigured, reportError, siteKey]);
 
