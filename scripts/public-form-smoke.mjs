@@ -172,6 +172,7 @@ const directSubmissions = [
         email: "test@example.com",
         company: "Example Ltd",
         service: "Corporate Advisory",
+        rating: "5",
         consent: "yes",
         identityPublicationConsent: "yes",
         format: "written",

@@ -16,6 +16,7 @@ import {
   uploadTestimonialMedia,
 } from "@/lib/testimonial-media.server";
 import { SupabaseServiceConfigurationError } from "@/lib/supabase/service";
+import { isSameOriginRequest } from "@/lib/request-origin";
 
 function hasValidMediaSignature(type: string, bytes: Uint8Array) {
   if (type === "image/jpeg") return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
@@ -28,8 +29,7 @@ function hasValidMediaSignature(type: string, bytes: Uint8Array) {
 }
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin)
+  if (!isSameOriginRequest(request))
     return Response.json(
       { message: "This request is not permitted." },
       { status: 403 },
@@ -66,7 +66,8 @@ export async function POST(request: Request) {
     ["name", "email", "company", "designation", "phone", "service"].some(
       (k) => get(k).length > 200,
     ) ||
-    get("message").length > 180
+    get("title").length > 160 ||
+    get("message").length > (format === "written" ? 180 : 5000)
   )
     return Response.json(
       {
@@ -218,13 +219,16 @@ export async function POST(request: Request) {
   const testimonial = {
     name: get("name"),
     email: get("email"),
+    phone: get("phone"),
     company: get("company"),
     designation: get("designation"),
     service: get("service"),
+    title: get("title"),
     rating: Number(get("rating")),
     format,
     text: get("message"),
     excerpt: get("message").slice(0, 240),
+    submittedAt: consentAcceptedAt,
     consent: true,
     identityPublicationConsent: get("identityPublicationConsent") === "yes",
     consentAcceptedAt,

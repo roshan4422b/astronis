@@ -35,20 +35,29 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     .eq("event_status", eventStatus)
     .maybeSingle();
   if (deliveryError) {
+    const code = deliveryError.code || "unknown";
     console.error("[admin-testimonials] Notification retry status lookup failed.", {
-      code: deliveryError.code || "unknown",
+      code,
     });
-    return NextResponse.json({ error: "Could not load notification status." }, { status: 500 });
+    const message = code === "42P01" || code === "PGRST205"
+      ? "Testimonial notification storage is not installed. Apply the testimonial notification migration before sending or retrying emails."
+      : code === "42501"
+        ? "This admin account cannot access testimonial notification storage. Check its RLS policy and grants."
+        : "Could not load notification status. Check the notification migration and admin permissions.";
+    return NextResponse.json({ error: message }, { status: 503 });
   }
-  if (delivery?.delivery_status !== "failed") {
-    return NextResponse.json({ error: "Only a failed notification can be retried." }, { status: 409 });
+  if (delivery && delivery.delivery_status !== "failed") {
+    return NextResponse.json(
+      { error: delivery.delivery_status === "sent" ? "This notification was already sent." : "This notification is already being sent." },
+      { status: 409 },
+    );
   }
 
   const notificationStatus = await sendTestimonialModerationEmail(
     auth.supabase,
     record,
     record.status,
-    { retry: true },
+    delivery?.delivery_status === "failed" ? { retry: true } : {},
   );
   if (notificationStatus === "sent") return NextResponse.json({ notificationStatus });
   if (notificationStatus === "not-retryable" || notificationStatus === "duplicate") {
@@ -59,7 +68,9 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
       notificationStatus,
       error: notificationStatus === "skipped"
         ? "A verified recipient email is not available for this testimonial."
-        : "The notification could not be delivered. The moderation decision was not changed.",
+        : notificationStatus === "failed"
+          ? "The notification could not be delivered. Check the notification migration, admin permissions, and Mailtrap configuration."
+          : "The notification could not be delivered. The moderation decision was not changed.",
     },
     { status: 502 },
   );

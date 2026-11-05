@@ -315,6 +315,10 @@ export default function TestimonialForm({
               </select>
             </label>
             <label>
+              Testimonial Title (optional)
+              <input name="title" maxLength={160} />
+            </label>
+            <label>
               Your Rating *
               <select name="rating" required defaultValue="5">
                 <option value="5">5 — Excellent</option>
@@ -339,49 +343,19 @@ export default function TestimonialForm({
                   />
                   <small className={styles.fieldHint}>20–180 characters · {testimonialText.length}/180</small>
                 </label>
-                <label className="full">
-                  Photograph (optional · JPG/PNG · maximum 3 MB)
-                  <input
-                    ref={photoInput}
-                    name="photo"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/avif"
-                    onChange={(event) => {
-                      const file = event.target.files?.[0];
-                      if (!file) {
-                        setPhotoSelected(false);
-                        setPhotoName("");
-                        return;
-                      }
-                      if (!testimonialImageTypes.has(file.type) || file.size > testimonialImageMaxBytes) {
-                        event.target.value = "";
-                        setPhotoSelected(false);
-                        setPhotoName("");
-                        setStatus("Please choose a supported JPG, PNG, WebP or AVIF photograph up to 3 MB.");
-                        return;
-                      }
-                      setPhotoSelected(true);
-                      setPhotoName(file.name);
-                      setStatus("");
-                    }}
-                  />
-                  {photoName && <span className={styles.uploadSuccess} role="status">✓ {photoName} selected</span>}
-                </label>
-                {photoSelected && (
-                  <label className="consent full">
-                    <input
-                      name="photoPublicationConsent"
-                      type="checkbox"
-                      value="yes"
-                      required
-                      onInvalid={() => setStatus("Please authorise publication of the submitted photograph or remove the photograph.")}
-                    />
-                    <span>I authorise publication of the photograph I submitted with my testimonial.</span>
-                  </label>
-                )}
               </>
             ) : (
               <div className="full">
+                <label className="full">
+                  Testimonial Description (optional)
+                  <textarea
+                    name="message"
+                    rows={4}
+                    maxLength={5000}
+                    value={testimonialText}
+                    onChange={(event) => setTestimonialText(event.target.value)}
+                  />
+                </label>
                 <div className="record-controls">
                   <button
                     type="button"
@@ -459,6 +433,46 @@ export default function TestimonialForm({
                   {videoName && <span className={styles.uploadSuccess} role="status">{recorded ? "✓ Recorded video ready to submit" : `✓ ${videoName} selected for submission`}</span>}
                 </label>
               </div>
+            )}
+            <label className="full">
+              Profile Photograph (optional · JPG, PNG, WebP or AVIF · maximum 3 MB)
+              <input
+                ref={photoInput}
+                name="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/avif"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (!file) {
+                    setPhotoSelected(false);
+                    setPhotoName("");
+                    return;
+                  }
+                  if (!testimonialImageTypes.has(file.type) || file.size > testimonialImageMaxBytes) {
+                    event.target.value = "";
+                    setPhotoSelected(false);
+                    setPhotoName("");
+                    setStatus("Please choose a supported JPG, PNG, WebP or AVIF photograph up to 3 MB.");
+                    return;
+                  }
+                  setPhotoSelected(true);
+                  setPhotoName(file.name);
+                  setStatus("");
+                }}
+              />
+              {photoName && <span className={styles.uploadSuccess} role="status">✓ {photoName} selected</span>}
+            </label>
+            {photoSelected && (
+              <label className="consent full">
+                <input
+                  name="photoPublicationConsent"
+                  type="checkbox"
+                  value="yes"
+                  required
+                  onInvalid={() => setStatus("Please authorise publication of the submitted photograph or remove the photograph.")}
+                />
+                <span>I authorise publication of the photograph I submitted with my testimonial.</span>
+              </label>
             )}
             <label className="honey" aria-hidden="true">
               Website

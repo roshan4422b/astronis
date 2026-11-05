@@ -98,10 +98,38 @@ const {
   isVerifiedTestimonialEmail,
 } = await import("../src/lib/form-verification.server.ts");
 const { getFormVerification } = await import("../src/lib/form-verification.client.ts");
+const { isSameOriginRequest } = await import("../src/lib/request-origin.ts");
 const {
   isSupportedTestimonialVideoUrl,
   isTestimonialMediaPath,
 } = await import("../src/lib/testimonial-media.ts");
+
+test("same-origin validation accepts the public host behind local and forwarded hosts only", () => {
+  const request = (url, origin, headers = {}) => new Request(url, {
+    headers: { origin, ...headers },
+  });
+
+  assert.equal(isSameOriginRequest(request(
+    "http://localhost:3000/api/verification/send-enquiry-otp",
+    "http://localhost:3000",
+  )), true);
+  assert.equal(isSameOriginRequest(request(
+    "http://localhost:3000/api/verification/send-enquiry-otp",
+    "http://127.0.0.1:3000",
+    { host: "127.0.0.1:3000" },
+  )), true);
+  assert.equal(isSameOriginRequest(request(
+    "http://internal:3000/api/verification/send-enquiry-otp",
+    "https://preview.example",
+    { host: "internal:3000", "x-forwarded-host": "preview.example", "x-forwarded-proto": "https" },
+  )), true);
+  assert.equal(isSameOriginRequest(request(
+    "http://localhost:3000/api/verification/send-enquiry-otp",
+    "https://attacker.example",
+    { host: "localhost:3000" },
+  )), false);
+  assert.equal(isSameOriginRequest(new Request("http://localhost:3000/api/verification/send-enquiry-otp")), true);
+});
 
 test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
   const [route, form, otpComponent, sendOtpRoute, verifyOtpRoute, migration] = await Promise.all([
@@ -131,9 +159,10 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.match(form, /request\.open\("POST", new URL\("\/api\/testimonials", window\.location\.origin\)\.toString\(\)\)/);
   assert.match(otpComponent, /fetch\(new URL\("\/api\/verification\/send-enquiry-otp", window\.location\.origin\)/);
   assert.match(otpComponent, /fetch\(new URL\("\/api\/verification\/verify-otp", window\.location\.origin\)/);
-  assert.match(route, /origin !== new URL\(request\.url\)\.origin/);
-  assert.match(sendOtpRoute, /origin !== new URL\(request\.url\)\.origin/);
-  assert.match(verifyOtpRoute, /origin !== new URL\(request\.url\)\.origin/);
+  assert.match(route, /isSameOriginRequest\(request\)/);
+  assert.match(sendOtpRoute, /isSameOriginRequest\(request\)/);
+  assert.match(verifyOtpRoute, /isSameOriginRequest\(request\)/);
+  assert.match(otpComponent, /!\s*captchaDisplayOnly\s*&&\s*\(/);
   assert.match(route, /data\.set\("status", "pending-review"\)/);
   assert.match(route, /serviceClient\.from\("cms_content"\)\.insert\(\{\s*collection: "testimonials"/);
   assert.match(route, /emailVerified: true/);
@@ -170,6 +199,26 @@ test("testimonial ratings and public approved-state projection stay aligned", as
   assert.match(migration, /content\.data->'identityPublicationConsent' = 'true'::jsonb/);
 });
 
+test("public testimonial submissions preserve optional video details and profile image metadata", async () => {
+  const [form, submission, adminUi] = await Promise.all([
+    readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(form, /name="title" maxLength=\{160\}/);
+  assert.match(form, /Testimonial Description \(optional\)/);
+  assert.match(form, /name="photo"/);
+  assert.match(form, /name="photoPublicationConsent"/);
+  assert.match(submission, /phone: get\("phone"\)/);
+  assert.match(submission, /title: get\("title"\)/);
+  assert.match(submission, /submittedAt: consentAcceptedAt/);
+  assert.match(submission, /imagePath,\s*videoPath,/);
+  assert.match(submission, /status: "pending"/);
+  assert.match(adminUi, /options=\{\["All testimonial types", "Text testimonials", "Video testimonials", "Image \/ media"\]\}/);
+  assert.match(adminUi, /<video src=\{safeVideoUrl\(selected\.videoUrl\)\} controls/);
+  assert.match(adminUi, /selected\.imageUrl && safeVideoUrl\(selected\.imageUrl\)/);
+});
+
 test("testimonial decisions require authorized transitions and idempotent email notification", async () => {
   const [adminRoute, notifier, retryRoute, adminUi] = await Promise.all([
     readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
@@ -178,7 +227,8 @@ test("testimonial decisions require authorized transitions and idempotent email 
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
   ]);
   assert.match(adminRoute, /const auth = await getAuthorizedAdmin\(\)/);
-  assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "rejected"\)/);
+  assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "rejected" \|\| nextStatus === "archived"\)/);
+  assert.match(adminRoute, /currentStatus === "rejected" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "archived"\)/);
   assert.match(adminUi, /pendingDecision\.status === "Approved" \? "published"/);
   assert.match(adminRoute, /if \(collection === "testimonials"\) \{ revalidatePath\("\/"\); revalidatePath\("\/insights-events"\); \}/);
   assert.match(adminRoute, /testimonials: "\/testimonials"/);
@@ -192,7 +242,11 @@ test("testimonial decisions require authorized transitions and idempotent email 
   assert.match(notifier, /Your Testimonial Has Been Approved – Astronis Global/);
   assert.match(notifier, /Update Regarding Your Testimonial – Astronis Global/);
   assert.match(retryRoute, /getAuthorizedAdmin\(\)/);
-  assert.match(retryRoute, /Only a failed notification can be retried/);
+  assert.match(retryRoute, /This notification was already sent/);
+  assert.match(retryRoute, /delivery\?\.delivery_status === "failed" \? \{ retry: true \} : \{\}/);
+  assert.match(retryRoute, /Apply the testimonial notification migration/);
+  assert.match(adminRoute, /email notification status is unavailable \(\$\{code\}\)/);
+  assert.match(adminUi, /"Send email notification"/);
   assert.match(adminUi, /Reason for rejection/);
   assert.match(adminUi, /Retry email notification/);
 });
@@ -208,7 +262,7 @@ test("admin testimonial records remain visible when notification status lookup f
     adminRoute.indexOf("return NextResponse.json({ records: hydratedRecords"),
   );
   assert.match(notificationLookup, /Notification status query failed/);
-  assert.match(notificationLookup, /warning = "Testimonials loaded/);
+  assert.match(notificationLookup, /warning = `Testimonials loaded/);
   assert.doesNotMatch(notificationLookup, /return errorResponse/);
   assert.match(adminRoute, /return NextResponse\.json\(\{ records: hydratedRecords, \.\.\.\(warning \? \{ warning \} : \{\}\) \}\)/);
   assert.match(adminState, /loadWarning: text\(contentPayload\.warning\)/);
@@ -241,7 +295,7 @@ test("reports missing testimonial Supabase service configuration without exposin
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
 });
 
-test("keeps Turnstile visible but non-blocking in testimonial forms", async () => {
+test("keeps Turnstile optional and hides the unverified display-only widget", async () => {
   const [widget, form, sendRoute, verifyRoute] = await Promise.all([
     readFile(new URL("../src/components/TurnstileWidget.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/testimonials/testimonial-form.tsx", import.meta.url), "utf8"),
@@ -252,8 +306,9 @@ test("keeps Turnstile visible but non-blocking in testimonial forms", async () =
   assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
   assert.doesNotMatch(form, /captchaToken|CAPTCHA expired/);
   const verification = await readFile(new URL("../src/app/_components/email-otp-verification.tsx", import.meta.url), "utf8");
-  assert.match(verification, /captchaDisplayOnly \? \(\) => \{\} : updateCaptchaToken/);
-  assert.match(verification, /captchaDisplayOnly \? undefined : setStatus/);
+  assert.match(verification, /!\s*captchaDisplayOnly\s*&&\s*\(/);
+  assert.match(verification, /onToken=\{updateCaptchaToken\}/);
+  assert.match(verification, /onError=\{setStatus\}/);
   assert.match(verification, /!captchaDisplayOnly && <input type="hidden" name="captchaToken"/);
   assert.match(verification, /const captchaRequiredForOtp = !captchaOptional && !captchaDisplayOnly/);
   assert.match(verification, /captchaRequiredForOtp && !captchaToken/);
