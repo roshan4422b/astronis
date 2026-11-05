@@ -27,6 +27,7 @@
 .portraitLabel { position: absolute; bottom: 22px; left: 15px; right: 15px; z-index: 1; color: #fff; font-size: max(var(--font-size-min), 9px); letter-spacing: .19em; text-align: center; }
 .profile { display: flex; flex-direction: column; align-items: flex-start; padding: 27px 23px; }
 .role { color: #0863af; font-size: max(var(--font-size-min), 9px); letter-spacing: .12em; font-weight: 600; text-transform: uppercase; margin-bottom: 9px; }
+.founderRole { color: #000; }
 .profile h3 { font: 400 clamp(23px, 2vw, 29px)/1.15 Georgia, serif; letter-spacing: -.02em; margin-bottom: 12px; }
 .profile .education { font-size: max(var(--font-size-min), 12px); color: #244b76; font-weight: 600; }
 .profile .enrolment { font-size: max(var(--font-size-min), 11px); color: #607590; margin-top: 3px; }

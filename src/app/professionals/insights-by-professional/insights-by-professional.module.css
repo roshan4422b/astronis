@@ -1013,8 +1013,8 @@
 }
 
 .professionalPhoto img {
-  object-fit: cover;
-  object-position: center 30%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .professionalPhoto > span {
@@ -1201,7 +1201,7 @@
   }
 
   .professionalPhoto {
-    aspect-ratio: 1.25;
+    aspect-ratio: 1.5;
   }
 
   .professionalInfo {
