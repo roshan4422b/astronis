@@ -97,7 +97,6 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
     const pricingIndex = navItems.findIndex(([, id]) => id === "fees");
     if (pricingIndex >= 0) navItems.splice(pricingIndex, 1);
   }
-  const showPricing = data.showPricing ?? true;
   const showTestimonials = data.showTestimonials ?? true;
   const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
   if (showTestimonials && !sectionNavItems.some((item) => item.id === "testimonials")) {
