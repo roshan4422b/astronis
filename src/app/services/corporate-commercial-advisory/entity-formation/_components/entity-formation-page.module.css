@@ -471,6 +471,92 @@
   gap: 62px;
 }
 
+.highlights {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.highlightGrid article {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.highlightGrid .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.highlightGrid .icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.highlightGrid h2 {
+  margin: 0 0 4px;
+  color: var(--navy);
+  font: 700 12px / 1.35 Arial, sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.highlightGrid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.imageOverview {
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 46px;
+}
+
+.overviewImage {
+  position: relative;
+  min-height: 430px;
+  margin: 0;
+  overflow: hidden;
+  background: #123557;
+}
+
+.overviewImage::after {
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(0deg, #061e3be8, transparent);
+  content: "";
+}
+
+.overviewImage img {
+  object-fit: cover;
+}
+
+.overviewImage figcaption {
+  position: absolute;
+  z-index: 1;
+  bottom: 24px;
+  left: 24px;
+  color: white;
+  font: 22px / 1.35 Georgia, serif;
+}
+
+.overviewImage figcaption strong {
+  color: #e8c78e;
+  font-weight: 400;
+}
+
+.imageOverview .introPanel {
+  margin-top: 24px;
+}
+
 .introGrid > div > p {
   color: var(--muted);
   font-size: max(var(--font-size-min), 17px);
@@ -492,6 +578,18 @@
   margin-bottom: 0;
   color: var(--muted);
   font-size: max(var(--font-size-min), 15px);
+}
+
+.audience {
+  padding: 76px 0;
+  background: #f3f7fb;
+  scroll-margin-top: 120px;
+}
+
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .serviceGrid {
@@ -1968,6 +2066,11 @@
 }
 
 @media (max-width: 1000px) {
+  .highlightGrid,
+  .audienceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .comparisonPanels {
     grid-template-columns: 1fr;
   }
@@ -2198,6 +2301,19 @@
   .prosConsGrid {
     grid-template-columns: 1fr;
     gap: 34px;
+  }
+
+  .imageOverview {
+    gap: 30px;
+  }
+
+  .overviewImage {
+    min-height: 290px;
+  }
+
+  .highlightGrid,
+  .audienceGrid {
+    grid-template-columns: 1fr;
   }
 
   .benefitLayout > .heading,

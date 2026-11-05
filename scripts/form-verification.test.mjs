@@ -197,6 +197,24 @@ test("testimonial decisions require authorized transitions and idempotent email 
   assert.match(adminUi, /Retry email notification/);
 });
 
+test("admin testimonial records remain visible when notification status lookup fails", async () => {
+  const [adminRoute, adminState, adminWorkspace] = await Promise.all([
+    readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/admin/_components/admin-state.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/admin/_components/admin-workspace.tsx", import.meta.url), "utf8"),
+  ]);
+  const notificationLookup = adminRoute.slice(
+    adminRoute.indexOf('from("cms_testimonial_notification_deliveries")'),
+    adminRoute.indexOf("return NextResponse.json({ records: hydratedRecords"),
+  );
+  assert.match(notificationLookup, /Notification status query failed/);
+  assert.match(notificationLookup, /warning = "Testimonials loaded/);
+  assert.doesNotMatch(notificationLookup, /return errorResponse/);
+  assert.match(adminRoute, /return NextResponse\.json\(\{ records: hydratedRecords, \.\.\.\(warning \? \{ warning \} : \{\}\) \}\)/);
+  assert.match(adminState, /loadWarning: text\(contentPayload\.warning\)/);
+  assert.match(adminWorkspace, /loadState === "ready" && loadWarning/);
+});
+
 test("reports missing testimonial Supabase service configuration without exposing credentials", async () => {
   const [service, route] = await Promise.all([
     readFile(new URL("../src/lib/supabase/service.ts", import.meta.url), "utf8"),
