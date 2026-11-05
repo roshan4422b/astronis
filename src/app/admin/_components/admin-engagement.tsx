@@ -675,6 +675,7 @@ export function TestimonialsManagement() {
   const { testimonials, setTestimonials } = useAdminState();
   const [query, setQuery] = useState("");
   const [approvalFilter, setApprovalFilter] = useState("All approval statuses");
+  const [typeFilter, setTypeFilter] = useState("All testimonial types");
   const [consentFilter, setConsentFilter] = useState("All consent statuses");
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -686,7 +687,7 @@ export function TestimonialsManagement() {
   const [deletingTestimonial, setDeletingTestimonial] = useState(false);
   const deletingTestimonialRef = useRef(false);
   const [testimonialEdit, setTestimonialEdit] = useState({
-    name: "", email: "", title: "", company: "", designation: "", service: "", text: "", internalNotes: "",
+    name: "", email: "", phone: "", title: "", company: "", designation: "", service: "", text: "", internalNotes: "",
     format: "written" as "written" | "video",
     photoPublicationConsent: false,
     imagePath: "", imageUrl: "", videoPath: "", videoUrl: "", videoSource: "",
@@ -698,18 +699,26 @@ export function TestimonialsManagement() {
   const triggerRef = useRef<HTMLElement | null>(null);
   const filtered = testimonials.filter((testimonial) => {
     const search = query.trim().toLowerCase();
-    return (!search || `${testimonial.name} ${testimonial.text}`.toLowerCase().includes(search))
-      && (approvalFilter === "All approval statuses" || testimonial.approvalStatus === approvalFilter)
+    const hasImage = Boolean(testimonial.imagePath || testimonial.imageUrl);
+    const isVideo = testimonial.format === "video";
+    return (!search || `${testimonial.name} ${testimonial.email || ""} ${testimonial.company} ${testimonial.text}`.toLowerCase().includes(search))
+      && (approvalFilter === "All approval statuses" ||
+        (approvalFilter === "Published" ? testimonial.approvalStatus === "Approved" : testimonial.approvalStatus === approvalFilter))
+      && (typeFilter === "All testimonial types" ||
+        (typeFilter === "Text testimonials" && !isVideo) ||
+        (typeFilter === "Video testimonials" && isVideo) ||
+        (typeFilter === "Image / media" && hasImage))
       && (consentFilter === "All consent statuses" || testimonial.consentStatus === consentFilter);
   });
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize).map((testimonial) => [
     <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
     <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
+    <span key="type">{testimonial.format === "video" ? "Video" : "Text"}{testimonial.imagePath || testimonial.imageUrl ? " · Image" : ""}</span>,
     <span key="rating" aria-label={`${testimonial.rating ?? 5} out of 5 stars`}>{"★".repeat(testimonial.rating ?? 5)}</span>,
     displayDate(testimonial.date),
     <StatusBadge key="consent" status={testimonial.consentStatus} />,
-    <StatusBadge key="approval" status={testimonial.approvalStatus} />,
+    <StatusBadge key="approval" status={testimonial.approvalStatus === "Approved" ? "Published" : testimonial.approvalStatus} />,
     <div className="admin-engagement-actions" key="actions">
       <button type="button" className="admin-text-action" onClick={(event) => {
         triggerRef.current = event.currentTarget;
@@ -720,6 +729,7 @@ export function TestimonialsManagement() {
         setTestimonialEdit({
           name: testimonial.name,
           email: testimonial.email || "",
+          phone: testimonial.phone || "",
           title: testimonial.title || "",
           company: testimonial.company || "",
           designation: testimonial.designation || "",
@@ -791,6 +801,7 @@ export function TestimonialsManagement() {
           data: {
             name,
             email: testimonialEdit.email.trim(),
+            phone: testimonialEdit.phone.trim(),
             title: testimonialEdit.title.trim(),
             company: testimonialEdit.company.trim(),
             designation: testimonialEdit.designation.trim(),
@@ -940,13 +951,14 @@ export function TestimonialsManagement() {
   const clearFilters = () => {
     setQuery("");
     setApprovalFilter("All approval statuses");
+    setTypeFilter("All testimonial types");
     setConsentFilter("All consent statuses");
     setPage(1);
   };
 
   const counts = {
     pending: testimonials.filter((item) => item.approvalStatus === "Pending").length,
-    approved: testimonials.filter((item) => item.approvalStatus === "Approved").length,
+    published: testimonials.filter((item) => item.approvalStatus === "Approved").length,
     rejected: testimonials.filter((item) => item.approvalStatus === "Rejected").length,
   };
 
@@ -960,7 +972,7 @@ export function TestimonialsManagement() {
       <div className="admin-stat-grid admin-engagement-stats">
         <StatCard label="Total Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" />
         <StatCard label="Pending Review" value={String(counts.pending)} change="Awaiting moderation" icon="drafts" />
-        <StatCard label="Approved" value={String(counts.approved)} change="Published where consent allows" icon="check" />
+        <StatCard label="Published" value={String(counts.published)} change="Visible where consent allows" icon="check" />
         <StatCard label="Rejected" value={String(counts.rejected)} change="Moderation status" icon="close" />
       </div>
       {notice ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{notice}</span><button type="button" onClick={() => setNotice("")}>Dismiss</button></div> : null}
@@ -968,10 +980,16 @@ export function TestimonialsManagement() {
         <div className="admin-toolbar admin-engagement-toolbar">
           <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder="Search by name or testimonial..." />
           <FilterDropdown
-            label="Filter by approval status"
+            label="Filter by publication status"
             value={approvalFilter}
-            options={["All approval statuses", "Pending", "Approved", "Rejected", "Archived"]}
+            options={["All approval statuses", "Pending", "Published", "Rejected", "Archived"]}
             onChange={(value) => { setApprovalFilter(value); setPage(1); }}
+          />
+          <FilterDropdown
+            label="Filter by testimonial type or media"
+            value={typeFilter}
+            options={["All testimonial types", "Text testimonials", "Video testimonials", "Image / media"]}
+            onChange={(value) => { setTypeFilter(value); setPage(1); }}
           />
           <FilterDropdown
             label="Filter by consent status"
@@ -979,12 +997,12 @@ export function TestimonialsManagement() {
             options={["All consent statuses", "Granted", "Not granted"]}
             onChange={(value) => { setConsentFilter(value); setPage(1); }}
           />
-          {query || approvalFilter !== "All approval statuses" || consentFilter !== "All consent statuses"
+          {query || approvalFilter !== "All approval statuses" || typeFilter !== "All testimonial types" || consentFilter !== "All consent statuses"
             ? <button type="button" className="admin-filter-reset" onClick={clearFilters}>Clear Filters</button>
             : null}
         </div>
         <DataTable
-          columns={["Name", "Testimonial Excerpt", "Rating", "Submission Date", "Consent Status", "Approval Status", "Actions"]}
+          columns={["Name", "Testimonial Excerpt", "Type / Media", "Rating", "Submission Date", "Consent Status", "Publication Status", "Actions"]}
           rows={rows}
           emptyMessage="No testimonials match these filters."
         />
@@ -1001,6 +1019,7 @@ export function TestimonialsManagement() {
                 <div className="admin-engagement-fields">
                   <label className="admin-field"><span>Contributor Name <i>*</i></span><input value={testimonialEdit.name} onChange={(event) => setTestimonialEdit((current) => ({ ...current, name: event.target.value }))} /></label>
                   <label className="admin-field"><span>Email Address</span><input type="email" value={testimonialEdit.email} onChange={(event) => setTestimonialEdit((current) => ({ ...current, email: event.target.value }))} /></label>
+                  <label className="admin-field"><span>Phone</span><input type="tel" value={testimonialEdit.phone} onChange={(event) => setTestimonialEdit((current) => ({ ...current, phone: event.target.value }))} /></label>
                   <label className="admin-field"><span>Testimonial Title</span><input value={testimonialEdit.title} onChange={(event) => setTestimonialEdit((current) => ({ ...current, title: event.target.value }))} /></label>
                   <label className="admin-field"><span>Company</span><input value={testimonialEdit.company} onChange={(event) => setTestimonialEdit((current) => ({ ...current, company: event.target.value }))} /></label>
                   <label className="admin-field"><span>Designation</span><input value={testimonialEdit.designation} onChange={(event) => setTestimonialEdit((current) => ({ ...current, designation: event.target.value }))} /></label>
@@ -1035,6 +1054,7 @@ export function TestimonialsManagement() {
               <dl className="admin-detail-list">
                 <div><dt>Name</dt><dd>{selected.name}</dd></div>
                 {selected.email ? <div><dt>Email</dt><dd>{selected.email}</dd></div> : null}
+                {selected.phone ? <div><dt>Phone</dt><dd>{selected.phone}</dd></div> : null}
                 {selected.title ? <div><dt>Title</dt><dd>{selected.title}</dd></div> : null}
                 {selected.company ? <div><dt>Company</dt><dd>{selected.company}</dd></div> : null}
                 {selected.designation ? <div><dt>Designation</dt><dd>{selected.designation}</dd></div> : null}
@@ -1044,7 +1064,7 @@ export function TestimonialsManagement() {
                 <div><dt>Consent status</dt><dd><StatusBadge status={selected.consentStatus} /></dd></div>
                 <div><dt>Identity publication consent</dt><dd>{selected.identityPublicationConsent ? "Granted" : "Not granted"}</dd></div>
                 {selected.imagePath || selected.photoPublicationConsent || (selected.mediaSubmitted && selected.format === "written") ? <div><dt>Customer image consent</dt><dd>{selected.photoPublicationConsent ? "Granted" : "Not granted"}</dd></div> : null}
-                <div><dt>Approval status</dt><dd><StatusBadge status={selected.approvalStatus} /></dd></div>
+                <div><dt>Publication status</dt><dd><StatusBadge status={selected.approvalStatus === "Approved" ? "Published" : selected.approvalStatus} /></dd></div>
                 {selected.decisionAt ? <div><dt>Decision date</dt><dd>{displayDate(selected.decisionAt)}</dd></div> : null}
                 {selected.rejectionReason ? <div className="admin-detail-message"><dt>Rejection reason</dt><dd>{selected.rejectionReason}</dd></div> : null}
                 {selected.notificationStatus ? <div><dt>Notification status</dt><dd><StatusBadge status={selected.notificationStatus} /></dd></div> : null}
@@ -1074,7 +1094,7 @@ export function TestimonialsManagement() {
               <div className="admin-moderation-actions">
                 <button type="button" className="admin-button admin-button-secondary" onClick={() => {
                   setTestimonialEdit({
-                    name: selected.name, email: selected.email || "", title: selected.title || "",
+                    name: selected.name, email: selected.email || "", phone: selected.phone || "", title: selected.title || "",
                     company: selected.company || "", designation: selected.designation || "",
                     service: selected.service || "", text: selected.text, internalNotes: selected.internalNotes || "",
                     format: selected.format === "video" ? "video" : "written",
@@ -1102,7 +1122,7 @@ export function TestimonialsManagement() {
                     {status}
                   </button>
                 )) : null}
-                {selected.approvalStatus === "Approved" ? (
+                {selected.approvalStatus !== "Archived" ? (
                   <button type="button" className="admin-button admin-button-secondary" onClick={() => updateApproval(selected, "Archived")}>Archive</button>
                 ) : null}
                 {selected.approvalStatus === "Archived" ? (

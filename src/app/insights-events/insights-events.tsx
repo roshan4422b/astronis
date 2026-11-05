@@ -369,11 +369,31 @@ function FeaturedInsightCards({
   );
 }
 
-export default function InsightsEvents() {
+type CmsEvent = {
+  slug: string;
+  title: string;
+  description: string;
+  featuredImage: string;
+  author: string;
+};
+
+export default function InsightsEvents({ cmsEvents = [] }: { cmsEvents?: CmsEvent[] }) {
   const [query, setQuery] = useState("");
   const [regulator, setRegulator] = useState<(typeof regulatoryTabs)[number]>("All");
   const [court, setCourt] = useState<(typeof courtTabs)[number]>("Supreme Court");
   const normalizedQuery = query.trim().toLowerCase();
+  const visibleCmsEvents = cmsEvents
+    .map((event): HubInsight => ({
+      title: event.title,
+      category: "Events",
+      description: event.description,
+      image: event.featuredImage || globalImages.eventsImage,
+      href: `/insights/${event.slug}`,
+      author: event.author || undefined,
+      source: "Astronis Global Events",
+      searchTerms: `${event.title} ${event.description} events`,
+    }))
+    .filter((event) => !normalizedQuery || formatSearchText(event).includes(normalizedQuery));
   const searchResults = useMemo(
     () => normalizedQuery
       ? deduplicatedInsights.filter((insight) => formatSearchText(insight).includes(normalizedQuery))
@@ -494,6 +514,13 @@ export default function InsightsEvents() {
             ))}
           </div>
         </section>
+
+        {visibleCmsEvents.length > 0 && (
+          <section className={styles.section} id="cms-events">
+            <SectionHeading title="Events" href="/insights" action="View All Insights & Events" />
+            <FeaturedInsightCards insights={visibleCmsEvents} />
+          </section>
+        )}
 
         <section className={styles.section} id="featured-insights">
           <SectionHeading title={normalizedQuery ? "Search Results" : "Corporate Advisory"} href="/insights/corporate-advisory" action="View All 20 Articles" />

@@ -49,6 +49,7 @@ function revalidateContent(collection: string, slug: string, sourcePath?: string
     seo: `/${slug.replace(/^\/+/, "")}`,
   };
   if (paths[collection]) revalidatePath(paths[collection]);
+  if (collection === "insights") revalidatePath("/insights-events");
   if (["services", "industries", "professionals", "global-presence", "technology", "insights"].includes(collection)) {
     const listings: Record<string, string> = {
       services: "/services", industries: "/industries", professionals: "/professionals",
@@ -108,6 +109,7 @@ async function cleanupUnreferencedTestimonialMedia(
 }
 
 export async function GET(request: Request) {
+  try {
   const auth = await getAuthorizedAdmin();
   if (!auth.configured) return errorResponse("Supabase is not configured.", 503);
   if (!auth.user || !auth.supabase) return errorResponse("Authentication required.", 401);
@@ -169,12 +171,22 @@ export async function GET(request: Request) {
         (deliveries ?? []).map((delivery) => [`${delivery.testimonial_id}:${delivery.event_status}`, delivery.delivery_status]),
       );
       for (const record of persistedTestimonials) {
-        const eventStatus = record.status === "rejected" ? "rejected" : "published";
-        record.notification_status = deliveryByEvent.get(`${record.id}:${eventStatus}`);
+        const eventStatus = record.status === "rejected"
+          ? "rejected"
+          : record.status === "approved" || record.status === "published"
+            ? "published"
+            : "";
+        if (eventStatus) record.notification_status = deliveryByEvent.get(`${record.id}:${eventStatus}`);
       }
     }
   }
   return NextResponse.json({ records: hydratedRecords, ...(warning ? { warning } : {}) });
+  } catch (error) {
+    console.error("[admin-cms] Data request failed.", {
+      error: error instanceof Error ? error.name : "UnknownError",
+    });
+    return errorResponse("Could not load CMS data. Check the local server logs for details.", 500);
+  }
 }
 
 export async function POST(request: Request) {
@@ -418,8 +430,9 @@ export async function PATCH(request: Request) {
     const currentStatus = existingRecord.status;
     const nextStatus = updates.status;
     const allowedTransition =
-      currentStatus === "pending" && (nextStatus === "approved" || nextStatus === "published" || nextStatus === "rejected") ||
+      currentStatus === "pending" && (nextStatus === "approved" || nextStatus === "published" || nextStatus === "rejected" || nextStatus === "archived") ||
       (currentStatus === "approved" || currentStatus === "published") && nextStatus === "archived" ||
+      currentStatus === "rejected" && (nextStatus === "approved" || nextStatus === "published" || nextStatus === "archived") ||
       currentStatus === "archived" && (nextStatus === "approved" || nextStatus === "published");
     if (!allowedTransition) {
       return errorResponse("This testimonial status transition is not permitted.", 409);

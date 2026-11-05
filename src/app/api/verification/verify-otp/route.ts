@@ -1,10 +1,10 @@
 import { isValidVerificationEmail, verifyEmailOtp } from "@/lib/form-verification.server";
+import { isSameOriginRequest } from "@/lib/request-origin";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) {
+  if (!isSameOriginRequest(request)) {
     return Response.json({ message: "This request is not permitted." }, { status: 403 });
   }
   let body: { email?: unknown; code?: unknown };

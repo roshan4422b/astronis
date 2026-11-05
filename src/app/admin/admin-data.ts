@@ -16,6 +16,7 @@ export const insightsCategories = [
   "Downloads",
   "FAQs",
   "Case Studies & Success Stories",
+  "Events",
 ];
 
 export const demoInsights = [

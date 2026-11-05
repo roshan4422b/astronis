@@ -51,6 +51,7 @@ export type AdminTestimonial = {
   consentStatus: TestimonialConsentStatus;
   approvalStatus: TestimonialApprovalStatus;
   email?: string;
+  phone?: string;
   title?: string;
   internalNotes?: string;
   identityPublicationConsent?: boolean;
@@ -162,6 +163,33 @@ type EnquiryRow = {
 };
 const text = (value: unknown) => typeof value === "string" ? value : "";
 
+async function readAdminApiResponse(response: Response, endpoint: string) {
+  const contentType = response.headers.get("content-type") || "unknown content type";
+  const body = await response.text();
+  let payload: Record<string, unknown>;
+  try {
+    const parsed: unknown = JSON.parse(body);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      throw new Error("Invalid response shape");
+    }
+    payload = parsed as Record<string, unknown>;
+  } catch {
+    const redirectedTo = response.url ? new URL(response.url).pathname : "";
+    const redirectNote = redirectedTo && redirectedTo !== endpoint ? ` Redirected to ${redirectedTo}.` : "";
+    throw new Error(
+      `${endpoint} returned a non-JSON response (HTTP ${response.status}, ${contentType}).${redirectNote} Check the Admin sign-in state and local server logs.`,
+    );
+  }
+  if (!response.ok) {
+    throw new Error(
+      typeof payload.error === "string"
+        ? `${endpoint} (HTTP ${response.status}): ${payload.error}`
+        : `${endpoint} returned HTTP ${response.status}.`,
+    );
+  }
+  return payload;
+}
+
 const initialSnapshot: AdminSnapshot = {
   sidebarCollapsed: false,
   feedback: "",
@@ -245,10 +273,8 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
           fetch("/api/admin/data?collection=all", { cache: "no-store" }),
           fetch("/api/admin/data?collection=enquiries", { cache: "no-store" }),
         ]);
-        const contentPayload = await contentResponse.json();
-        const enquiryPayload = await enquiryResponse.json();
-        if (!contentResponse.ok) throw new Error(contentPayload.error || "Could not load CMS content.");
-        if (!enquiryResponse.ok) throw new Error(enquiryPayload.error || "Could not load enquiries.");
+        const contentPayload = await readAdminApiResponse(contentResponse, "/api/admin/data?collection=all");
+        const enquiryPayload = await readAdminApiResponse(enquiryResponse, "/api/admin/data?collection=enquiries");
         if (!active) return;
         const contentRows: CmsRow[] = Array.isArray(contentPayload.records) ? contentPayload.records : [];
         const toStatus = (status: string) => status === "published" ? "Published" : status === "archived" ? "Archived" : "Draft";
@@ -265,6 +291,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         }));
         const testimonials: AdminTestimonial[] = contentRows.filter((row) => row.collection === "testimonials").map((row) => ({
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, name: text(row.data.name), email: text(row.data.email), title: text(row.data.title),
+          phone: text(row.data.phone),
           text: text(row.data.text), excerpt: text(row.data.excerpt), company: text(row.data.company), designation: text(row.data.designation), service: text(row.data.service), date: row.created_at ?? "",
           consentStatus: row.data.consent === true && row.data.identityPublicationConsent === true ? "Granted" : "Not granted",
           approvalStatus: row.status === "published" || row.status === "approved" ? "Approved" : row.status === "rejected" ? "Rejected" : row.status === "archived" ? "Archived" : "Pending",

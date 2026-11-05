@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import InsightsEvents from "./insights-events";
-import { getPublishedPageMetadata } from "@/lib/supabase/server";
+import { getPublishedContent, getPublishedPageMetadata } from "@/lib/supabase/server";
 import CmsPageRoute from "@/app/_components/cms-page-route";
 
 const fallbackMetadata: Metadata = {
@@ -22,6 +22,22 @@ export async function generateMetadata(): Promise<Metadata> {
   return { ...fallbackMetadata, ...(await getPublishedPageMetadata("/insights-events")) };
 }
 
-export default function InsightsEventsPage() {
-  return <CmsPageRoute path="/insights-events" eyebrow="Insights & Events"><InsightsEvents /></CmsPageRoute>;
+export const dynamic = "force-dynamic";
+
+export default async function InsightsEventsPage() {
+  const cmsEvents = (await getPublishedContent("insights"))
+    .filter((record) => record.data.category === "Events")
+    .flatMap((record) => {
+      const title = typeof record.data.title === "string" ? record.data.title.trim() : "";
+      if (!title) return [];
+      return [{
+        slug: record.slug,
+        title,
+        description: typeof record.data.description === "string" ? record.data.description : "",
+        featuredImage: typeof record.data.featuredImage === "string" ? record.data.featuredImage : "",
+        author: typeof record.data.author === "string" ? record.data.author : "",
+      }];
+    });
+
+  return <CmsPageRoute path="/insights-events" eyebrow="Insights & Events"><InsightsEvents cmsEvents={cmsEvents} /></CmsPageRoute>;
 }

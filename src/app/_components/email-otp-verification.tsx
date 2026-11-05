@@ -179,11 +179,13 @@ export default function EmailOtpVerification({
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>
-        <TurnstileWidget
-          onToken={captchaDisplayOnly ? () => {} : updateCaptchaToken}
-          onError={captchaDisplayOnly ? undefined : setStatus}
-          resetKey={resetKey + captchaReset}
-        />
+        {!captchaDisplayOnly && (
+          <TurnstileWidget
+            onToken={updateCaptchaToken}
+            onError={setStatus}
+            resetKey={resetKey + captchaReset}
+          />
+        )}
         <button type="button" className={styles.secondary} onClick={sendCode} disabled={busy || cooldownLeft > 0 || (captchaRequiredForOtp && !captchaToken)}>
           {busy ? "Please wait..." : codeSent ? cooldownLeft ? `Resend in ${cooldownLeft}s` : "Resend code" : "Send email code"}
         </button>
