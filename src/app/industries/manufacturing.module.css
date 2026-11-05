@@ -264,7 +264,9 @@
   .expertCard h3 { font-size: max(var(--font-size-min), 22px); }
   .expertCard .portrait { min-height: 260px; }
   .steps li { padding: 20px 16px; }
-  .relatedGrid h3 { font-size: max(var(--font-size-min), 17px); }
+  .steps { grid-template-columns: 1fr; }
+  .relatedGrid h3 { display: block; position: relative; min-width: 0; padding-right: 25px; font-size: max(var(--font-size-min), 17px); overflow-wrap: anywhere; }
+  .relatedGrid h3 svg { position: absolute; top: 50%; right: 0; transform: translateY(-50%); }
 }
 @media (max-width: 380px) {
   .heroAside ul { grid-template-columns: 1fr; }

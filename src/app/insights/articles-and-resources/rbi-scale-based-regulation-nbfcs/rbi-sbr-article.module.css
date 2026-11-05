@@ -2,7 +2,7 @@
 .page :where(h1,h2,h3,h4,p,a,span,li,small,strong,summary,blockquote,figcaption,label,button){color:#000!important}
 .page h1,.page h2,.page h3,.page p,.page figure{margin:0}
 .hero{position:relative;isolation:isolate;min-height:360px;overflow:hidden;background:#eaf2fa}
-.heroInner{position:relative;max-width:1740px;min-height:360px;margin:auto}
+.heroInner{position:static;max-width:1740px;min-height:360px;margin:auto}
 .heroCopy{position:relative;z-index:2;max-width:650px;padding:32px clamp(20px,3vw,50px) 25px}
 .breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:30px;color:#395777;font:13px Georgia,serif}
 .breadcrumb a{text-decoration:none}
@@ -29,6 +29,7 @@
 .tocSelectLabel,.tocSelect{display:none}
 .articleBody{min-width:0}
 .shareRow{position:sticky;z-index:5;top:72px;display:flex;min-height:52px;align-items:center;justify-content:flex-end;gap:12px;padding:8px 0;border-bottom:1px solid #e8eef5;background:#ffffffeb;backdrop-filter:blur(8px)}
+.articleBody>.shareRow+.articleSection{padding-top:0}
 .shareRow>span:first-child{color:#40536c;font-size:11px;font-weight:700}
 .shareButtons{display:flex;align-items:center;gap:7px}
 .shareButton{display:grid;width:29px;height:29px;place-items:center;border:0;border-radius:50%;background:#174b82;color:#fff;cursor:pointer;transition:transform .16s,filter .16s}
