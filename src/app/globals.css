@@ -2817,6 +2817,7 @@ textarea::placeholder {
 .banner-content h1 {
   font-size: max(var(--font-size-min), clamp(35px, 4.4vw, 60px));
   max-width: 950px;
+  overflow-wrap: anywhere;
 }
 .banner-content p {
   max-width: 720px;
