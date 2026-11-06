@@ -32,6 +32,6 @@ test("admin testimonial video preview requests a fresh authenticated media URL",
   assert.match(route, /getAuthorizedAdmin\(\)/);
   assert.match(route, /\.eq\("collection", "testimonials"\)/);
   assert.match(route, /createSignedUrl\(videoPath, 15 \* 60\)/);
-  assert.match(route, /Cache-Control", "private, no-store"/);
+  assert.match(route, /"Cache-Control": "private, no-store"/);
   assert.match(route, /isTestimonialMediaPath\(videoPath\)/);
 });
