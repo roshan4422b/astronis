@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "../_components/asset-image";
 import Icon from "../_components/icon";
+import ScheduleConsultationButton from "./schedule-consultation-button";
 import styles from "./hub.module.css";
 
 export function Action({ href, children, secondary = false }: { href: string; children: React.ReactNode; secondary?: boolean }) {
@@ -18,5 +19,5 @@ export function WhyAstronis() {
   return <section className={`${styles.section} ${styles.why}`}><div className="container"><span className={styles.eyebrow}>A BUSINESS-WIDE PERSPECTIVE</span><h2>Why Businesses Choose Astronis</h2><div className={styles.reasonGrid}>{reasons.map(([icon, title, description]) => <article key={title}><Icon name={icon} /><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>;
 }
 export function FinalCTA() {
-  return <section className={styles.final}><div className="container"><span className={styles.eyebrow}>LET’S CONNECT THE DOTS</span><h2>Your business challenge may cross multiple disciplines.<br /><em>Our advice should too.</em></h2><p>Connect with Astronis for integrated corporate, regulatory, legal and strategic advisory.</p><div className={styles.actions}><Action href="#consultation">Schedule a Consultation</Action><Action href="/contact" secondary>Contact Our Team</Action></div></div></section>;
+  return <section className={styles.final}><div className="container"><span className={styles.eyebrow}>LET’S CONNECT THE DOTS</span><h2>Your business challenge may cross multiple disciplines.<br /><em>Our advice should too.</em></h2><p>Connect with Astronis for integrated corporate, regulatory, legal and strategic advisory.</p><div className={styles.actions}><ScheduleConsultationButton /><Action href="/contact" secondary>Contact Our Team</Action></div></div></section>;
 }
