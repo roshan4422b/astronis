@@ -8,6 +8,20 @@
   background: #f8fafc;
 }
 
+.compact {
+  gap: 0.55rem;
+  padding: 0.75rem;
+}
+
+.compact .secondary {
+  min-height: 2.4rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.compact .code {
+  min-height: 2.4rem;
+}
+
 .heading {
   margin: 0;
   color: #173451;

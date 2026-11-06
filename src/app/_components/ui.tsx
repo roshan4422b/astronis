@@ -40,12 +40,14 @@ export function Banner({
   image = "/Part-6 .png",
   eyebrow,
   variant,
+  children,
 }: {
   title: string;
   text?: string;
   image?: string;
   eyebrow?: string;
   variant?: "insights";
+  children?: React.ReactNode;
 }) {
   return (
     <section className={`page-banner${variant ? ` page-banner--${variant}` : ""}`}>
@@ -66,6 +68,7 @@ export function Banner({
         <h1>{title}</h1>
         <span className="heading-line" />
         {text && <p>{text}</p>}
+        {children}
       </div>
     </section>
   );

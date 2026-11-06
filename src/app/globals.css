@@ -4737,6 +4737,9 @@ textarea::placeholder {
 #main-content .about-page-scope :is([class*="hero"], [class*="cta"], [class*="tomorrow"], [class*="numbers"], [class*="perspectives"], [class*="cultureCopy"], [class*="hubCore"], [class*="advantageIntro"], [class*="networkVisual"], [class*="valuesVisual"], [class*="compass"], [class*="strategyCopy"], [class*="strategyImage"], [class*="steps"] li:last-child, [class*="impactCopy"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
   color: #fff !important;
 }
+#main-content .about-page-scope.about-vision-mission-scope [class*="impactGrid"] [class*="impactCopy"] :is(h3, p) {
+  color: #111 !important;
+}
 #main-content .about-home-scope :is([class*="numbers"], [class*="perspectives"], [class*="statement"], [class*="tomorrow"]) :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption) {
   color: #fff !important;
 }

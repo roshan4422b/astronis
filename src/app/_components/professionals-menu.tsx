@@ -11,7 +11,6 @@ const columns = [
     links: [
       ["people", "Our Professionals", "Meet our team", "/professionals"],
       ["award", "Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
-      ["scale", "Legal Professionals", "Litigation, advisory and dispute resolution", "/professionals/legal-professionals"],
       ["building", "Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
       ["bank", "Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
       ["target", "Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/industry-and-subject-matter-experts"],
@@ -64,7 +63,7 @@ export default function ProfessionalsMenu({ id, onNavigate }: { id: string; onNa
     </div>
     <aside className={styles.feature} aria-label="Meet our professionals">
       <div className={styles.featureImage}><Image src="/Professional & Business Services .png" alt="Professionals collaborating across a global network" fill sizes="(max-width: 1050px) 100vw, 270px" /></div>
-      <div className={styles.featureCopy}><span className={styles.featureEyebrow}>ASTRONIS GLOBAL</span><h2>People.<br />Perspective.<br />Progress.</h2><span className={styles.rule} /><p>Legal knowledge, regulatory insight and business understanding, brought together for your goals.</p><Link className={styles.primaryAction} href="/professionals" onClick={onNavigate}>Meet Our Professionals <Icon name="arrow" /></Link></div>
+      <div className={styles.featureCopy}><span className={styles.featureEyebrow}>ASTRONIS GLOBAL</span><h2>People.<br />Perspective.<br />Progress.</h2><span className={styles.rule} /><p>Legal knowledge, regulatory insight and business understanding, brought together for your goals.</p><Link className={styles.primaryAction} href="/professionals/legal-professionals" onClick={onNavigate}>Meet Our Professionals <Icon name="arrow" /></Link></div>
     </aside>
   </div>;
 }
