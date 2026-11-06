@@ -240,12 +240,15 @@
 .page .beginnings { padding-block: 42px; }
 .page .quote { position: relative; overflow: hidden; border: 1px solid #315777; border-radius: 16px; background: radial-gradient(ellipse at 100% 0, #265e8e, transparent 70%), #082b50; box-shadow: 0 16px 30px -20px #05264b80; }
 .page .quote p { color: #edf6ff; }
+:global(#main-content .about-our-story-scope) .quote p { color: #edf6ff !important; }
 .page .office, .page .compass, .page .globalImage { border-radius: 17px; box-shadow: 0 14px 30px -20px #12385b80; }
 .page .purpose { padding-block: 42px; }
 .page .purposeGrid { gap: 14px; }
 .page .purposeGrid article { position: relative; padding: 24px 18px; border: 1px solid #dce7f3; border-radius: 15px; background: linear-gradient(145deg, #fff, #edf5fd); box-shadow: 0 10px 24px -20px #17447860; }
 .page .purposeGrid article:nth-child(2) { background: radial-gradient(ellipse at 100% 0, #245c90, transparent 70%), #082b50; border-color: #315777; color: white; }
 .page .purposeGrid article:nth-child(2) p { color: #d6e7f8; }
+:global(#main-content .about-our-story-scope) .purposeGrid article:nth-child(2) h2 { color: #fff !important; }
+:global(#main-content .about-our-story-scope) .purposeGrid article:nth-child(2) p { color: #d6e7f8 !important; }
 .page .purposeGrid svg { width: 51px; height: 51px; padding: 10px; border-radius: 13px; background: #e6f2fe; border: 1px solid #d0e6f9; }
 .page .purposeGrid h2 { font: 400 25px/1.2 Georgia, serif; }
 .page .purposeGrid p { line-height: 1.75; }

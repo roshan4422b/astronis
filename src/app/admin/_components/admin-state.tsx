@@ -328,6 +328,11 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         notify();
       } catch (error) {
         if (!active) return;
+        const message = error instanceof Error ? error.message : "";
+        if (/HTTP 401/.test(message) || /Authentication required/.test(message)) {
+          window.location.assign("/admin/login");
+          return;
+        }
         snapshot = {
           ...snapshot,
           loadState: "error",

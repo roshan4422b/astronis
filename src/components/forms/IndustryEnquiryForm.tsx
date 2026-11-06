@@ -151,7 +151,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
   };
 
   return (
-    <div id="industry-enquiry" className={styles.formShell}>
+    <div id="industry-enquiry" className={`${styles.formShell} ${styles.enquiryCompact}`}>
       <div className={styles.header}>
         <span className={styles.eyebrow}>Industry enquiry</span>
         <h3 className={styles.title}>Discuss Your Industry Requirement</h3>
@@ -172,6 +172,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           <PhoneInput id="industry-phone" label="Phone / WhatsApp *" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} error={errors.phone} placeholder="+91 98765 43210" />
           <FormInput id="industry-company" label="Company / Organisation *" value={form.company} onChange={(event) => updateField("company", event.target.value)} error={errors.company} autoComplete="organization" placeholder="Your organisation" />
           <FormInput id="industry-designation" label="Designation" value={form.designation} onChange={(event) => updateField("designation", event.target.value)} autoComplete="organization-title" placeholder="Role / Title" />
+          <FormSelect id="industry-contact" label="Preferred Contact Method" value={form.preferredContact} onChange={(event) => updateField("preferredContact", event.target.value)} options={contactOptions} />
           <div className={styles.fullWidth}>
             <FormSelect id="industry-select" label="Industry *" value={form.industry} onChange={(event) => updateField("industry", event.target.value)} error={errors.industry} options={industryFormConfig.map((industry) => ({ value: industry.label, label: industry.label }))} placeholder="Select an industry" />
           </div>
@@ -188,8 +189,6 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           <div className={styles.fullWidth}>
             <FormTextarea id="industry-details" label="Requirement Details *" value={form.requirementDetails} onChange={(event) => updateField("requirementDetails", event.target.value)} error={errors.requirementDetails} placeholder="Tell us about the matter, your current stage and any relevant considerations." />
           </div>
-
-          <FormSelect id="industry-contact" label="Preferred Contact Method" value={form.preferredContact} onChange={(event) => updateField("preferredContact", event.target.value)} options={contactOptions} />
         </div>
 
         <EnquiryAgreementCheckbox
@@ -200,7 +199,7 @@ export default function IndustryEnquiryForm({ defaultIndustry = "" }: { defaultI
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification captchaOptional />
+        <EmailOtpVerification captchaOptional compact />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Industry Requirement"}

@@ -27,9 +27,6 @@ const sections: DisclaimerSection[] = [
   },
   {
     title: "Professional Advertising and Solicitation:",
-    paragraphs: [],
-  },
-  {
     numberedParagraph: "The Website is intended to provide information about the organisation and its services, subject to applicable professional conduct requirements. Nothing on the Website is intended to constitute prohibited solicitation, an assurance of favourable outcomes or an improper inducement to engage a regulated professional. Where required under applicable professional rules, access to information about legal practitioners may be subject to appropriate user acknowledgements.",
   },
   {
@@ -89,7 +86,7 @@ export default function WebsiteDisclaimer() {
         {sections.map((section, index) => (
           <section className={styles.section} key={section.title || `section-${index + 1}`}>
             {section.title && <h2><span>{index + 1}.</span> {section.title}</h2>}
-            {section.numberedParagraph && <div className={styles.numberedParagraph}><span>{index + 1}.</span><p>{section.numberedParagraph}</p></div>}
+            {section.numberedParagraph && <p>{section.numberedParagraph}</p>}
             {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             {section.contacts?.map((contact) => <p key={contact.text}>{contact.href ? <a href={contact.href}>{contact.text}</a> : contact.text}</p>)}
           </section>

@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { adminRememberCookie, createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
+import { adminRememberCookie, createSupabaseServerClient, getAuthorizedAdmin, isSupabaseConfigured } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  return NextResponse.json({ configured: isSupabaseConfigured() });
+  if (!isSupabaseConfigured()) return NextResponse.json({ configured: false, authenticated: false });
+  const auth = await getAuthorizedAdmin();
+  return NextResponse.json({
+    configured: true,
+    authenticated: Boolean(auth.user),
+  });
 }
 
 export async function POST(request: Request) {

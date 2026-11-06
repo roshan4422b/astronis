@@ -39,10 +39,20 @@ export async function POST(_request: Request, context: { params: Promise<{ id: s
     console.error("[admin-testimonials] Notification retry status lookup failed.", {
       code,
     });
-    const message = code === "42P01" || code === "PGRST205"
-      ? "Testimonial notification storage is not installed. Apply the testimonial notification migration before sending or retrying emails."
-      : code === "42501"
-        ? "This admin account cannot access testimonial notification storage. Check its RLS policy and grants."
+    if (code === "42P01" || code === "PGRST205") {
+      const notificationStatus = await sendTestimonialModerationEmail(
+        auth.supabase,
+        record,
+        record.status,
+      );
+      if (notificationStatus === "sent" || notificationStatus === "sent-unrecorded") {
+        return NextResponse.json({ notificationStatus });
+      }
+    }
+    const message = code === "42501"
+      ? "This admin account cannot access testimonial notification storage. Check its RLS policy and grants."
+      : code === "42P01" || code === "PGRST205"
+        ? "The notification email could not be delivered because Mailtrap is unavailable or misconfigured."
         : "Could not load notification status. Check the notification migration and admin permissions.";
     return NextResponse.json({ error: message }, { status: 503 });
   }

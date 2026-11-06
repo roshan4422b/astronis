@@ -23,6 +23,10 @@ function ledgerStatus(status: TestimonialDecisionStatus) {
   return status === "rejected" ? "rejected" : "published";
 }
 
+function isMissingNotificationLedger(error: { code?: string } | null | undefined) {
+  return error?.code === "42P01" || error?.code === "PGRST205";
+}
+
 export async function sendTestimonialModerationEmail(
   supabase: SupabaseClient,
   record: TestimonialRecord,
@@ -41,6 +45,7 @@ export async function sendTestimonialModerationEmail(
 
   const eventStatus = ledgerStatus(status);
   const ledger = supabase.from("cms_testimonial_notification_deliveries");
+  let ledgerAvailable = true;
   if (options.retry) {
     const { data: claim, error } = await ledger
       .update({ delivery_status: "sending" })
@@ -50,10 +55,14 @@ export async function sendTestimonialModerationEmail(
       .select("testimonial_id")
       .maybeSingle();
     if (error) {
+      if (isMissingNotificationLedger(error)) {
+        ledgerAvailable = false;
+      } else {
       console.error("[admin-testimonials] Could not claim a notification retry.", { code: error.code || "unknown" });
       return "failed";
+      }
     }
-    if (!claim) return "not-retryable";
+    if (ledgerAvailable && !claim) return "not-retryable";
   } else {
     const { data: claim, error } = await ledger
       .insert({
@@ -64,7 +73,9 @@ export async function sendTestimonialModerationEmail(
       .select("testimonial_id")
       .maybeSingle();
     if (error?.code === "23505") return "duplicate";
-    if (error || !claim) {
+    if (error && isMissingNotificationLedger(error)) {
+      ledgerAvailable = false;
+    } else if (error || !claim) {
       console.error("[admin-testimonials] Could not claim a moderation email delivery.", {
         code: error?.code || "unknown",
       });
@@ -92,19 +103,22 @@ export async function sendTestimonialModerationEmail(
     console.error("[admin-testimonials] Moderation email delivery failed.", {
       error: error instanceof Error ? error.name : "UnknownError",
     });
-    const { error: updateError } = await ledger
-      .update({ delivery_status: "failed" })
-      .eq("testimonial_id", record.id)
-      .eq("event_status", eventStatus)
-      .eq("delivery_status", "sending");
-    if (updateError) {
-      console.error("[admin-testimonials] Could not record moderation email failure.", {
-        code: updateError.code || "unknown",
-      });
+    if (ledgerAvailable) {
+      const { error: updateError } = await ledger
+        .update({ delivery_status: "failed" })
+        .eq("testimonial_id", record.id)
+        .eq("event_status", eventStatus)
+        .eq("delivery_status", "sending");
+      if (updateError) {
+        console.error("[admin-testimonials] Could not record moderation email failure.", {
+          code: updateError.code || "unknown",
+        });
+      }
     }
     return "failed";
   }
 
+  if (!ledgerAvailable) return "sent-unrecorded";
   const { error: updateError } = await ledger
     .update({ delivery_status: "sent", sent_at: new Date().toISOString() })
     .eq("testimonial_id", record.id)

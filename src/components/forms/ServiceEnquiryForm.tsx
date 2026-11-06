@@ -193,7 +193,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
   };
 
   return (
-    <div id="service-enquiry" className={styles.formShell}>
+    <div id="service-enquiry" className={`${styles.formShell} ${styles.enquiryCompact}`}>
       <div className={styles.header}>
         <span className={styles.eyebrow}>Service enquiry</span>
         <h3 className={styles.title}>Discuss Your Requirement</h3>
@@ -214,6 +214,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           <PhoneInput id="service-phone" label="Phone / WhatsApp *" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} error={errors.phone} placeholder="+91 98765 43210" />
           <FormInput id="service-company" label="Company / Organisation" value={form.company} onChange={(event) => updateField("company", event.target.value)} autoComplete="organization" placeholder="Your organisation" />
           <FormInput id="service-designation" label="Designation" value={form.designation} onChange={(event) => updateField("designation", event.target.value)} autoComplete="organization-title" placeholder="Role / Title" />
+          <FormSelect id="service-preferred-contact" label="Preferred Contact Method" value={form.preferredContact} onChange={(event) => updateField("preferredContact", event.target.value)} options={contactOptions} />
           <div className={styles.fullWidth}>
             <FormSelect id="service-select" label="Service *" value={form.service} onChange={(event) => updateField("service", event.target.value)} error={errors.service} options={serviceFormConfig.map((service) => ({ value: service.label, label: service.label }))} placeholder="Select a service" />
           </div>
@@ -236,8 +237,6 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           <div className={styles.fullWidth}>
             <FormTextarea id="service-requirement-description" label="Requirement Description *" value={form.requirementDescription} onChange={(event) => updateField("requirementDescription", event.target.value)} error={errors.requirementDescription} placeholder="Tell us about your requirement, current stage, and preferred support." />
           </div>
-
-          <FormSelect id="service-preferred-contact" label="Preferred Contact Method" value={form.preferredContact} onChange={(event) => updateField("preferredContact", event.target.value)} options={contactOptions} />
         </div>
 
         <EnquiryAgreementCheckbox
@@ -248,7 +247,7 @@ export default function ServiceEnquiryForm({ defaultService = "", defaultRequire
           onInvalid={() => setErrors((current) => ({ ...current, enquiryAgreementAccepted: enquiryAgreementMessage }))}
         />
 
-        <EmailOtpVerification captchaOptional />
+        <EmailOtpVerification captchaOptional compact />
 
         <button type="submit" className={styles.button} disabled={busy}>
           {busy ? "Sending..." : "Discuss My Requirement"}

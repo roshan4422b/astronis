@@ -57,7 +57,11 @@ function revalidateContent(collection: string, slug: string, sourcePath?: string
     };
     revalidatePath(listings[collection]);
   }
-  if (collection === "testimonials") { revalidatePath("/"); revalidatePath("/insights-events"); }
+  if (collection === "testimonials") {
+    revalidatePath("/");
+    revalidatePath("/testimonials");
+    revalidatePath("/insights-events");
+  }
 }
 function publicPageData(data: Record<string, unknown>) {
   return Object.fromEntries(Object.entries(data).filter(([key]) => pageDataFields.has(key)));
@@ -161,7 +165,7 @@ export async function GET(request: Request) {
         code,
       });
       const cause = code === "42P01" || code === "PGRST205"
-        ? "The notification table is missing; apply the testimonial notification migration."
+        ? "The optional notification table is missing; emails can still be sent, while delivery status tracking is unavailable."
         : code === "42501"
           ? "The admin account lacks access to the notification table; check its admin RLS policy and grants."
           : "Check the testimonial notification migration and admin permissions.";
