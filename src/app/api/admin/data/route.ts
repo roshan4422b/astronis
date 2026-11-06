@@ -57,7 +57,11 @@ function revalidateContent(collection: string, slug: string, sourcePath?: string
     };
     revalidatePath(listings[collection]);
   }
-  if (collection === "testimonials") { revalidatePath("/"); revalidatePath("/insights-events"); }
+  if (collection === "testimonials") {
+    revalidatePath("/");
+    revalidatePath("/testimonials");
+    revalidatePath("/insights-events");
+  }
 }
 function publicPageData(data: Record<string, unknown>) {
   return Object.fromEntries(Object.entries(data).filter(([key]) => pageDataFields.has(key)));
