@@ -35,3 +35,12 @@ test("admin testimonial video preview requests a fresh authenticated media URL",
   assert.match(route, /"Cache-Control": "private, no-store"/);
   assert.match(route, /isTestimonialMediaPath\(videoPath\)/);
 });
+
+test("public testimonial lookup falls back to approved CMS media paths when the database RPC lacks media columns", async () => {
+  const source = await readFile(new URL("../src/lib/supabase/server.ts", import.meta.url), "utf8");
+
+  assert.match(source, /\.from\("cms_content"\)/);
+  assert.match(source, /\.in\("status", \["approved", "published"\]\)/);
+  assert.match(source, /data\.photoPublicationConsent === true/);
+  assert.match(source, /mediaBySlug\.get\(record\.slug\)/);
+});

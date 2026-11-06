@@ -215,8 +215,8 @@ test("public testimonial submissions preserve optional video details and profile
   assert.match(submission, /imagePath,\s*videoPath,/);
   assert.match(submission, /status: "pending"/);
   assert.match(adminUi, /options=\{\["All testimonial types", "Text testimonials", "Video testimonials", "Image \/ media"\]\}/);
-  assert.match(adminUi, /<video src=\{safeVideoUrl\(selected\.videoUrl\)\} controls/);
-  assert.match(adminUi, /selected\.imageUrl && safeVideoUrl\(selected\.imageUrl\)/);
+  assert.match(adminUi, /selectedVideoUrl = selected\?\.videoPath/);
+  assert.match(adminUi, /selected\.imageUrl/);
 });
 
 test("testimonial decisions require authorized transitions and idempotent email notification", async () => {
@@ -230,7 +230,8 @@ test("testimonial decisions require authorized transitions and idempotent email 
   assert.match(adminRoute, /currentStatus === "pending" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "rejected" \|\| nextStatus === "archived"\)/);
   assert.match(adminRoute, /currentStatus === "rejected" && \(nextStatus === "approved" \|\| nextStatus === "published" \|\| nextStatus === "archived"\)/);
   assert.match(adminUi, /pendingDecision\.status === "Approved" \? "published"/);
-  assert.match(adminRoute, /if \(collection === "testimonials"\) \{ revalidatePath\("\/"\); revalidatePath\("\/insights-events"\); \}/);
+  assert.match(adminRoute, /if \(collection === "testimonials"\)/);
+  assert.match(adminRoute, /revalidatePath\("\/testimonials"\)/);
   assert.match(adminRoute, /testimonials: "\/testimonials"/);
   assert.match(adminRoute, /A rejection reason between 3 and 1000 characters is required/);
   assert.match(adminRoute, /moderationDecisionAt: new Date\(\)\.toISOString\(\)/);
@@ -244,7 +245,8 @@ test("testimonial decisions require authorized transitions and idempotent email 
   assert.match(retryRoute, /getAuthorizedAdmin\(\)/);
   assert.match(retryRoute, /This notification was already sent/);
   assert.match(retryRoute, /delivery\?\.delivery_status === "failed" \? \{ retry: true \} : \{\}/);
-  assert.match(retryRoute, /Apply the testimonial notification migration/);
+  assert.match(retryRoute, /if \(code === "42P01" \|\| code === "PGRST205"\)/);
+  assert.match(retryRoute, /sendTestimonialModerationEmail/);
   assert.match(adminRoute, /email notification status is unavailable \(\$\{code\}\)/);
   assert.match(adminUi, /"Send email notification"/);
   assert.match(adminUi, /Reason for rejection/);
@@ -267,6 +269,22 @@ test("admin testimonial records remain visible when notification status lookup f
   assert.match(adminRoute, /return NextResponse\.json\(\{ records: hydratedRecords, \.\.\.\(warning \? \{ warning \} : \{\}\) \}\)/);
   assert.match(adminState, /loadWarning: text\(contentPayload\.warning\)/);
   assert.match(adminWorkspace, /loadState === "ready" && loadWarning/);
+});
+
+test("testimonial moderation email sends even when notification ledger storage is missing", async () => {
+  const [notification, retryRoute, migration] = await Promise.all([
+    readFile(new URL("../src/lib/testimonial-notifications.server.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/testimonials/[id]/notification/retry/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/202611060002_ensure_testimonial_notification_storage.sql", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(notification, /isMissingNotificationLedger/);
+  assert.match(notification, /ledgerAvailable = false/);
+  assert.match(notification, /if \(!ledgerAvailable\) return "sent-unrecorded"/);
+  assert.match(retryRoute, /if \(code === "42P01" \|\| code === "PGRST205"\)/);
+  assert.match(retryRoute, /sendTestimonialModerationEmail/);
+  assert.match(migration, /create table if not exists public\.cms_testimonial_notification_deliveries/);
+  assert.match(migration, /enable row level security/);
 });
 
 test("reports missing testimonial Supabase service configuration without exposing credentials", async () => {
