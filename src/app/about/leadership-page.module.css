@@ -19,9 +19,9 @@
 .leadership { padding-block: 38px 42px; }
 .sectionHeading { display: flex; justify-content: space-between; align-items: center; gap: 30px; margin-bottom: 25px; }
 .sectionHeading p { max-width: 850px; margin-top: 12px; }
-.leaderGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 25px; }
-.leaderCard { display: grid; grid-template-columns: 39% minmax(0, 1fr); overflow: hidden; border: 1px solid #d8e6f5; border-radius: 18px; background: linear-gradient(145deg, #fff, #edf5fe); box-shadow: 0 16px 30px -23px #123f7466; transition: transform .25s, border-color .25s, box-shadow .25s; }
-.portrait { position: relative; min-height: 350px; overflow: hidden; background: #dfe5ec; }
+.leaderGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 25px; }
+.leaderCard { display: grid; grid-template-columns: minmax(0, 1fr); overflow: hidden; border: 1px solid #d8e6f5; border-radius: 18px; background: linear-gradient(145deg, #fff, #edf5fe); box-shadow: 0 16px 30px -23px #123f7466; transition: transform .25s, border-color .25s, box-shadow .25s; }
+.portrait { position: relative; width: 100%; aspect-ratio: 768 / 922; align-self: start; overflow: hidden; background: #dfe5ec; }
 .portrait img { object-fit: cover; object-position: center top; transition: transform .5s; }
 .portrait::after { content: ''; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, #031d3bba, transparent); pointer-events: none; }
 .portraitLabel { position: absolute; bottom: 22px; left: 15px; right: 15px; z-index: 1; color: #fff; font-size: max(var(--font-size-min), 9px); letter-spacing: .19em; text-align: center; }
@@ -90,9 +90,7 @@
   .ctaInner { flex-wrap: wrap; }
 }
 @media (max-width: 950px) {
-  .leaderGrid { grid-template-columns: 1fr; }
-  .leaderCard { grid-template-columns: 33% minmax(0, 1fr); }
-  .portrait { min-height: 330px; }
+  .leaderGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .profile { padding: 28px; }
   .hero .heroNote { display: none; }
 }
@@ -101,9 +99,10 @@
   .hero::after { background: linear-gradient(90deg, #003b78f2, #034b87b0); }
   .hero h1 { font-size: max(var(--font-size-min), clamp(33px, 7.5vw, 43px)); }
   .leadership { padding-block: 28px; }
+  .leaderGrid { grid-template-columns: 1fr; }
   .leaderCard { grid-template-columns: 1fr; }
-  .portrait { min-height: 0; height: 350px; }
-  .portrait img { object-fit: contain; object-position: center top; }
+  .portrait { height: auto; }
+  .portrait img { object-fit: cover; object-position: center top; }
   .profile { padding: 25px; }
   .profile h3 { font-size: max(var(--font-size-min), 29px); }
   .disciplineGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }

@@ -162,10 +162,10 @@
 @media(prefers-reduced-motion:reduce){.heroWords,.heroWordsLink svg{transition:none}.heroWords:hover,.heroWords:focus-visible,.heroWords:hover .heroWordsLink svg,.heroWords:focus-visible .heroWordsLink svg{transform:none}}
 
 .peopleSection { background: #fff; }
-.peopleGrid { max-width: 1360px; margin-inline: auto; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; align-items: stretch; gap: 20px; }
+.peopleGrid { max-width: 1360px; margin-inline: auto; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 1fr; align-items: stretch; gap: 20px; }
 .personCard { display: flex; height: 100%; flex-direction: column; border: 1px solid #cbdced; border-left: 3px solid #0759d9; border-radius: 9px; background: #fff; box-shadow: 0 5px 16px #1029530d; }
-.portrait { height: auto; aspect-ratio: 3 / 2; background: #fff; }
-.portrait img { object-fit: contain; object-position: center; }
+.portrait { height: auto; aspect-ratio: .9; background: #fff; }
+.portrait img { object-fit: cover; object-position: center top; }
 .portrait::after { display: none; }
 .cardBody { flex: 1; min-height: 190px; padding: 14px 16px; border: 0; background: #fff; }
 .cardBody h3 { color: #102d50; font-family: Georgia, "Times New Roman", serif; font-weight: 700; }
@@ -179,4 +179,13 @@
 
 @media (max-width: 600px) {
   .peopleGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .supportGrid { grid-template-columns: minmax(0, 1fr); }
+  .supportGrid article { min-width: 0; }
+  .expertiseGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .expertiseGrid a { min-width: 0; }
+  .standards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .standards span { min-width: 0; overflow-wrap: anywhere; }
 }

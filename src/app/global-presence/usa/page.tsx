@@ -112,14 +112,14 @@ const professionals = [
     name: "Krishna Kumar Mishra",
     role: "Founder Partner",
     focus: "Corporate · Regulatory · International",
-    image: "/Professionals/krishna_kumar_mishra.jpeg",
+    image: "/Professionals/krishna_kumar_mishra_full.png",
     href: "/professionals/krishna-kumar-mishra",
   },
   {
     name: "Priti Mishra",
     role: "Partner",
     focus: "Cross-Border · Corporate · IPR",
-    image: "/Professionals/pritimishra.jpeg",
+    image: "/Professionals/pritimishra_full.png",
     href: "/professionals/priti-mishra",
   },
   {

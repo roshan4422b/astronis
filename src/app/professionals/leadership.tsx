@@ -29,7 +29,7 @@ export const professionals: ProfessionalRecord[] = [
   {
     name: "Krishna Kumar Mishra",
     slug: "krishna-kumar-mishra",
-    image: "/Professionals/krishna_kumar_mishra.jpeg",
+    image: "/Professionals/krishna_kumar_mishra_full.png",
     code: "AG01",
     hierarchy: "Global Leadership",
     role: founderRole,
@@ -47,7 +47,7 @@ export const professionals: ProfessionalRecord[] = [
   {
     name: "KM Priti Pandey",
     slug: "priti-mishra",
-    image: "/Professionals/pritimishra.jpeg",
+    image: "/Professionals/pritimishra_full.png",
     code: "AG03",
     hierarchy: "Practice Leadership",
     role: "Managing Partner / Practice Head",

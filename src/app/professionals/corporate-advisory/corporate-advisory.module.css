@@ -318,7 +318,7 @@
 
 .peopleGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: 1fr;
   align-items: stretch;
   gap: 22px;
@@ -343,14 +343,14 @@
   display: block;
   min-width: 0;
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: .9;
   overflow: hidden;
   background: #fff;
 }
 
 .personImage img {
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
   transition: transform .3s ease;
 }
 
@@ -589,13 +589,15 @@
 
 .professionalPhoto {
   position: relative;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: .9;
   overflow: hidden;
   background: #edf3fa;
 }
 
 .professionalPhoto img {
   object-fit: cover;
+  object-position: center top;
 }
 
 .professionalInfo {
@@ -1167,10 +1169,6 @@
     grid-template-columns: 1fr;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .professionalPhoto {
-    height: 200px;
   }
 
   .insightImage {

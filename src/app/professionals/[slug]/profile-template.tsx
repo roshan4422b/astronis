@@ -86,7 +86,7 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
           <div className={styles.profileActions}><Link className={styles.primaryButton} href={enquiry}>Discuss Your Requirements <Icon name="arrow" /></Link><a className={styles.secondaryButton} href="#overview">View Professional Details <span aria-hidden="true">↓</span></a></div>
         </div>
         <figure className={styles.portraitFrame}>
-          {person.image ? <Image src={person.image} alt={`Portrait of ${person.name}`} fill sizes="(max-width: 760px) 100vw, 42vw" priority /> : <div className={styles.photoFallback} role="img" aria-label={`Portrait unavailable for ${person.name}`}>{person.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</div>}
+          {person.image ? <Image src={person.image} alt={`Portrait of ${person.name}`} fill sizes="(max-width: 760px) 100vw, 42vw" priority className={person.slug === "krishna-kumar-mishra" || person.slug === "priti-mishra" ? styles.fullPortrait : undefined} /> : <div className={styles.photoFallback} role="img" aria-label={`Portrait unavailable for ${person.name}`}>{person.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</div>}
           <figcaption><strong>{person.role}</strong>{person.location && <span><Icon name="pin" />{person.location}</span>}</figcaption>
         </figure>
       </section>

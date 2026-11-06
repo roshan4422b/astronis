@@ -5156,6 +5156,30 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   }
 
   #main-content :is(section[class*="hero"], header[class*="hero"], section.page-banner) > :is(
+    [class*="heroInner"],
+    [class*="hero-inner"],
+    [class*="wrap"]
+  ):has(> [class*="breadcrumb"]):has(> [class*="heroCopy"]):not(:has(> :is(
+    [class*="heroContent"],
+    [class*="hero-content"],
+    [class*="heroLayout"],
+    [class*="hero-layout"]
+  ))) > :is(
+    [class*="heroCopy"],
+    [class*="hero-copy"],
+    [class*="heroText"],
+    [class*="hero-text"],
+    [class*="heroMain"],
+    [class*="hero-main"]
+  ) {
+    position: relative !important;
+    inset: auto !important;
+    width: 100%;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  #main-content :is(section[class*="hero"], header[class*="hero"], section.page-banner) > :is(
     [class*="heroPhoto"],
     [class*="hero-photo"]
   ) {
@@ -5557,6 +5581,9 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   .page-banner
 ) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
   color: #fff !important;
+}
+#main-content .global-presence-route-scope [class*="__journeyStep"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a) {
+  color: #111 !important;
 }
 .global-presence-route-scope [class*="__journeyNumber"] {
   color: #082b53 !important;

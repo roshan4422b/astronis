@@ -982,7 +982,7 @@
 
 .professionalGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
   margin-top: 22px;
 }
@@ -1004,7 +1004,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  aspect-ratio: 1.5;
+  aspect-ratio: .9;
   overflow: hidden;
   margin: 0;
   border-bottom: 3px solid #3881c7;
@@ -1013,8 +1013,8 @@
 }
 
 .professionalPhoto img {
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .professionalPhoto > span {
@@ -1201,7 +1201,7 @@
   }
 
   .professionalPhoto {
-    aspect-ratio: 1.5;
+    aspect-ratio: .9;
   }
 
   .professionalInfo {
@@ -1275,7 +1275,7 @@
   }
 
   .professionalPhoto {
-    aspect-ratio: 1.5;
+    aspect-ratio: .9;
   }
 
   .professionalInfo {
