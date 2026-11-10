@@ -96,10 +96,10 @@ export default function CollaborationForm() {
     <input type="hidden" name="industry" value="" />
     <input type="hidden" name="connectWith" value="general" />
     <div className={styles.formFields}>
-      <label><span>Name *</span><input name="name" autoComplete="name" required minLength={2} maxLength={100} /></label>
-      <label><span>Organisation / Firm *</span><input name="company" autoComplete="organization" required maxLength={160} /></label>
-      <label><span>Email *</span><input name="email" type="email" autoComplete="email" required maxLength={180} /></label>
-      <label><span>Phone *</span><input name="phone" type="tel" autoComplete="tel" required minLength={7} maxLength={25} /></label>
+      <label><span>Name *</span><input name="name" autoComplete="name" placeholder="Your full name" required minLength={2} maxLength={100} /></label>
+      <label><span>Organisation / Firm *</span><input name="company" autoComplete="organization" placeholder="Company / firm name" required maxLength={160} /></label>
+      <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@company.com" required maxLength={180} /></label>
+      <label><span>Phone *</span><input name="phone" type="tel" autoComplete="tel" placeholder="Your phone number" required minLength={7} maxLength={25} /></label>
       <label><span>Professional Type *</span><select name="professionalType" required defaultValue=""><option value="" disabled>Select</option>{professionalTypes.map(type => <option key={type}>{type}</option>)}</select></label>
       <label className={styles.wideField}><span>Practice Area / Expertise *</span><select name="service" required defaultValue=""><option value="" disabled>Select</option>{practices.map(practice => <option key={practice}>{practice}</option>)}</select></label>
       <label className={styles.wideField}><span>Jurisdiction / Location *</span><input name="location" required maxLength={160} placeholder="City, state or country" /></label>

@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   catch { return Response.json({ message: "Please submit a valid enquiry." }, { status: 400 }); }
 
   const value = (key: string) => String(data.get(key) || "").trim();
+  const locationOptional = value("locationOptional") === "yes";
   const fields = {
     connectWith: value("connectWith"), professional: value("professional"), service: value("service"),
     industry: value("industry"), name: value("name"), company: value("company"), email: value("email"),
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
   if (!(["specific", "practice", "jurisdiction", "general"].includes(fields.connectWith)) ||
       (fields.connectWith === "specific" && !fields.professional) ||
       (fields.connectWith === "practice" && !fields.service) ||
-      (fields.connectWith === "jurisdiction" && !fields.location) ||
+      (fields.connectWith === "jurisdiction" && !fields.location && !locationOptional) ||
       (collaborationEnquiry && (!fields.company || !fields.professionalType || !fields.service || !fields.location)) ||
       (collaborateWithUs && (!fields.company || !fields.professionalType || !fields.service || !fields.collaborationInterest)) ||
       fields.name.length < 2 || fields.name.length > 120 || !/^\S+@\S+\.\S+$/.test(fields.email) || fields.email.length > 254 ||
