@@ -26,6 +26,48 @@ const sharedPageSettings = {
   categoryHref: `${licensingServicePath}#business-registrations`,
 } satisfies Partial<EntityFormationPageData>;
 
+type SupplementalLicensingPage = Pick<
+  EntityFormationPageData,
+  | "slug"
+  | "title"
+  | "shortTitle"
+  | "heroStatement"
+  | "description"
+  | "introduction"
+  | "imageAlt"
+  | "servicesHeading"
+  | "services"
+  | "benefitsHeading"
+  | "benefits"
+  | "structureHeading"
+  | "structurePoints"
+  | "comparisonHeading"
+  | "comparisonHeaders"
+  | "comparison"
+  | "processHeading"
+  | "process"
+  | "documents"
+  | "requirements"
+  | "faqs"
+  | "finalHeading"
+  | "finalDescription"
+  | "relatedPages"
+> & {
+  groupSlug: string;
+  categoryTitle: string;
+};
+
+function createSupplementalLicensingPage(page: SupplementalLicensingPage): LicensingRegistrationPage {
+  return {
+    ...sharedPageSettings,
+    ...page,
+    image: "/Part-7 .png",
+    basicPrice: "On request",
+    comprehensivePrice: "On request",
+    categoryHref: `${licensingServicePath}#${page.groupSlug}`,
+  };
+}
+
 export const licensingRegistrationPages: LicensingRegistrationPage[] = [
   {
     ...sharedPageSettings,
@@ -1436,10 +1478,10 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
     customDescription: "For registration or prior permission, banking coordination, FC-4 returns, donor agreements and ongoing compliance.",
     relatedPages: [
       ["NGO Registration & Compliance", `${licensingServicePath}/ngo-institutional/ngo-registration-nonprofit-compliance-institutional-advisory`],
-      ["Section 8 Company", `${licensingServicePath}#ngo-institutional`],
-      ["Trust Registration", `${licensingServicePath}#ngo-institutional`],
-      ["Society Registration", `${licensingServicePath}#ngo-institutional`],
-      ["NGO Darpan", `${licensingServicePath}#ngo-institutional`],
+      ["Section 8 Company", `${licensingServicePath}/ngo-institutional/section-8-company`],
+      ["Trust Registration", `${licensingServicePath}/ngo-institutional/trust`],
+      ["Society Registration", `${licensingServicePath}/ngo-institutional/society`],
+      ["NGO Darpan", `${licensingServicePath}/ngo-institutional/ngo-darpan`],
       ["CSR-related Registrations", `${licensingServicePath}/ngo-institutional/csr-related-registrations`],
     ],
     insights: [
@@ -1620,6 +1662,444 @@ export const licensingRegistrationPages: LicensingRegistrationPage[] = [
     finalDescription: "Discuss factory licensing, industrial establishment approvals, environmental permissions or ongoing regulatory compliance with our advisory team.",
     faqDescription: "Answers to common questions about factory licensing, industrial approvals, technical coordination and continuing compliance.",
   },
+  createSupplementalLicensingPage({
+    slug: "bis-bureau-of-indian-standards",
+    groupSlug: "product-industrial",
+    categoryTitle: "Product / Industrial",
+    title: "BIS - Bureau of Indian Standards",
+    shortTitle: "BIS Certification",
+    heroStatement: "Identify Applicable Standards. Prepare Product Evidence. Coordinate the BIS Certification Pathway.",
+    description: "Advisory support for businesses assessing Bureau of Indian Standards requirements, product certification schemes and applicable compulsory registration or quality control requirements.",
+    introduction: "BIS applicability depends on the product, relevant Indian Standard, current Quality Control Order or scheme, manufacturing location and intended market. An initial review helps identify the likely route and evidence to confirm with current BIS guidance.",
+    imageAlt: "BIS product certification and standards advisory",
+    servicesHeading: "BIS standards and certification support",
+    services: [
+      ["search", "Product Applicability Review", "Identify the product description, relevant standard and potentially applicable order or certification scheme."],
+      ["document", "Scheme & Evidence Planning", "Map the application route and organise test reports, product details and manufacturing records."],
+      ["building", "Manufacturer Coordination", "Coordinate information and application workstreams for domestic or overseas manufacturers."],
+      ["shield", "Testing & Inspection Readiness", "Help prepare for testing, factory assessment or inspection requirements where applicable."],
+    ],
+    benefitsHeading: "Why assess BIS requirements early?",
+    benefits: [
+      ["shield", "Clarify market requirements", "Check whether a product is covered by a current standard, order or scheme before launch."],
+      ["document", "Organise application evidence", "Prepare product, testing and manufacturer information for the relevant pathway."],
+      ["calendar", "Plan dependencies", "Identify testing, inspection and authority steps that may affect launch timelines."],
+      ["building", "Coordinate responsible teams", "Align manufacturers, importers, laboratories and internal compliance contacts."],
+    ],
+    structureHeading: "BIS certification routes depend on the product",
+    structurePoints: [
+      ["search", "Applicable Indian Standard", "Confirm the product scope and standard using current BIS publications and notifications."],
+      ["shield", "Compulsory certification", "Assess whether a current Quality Control Order or scheme requires certification before manufacture, import or sale."],
+      ["computer", "Compulsory Registration Scheme", "Check whether the product is covered by the applicable registration scheme and its current testing requirements."],
+      ["globe", "Foreign manufacturer route", "Review the applicable scheme for overseas manufacturing and the authorised representative requirements, if any."],
+    ],
+    comparisonHeading: "BIS certification routes at a glance",
+    comparisonHeaders: ["Route", "Typical focus", "Applicability check"],
+    comparison: [
+      ["Product certification", "Conformity assessment and use of the applicable Standard Mark", "Confirm product coverage, scheme and current order"],
+      ["Compulsory Registration Scheme", "Product testing and registration under the applicable scheme", "Check the notified product list and current BIS procedure"],
+      ["Foreign manufacturer certification", "Certification pathway for eligible products made outside India", "Confirm scheme-specific factory, testing and representative requirements"],
+    ],
+    processHeading: "A practical BIS assessment process",
+    process: [
+      ["Product and market review", "Confirm product specifications, model range, manufacturer and intended Indian market."],
+      ["Applicability check", "Review current standards, Quality Control Orders and BIS scheme requirements."],
+      ["Route and evidence plan", "Identify the likely scheme and documents, testing or inspection steps to verify."],
+      ["Application coordination", "Organise the application information and coordinate the agreed testing and filing workstreams."],
+      ["Authority follow-through", "Track clarifications, assessment steps and continuing conditions after approval."],
+    ],
+    documents: [
+      "Product description, technical specifications and model details",
+      "Manufacturer identity, factory address and authorised representative details",
+      "Applicable standard, test reports or laboratory information, if available",
+      "Quality control procedures and manufacturing process information",
+      "Existing BIS correspondence, licences or registration records",
+    ],
+    requirements: [
+      ["search", "Confirm product coverage", "Use current BIS notifications and scheme documents to confirm whether the product is regulated."],
+      ["document", "Match model and standard", "Ensure product variants, technical details and test evidence align with the applicable standard."],
+      ["building", "Identify the responsible manufacturer", "Confirm the factory, applicant and authorised representative for the selected scheme."],
+      ["calendar", "Check continuing duties", "Review marking, surveillance, renewal and change-notification requirements for the applicable approval."],
+    ],
+    faqs: [
+      ["Does every product need BIS certification?", "No. Applicability depends on current product-specific standards, Quality Control Orders and certification schemes."],
+      ["Is BIS certification the same as an ISI Mark licence?", "The ISI Standard Mark is used under applicable BIS product certification schemes; the route depends on the product and current rules."],
+      ["Can one licence cover every product model?", "Coverage depends on the scheme, standard, product family and licence scope; confirm the approved models and conditions."],
+      ["How long does BIS certification take?", "Timing varies with product testing, factory assessment, application completeness and authority processing; no fixed outcome can be guaranteed."],
+    ],
+    finalHeading: "Confirm the right BIS route before your product launch",
+    finalDescription: "Discuss product coverage, applicable standards and the evidence needed for a considered certification plan.",
+    relatedPages: [
+      ["ISI Standard Mark", `${licensingServicePath}/product-industrial/isi-indian-standards-institution`],
+      ["WPC Equipment Advisory", `${licensingServicePath}/product-industrial/wpc-wood-plastic-composite`],
+      ["Factory / Industrial Approvals", `${licensingServicePath}/product-industrial/factory-industrial-approvals`],
+    ],
+  }),
+  createSupplementalLicensingPage({
+    slug: "isi-indian-standards-institution",
+    groupSlug: "product-industrial",
+    categoryTitle: "Product / Industrial",
+    title: "ISI - Indian Standards Institution",
+    shortTitle: "ISI Standard Mark",
+    heroStatement: "Assess Standard Mark Applicability. Align Testing and Factory Records. Prepare for BIS Certification.",
+    description: "Advisory for manufacturers and importers assessing BIS product certification and use of the ISI Standard Mark for products covered by applicable Indian Standards and current Quality Control Orders.",
+    introduction: "The ISI Standard Mark is administered through BIS certification schemes; it is not a separate registration with an institution called ISI. The applicable standard, product scope and current order determine whether certification is required and which process applies.",
+    imageAlt: "ISI Standard Mark and BIS product certification guidance",
+    servicesHeading: "ISI Standard Mark and BIS licence support",
+    services: [
+      ["search", "Standard Mark Applicability", "Review product coverage against the current Indian Standard and Quality Control Order."],
+      ["document", "Application & Product Records", "Organise product, manufacturer, quality-control and application information."],
+      ["building", "Factory Assessment Preparation", "Coordinate readiness records for applicable factory inspection and assessment steps."],
+      ["shield", "Licence & Marking Guidance", "Review licence scope, mark use and continuing requirements against the applicable scheme."],
+    ],
+    benefitsHeading: "A clear certification scope protects your launch plan",
+    benefits: [
+      ["search", "Verify whether marking applies", "Avoid treating the Standard Mark as universally required across unrelated product categories."],
+      ["document", "Prepare consistent records", "Align models, factory details, testing and application particulars."],
+      ["calendar", "Understand scheme steps", "Plan testing, assessment, licensing and post-licence requirements."],
+      ["shield", "Use the mark responsibly", "Check that product marking and claims remain within the active licence scope."],
+    ],
+    structureHeading: "Key parts of an ISI Standard Mark assessment",
+    structurePoints: [
+      ["file", "Product and standard", "Identify the product and applicable Indian Standard from current official material."],
+      ["shield", "Quality Control Order", "Confirm whether a current order makes certification compulsory for the product."],
+      ["building", "Factory and quality controls", "Review manufacturing location, quality systems and scheme-specific assessment needs."],
+      ["calendar", "Licence conditions", "Check permitted models, marking, surveillance and renewal obligations."],
+    ],
+    comparisonHeading: "Understand the related BIS certification concepts",
+    comparisonHeaders: ["Term", "Meaning", "Practical check"],
+    comparison: [
+      ["BIS", "India's national standards body administering standards and certification schemes", "Use current BIS publications to confirm product requirements"],
+      ["Indian Standard", "Technical specification relevant to a defined product or service", "Match the product and models to the standard's scope"],
+      ["ISI Standard Mark", "Mark used under applicable BIS product certification licences", "Use only for products covered by a valid licence and its conditions"],
+    ],
+    processHeading: "Steps to assess an ISI Standard Mark licence",
+    process: [
+      ["Identify the product", "Confirm product description, models, manufacturer and market."],
+      ["Check the standard and order", "Verify current product coverage, Indian Standard and applicable Quality Control Order."],
+      ["Plan testing and assessment", "Map required samples, laboratory tests, factory information and quality controls."],
+      ["Prepare the application", "Compile consistent manufacturer, product and technical records."],
+      ["Manage licence conditions", "Track scope, marking, surveillance and renewal requirements after grant."],
+    ],
+    documents: [
+      "Product and model specifications",
+      "Factory address and manufacturing process details",
+      "Quality-control procedures and test records",
+      "Applicant and authorised signatory information",
+      "Existing test reports, BIS correspondence or licence details",
+    ],
+    requirements: [
+      ["scope", "Product scope", "Check that the product and each model fall within the relevant standard and licence scope."],
+      ["shield", "Current approval", "Verify the licence status before applying the Standard Mark to covered products."],
+      ["document", "Traceable records", "Maintain test, production and quality records required by the applicable scheme."],
+      ["calendar", "Ongoing compliance", "Track surveillance, renewals and changes in models, manufacturing or applicable requirements."],
+    ],
+    faqs: [
+      ["What does the ISI Mark show?", "It indicates certification under an applicable BIS product certification scheme; scope and validity should be checked against the licence."],
+      ["Is the ISI Mark mandatory for all products?", "No. It is required only where an applicable order or rule makes certification compulsory, or where a business voluntarily seeks certification under an available scheme."],
+      ["Who issues an ISI Mark licence?", "BIS administers the relevant product certification scheme."],
+      ["Can an importer use a manufacturer's licence?", "The right to supply or mark products depends on the licence holder, product scope and scheme conditions; verify the current arrangement with BIS."],
+    ],
+    finalHeading: "Plan ISI Mark certification against the applicable BIS scheme",
+    finalDescription: "Review product scope, current orders and licence conditions before making certification or marking decisions.",
+    relatedPages: [
+      ["BIS Certification", `${licensingServicePath}/product-industrial/bis-bureau-of-indian-standards`],
+      ["WPC Equipment Advisory", `${licensingServicePath}/product-industrial/wpc-wood-plastic-composite`],
+      ["Factory / Industrial Approvals", `${licensingServicePath}/product-industrial/factory-industrial-approvals`],
+    ],
+  }),
+  createSupplementalLicensingPage({
+    slug: "trust",
+    groupSlug: "ngo-institutional",
+    categoryTitle: "NGO / Institutional",
+    title: "Trust Registration",
+    shortTitle: "Trust Registration",
+    heroStatement: "Choose an Appropriate Charitable Structure. Document Trustee Responsibilities. Plan Continuing Compliance.",
+    description: "Advisory support for establishing and maintaining public charitable trusts, including trust deed preparation, registration coordination and governance records.",
+    introduction: "Trust formation and registration requirements vary by state, the trust's objects and the property involved. A considered review of the proposed activities, trustees, deed and registration route helps establish a usable governance foundation.",
+    imageAlt: "Public charitable trust formation and governance advisory",
+    servicesHeading: "Trust formation and governance services",
+    services: [
+      ["document", "Trust Deed Planning", "Help organise the trust's objects, trustee powers, governance and administration terms."],
+      ["building", "Registration Coordination", "Coordinate deed execution and registration steps with the relevant local authority."],
+      ["people", "Trustee & Governance Records", "Prepare and maintain trustee particulars, resolutions and change records."],
+      ["shield", "Connected Compliance Review", "Identify separate tax, donor, banking and activity-specific requirements for assessment."],
+    ],
+    benefitsHeading: "Build a clear foundation for charitable work",
+    benefits: [
+      ["document", "Clarify charitable objects", "Record the purpose, activities and permitted use of trust property."],
+      ["people", "Define trustee responsibilities", "Set out appointment, decision-making and administration provisions."],
+      ["shield", "Support accountable governance", "Maintain records that help evidence decisions and use of funds."],
+      ["calendar", "Plan connected registrations", "Assess separately whether tax, donor or sector approvals may be relevant."],
+    ],
+    structureHeading: "Trust formation considerations",
+    structurePoints: [
+      ["target", "Objects and beneficiaries", "Define lawful public-benefit objects and the intended beneficiaries."],
+      ["people", "Trustees and powers", "Set out trustee appointment, duties, meetings, decisions and succession."],
+      ["file", "Trust property and deed", "Describe the initial property, administration and amendment or dissolution terms."],
+      ["map", "State-specific registration", "Confirm local registration, stamp duty and record requirements for the trust and property."],
+    ],
+    comparisonHeading: "Choose a suitable nonprofit structure",
+    comparisonHeaders: ["Structure", "Governance basis", "Key planning question"],
+    comparison: [
+      ["Public charitable trust", "Trust deed and applicable state law", "Are the trust objects, trustees and administration terms suitable?"],
+      ["Society", "Memorandum, rules and governing body under applicable law", "Is a membership-based governing model appropriate?"],
+      ["Section 8 company", "Companies Act, 2013 and corporate governance", "Would a company structure support the intended scale and oversight?"],
+    ],
+    processHeading: "A structured trust registration process",
+    process: [
+      ["Purpose and route review", "Understand charitable objects, beneficiaries, trustees and location."],
+      ["Deed preparation", "Prepare the proposed trust deed and review governance provisions."],
+      ["Execution and registration", "Coordinate signing, applicable stamping and presentation to the relevant authority."],
+      ["Post-registration records", "Organise the registered deed, trustee details, bank and governance records."],
+      ["Connected compliance planning", "Assess separate tax registrations, donor permissions and activity-specific licences."],
+    ],
+    documents: [
+      "Proposed trust name, charitable objects and activity plan",
+      "Trustee identity, address and consent details",
+      "Proposed trust deed and initial trust property details",
+      "Registered office address proof and owner consent, where applicable",
+      "Existing property, funding or donor documents relevant to the trust",
+    ],
+    requirements: [
+      ["document", "Clear charitable objects", "Describe the public-benefit purpose and intended activities in the deed."],
+      ["people", "Trustee consent and details", "Confirm identities, eligibility and willingness to undertake trustee responsibilities."],
+      ["map", "Applicable state process", "Check local registration, execution and stamp duty rules before signing."],
+      ["shield", "Separate approvals", "Do not treat trust registration as automatically granting tax exemption, FCRA approval or other licences."],
+    ],
+    faqs: [
+      ["Is a charitable trust registered under one uniform process across India?", "No. Registration and documentation requirements can differ by state, trust type and property."],
+      ["Does trust registration automatically provide tax exemption?", "No. Tax registrations or approvals, if eligible, are separate applications with their own requirements."],
+      ["Can a trust receive foreign contributions after registration?", "Trust registration alone is not FCRA approval; applicable registration or prior permission must be assessed separately before receipt."],
+      ["Can trustees be changed later?", "Changes should follow the deed and applicable law and be recorded or reported where required."],
+    ],
+    finalHeading: "Establish a trust with clear objects and governance",
+    finalDescription: "Discuss the proposed charitable activities, trustees and state-specific registration requirements.",
+    relatedPages: [
+      ["Society Registration", `${licensingServicePath}/ngo-institutional/society`],
+      ["Section 8 Company", `${licensingServicePath}/ngo-institutional/section-8-company`],
+      ["NGO Darpan", `${licensingServicePath}/ngo-institutional/ngo-darpan`],
+    ],
+  }),
+  createSupplementalLicensingPage({
+    slug: "society",
+    groupSlug: "ngo-institutional",
+    categoryTitle: "NGO / Institutional",
+    title: "Society Registration",
+    shortTitle: "Society Registration",
+    heroStatement: "Organise a Membership-Based Nonprofit. Define Governing Rules. Prepare for Registration.",
+    description: "Advisory support for registering societies and organising their memorandum, rules, governing body and continuing statutory records.",
+    introduction: "Society registration requirements are governed by the applicable central or state law and local Registrar process. Membership, objects, governing arrangements and filing documents should be checked against the jurisdiction before submission.",
+    imageAlt: "Society registration and nonprofit governance advisory",
+    servicesHeading: "Society formation and compliance services",
+    services: [
+      ["people", "Membership & Governing Body Planning", "Organise founding members, office bearers, responsibilities and decision-making arrangements."],
+      ["document", "Memorandum & Rules", "Prepare the society's objects and operating rules for review and filing."],
+      ["building", "Registration Application Support", "Coordinate the application and supporting documents with the relevant Registrar."],
+      ["calendar", "Governance & Filing Calendar", "Identify meetings, member records, accounts and reporting duties to confirm locally."],
+    ],
+    benefitsHeading: "Create transparent membership governance",
+    benefits: [
+      ["people", "Set clear membership rules", "Document eligibility, admission, rights and termination provisions."],
+      ["document", "Define organisational purpose", "Align the memorandum and rules with the society's planned activities."],
+      ["shield", "Support responsible decisions", "Clarify governing body powers, meetings and record keeping."],
+      ["calendar", "Track ongoing obligations", "Plan statutory and internal compliance steps for the applicable jurisdiction."],
+    ],
+    structureHeading: "Core elements of a registered society",
+    structurePoints: [
+      ["target", "Objects", "State lawful objectives and the activities the society intends to undertake."],
+      ["people", "Membership", "Set out members, eligibility, admission, voting and exit rules."],
+      ["building", "Governing body", "Define office bearers, election or appointment, powers and terms."],
+      ["file", "Rules and records", "Maintain the memorandum, rules, minutes, member register and accounts."],
+    ],
+    comparisonHeading: "Compare common nonprofit structures",
+    comparisonHeaders: ["Structure", "Governance basis", "Key planning question"],
+    comparison: [
+      ["Society", "Membership, memorandum and rules under applicable law", "Does a member-led governing model fit the organisation?"],
+      ["Public charitable trust", "Trust deed and trustees under applicable state law", "Would trustee-led administration better suit the objects?"],
+      ["Section 8 company", "Companies Act, 2013 and corporate governance", "Are formal company reporting and board oversight suitable?"],
+    ],
+    processHeading: "A clear route to society registration",
+    process: [
+      ["Jurisdiction and eligibility", "Confirm the applicable law, Registrar and founding member requirements."],
+      ["Objects and governance", "Agree the society's purposes, membership model and governing body."],
+      ["Prepare constitutive documents", "Draft the memorandum, rules, member and office bearer particulars."],
+      ["File and respond", "Submit the application and coordinate responses to Registrar queries."],
+      ["Maintain society records", "Organise the certificate, minutes, membership, accounts and ongoing filings."],
+    ],
+    documents: [
+      "Proposed name, objects and registered office details",
+      "Founding member and governing body identity and address details",
+      "Memorandum of association and rules or bylaws",
+      "Office address proof and owner consent, where applicable",
+      "Resolutions, declarations and photographs as required by the local Registrar",
+    ],
+    requirements: [
+      ["map", "Jurisdiction-specific rules", "Confirm local member counts, forms, fees and supporting documents."],
+      ["document", "Consistent governing documents", "Ensure the memorandum, rules and application state the same objects and particulars."],
+      ["people", "Member and office bearer records", "Maintain accurate founding, governing body and contact details."],
+      ["calendar", "Ongoing governance", "Check annual meetings, accounts, returns and change filings under the applicable law."],
+    ],
+    faqs: [
+      ["How many members are needed to register a society?", "The required number depends on the applicable central or state legislation and local process."],
+      ["Are society rules the same in every state?", "No. Filing forms, fees, member requirements and continuing duties may differ by jurisdiction."],
+      ["Does society registration grant tax exemption?", "No. Tax registrations and exemption claims are separate and subject to their own eligibility and process."],
+      ["Can a society receive foreign contributions after registration?", "Society registration alone does not permit receipt of foreign contribution; applicable FCRA approval must be obtained first."],
+    ],
+    finalHeading: "Prepare your society for a clear and accountable start",
+    finalDescription: "Review the proposed objects, membership model and local registration requirements with our team.",
+    relatedPages: [
+      ["Trust Registration", `${licensingServicePath}/ngo-institutional/trust`],
+      ["Section 8 Company", `${licensingServicePath}/ngo-institutional/section-8-company`],
+      ["NGO Darpan", `${licensingServicePath}/ngo-institutional/ngo-darpan`],
+    ],
+  }),
+  createSupplementalLicensingPage({
+    slug: "section-8-company",
+    groupSlug: "ngo-institutional",
+    categoryTitle: "NGO / Institutional",
+    title: "Section 8 Company",
+    shortTitle: "Section 8 Company",
+    heroStatement: "Build a Nonprofit Company with Defined Objects. Establish Governance. Plan Ongoing MCA Compliance.",
+    description: "Advisory support for incorporating a not-for-profit company under Section 8 of the Companies Act, 2013 and coordinating its corporate governance and compliance requirements.",
+    introduction: "A Section 8 company is formed to promote permitted charitable or other eligible objects, apply its profits to those objects and prohibit dividends to members. Incorporation, licence and ongoing requirements depend on the proposed structure and current MCA process.",
+    imageAlt: "Section 8 nonprofit company formation and compliance advisory",
+    servicesHeading: "Section 8 incorporation and governance support",
+    services: [
+      ["document", "Eligibility & Structure Review", "Assess proposed objects, members, directors and the company's intended activities."],
+      ["building", "Name & Incorporation Coordination", "Coordinate name, incorporation documents and the applicable MCA filing process."],
+      ["people", "Constitutional Documents", "Prepare memorandum and articles reflecting the permitted objects and governance."],
+      ["calendar", "Post-Incorporation Compliance", "Identify board, member, accounts, annual filing and change-reporting obligations."],
+    ],
+    benefitsHeading: "When a Section 8 company may be suitable",
+    benefits: [
+      ["target", "A corporate nonprofit form", "Use a company structure for eligible charitable or public-benefit objects."],
+      ["shield", "Governance responsibilities", "Set clear director, member and board processes through corporate documents."],
+      ["document", "Defined use of income", "Reflect the statutory requirement to apply profits to the company's objects."],
+      ["calendar", "Plan company compliance", "Understand continuing MCA, accounting and governance responsibilities before incorporation."],
+    ],
+    structureHeading: "Section 8 company essentials",
+    structurePoints: [
+      ["target", "Permitted objects", "The company's objects must fall within Section 8 and be supported by its governing documents."],
+      ["people", "Members and directors", "Plan the appropriate membership and board structure and the responsibilities involved."],
+      ["file", "Memorandum and articles", "Draft constitutional documents consistent with the charitable or public-benefit purpose."],
+      ["shield", "Income and distributions", "Apply profits to the company's objects; dividends to members are prohibited."],
+    ],
+    comparisonHeading: "Compare nonprofit organisational structures",
+    comparisonHeaders: ["Structure", "Legal framework", "Governance model"],
+    comparison: [
+      ["Section 8 company", "Companies Act, 2013", "Company members and directors, with MCA reporting"],
+      ["Public charitable trust", "Trust deed and applicable state law", "Trustees administer the trust and its property"],
+      ["Society", "Applicable Societies Registration law", "Membership and governing body under registered rules"],
+    ],
+    processHeading: "A considered Section 8 incorporation process",
+    process: [
+      ["Object and eligibility review", "Assess the proposed activities, beneficiaries, revenue model and statutory fit."],
+      ["Member and director planning", "Confirm proposed members, directors, consent and identification records."],
+      ["Name and document preparation", "Prepare name options, memorandum, articles and declarations for review."],
+      ["MCA filing and clarification", "Coordinate the prescribed incorporation and Section 8 application process."],
+      ["Post-incorporation setup", "Organise statutory registers, board processes, accounting and annual compliance."],
+    ],
+    documents: [
+      "Proposed name, objects and activity plan",
+      "Identity, address and consent documents for members and directors",
+      "Registered office proof and owner consent, where applicable",
+      "Draft memorandum and articles of association",
+      "Declarations, professional certifications and financial estimates as required",
+    ],
+    requirements: [
+      ["target", "Eligible purpose", "Ensure proposed objects and activities satisfy the requirements of Section 8."],
+      ["document", "Consistent company documents", "Align the application, memorandum and articles with the intended nonprofit purpose."],
+      ["people", "Director and member readiness", "Confirm consents, identification and applicable eligibility requirements."],
+      ["calendar", "Company reporting", "Plan statutory registers, accounts, board meetings and MCA filings from incorporation."],
+    ],
+    faqs: [
+      ["Can a Section 8 company distribute profits to members?", "No. Its income and profits must be applied to its objects, and dividends to members are prohibited."],
+      ["Is a Section 8 company exempt from all taxes?", "No. Incorporation under Section 8 does not automatically grant tax exemption; separate tax registrations and conditions apply."],
+      ["Can a Section 8 company receive foreign contributions?", "Only after satisfying applicable FCRA requirements, including registration or prior permission where required."],
+      ["Does it need to file annual company returns?", "Section 8 companies have ongoing Companies Act, accounting and filing obligations; confirm the current requirements for the company."],
+    ],
+    finalHeading: "Plan your Section 8 company around its purpose and obligations",
+    finalDescription: "Discuss the proposed objects, governance model and incorporation requirements before filing.",
+    relatedPages: [
+      ["Trust Registration", `${licensingServicePath}/ngo-institutional/trust`],
+      ["Society Registration", `${licensingServicePath}/ngo-institutional/society`],
+      ["NGO Darpan", `${licensingServicePath}/ngo-institutional/ngo-darpan`],
+    ],
+  }),
+  createSupplementalLicensingPage({
+    slug: "ngo-darpan",
+    groupSlug: "ngo-institutional",
+    categoryTitle: "NGO / Institutional",
+    title: "NGO Darpan Registration & Profile Support",
+    shortTitle: "NGO Darpan",
+    heroStatement: "Prepare an Accurate NGO Darpan Profile. Organise Institutional Records. Track Portal Requirements.",
+    description: "Practical support for eligible voluntary organisations preparing or updating their profile on the NGO Darpan portal administered by NITI Aayog.",
+    introduction: "NGO Darpan provides a portal profile and unique identification number for eligible voluntary organisations. Portal onboarding is distinct from legal entity registration, tax exemption, grant eligibility and FCRA approval; each has separate criteria and processes.",
+    imageAlt: "NGO Darpan portal profile and nonprofit records advisory",
+    servicesHeading: "NGO Darpan profile and record support",
+    services: [
+      ["document", "Organisation Record Review", "Check the legal registration, PAN, address and governing body information to be reflected in the profile."],
+      ["computer", "Portal Profile Assistance", "Help prepare information and coordinate profile submission through the official portal."],
+      ["people", "Office Bearer & Contact Updates", "Organise current governing body and authorised contact information for updates."],
+      ["shield", "Connected Registration Assessment", "Identify separate grant, tax, FCRA or sector requirements without treating portal enrolment as their substitute."],
+    ],
+    benefitsHeading: "Keep institutional information clear and current",
+    benefits: [
+      ["document", "Consistent organisation details", "Align the portal profile with the NGO's legal and governance records."],
+      ["people", "Accurate office bearer information", "Maintain current names, roles and authorised contacts."],
+      ["calendar", "Support profile updates", "Plan for changes to registration, address or governing body details."],
+      ["shield", "Understand the limits of the ID", "Distinguish portal enrolment from approvals, funding eligibility and statutory permissions."],
+    ],
+    structureHeading: "What to prepare for an NGO Darpan profile",
+    structurePoints: [
+      ["file", "Legal registration", "Keep the trust, society or Section 8 company registration details available."],
+      ["document", "PAN and address", "Check the organisation's PAN and current address records for consistency."],
+      ["people", "Governing body", "Verify current office bearer names and contact particulars."],
+      ["shield", "Portal eligibility", "Confirm the organisation meets the portal's current eligibility and documentation requirements."],
+    ],
+    comparisonHeading: "NGO Darpan and other approvals are separate",
+    comparisonHeaders: ["Record or approval", "Purpose", "What it does not replace"],
+    comparison: [
+      ["NGO Darpan profile", "Portal profile and unique identification for eligible organisations", "Does not itself grant tax exemption, FCRA approval or a grant"],
+      ["Entity registration", "Creates or records the trust, society or company under applicable law", "Does not automatically create an NGO Darpan profile"],
+      ["FCRA approval", "Authorises eligible foreign contribution activity subject to the granted route and conditions", "Cannot be replaced by a Darpan ID"],
+    ],
+    processHeading: "A clear NGO Darpan profile process",
+    process: [
+      ["Eligibility and record review", "Confirm the organisation type and current portal requirements."],
+      ["Information preparation", "Organise registration, PAN, address and governing body information."],
+      ["Profile submission", "Coordinate portal entry and submission by an authorised representative."],
+      ["Verification and clarification", "Track portal feedback and prepare accurate supporting information."],
+      ["Profile maintenance", "Review the profile when organisation or governing body details change."],
+    ],
+    documents: [
+      "Trust deed, society certificate or Section 8 incorporation records",
+      "Organisation PAN and address proof",
+      "Current governing body or office bearer details",
+      "Authorised representative contact and identity information",
+      "Existing NGO Darpan profile or ID details, if already registered",
+    ],
+    requirements: [
+      ["file", "Valid entity record", "Use the organisation's current legal registration and constitutional documents."],
+      ["document", "Consistent particulars", "Match names, addresses and PAN details across the profile and source records."],
+      ["people", "Authorised access", "Ensure the person submitting or updating the profile is authorised by the organisation."],
+      ["shield", "Separate approvals", "Apply separately for tax registrations, FCRA permissions or grants where relevant."],
+    ],
+    faqs: [
+      ["What is NGO Darpan?", "It is a NITI Aayog portal for eligible voluntary organisations to maintain an organisation profile and obtain a unique identification number."],
+      ["Does an NGO Darpan ID grant FCRA permission?", "No. Foreign contribution requires the applicable approval under FCRA before receipt."],
+      ["Does NGO Darpan registration provide tax exemption?", "No. Tax exemption or donor-related registrations are separate and subject to statutory eligibility."],
+      ["Can a trust, society or Section 8 company apply?", "Eligible organisations may apply subject to current portal criteria and document requirements."],
+    ],
+    finalHeading: "Prepare a consistent NGO Darpan profile",
+    finalDescription: "Review your organisation's registration and governing body records against current portal requirements.",
+    relatedPages: [
+      ["Trust Registration", `${licensingServicePath}/ngo-institutional/trust`],
+      ["Society Registration", `${licensingServicePath}/ngo-institutional/society`],
+      ["Section 8 Company", `${licensingServicePath}/ngo-institutional/section-8-company`],
+    ],
+  }),
 ];
 
 export const getLicensingRegistrationPage = (slug: string) =>

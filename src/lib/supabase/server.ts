@@ -224,35 +224,82 @@ export async function getPublicTestimonials(): Promise<PublicCmsTestimonial[]> {
     typeof record.service === "string" &&
     typeof record.testimonial_text === "string",
   );
-  const paths = rows.flatMap((record) => [
-    typeof record.image_path === "string" ? record.image_path : "",
-    typeof record.video_path === "string" ? record.video_path : "",
-  ]).filter(Boolean);
-  const service = paths.length ? getTestimonialMediaService() : null;
-  if (paths.length && !service) {
+  const mediaService = getTestimonialMediaService();
+  let mediaBySlug = new Map<string, { imagePath: string; videoPath: string; videoUrl: string; videoSource: string }>();
+  if (mediaService) {
+    const { data: mediaRows, error: mediaError } = await mediaService
+      .from("cms_content")
+      .select("slug, data")
+      .eq("collection", "testimonials")
+      .in("status", ["approved", "published"]);
+    if (mediaError) {
+      console.error("[testimonials] Approved media lookup failed.", {
+        code: mediaError.code || "unknown",
+      });
+    } else {
+      for (const record of mediaRows ?? []) {
+        if (!record || typeof record.slug !== "string" || !record.data || typeof record.data !== "object") continue;
+        const data = record.data as Record<string, unknown>;
+        if (data.consent !== true || data.identityPublicationConsent !== true) continue;
+        mediaBySlug.set(record.slug, {
+          imagePath: data.photoPublicationConsent === true && typeof data.imagePath === "string" ? data.imagePath : "",
+          videoPath: typeof data.videoPath === "string" ? data.videoPath : "",
+          videoUrl: typeof data.videoUrl === "string" ? data.videoUrl : "",
+          videoSource: typeof data.videoSource === "string" ? data.videoSource : "",
+        });
+      }
+    }
+  }
+  const paths = rows.flatMap((record) => {
+    const directMedia = mediaBySlug.get(record.slug);
+    return [
+      typeof record.image_path === "string" && record.image_path
+        ? record.image_path
+        : directMedia?.imagePath || "",
+      typeof record.video_path === "string" && record.video_path
+        ? record.video_path
+        : directMedia?.videoPath || "",
+    ];
+  }).filter(Boolean);
+  if (paths.length && !mediaService) {
     console.error("[testimonials] Private media URL signing is unavailable.", {
       reason: "service_role_key_missing",
     });
   }
-  const signedUrls = service ? await signTestimonialMedia(service, paths) : new Map<string, string>();
-  return rows.map((record) => ({
-    slug: record.slug,
-    name: record.name,
-    company: record.company,
-    designation: record.designation,
-    service: record.service,
-    testimonial_text: record.testimonial_text,
-    rating: typeof record.rating === "number" && Number.isInteger(record.rating) && record.rating >= 1 && record.rating <= 5
-      ? record.rating
-      : 5,
-    image_url: typeof record.image_path === "string" ? signedUrls.get(record.image_path) || "" : "",
-    video_url: typeof record.video_path === "string"
-      ? signedUrls.get(record.video_path) || ""
-      : typeof record.video_url === "string" && isSupportedTestimonialVideoUrl(record.video_url)
-        ? record.video_url
-        : "",
-    video_source: typeof record.video_source === "string" ? record.video_source : "",
-  }));
+  const signedUrls = mediaService ? await signTestimonialMedia(mediaService, paths) : new Map<string, string>();
+  return rows.map((record) => {
+    const directMedia = mediaBySlug.get(record.slug);
+    const imagePath = typeof record.image_path === "string" && record.image_path
+      ? record.image_path
+      : directMedia?.imagePath || "";
+    const videoPath = typeof record.video_path === "string" && record.video_path
+      ? record.video_path
+      : directMedia?.videoPath || "";
+    const videoUrl = typeof record.video_url === "string" && record.video_url
+      ? record.video_url
+      : directMedia?.videoUrl || "";
+    const videoSource = typeof record.video_source === "string" && record.video_source
+      ? record.video_source
+      : directMedia?.videoSource || "";
+    return {
+      slug: record.slug,
+      name: record.name,
+      company: record.company,
+      designation: record.designation,
+      service: record.service,
+      testimonial_text: record.testimonial_text,
+      rating: typeof record.rating === "number" && Number.isInteger(record.rating) && record.rating >= 1 && record.rating <= 5
+        ? record.rating
+        : 5,
+      image_url: imagePath ? signedUrls.get(imagePath) || "" : "",
+      video_url: videoPath
+        ? signedUrls.get(videoPath) || ""
+        : videoUrl && isSupportedTestimonialVideoUrl(videoUrl)
+          ? videoUrl
+          : "",
+      video_source: videoSource,
+    };
+  });
 }
 
 export type PublishedCmsPage = {

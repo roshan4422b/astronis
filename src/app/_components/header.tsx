@@ -197,7 +197,7 @@ export default function Header() {
     <>
       <div className="site-header-stack">
       <div className="utility-bar">
-        <div className="container utility-inner">
+        <div className={`container utility-inner${path === "/" ? " home-utility-inner" : ""}`}>
           <span>
             CORPORATE <b>•</b> REGULATORY <b>•</b> LEGAL <b>•</b> BUSINESS
             ADVISORY

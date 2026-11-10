@@ -204,3 +204,22 @@
 @media (prefers-reduced-motion: reduce) {
   .industryCard img, .featuredImage img, .professionalTrack { scroll-behavior: auto; transition-duration: .01ms; }
 }
+
+.professionalsSection { padding: 24px 0 32px; background: #fff; }
+.professionalGrid { max-width: 1360px; margin-inline: auto; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 1fr; align-items: stretch; gap: 20px; }
+.professionalCard { display: flex; height: 100%; flex-direction: column; border: 1px solid #cbdced; border-left: 3px solid #0759d9; border-radius: 9px; background: #fff; box-shadow: 0 5px 16px #1029530d; }
+.professionalPhoto { display: block; flex: none; aspect-ratio: .9; border: 0; background: #fff; }
+.professionalPhoto img { object-fit: cover; object-position: center top; }
+.professionalInfo { flex: 1; min-height: 190px; padding: 14px 16px; }
+.professionalInfo h3 { color: #102d50; font-family: Georgia, "Times New Roman", serif; font-weight: 700; }
+.professionalInfo > span { color: #0759d9; font-weight: 700; }
+.professionalInfo p { color: #26384d; }
+.profileLink { color: #0759d9; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1120px) {
+  .professionalGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .professionalGrid { grid-template-columns: 1fr; }
+}

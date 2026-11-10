@@ -186,7 +186,7 @@ export default function PrivateLimitedCompanyPage() {
           />
           <div className={styles.serviceGrid}>
             {services.map(([icon, title, text]) => (
-              <article className={styles.serviceCard} key={title}>
+              <article className={`${styles.serviceCard} ${layoutStyles.blueHoverCard}`} key={title}>
                 <span className={styles.icon}><Icon name={icon} /></span>
                 <h3>{title}</h3>
                 <p>{text}</p>

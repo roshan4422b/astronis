@@ -54,6 +54,7 @@
   [class*="cta"],
   [class*="Cta"],
   [class*="dark"],
+  [class*="contactPanel"],
   [class*="banner"],
   [class~="ribbon"],
   [class*="collaborationBand"],
@@ -69,10 +70,16 @@
   [class*="corporate-advisory-module"][class*="__standards"],
   [class*="advisory-professionals-module"][class*="__standardsCard"],
   [class*="legal-professionals-module"][class*="__supportGrid"] article:nth-child(2),
+  [class*="join-network-module"][class*="__processGrid"] aside,
+  [class*="collaborate-with-us-module"][class*="__featureCard"],
   [class*="knowledgeSection"],
   [class*="knowledgeLead"],
   [class*="__enquirySection"]
 )) :global(:is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, strong, small)) {
+  color: #fff !important;
+}
+
+.scope :global([class*="leadership-team-module"][class*="__explore"] :is([class*="__insight"], [class*="__global"]) a) {
   color: #fff !important;
 }
 

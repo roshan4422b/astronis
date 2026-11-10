@@ -24,14 +24,14 @@ const challenges = [
  ["Equity & Access", "Education & EdTech .png", "Addressing affordability, inclusion and rural education gaps.", "business-advisory-and-consulting"],
 ];
 const solutions = [
- ["document", "Regulatory Approvals & Affiliation Support", "licensing-and-registrations"],
- ["shield", "EdTech Legal & Technology Advisory", "intellectual-property/technology-law"],
- ["people", "Contracts, Partnerships & Collaborations", "contracts"],
- ["file", "IPR (Content, Brands & Technology)", "intellectual-property-rights"],
- ["chart", "Investment & Fundraising Support", "startup-advisory/fund-raising"],
- ["globe", "Franchise, Expansion & International Tie-ups", "cross-border-and-international-business-support"],
- ["people", "Employment & Workplace Advisory", "hr-and-employment-advisory"],
- ["scale", "Dispute Resolution & Risk Management", "litigation-and-dispute-resolution"],
+ ["document", "Regulatory Approvals & Affiliation Support", "regulatory-services/corporate-regulatory/regulatory-compliance-review"],
+ ["shield", "EdTech Legal & Technology Advisory", "environmental-technology-sector-specific/technology-privacy-and-digital/technology-contracts"],
+ ["people", "Contracts, Partnerships & Collaborations", "corporate-commercial-advisory/joint-venture-agreements"],
+ ["file", "IPR (Content, Brands & Technology)", "intellectual-property-right-services/ip-and-brand-advisory/brand-protection"],
+ ["chart", "Investment & Fundraising Support", "business-advisory-contracts/business-strategy/fundraising-support"],
+ ["globe", "Franchise, Expansion & International Tie-ups", "fema-fdi-cross-border/odi-compliance-and-support/overseas-joint-venture"],
+ ["people", "Employment & Workplace Advisory", "industrial-employment-forensics-advisory/employment-and-labour/employment-advisory"],
+ ["scale", "Dispute Resolution & Risk Management", "litigation-dispute-resolution/tribunals-dispute-resolution/domestic-and-international-arbitration"],
 ];
 const faqs = [
  ["What approvals are required to start an educational institution in India?", "Share your proposed institution type, location, programmes and operating model with our team. We can help scope the approval and affiliation questions relevant to your plans."],

@@ -228,14 +228,14 @@ const ngoInstitutionalChildRoutes: Record<string, string> = {
 
 const copyrightChildRoutes: Record<string, string> = {
   Assignment:
-    "/services/intellectual-property-right-services/ip-and-brand-advisory/assignment",
+    "/services/intellectual-property-right-services/copyright/assignment",
   Licensing:
-    "/services/intellectual-property-right-services/ip-and-brand-advisory/licensing",
+    "/services/intellectual-property-right-services/copyright/licensing",
 };
 
 const designsChildRoutes: Record<string, string> = {
   Enforcement:
-    "/services/intellectual-property-right-services/ip-and-brand-advisory/ip-enforcement-strategy",
+    "/services/intellectual-property-right-services/designs/enforcement",
 };
 
 const businessRegistrationChildRoutes: Record<string, string> = {

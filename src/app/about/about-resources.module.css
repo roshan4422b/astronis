@@ -30,7 +30,8 @@
 @media (max-width: 700px) {
  .resourceGrid { grid-template-columns: 1fr; gap: 22px; }
  .resourceGrid article { padding: 24px; }
- .resourceContent { grid-template-columns: 32% minmax(0, 1fr); }
+ .resourceContent { grid-template-columns: minmax(0, 1fr); }
+ .resourceImage { min-height: 0; aspect-ratio: 16 / 9; }
 }
 @media (prefers-reduced-motion: reduce) {
  .resourceGrid article, .resourceImage img { transition: none; }

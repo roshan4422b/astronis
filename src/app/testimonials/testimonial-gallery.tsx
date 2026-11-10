@@ -19,8 +19,8 @@ export default function TestimonialGallery({
   const cmsIds = new Set(cmsTestimonials.map((item) => item.id));
   const suppressedIds = new Set(suppressedSourceIds);
   const approved = [
-    ...testimonials.filter((item) => !cmsIds.has(item.id) && !suppressedIds.has(item.id)),
     ...cmsTestimonials,
+    ...testimonials.filter((item) => !cmsIds.has(item.id) && !suppressedIds.has(item.id)),
   ]
     .filter((item) => item.status === "approved" && item.publicationConsent);
 
@@ -44,7 +44,9 @@ export default function TestimonialGallery({
         <Heading title="Voices of Trust. Stories of Impact." text="Hear from the businesses, professionals and organisations we support." />
         <div className="testimonial-columns">
           {["Written Testimonials", "Video Testimonials"].map((title, index) => {
-            const items = approved.filter((item) => index ? !!item.videoUrl : !!item.quote);
+            const items = approved.filter((item) => index
+              ? Boolean(item.videoUrl)
+              : !item.videoUrl && Boolean(item.quote));
             return (
               <div key={title}>
                 <h3 className="testimonial-column-title">{title}</h3>
@@ -58,7 +60,11 @@ export default function TestimonialGallery({
                         height={52}
                         className="testimonial-customer-image"
                       />
-                    ) : null}
+                    ) : (
+                      <span className="testimonial-customer-placeholder" role="img" aria-label={`${item.name} profile image unavailable`}>
+                        <Icon name="user" />
+                      </span>
+                    )}
                     <h3>{item.name}</h3>
                     <p>{[item.designation, item.company].filter(Boolean).join(" · ")}</p>
                     {index ? (

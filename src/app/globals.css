@@ -421,6 +421,9 @@ main section[class*="hero"] :is(a, button):is(
   min-height: 36px;
   position: relative;
 }
+.utility-inner.home-utility-inner {
+  grid-template-columns: minmax(0, 1.5fr) 36px minmax(0, 1fr);
+}
 .utility-inner > span { grid-column: 1; }
 .utility-inner > .utility-contact { grid-column: 3; justify-self: end; }
 .utility-inner > .utility-search { grid-column: 2; grid-row: 1; justify-self: center; }
@@ -1874,6 +1877,21 @@ main section[class*="hero"] :is(a, button):is(
   border: 1px solid var(--line);
   border-radius: 50%;
   object-fit: cover;
+}
+.testimonial-customer-placeholder {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #eef4fa;
+  color: var(--muted);
+}
+.testimonial-customer-placeholder .icon {
+  width: 24px;
+  height: 24px;
 }
 .testimonial-invite > .icon {
   color: var(--blue);
@@ -3680,17 +3698,18 @@ textarea::placeholder {
     border-radius: 0;
     min-height: 350px;
   }
+  .why-intro .relative {
+    width: 100%;
+    min-width: 0;
+  }
   .why-intro h2 {
-    font-size: max(var(--font-size-min), 54px);
+    font-size: clamp(36px, 11vw, 46px);
   }
   .why-intro p {
     max-width: 450px;
   }
   .why-intro h2 br {
-    display: none;
-  }
-  .why-intro h2 br:after {
-    content: " ";
+    display: initial;
   }
   .reasons-grid {
     padding: 15px 25px 30px;
@@ -4197,7 +4216,7 @@ textarea::placeholder {
     height: 32px;
   }
   .why-intro h2 {
-    font-size: max(var(--font-size-min), 46px);
+    font-size: clamp(36px, 11vw, 42px);
   }
 }
 @media (max-width: 1050px) {
@@ -4608,6 +4627,16 @@ textarea::placeholder {
   color: var(--navy);
   box-shadow: 0 4px 0 #d2b471, 0 16px 28px #010f2c2e, 0 3px 7px #010f2c17;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.quick-grid .service-card-content {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+.quick-grid .service-card-title,
+.quick-grid .service-card-description {
+  width: 100%;
+  text-align: center;
 }
 .quick-grid .service-card::before {
   content: "";
@@ -5166,6 +5195,30 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   }
 
   #main-content :is(section[class*="hero"], header[class*="hero"], section.page-banner) > :is(
+    [class*="heroInner"],
+    [class*="hero-inner"],
+    [class*="wrap"]
+  ):has(> [class*="breadcrumb"]):has(> [class*="heroCopy"]):not(:has(> :is(
+    [class*="heroContent"],
+    [class*="hero-content"],
+    [class*="heroLayout"],
+    [class*="hero-layout"]
+  ))) > :is(
+    [class*="heroCopy"],
+    [class*="hero-copy"],
+    [class*="heroText"],
+    [class*="hero-text"],
+    [class*="heroMain"],
+    [class*="hero-main"]
+  ) {
+    position: relative !important;
+    inset: auto !important;
+    width: 100%;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  #main-content :is(section[class*="hero"], header[class*="hero"], section.page-banner) > :is(
     [class*="heroPhoto"],
     [class*="hero-photo"]
   ) {
@@ -5567,6 +5620,9 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
   .page-banner
 ) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
   color: #fff !important;
+}
+#main-content .global-presence-route-scope [class*="__journeyStep"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a) {
+  color: #111 !important;
 }
 .global-presence-route-scope [class*="__journeyNumber"] {
   color: #082b53 !important;

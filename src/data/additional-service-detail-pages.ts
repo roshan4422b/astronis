@@ -1709,6 +1709,9 @@ function toPageData(config: ServiceDetailConfig): EntityFormationPageData {
     .filter((item) => item.serviceSlug === config.serviceSlug && item.categorySlug === config.categorySlug && item.slug !== config.slug)
     .slice(0, 5)
     .map((item) => [item.title, `${serviceHref}/${item.categorySlug}/${item.slug}`] as [string, string]);
+  if (config.serviceSlug === litigationService && config.categorySlug === "litigation-justice-delivery") {
+    relatedPages.push(["Civil Litigation", `${serviceHref}/litigation-justice-delivery/civil-litigation`]);
+  }
 
   return {
     slug: config.slug,

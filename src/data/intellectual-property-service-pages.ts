@@ -25,6 +25,7 @@ type IpPageConfig = {
   finalHeading: string;
   finalDescription: string;
   finalAction: string;
+  relatedPages?: [string, string][];
 };
 
 const serviceHref = "/services/intellectual-property-right-services";
@@ -672,6 +673,11 @@ const pages: IpPageConfig[] = [
     finalHeading: "Protect your creative work and enforce your rights",
     finalDescription: "Discuss proportionate action based on ownership, evidence and the nature of the infringement.",
     finalAction: "Request Copyright Enforcement Assistance",
+    relatedPages: [
+      ["Copyright Registration", "/services/intellectual-property-right-services/copyright/copyright-registration"],
+      ["Copyright Assignment", "/services/intellectual-property-right-services/copyright/assignment"],
+      ["Copyright Licensing", "/services/intellectual-property-right-services/copyright/licensing"],
+    ],
   },
   {
     slug: "copyright-registration",
@@ -744,6 +750,11 @@ const pages: IpPageConfig[] = [
     finalHeading: "Create a clear record for your creative work",
     finalDescription: "Organise ownership, classification and filing materials with copyright registration support.",
     finalAction: "Request Copyright Registration Assistance",
+    relatedPages: [
+      ["Copyright Enforcement", "/services/intellectual-property-right-services/copyright/enforcement"],
+      ["Copyright Assignment", "/services/intellectual-property-right-services/copyright/assignment"],
+      ["Copyright Licensing", "/services/intellectual-property-right-services/copyright/licensing"],
+    ],
   },
   {
     slug: "ip-due-diligence",
@@ -936,6 +947,79 @@ const pages: IpPageConfig[] = [
     finalHeading: "Take a considered approach to brand protection",
     finalDescription: "Discuss the brand, available rights and reported concerns with our advisory team.",
     finalAction: "Request Brand Protection Support",
+  },
+  {
+    slug: "licensing",
+    title: "Copyright Licensing",
+    shortTitle: "Copyright Licensing",
+    categorySlug: "copyright",
+    categoryTitle: "Copyright",
+    heroStatement: "Authorise Creative Use with Defined Rights, Commercial Terms and Clear Boundaries.",
+    description: "Copyright licensing support for creators, publishers, software businesses, media companies and organisations granting or obtaining permission to use protected works.",
+    introduction: "A licence should match the intended use and clearly address the work, rights, channels, territory, duration, payment, attribution, adaptations and sublicensing. The required terms depend on the work, parties and commercial arrangement.",
+    servicesHeading: "Copyright licensing and commercialisation services",
+    benefitsHeading: "Why define copyright licence terms?",
+    frameworkHeading: "Permission to use identified rights",
+    comparisonHeading: "Copyright licensing and assignment",
+    comparisonHeaders: ["Licence", "Assignment"],
+    comparison: [
+      ["Ownership", "Usually remains with the rights holder", "Transfers the rights identified in the agreement"],
+      ["Permitted use", "Defined by purpose, channel, territory and term", "Transferred rights are controlled by the assignee within the agreed scope"],
+      ["Commercial model", "May use royalties, fixed fees or other terms", "May include a transfer price or other consideration"],
+      ["Ongoing control", "Licensor may retain rights outside the permission", "Control of assigned rights passes subject to the instrument"],
+    ],
+    services: [
+      ["handshake", "Licence Agreement Drafting & Review", "Document the work, permitted rights, use, term and commercial conditions."],
+      ["search", "Rights & Ownership Review", "Check available records and authority to grant the proposed licence."],
+      ["globe", "Media, Software & Content Licensing", "Coordinate terms for digital, publishing, performance, distribution or software use."],
+      ["document", "Royalty & Reporting Terms", "Review payment, usage reporting, audit and record-keeping provisions."],
+    ],
+    benefits: [
+      ["shield", "Keep permissions within scope", "Define where, how and for how long a work may be used."],
+      ["chart", "Support commercial value", "Set out fees, royalties, reporting and payment terms."],
+      ["people", "Clarify responsibilities", "Address attribution, approvals, delivery, warranties and infringement notices."],
+      ["file", "Reduce ambiguity", "Record sublicensing, adaptations, exclusivity and termination rights."],
+    ],
+    structurePoints: [
+      ["file", "Work and rights", "Identify the work and each licensed right, including any excluded rights."],
+      ["globe", "Use and territory", "Describe media, channels, purposes, markets and permitted users."],
+      ["calendar", "Term and renewal", "Set duration, renewal, termination and post-termination obligations."],
+      ["handshake", "Fees and reporting", "Agree payment model, royalty calculation, reporting and audit terms."],
+    ],
+    process: [
+      ["Use-case review", "Confirm the work, intended use, audience, channel and commercial objective."],
+      ["Rights and authority", "Review ownership records, existing licences and authority to grant the permission."],
+      ["Commercial scope", "Agree exclusivity, territory, term, payment, adaptation and sublicensing terms."],
+      ["Agreement preparation", "Draft or review the licence and related schedules or permissions."],
+      ["Administration", "Track approvals, usage reporting, payments, renewals and compliance with scope."],
+    ],
+    documents: [
+      "Work samples, titles, formats and version information",
+      "Copyright registrations and available ownership records",
+      "Existing assignments, licences and third-party permissions",
+      "Proposed use, channels, territory, duration and user information",
+      "Commercial terms, royalty assumptions and reporting requirements",
+    ],
+    requirements: [
+      ["search", "Authority to license", "Confirm ownership or permission to grant the proposed rights."],
+      ["document", "Defined permission", "Specify the work, rights, use, territory, term and permitted users."],
+      ["handshake", "Commercial terms", "Address fees, royalties, reporting, attribution and audit provisions."],
+      ["shield", "Restrictions and exit", "Agree exclusivity, sublicensing, termination and post-termination handling."],
+    ],
+    faqs: [
+      ["What is a copyright licence?", "A licence grants permission to use specified copyright rights on agreed terms without necessarily transferring ownership."],
+      ["Can a licence be exclusive?", "The parties may agree exclusivity, subject to the rights holder's authority and the terms of the agreement."],
+      ["Should digital and territorial uses be specified?", "Yes. Identify intended channels, platforms, territory, audience and permitted uses as clearly as possible."],
+      ["What happens when a licence ends?", "The agreement should explain cessation of use, handling of copies, accrued payments and any transition obligations."],
+    ],
+    finalHeading: "Set clear terms for the use of creative works",
+    finalDescription: "Discuss the work, intended use and commercial arrangement before granting or accepting a copyright licence.",
+    finalAction: "Request Copyright Licensing Assistance",
+    relatedPages: [
+      ["Copyright Registration", "/services/intellectual-property-right-services/copyright/copyright-registration"],
+      ["Copyright Enforcement", "/services/intellectual-property-right-services/copyright/enforcement"],
+      ["Copyright Assignment", "/services/intellectual-property-right-services/copyright/assignment"],
+    ],
   },
 ];
 

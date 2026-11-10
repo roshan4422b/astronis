@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { AdminIcon } from "./admin-ui";
 
 export default function AdminLogin() {
@@ -14,12 +13,14 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [configured, setConfigured] = useState<boolean | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/admin/auth", { cache: "no-store" })
       .then((response) => response.json())
-      .then((payload) => setConfigured(Boolean(payload.configured)))
+      .then((payload) => {
+        setConfigured(Boolean(payload.configured));
+        if (payload.authenticated === true) window.location.assign("/admin");
+      })
       .catch(() => setConfigured(false));
   }, []);
 
@@ -47,8 +48,7 @@ export default function AdminLogin() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Sign in failed.");
-      router.replace("/admin");
-      router.refresh();
+      window.location.assign("/admin");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Sign in failed.");
     } finally {
