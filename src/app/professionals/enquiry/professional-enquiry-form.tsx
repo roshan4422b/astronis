@@ -17,6 +17,19 @@ const requestTypes = [
   ["general", "General enquiry"],
 ] as const;
 const modes = [["email", "Email"], ["phone", "Phone"], ["online", "Online meeting"], ["in-person", "In-person meeting"]] as const;
+const generalEnquiryTypes = [
+  "Immigration Lawyers",
+  "Civil Lawyers",
+  "Criminal Lawyers",
+  "Matrimonial Lawyers",
+  "Pro-bono Lawyers",
+  "CSR Partners",
+  "GST Practitioners",
+  "Income Tax Practitioners",
+  "IPR Practitioner",
+  "Industry Specific Consultant",
+  "Others",
+];
 const acceptedExtensions = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
 const countryCallingCodes = countryTelephoneData.allCountries;
 
@@ -85,7 +98,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     {!networkApplication && <div className={styles.gridTwo}>
       {(requestType === "specific" || requestType === "jurisdiction") && <div className={`${styles.formField} ${requestType === "specific" ? styles.fullWidth : ""}`}><select name="professional" aria-label="Professional" defaultValue={initialProfessional || ""} required={requestType === "specific"}><option value="">Select a professional</option>{professionals.map(person => <option value={person.slug} key={person.slug}>{person.name} — {person.role}</option>)}</select></div>}
       {(requestType === "practice" || requestType === "jurisdiction") && <div className={`${styles.formField} ${requestType === "practice" ? styles.fullWidth : ""}`}><select name="service" aria-label="Practice Area / Service" defaultValue={initialService || ""} required={requestType === "practice"}><option value="">Select a practice area or service</option>{practices.map(practice => <option value={practice.slug} key={practice.slug}>{practice.title}</option>)}</select></div>}
-      {requestType === "general" && <div className={`${styles.formField} ${styles.fullWidth}`}><input name="enquiryType" aria-label="Enquiry type" placeholder="Enter your enquiry type" /></div>}
+      {requestType === "general" && <div className={`${styles.formField} ${styles.fullWidth}`}><select name="enquiryType" aria-label="Enquiry type" defaultValue=""><option value="">Select an enquiry type</option>{generalEnquiryTypes.map(type => <option value={type} key={type}>{type}</option>)}</select></div>}
     </div>}
     <div className={styles.gridThree}>
       <div className={styles.formField}><input name="name" aria-label="Your Name" required minLength={2} maxLength={100} autoComplete="name" placeholder="Enter your full name" /></div>

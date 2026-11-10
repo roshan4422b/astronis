@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const value = (key: string) => String(data.get(key) || "").trim();
   const locationOptional = value("locationOptional") === "yes";
   const fields = {
-    connectWith: value("connectWith"), professional: value("professional"), service: value("service"),
+    connectWith: value("connectWith"), professional: value("professional"), service: value("service"), enquiryType: value("enquiryType"),
     industry: value("industry"), name: value("name"), company: value("company"), email: value("email"),
     countryCode: value("countryCode"), phone: value("phone"), location: value("location"),
     professionalType: value("professionalType"), collaborationInterest: value("collaborationInterest"),
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     name: fields.name,
     email: fields.email,
     company: fields.company,
-    subject: fields.collaborationInterest || fields.service || fields.connectWith,
+    subject: fields.collaborationInterest || fields.service || fields.enquiryType || fields.connectWith,
     message: fields.message,
     formType,
     data: {
