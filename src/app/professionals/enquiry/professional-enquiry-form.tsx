@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import countryTelephoneData from "country-telephone-data";
-import { practices } from "@/content/site";
+import { countries, practices } from "@/content/site";
 import { getCountryDisplayName } from "@/lib/country-display-name";
 import { professionals } from "../leadership";
 import Icon from "@/app/_components/icon";
@@ -96,8 +96,12 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
     <label className={styles.honey} aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
     {networkApplication ? <input type="hidden" name="connectWith" value="general" /> : <fieldset className={styles.requestTypes}><legend>I would like to connect with</legend><div className={styles.choices}>{requestTypes.map(([value,label]) => <label key={value} className={requestType === value ? styles.selected : ""}><input type="radio" name="connectWith" value={value} checked={requestType === value} onChange={() => setRequestType(value)} />{label}</label>)}</div></fieldset>}
     {!networkApplication && <div className={styles.gridTwo}>
-      {(requestType === "specific" || requestType === "jurisdiction") && <div className={`${styles.formField} ${requestType === "specific" ? styles.fullWidth : ""}`}><select name="professional" aria-label="Professional" defaultValue={initialProfessional || ""} required={requestType === "specific"}><option value="">Select a professional</option>{professionals.map(person => <option value={person.slug} key={person.slug}>{person.name} — {person.role}</option>)}</select></div>}
-      {(requestType === "practice" || requestType === "jurisdiction") && <div className={`${styles.formField} ${requestType === "practice" ? styles.fullWidth : ""}`}><select name="service" aria-label="Practice Area / Service" defaultValue={initialService || ""} required={requestType === "practice"}><option value="">Select a practice area or service</option>{practices.map(practice => <option value={practice.slug} key={practice.slug}>{practice.title}</option>)}</select></div>}
+      {requestType === "specific" && <div className={`${styles.formField} ${styles.fullWidth}`}><select name="professional" aria-label="Professional" defaultValue={initialProfessional || ""} required><option value="">Select a professional</option>{professionals.map(person => <option value={person.slug} key={person.slug}>{person.name} — {person.role}</option>)}</select></div>}
+      {requestType === "jurisdiction" && <>
+        <div className={styles.formField}><select name="footprint" aria-label="Footprint" defaultValue=""><option value="">Select a footprint</option>{countries.map(country => <option value={country} key={country}>{country}</option>)}</select></div>
+        <div className={styles.formField}><input name="location" aria-label="Region, City" maxLength={180} placeholder="Enter region, city" /></div>
+      </>}
+      {(requestType === "practice" || requestType === "jurisdiction") && <div className={`${styles.formField} ${requestType === "practice" || requestType === "jurisdiction" ? styles.fullWidth : ""}`}><select name="service" aria-label="Practice Area / Service" defaultValue={initialService || ""} required={requestType === "practice"}><option value="">Select a practice area or service</option>{practices.map(practice => <option value={practice.slug} key={practice.slug}>{practice.title}</option>)}</select></div>}
       {requestType === "general" && <div className={`${styles.formField} ${styles.fullWidth}`}><select name="enquiryType" aria-label="Enquiry type" defaultValue=""><option value="">Select an enquiry type</option>{generalEnquiryTypes.map(type => <option value={type} key={type}>{type}</option>)}</select></div>}
     </div>}
     <div className={styles.gridThree}>
