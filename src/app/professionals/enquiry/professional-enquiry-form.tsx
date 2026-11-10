@@ -3,6 +3,7 @@
 import { useState } from "react";
 import countryTelephoneData from "country-telephone-data";
 import { practices } from "@/content/site";
+import { getCountryDisplayName } from "@/lib/country-display-name";
 import { professionals } from "../leadership";
 import Icon from "@/app/_components/icon";
 import EnquiryAgreementCheckbox, { enquiryAgreementMessage } from "@/app/_components/enquiry-agreement-checkbox";
@@ -18,7 +19,6 @@ const requestTypes = [
 const modes = [["email", "Email"], ["phone", "Phone"], ["online", "Online meeting"], ["in-person", "In-person meeting"]] as const;
 const acceptedExtensions = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
 const countryCallingCodes = countryTelephoneData.allCountries;
-const countryDisplayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 export default function EnquiryForm({ initialProfessional, initialService, industry, networkApplication = false }: { initialProfessional?: string; initialService?: string; industry?: string; networkApplication?: boolean }) {
   const [requestType, setRequestType] = useState<(typeof requestTypes)[number][0]>(initialProfessional ? "specific" : initialService ? "practice" : "jurisdiction");
@@ -93,7 +93,7 @@ export default function EnquiryForm({ initialProfessional, initialService, indus
       <div className={styles.formField}><input name="email" aria-label="Email Address" type="email" required maxLength={180} autoComplete="email" placeholder="name@yourdomain.com" /></div>
     </div>
     <div className={styles.gridTwo}>
-      <div className={`${styles.formField} ${styles.fullWidth}`}><span className={styles.phoneField}><select name="countryCode" aria-label="Country calling code" defaultValue="+91">{countryCallingCodes.map(({ name, iso2, dialCode }) => <option value={`+${dialCode}`} key={`${name}-${dialCode}`}>+{dialCode} — {countryDisplayNames.of(iso2.toUpperCase()) || name}</option>)}</select><input name="phone" aria-label="Phone Number" type="tel" required minLength={7} maxLength={25} autoComplete="tel-national" placeholder="Enter your phone number" /></span></div>
+      <div className={`${styles.formField} ${styles.fullWidth}`}><span className={styles.phoneField}><select name="countryCode" aria-label="Country calling code" defaultValue="+91">{countryCallingCodes.map(({ name, iso2, dialCode }) => <option value={`+${dialCode}`} key={`${name}-${dialCode}`}>+{dialCode} — {getCountryDisplayName(name, iso2)}</option>)}</select><input name="phone" aria-label="Phone Number" type="tel" required minLength={7} maxLength={25} autoComplete="tel-national" placeholder="Enter your phone number" /></span></div>
     </div>
     <div className={styles.preferences}><fieldset><legend>Preferred mode of communication</legend><div>{modes.map(([value,label]) => <label key={value} className={mode === value ? styles.activeMode : ""}><input type="radio" name="preferredMode" value={value} checked={mode === value} onChange={() => setMode(value)} />{label}</label>)}</div></fieldset><div className={styles.timeFields}><label>Preferred date<input type="date" name="preferredDate" /></label><label>Preferred time<input type="time" name="preferredTime" /></label></div></div>
     <div className={styles.uploadBlock}><span>Upload relevant documents (optional)</span><label className={styles.dropZone} onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); addFiles(event.dataTransfer.files); }}><Icon name="file" /><span><strong>Click to upload</strong> or drag and drop<small>PDF, DOC, DOCX, JPG, PNG · Max 10 MB each · 3 files</small></span><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onChange={event => { if (event.target.files) addFiles(event.target.files); event.target.value = ""; }} /></label>{files.length > 0 && <ul className={styles.fileList}>{files.map((file,index) => <li key={`${file.name}-${index}`}><span>{file.name}</span><button type="button" onClick={() => setFiles(current => current.filter((_,itemIndex) => itemIndex !== index))} aria-label={`Remove ${file.name}`}>Remove</button></li>)}</ul>}</div>

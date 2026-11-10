@@ -102,6 +102,16 @@ const {
   isSupportedTestimonialVideoUrl,
   isTestimonialMediaPath,
 } = await import("../src/lib/testimonial-media.ts");
+const { getCountryDisplayName } = await import("../src/lib/country-display-name.ts");
+
+test("renders stable English calling-code country names", () => {
+  assert.equal(getCountryDisplayName("Falkland Islands (Islas Malvinas)", "fk"), "Falkland Islands");
+  assert.equal(
+    getCountryDisplayName("Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)", "cd"),
+    "Congo (DRC)",
+  );
+  assert.equal(getCountryDisplayName("Congo (Republic) (Congo-Brazzaville)", "cg"), "Congo (Republic)");
+});
 
 test("public testimonial persistence is OTP-gated and unavailable to anonymous database inserts", async () => {
   const [route, form, otpComponent, sendOtpRoute, verifyOtpRoute, migration] = await Promise.all([

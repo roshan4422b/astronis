@@ -255,12 +255,12 @@ export default function ExpertsByService() {
           <a href="mailto:advisory@astronisglobal.com"><Icon name="mail" />advisory@astronisglobal.com</a>
         </div>
         <div className={styles.formPanel}><form className={styles.enquiryForm} onSubmit={submitEnquiry}>
-          <label>Name *<input name="name" autoComplete="name" required /></label><label>Organisation *<input name="organisation" autoComplete="organization" required /></label>
-          <label>Email *<input name="email" type="email" autoComplete="email" required /></label><label>Phone<input name="phone" type="tel" autoComplete="tel" /></label>
-          <label>Service Required *<select name="service" required defaultValue=""><option value="" disabled>Select</option>{serviceOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label>Industry<select name="industry" defaultValue=""><option value="">Select</option>{industryOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label>Jurisdiction<select name="jurisdiction" defaultValue=""><option value="">Select</option>{jurisdictionOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" required /></label>
+          <label><span>Name *</span><input name="name" autoComplete="name" placeholder="Your full name" required /></label><label><span>Organisation *</span><input name="organisation" autoComplete="organization" placeholder="Company / organisation" required /></label>
+          <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@company.com" required /></label><label><span>Phone</span><input name="phone" type="tel" autoComplete="tel" placeholder="Your phone number" /></label>
+          <label><span>Service Required *</span><select name="service" required defaultValue=""><option value="" disabled>Select</option>{serviceOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Industry</span><select name="industry" defaultValue=""><option value="">Select</option>{industryOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Jurisdiction</span><select name="jurisdiction" defaultValue=""><option value="">Select</option>{jurisdictionOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label className={styles.requirement}><span>Brief Description of Requirement *</span><textarea name="message" placeholder="Tell us about your requirement" required /></label>
           <label className={styles.upload}><span className={styles.srOnly}>Choose File</span><input name="upload" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" /></label>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(false); }} error={enquiryAgreementError ? enquiryAgreementMessage : ""} errorId="experts-by-service-enquiry-agreement-error" onInvalid={() => setEnquiryAgreementError(true)} />
           <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px" }} />

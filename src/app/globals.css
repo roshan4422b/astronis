@@ -56,6 +56,42 @@
 [hidden] {
   display: none !important;
 }
+:is(.page-transition:not(:has(.admin-root)), .public-form-dialog) form label:has(
+  > input[autocomplete="name"],
+  > input[autocomplete="email"],
+  > input[autocomplete="tel"],
+  > input[autocomplete="organization"],
+  > input[type="email"],
+  > input[type="tel"],
+  > input[name="name"],
+  > input[name="fullName"],
+  > input[name="company"],
+  > input[name="organisation"]
+) > span:first-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.public-form-dialog form.enquiry-form label:has(
+  > input[name="designation"],
+  > select[name="service"]
+) > span:first-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 html {
   scroll-behavior: auto;
   scroll-padding-top: 130px;
