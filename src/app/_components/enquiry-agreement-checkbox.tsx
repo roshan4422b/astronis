@@ -39,19 +39,22 @@ export default function EnquiryAgreementCheckbox({
           onChange={(event) => onChange(event.target.checked)}
         />
         <span>
-          I have read and understood the{" "}
-          <Link
-            href="/legal/enquiry-communication-consultation-consent"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(event) => event.stopPropagation()}
-          >
-            {agreementTitle}
-          </Link>
-          {includeCareerAgreement && <>{", "}<Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link></>}
-          {", "}<Link href="/legal/privacy-policy" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Privacy Policy</Link>
-          {" and "}<Link href="/legal/terms-of-use" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Terms of Use</Link>{" "}
-          and agree to the applicable terms. I consent to processing my submitted information and being contacted about this enquiry.
+          <span className="enquiry-agreement-terms">
+            I have read and understood the{" "}
+            <Link
+              href="/legal/enquiry-communication-consultation-consent"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+            >
+              {agreementTitle}
+            </Link>
+            {includeCareerAgreement && <>{", "}<Link href="/legal/career-professional-partnership-consent" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Career, Professional Association &amp; Partnership Application Consent Agreement</Link></>}
+            {", "}<Link href="/legal/privacy-policy" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Privacy Policy</Link>
+            {" and "}<Link href="/legal/terms-of-use" target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>Terms of Use</Link>{" "}
+            and agree to the applicable terms.
+          </span>{" "}
+          I consent to processing my submitted information and being contacted about this enquiry.
           {additionalText ? ` ${additionalText}` : ""}
         </span>
       </label>

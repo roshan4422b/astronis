@@ -56,6 +56,17 @@
 [hidden] {
   display: none !important;
 }
+:is(.page-transition:not(:has(.admin-root)), .public-form-dialog) form :is(
+  input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  select,
+  textarea
+) {
+  border-color: #000 !important;
+}
+:is(.page-transition:not(:has(.admin-root)), .public-form-dialog) form
+  section[aria-label="Email verification"] {
+  border-color: #000 !important;
+}
 :is(.page-transition:not(:has(.admin-root)), .public-form-dialog) form label:has(
   > input[autocomplete="name"],
   > input[autocomplete="email"],
@@ -5558,12 +5569,22 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
 .enquiry-agreement-checkbox {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 18px;
   margin: 14px 0 0;
   color: #405674;
   font-size: max(var(--font-size-min), 13px);
   line-height: 1.55;
   text-align: left;
+}
+:is(.page-transition:not(:has(.admin-root)), .public-form-dialog) form label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: flex-start;
+  column-gap: 16px !important;
+}
+.enquiry-agreement-terms {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 .enquiry-agreement-checkbox input {
   flex: 0 0 18px;
