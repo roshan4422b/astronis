@@ -448,6 +448,29 @@ test("checks Turnstile hostname against the forwarded public host", async () => 
   assert.equal(await verifyTurnstile("valid-captcha", proxiedRequest), true);
 });
 
+test("uses configured Turnstile credentials and checks hostnames in development", async () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousFetch = globalThis.fetch;
+  const usedSecrets = [];
+  process.env.NODE_ENV = "development";
+  globalThis.fetch = async (_input, init = {}) => {
+    usedSecrets.push(new URLSearchParams(String(init.body)).get("secret"));
+    return Response.json({
+      success: true,
+      hostname: usedSecrets.length === 1 ? "astronis.test" : "example.com",
+    });
+  };
+  try {
+    assert.equal(await verifyTurnstile("valid-captcha", request), true);
+    assert.equal(await verifyTurnstile("foreign-host-token", request), false);
+    assert.deepEqual(usedSecrets, ["test-turnstile-secret", "test-turnstile-secret"]);
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+  }
+});
+
 test("uses the freshly fetched CAPTCHA token instead of a cached hidden-field token", () => {
   const form = {
     querySelector(selector) {
