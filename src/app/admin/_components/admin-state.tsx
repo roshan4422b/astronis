@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import type { EnquiryStatus, TestimonialApprovalStatus, TestimonialConsentStatus } from "../admin-data";
 
@@ -265,7 +266,10 @@ function setContentRecords(value: SetStateAction<AdminContentRecord[]>) {
 
 export function AdminStateProvider({ children }: { children: ReactNode }) {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const pathname = usePathname();
+  const router = useRouter();
   useEffect(() => {
+    if (pathname === "/admin/login") return;
     let active = true;
     const load = async () => {
       try {
@@ -330,7 +334,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         if (!active) return;
         const message = error instanceof Error ? error.message : "";
         if (/HTTP 401/.test(message) || /Authentication required/.test(message)) {
-          window.location.assign("/admin/login");
+          router.replace("/admin/login");
           return;
         }
         snapshot = {
@@ -344,7 +348,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
     };
     void load();
     return () => { active = false; };
-  }, []);
+  }, [pathname, router]);
   const value = useMemo(
     () => ({ ...state, setSidebarCollapsed, setFeedback, setInsights, setEnquiries, setTestimonials, setContentRecords }),
     [state],

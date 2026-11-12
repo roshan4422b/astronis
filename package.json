@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.118.0",
     "country-telephone-data": "^0.6.3",
     "exceljs": "^4.4.0",
+    "fix-webm-duration": "^1.0.6",
     "mailtrap": "^5.0.0",
     "next": "16.3.4",
     "react": "19.2.8",
