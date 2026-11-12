@@ -12,3 +12,96 @@
   font-weight: 600;
   overflow-wrap: anywhere;
 }
+
+.recordDialog {
+  width: min(760px, calc(100% - 24px));
+  max-height: min(92dvh, 820px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 10px;
+  color: var(--ink);
+  background: #fff;
+  box-shadow: 0 24px 80px #00102c66;
+}
+
+.recordDialog::backdrop {
+  background: #00102cba;
+}
+
+.recordDialogContent {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+}
+
+.recordDialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.recordDialogHeader h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.videoPreview {
+  display: block;
+  width: 100%;
+  max-height: min(58dvh, 520px);
+  border-radius: 6px;
+  background: #101820;
+  object-fit: contain;
+}
+
+.recordingStatus {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.recordingStatus span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d82c3b;
+}
+
+.recordingError {
+  margin: 0;
+  color: #b42332;
+}
+
+.recordDialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .recordDialogContent {
+    padding: 18px;
+  }
+
+  .recordDialogHeader {
+    align-items: flex-start;
+  }
+
+  .recordDialogHeader h2 {
+    font-size: 18px;
+  }
+
+  .recordDialogActions {
+    flex-direction: column;
+  }
+
+  .recordDialogActions .button,
+  .recordDialogHeader .button {
+    width: 100%;
+  }
+}

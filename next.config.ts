@@ -6,6 +6,7 @@ const contentSecurityPolicy = [
   `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com${isDevelopment ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https:",
   "img-src 'self' data: blob: https:",
+  "media-src 'self' blob:",
   "font-src 'self' data: https:",
   "connect-src 'self' https://challenges.cloudflare.com https: data:",
   "frame-src 'self' https://challenges.cloudflare.com https:",
