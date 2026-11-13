@@ -22,7 +22,6 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
   const ref = useRef<HTMLDivElement>(null);
   const idRef = useRef<string | null>(null);
   const cb = useRef(onToken);
-  const onErrorRef = useRef(onError);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim();
   const isConfigured = Boolean(siteKey && siteKey !== "your-turnstile-site-key");
 
@@ -44,7 +43,15 @@ export default function TurnstileWidget({ onToken, onError, resetKey = 0 }: Prop
         reportError("The CAPTCHA expired. Please try again.");
         window.turnstile?.reset(idRef.current ?? undefined);
       },
-      "error-callback": () => reportError("Security verification failed. Please try again."),
+      "error-callback": (errorCode: unknown) => {
+        if (String(errorCode) === "110200") {
+          reportError(
+            `CAPTCHA is not enabled for ${window.location.hostname}. Add this hostname to the Turnstile widget's allowed hostnames.`,
+          );
+          return;
+        }
+        reportError("Security verification failed. Please try again.");
+      },
     });
   }, [isConfigured, reportError, siteKey]);
 

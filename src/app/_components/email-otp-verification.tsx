@@ -21,6 +21,7 @@ export default function EmailOtpVerification({
   resetKey = 0,
   captchaOptional = false,
   captchaDisplayOnly = false,
+  compact = false,
 }: {
   emailAddress?: string;
   onCaptchaToken?: (token: string) => void;
@@ -28,6 +29,7 @@ export default function EmailOtpVerification({
   resetKey?: number;
   captchaOptional?: boolean;
   captchaDisplayOnly?: boolean;
+  compact?: boolean;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const requestInFlight = useRef(false);
@@ -46,6 +48,7 @@ export default function EmailOtpVerification({
   const captchaRequiredForOtp = !captchaOptional && !captchaDisplayOnly;
   const updateCaptchaToken = useCallback((token: string) => {
     setCaptchaToken(token);
+    if (token) setStatus("");
     onCaptchaToken?.(token);
   }, [onCaptchaToken]);
 
@@ -175,7 +178,7 @@ export default function EmailOtpVerification({
   }
 
   return (
-    <section className={styles.panel} aria-label="Email verification">
+    <section className={`${styles.panel} ${compact ? styles.compact : ""}`} aria-label="Email verification">
       <p className={styles.heading}>Verify your email to continue</p>
       <div ref={container} />
       <div className={styles.actions}>

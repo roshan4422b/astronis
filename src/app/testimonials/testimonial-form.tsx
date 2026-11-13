@@ -312,53 +312,58 @@ export default function TestimonialForm({
         <form ref={formElement} className="enquiry-form" onSubmit={submit}>
           <div className="form-grid">
             <label>
-              Name *
+              <span>Name *</span>
               <input
                 name="name"
                 required
                 minLength={2}
                 maxLength={100}
                 autoComplete="name"
+                placeholder="Your full name"
               />
             </label>
             <label>
-              Email *
+              <span>Email *</span>
               <input
                 name="email"
                 type="email"
                 required
                 maxLength={180}
                 autoComplete="email"
+                placeholder="you@company.com"
               />
             </label>
             <label>
-              Company / Organisation *
+              <span>Company / Organisation *</span>
               <input
                 name="company"
                 required
                 maxLength={160}
                 autoComplete="organization"
+                placeholder="Company / organisation"
               />
             </label>
             <label>
-              Designation
+              <span>Designation</span>
               <input
                 name="designation"
                 maxLength={100}
                 autoComplete="organization-title"
+                placeholder="Your designation"
               />
             </label>
             <label>
-              Phone
+              <span>Phone</span>
               <input
                 name="phone"
                 type="tel"
                 maxLength={30}
                 autoComplete="tel"
+                placeholder="Your phone number"
               />
             </label>
             <label>
-              Service / Matter *
+              <span>Service / Matter *</span>
               <select name="service" required defaultValue="">
                 <option value="" disabled>
                   Select a service
@@ -369,11 +374,7 @@ export default function TestimonialForm({
               </select>
             </label>
             <label>
-              Testimonial Title (optional)
-              <input name="title" maxLength={160} />
-            </label>
-            <label>
-              Your Rating *
+              <span>Your Rating *</span>
               <select name="rating" required defaultValue="5">
                 <option value="5">5 — Excellent</option>
                 <option value="4">4 — Very good</option>
@@ -385,7 +386,7 @@ export default function TestimonialForm({
             {format === "written" ? (
               <>
                 <label className="full">
-                  Your Testimonial *
+                  <span>Your Testimonial *</span>
                   <textarea
                     name="message"
                     rows={5}
@@ -394,6 +395,7 @@ export default function TestimonialForm({
                     maxLength={180}
                     value={testimonialText}
                     onChange={(event) => setTestimonialText(event.target.value)}
+                    placeholder="Share your experience"
                   />
                   <small className={styles.fieldHint}>20–180 characters · {testimonialText.length}/180</small>
                 </label>

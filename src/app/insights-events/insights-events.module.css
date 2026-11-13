@@ -1,4 +1,4 @@
-.page{--navy:#071d49;--blue:#0751db;--ink:#000;--muted:#000;--line:#dce5f1;--pale:#f2f7fd;--gst-pale:#f2f7fd;--gst-line:#dce5f1;--gst-ink:#000;--gst-muted:#000;color:#000;background:#fff}
+.page{--navy:#071d49;--blue:#0751db;--ink:#000;--muted:#000;--line:#dce5f1;--pale:#f2f7fd;--gst-pale:#f2f7fd;--gst-line:#dce5f1;--gst-ink:#000;--gst-muted:#000;color:#000;background:#fff;overflow-x:clip}
 .page :where(h1,h2,h3,h4,h5,h6,p,a,span,strong,small,time,button,blockquote,li,label){color:#000!important}
 .page :where(input,select,textarea){color:#000!important}
 .page :where(input,textarea)::placeholder{color:#000!important;opacity:1}
@@ -8,16 +8,16 @@
 .hero{position:relative;min-height:360px;overflow:hidden;background:#eaf2fa}
 .heroImage{object-fit:cover;object-position:center 48%}
 .heroShade{position:absolute;inset:0;background:linear-gradient(100deg,#061d43f2 0%,#073d70e8 58%,#082b53a8 100%)}
-.heroInner{position:relative;z-index:1;width:min(1360px,calc(100% - 88px));min-height:360px;margin:auto}
+.heroInner{position:relative;z-index:1;display:flex;flex-direction:column;width:min(1360px,calc(100% - 88px));min-height:360px;margin:auto}
 .breadcrumb{display:flex;align-items:center;gap:9px;padding-top:17px;color:#395777;font-size:13px}
 .breadcrumb a:hover,.sectionHeading>a:hover{color:var(--blue)}
-.heroCopy{max-width:630px;padding:39px 0 32px}
+.heroCopy{max-width:630px;margin-block:auto;padding:20px 0}
 .heroCopy h1{color:#091f4b;font-size: max(var(--font-size-min), clamp(42px,5.2vw,68px));font-weight:600;line-height:1.04;letter-spacing:-1.5px}
 .heroCopy h2{margin-top:7px;color:#102a55;font-size: max(var(--font-size-min), clamp(19px,2vw,26px));font-weight:400;line-height:1.25}
 .heroCopy p{max-width:580px;margin-top:10px;color:#394b68;font-size: max(var(--font-size-min), 16px);line-height:1.5}
 .heroActions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .heroActions a,.ctaInner>a{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:42px;padding:10px 16px;border:1px solid var(--blue);border-radius:3px;background:var(--blue);color:#fff!important;font-size: max(var(--font-size-min), 13px);font-weight:700}
-.heroActions a+ a{background:#fff;color:var(--blue)!important}
+.heroActions a+ a{background:#fff;color:#000!important}
 .heroActions svg,.ctaInner>a svg{width:16px;height:16px}
 .content{width:min(1360px,calc(100% - 64px));margin:0 auto}
 .searchBar{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(450px,1fr);align-items:center;gap:18px;margin:15px 0 18px;padding:13px 16px;border:1px solid #e1ebf6;border-radius:5px;background:#f2f8fe;box-shadow:0 2px 8px #0a2c5810}
@@ -153,10 +153,10 @@
 }
 @media(max-width:700px){
   .hero{min-height:410px}
-  .heroInner{width:calc(100% - 36px);min-height:410px}
+  .heroInner{display:flex;flex-direction:column;width:calc(100% - 36px);min-height:inherit}
   .heroShade{background:linear-gradient(100deg,#061d43f2 0%,#073d70e8 65%,#082b53a8 100%)}
   .breadcrumb{padding-top:13px;font-size: max(var(--font-size-min), 11px)}
-  .heroCopy{max-width:510px;padding:38px 0 25px}
+  .heroCopy{max-width:510px;margin-block:auto;padding:20px 0}
   .heroCopy h1{font-size: max(var(--font-size-min), clamp(38px,8vw,52px))}
   .heroCopy h2{font-size: max(var(--font-size-min), 19px)}
   .heroCopy p{font-size: max(var(--font-size-min), 14px)}

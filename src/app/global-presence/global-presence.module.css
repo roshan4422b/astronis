@@ -595,16 +595,6 @@
   background: rgba(255, 255, 255, 0.78);
 }
 
-.journeyStep::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 42px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(13, 99, 217, 0.38), rgba(13, 99, 217, 0));
-}
-
 .journeyStep span {
   display: inline-block;
   color: #0d63d9;
@@ -873,6 +863,7 @@
 }
 
 .panelGrid > div {
+  min-width: 0;
   padding: 18px 16px;
   border: 1px solid rgba(146, 178, 228, 0.28);
   border-radius: 16px;
@@ -881,6 +872,7 @@
 
 .panelGrid strong {
   display: block;
+  overflow-wrap: anywhere;
   font-size: max(var(--font-size-min), 1rem);
   font-weight: 700;
 }
@@ -889,6 +881,7 @@
   display: block;
   margin-top: 6px;
   color: rgba(229, 238, 255, 0.7);
+  overflow-wrap: anywhere;
   font-size: max(var(--font-size-min), 0.68rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -1,5 +1,6 @@
 import { persistPublicEnquiry } from "@/lib/cms/public-enquiries";
 import { consumeFormVerification, verificationFailure } from "@/lib/form-verification.server";
+import { countries } from "@/content/site";
 
 const allowedExtensions = new Set(["pdf", "doc", "docx", "jpg", "jpeg", "png"]);
 const jurisdictionDocumentExtensions = new Set(["pdf", "doc", "docx"]);
@@ -14,8 +15,9 @@ export async function POST(request: Request) {
   catch { return Response.json({ message: "Please submit a valid enquiry." }, { status: 400 }); }
 
   const value = (key: string) => String(data.get(key) || "").trim();
+  const locationOptional = value("locationOptional") === "yes";
   const fields = {
-    connectWith: value("connectWith"), professional: value("professional"), service: value("service"),
+    connectWith: value("connectWith"), professional: value("professional"), service: value("service"), enquiryType: value("enquiryType"), footprint: value("footprint"),
     industry: value("industry"), name: value("name"), company: value("company"), email: value("email"),
     countryCode: value("countryCode"), phone: value("phone"), location: value("location"),
     professionalType: value("professionalType"), collaborationInterest: value("collaborationInterest"),
@@ -42,7 +44,8 @@ export async function POST(request: Request) {
   if (!(["specific", "practice", "jurisdiction", "general"].includes(fields.connectWith)) ||
       (fields.connectWith === "specific" && !fields.professional) ||
       (fields.connectWith === "practice" && !fields.service) ||
-      (fields.connectWith === "jurisdiction" && !fields.location) ||
+      (fields.connectWith === "jurisdiction" && !fields.location && !locationOptional) ||
+      (fields.footprint && !countries.includes(fields.footprint)) ||
       (collaborationEnquiry && (!fields.company || !fields.professionalType || !fields.service || !fields.location)) ||
       (collaborateWithUs && (!fields.company || !fields.professionalType || !fields.service || !fields.collaborationInterest)) ||
       fields.name.length < 2 || fields.name.length > 120 || !/^\S+@\S+\.\S+$/.test(fields.email) || fields.email.length > 254 ||
@@ -85,7 +88,7 @@ export async function POST(request: Request) {
     name: fields.name,
     email: fields.email,
     company: fields.company,
-    subject: fields.collaborationInterest || fields.service || fields.connectWith,
+    subject: fields.collaborationInterest || fields.service || fields.enquiryType || fields.footprint || fields.connectWith,
     message: fields.message,
     formType,
     data: {

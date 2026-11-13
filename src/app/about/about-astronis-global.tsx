@@ -116,7 +116,7 @@ export default function AboutAstronisGlobal() {
 
     <section className={`container ${styles.resources}`} aria-label="Explore more at Astronis">
 
-      <article><Title eyebrow="CAREERS & COLLABORATION">Let’s Build What’s Next</Title><div className={styles.resourceBody}><ul><li>Join our team</li><li>Work with us</li><li>For professionals</li><li>International collaboration</li></ul><div className={styles.resourceImage}><Image src="/Professional & Business Services .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div></div><Action href="/about/careers">Explore Opportunities</Action></article>
+      <article><Title eyebrow="CAREERS & COLLABORATION">Let’s Build What’s Next</Title><div className={`${styles.resourceBody} ${styles.careerBody}`}><ul><li>Join our team</li><li>Work with us</li><li>For professionals</li><li>International collaboration</li></ul><div className={styles.resourceImage}><Image src="/Professional & Business Services .png" alt="" fill sizes="(max-width: 700px) 30vw, 12vw" /></div></div><Action href="/about/careers">Explore Opportunities</Action></article>
       <article><Title eyebrow="FREQUENTLY ASKED QUESTIONS">Quick Answers</Title><div className={styles.resourceBody}><ul><li>What do we do?</li><li>Who do we work with?</li><li>Do we work internationally?</li><li>How can I engage Astronis?</li></ul><span className={styles.question} aria-hidden="true">?</span></div><Action href="/faqs">View FAQs</Action></article>
     </section>
 

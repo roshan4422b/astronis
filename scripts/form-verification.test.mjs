@@ -103,6 +103,16 @@ const {
   isSupportedTestimonialVideoUrl,
   isTestimonialMediaPath,
 } = await import("../src/lib/testimonial-media.ts");
+const { getCountryDisplayName } = await import("../src/lib/country-display-name.ts");
+
+test("renders stable English calling-code country names", () => {
+  assert.equal(getCountryDisplayName("Falkland Islands (Islas Malvinas)", "fk"), "Falkland Islands");
+  assert.equal(
+    getCountryDisplayName("Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)", "cd"),
+    "Congo (DRC)",
+  );
+  assert.equal(getCountryDisplayName("Congo (Republic) (Congo-Brazzaville)", "cg"), "Congo (Republic)");
+});
 
 test("same-origin validation accepts the public host behind local and forwarded hosts only", () => {
   const request = (url, origin, headers = {}) => new Request(url, {
@@ -519,6 +529,29 @@ test("checks Turnstile hostname against the forwarded public host", async () => 
     headers: { "x-forwarded-host": "astronis.test" },
   });
   assert.equal(await verifyTurnstile("valid-captcha", proxiedRequest), true);
+});
+
+test("uses configured Turnstile credentials and checks hostnames in development", async () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousFetch = globalThis.fetch;
+  const usedSecrets = [];
+  process.env.NODE_ENV = "development";
+  globalThis.fetch = async (_input, init = {}) => {
+    usedSecrets.push(new URLSearchParams(String(init.body)).get("secret"));
+    return Response.json({
+      success: true,
+      hostname: usedSecrets.length === 1 ? "astronis.test" : "example.com",
+    });
+  };
+  try {
+    assert.equal(await verifyTurnstile("valid-captcha", request), true);
+    assert.equal(await verifyTurnstile("foreign-host-token", request), false);
+    assert.deepEqual(usedSecrets, ["test-turnstile-secret", "test-turnstile-secret"]);
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+  }
 });
 
 test("uses the freshly fetched CAPTCHA token instead of a cached hidden-field token", () => {

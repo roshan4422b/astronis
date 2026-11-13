@@ -92,11 +92,11 @@ export default function EntityFormationPage({ data }: { data: EntityFormationPag
         ["FAQs", "faqs"],
       ];
   if (data.audiences) navItems.splice(1, 0, ["Services", "services"], ["Who We Assist", "audience"]);
-  if (data.showPricing === false) {
+  const showPricing = data.showPricing !== false;
+  if (!showPricing) {
     const pricingIndex = navItems.findIndex(([, id]) => id === "fees");
     if (pricingIndex >= 0) navItems.splice(pricingIndex, 1);
   }
-  const showPricing = data.showPricing ?? true;
   const showTestimonials = data.showTestimonials ?? true;
   const sectionNavItems = navItems.map(([label, id]) => ({ id, label }));
   if (showTestimonials && !sectionNavItems.some((item) => item.id === "testimonials")) {

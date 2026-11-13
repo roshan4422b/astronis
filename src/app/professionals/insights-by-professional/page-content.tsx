@@ -17,6 +17,14 @@ const professionalsList = [
   { name: "B.G. Pandey", role: "Advocate", expertise: "Regulatory, Compliance, Public Law", count: 12 },
   { name: "Sangeeta Subbaraya", role: "Advocate", expertise: "Employment, HR, ESG & Governance", count: 11 },
 ].map(person => ({ ...person, image: professionals.find(profile => profile.slug === person.slug)?.image }));
+const professionalInsightCounts: Record<string, number> = {
+  "krishna-kumar-mishra": 32,
+  "priti-mishra": 18,
+  "krishna-nand-mishra": 16,
+  "puneet-kumar-verma": 14,
+  "arun-kumar-mishra": 12,
+  "raj-kumar": 11,
+};
 
 export const professionalInsights = [
   { category: "Legal Update", type: "Legal Updates", title: "RBI Issues New Guidelines for Digital Lending Platforms", description: "Key regulatory provisions and compliance considerations for NBFCs and fintech companies.", author: "Krishna Kumar Mishra", date: "12 Sep 2026", image: "/Banking & Financial Services .png", topics: "banking nbfc regulatory updates", practice: "Banking & NBFC", industry: "Banking & Financial Services", jurisdiction: "India", href: "/insights/legal-updates" },
@@ -146,9 +154,9 @@ export default function InsightsByProfessional() {
     <section className={styles.professionalsSection}>
       <div className={styles.wrap}>
         <div className={styles.sectionHeading}><h2>Featured Professionals &amp; Their Latest Insights</h2><Link href="/professionals">View All Professionals <Icon name="arrow" /></Link></div>
-        <div className={styles.professionalGrid}>{professionalsList.map(person => <article className={styles.professionalCard} key={person.name}>
-          <div className={styles.professionalPhoto}>{person.image ? <Image src={person.image} alt={person.name} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 33vw" /> : <span aria-hidden="true">{person.name.split(" ").map(part => part[0]).join("").replace(/\./g, "").slice(0, 2)}</span>}</div>
-          <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><Link href={person.slug ? `/professionals/${person.slug}` : "#latest-insights"}>{person.count} Insights <Icon name="arrow" /></Link></div>
+        <div className={styles.professionalGrid}>{professionals.map(person => <article className={styles.professionalCard} key={person.slug}>
+          <div className={styles.professionalPhoto}><Image src={person.image} alt={person.name} fill sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 33vw" /></div>
+          <div className={styles.professionalInfo}><h3>{person.name}</h3><span>{person.role}</span><p>{person.expertise}</p><Link href={`/professionals/${person.slug}`}>{professionalInsightCounts[person.slug]} Insights <Icon name="arrow" /></Link></div>
         </article>)}</div>
       </div>
     </section>

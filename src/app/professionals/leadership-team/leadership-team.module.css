@@ -200,7 +200,7 @@
 }
 
 .portrait {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: .9;
   min-height: 0;
   border-radius: 8px;
 }
@@ -208,19 +208,12 @@
 .portrait img,
 .teamPortrait img {
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center top;
   transition: transform 0.5s ease;
 }
 
 .portrait img {
-  object-fit: contain;
-  object-position: center;
   background: linear-gradient(145deg, #f8fbff, #e8f2fc);
-}
-
-.portrait:hover img,
-.teamPortrait:hover img {
-  transform: scale(1.025);
 }
 
 .profile {
@@ -417,14 +410,16 @@
 }
 
 .teamPortrait {
-  min-height: 230px;
+  align-self: start;
+  min-height: 0;
   height: auto;
+  aspect-ratio: .9;
   background: #eaf2fb;
 }
 
 .teamPortrait img {
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
   background: linear-gradient(145deg, #ffffff, #e8f2fc);
 }
 
@@ -810,7 +805,8 @@
   }
 
   .teamPortrait {
-    min-height: 220px;
+    min-height: 0;
+    aspect-ratio: .9;
   }
 
   .values {
@@ -856,7 +852,8 @@
   }
 
   .teamPortrait {
-    min-height: 190px;
+    min-height: 0;
+    aspect-ratio: .9;
   }
 
   .teamCard > div {
@@ -901,7 +898,8 @@
   }
 
   .teamPortrait {
-    height: 140px;
+    height: auto;
+    aspect-ratio: .9;
   }
 
   .teamCard h3 {
@@ -919,7 +917,8 @@
   }
 
   .teamPortrait {
-    height: 240px;
+    height: auto;
+    aspect-ratio: .9;
   }
 
   .teamCard > div {
@@ -948,4 +947,3 @@
     transform: none;
   }
 }
-

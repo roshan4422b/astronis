@@ -7,6 +7,64 @@
   padding: clamp(1.25rem, 2vw, 2rem);
 }
 
+.enquiryCompact {
+  padding: clamp(1.1rem, 1.7vw, 1.7rem);
+}
+
+.enquiryCompact .header {
+  margin-bottom: 1rem;
+}
+
+.enquiryCompact .eyebrow {
+  margin-bottom: 0.45rem;
+}
+
+.enquiryCompact .description {
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.enquiryCompact .form {
+  gap: 0.8rem;
+}
+
+.enquiryCompact .grid {
+  gap: 0.8rem 0.9rem;
+}
+
+.enquiryCompact .field {
+  gap: 0.35rem;
+}
+
+.enquiryCompact .input,
+.enquiryCompact .select {
+  min-height: 48px;
+  padding: 0.65rem 0.8rem;
+}
+
+.enquiryCompact .textarea {
+  min-height: 96px;
+  padding: 0.7rem 0.8rem;
+}
+
+.enquiryCompact .selectionRow {
+  margin-bottom: 0.75rem;
+}
+
+.enquiryCompact .selectedBadge {
+  padding: 0.4rem 0.7rem;
+}
+
+.enquiryCompact .button {
+  min-height: 48px;
+  padding: 0.75rem 1.15rem;
+}
+
+.enquiryCompact :global(.enquiry-agreement-checkbox) {
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .compact {
   padding: 0;
   border: 0;

@@ -6,7 +6,7 @@ import Icon from "../_components/icon";
 import TestimonialForm from "../testimonials/testimonial-form";
 import styles from "./testimonial-invite.module.css";
 
-export default function TestimonialInvite() {
+export default function TestimonialInvite({ buttonsOnly = false }: { buttonsOnly?: boolean }) {
   const [format, setFormat] = useState<"written" | "video" | null>(null);
   const modal = useRef<HTMLDivElement>(null);
 
@@ -31,17 +31,24 @@ export default function TestimonialInvite() {
   }, [format]);
 
   return <>
-    <div className="testimonial-invite">
-      <Icon name="people" />
-      <h3>Share Your Experience with Astronis Global</h3>
-      <p>We value your feedback. Share your experience with our team.</p>
-      <div className="button-row">
+    {buttonsOnly ? (
+      <div className={styles.bannerActions}>
         <button type="button" className="button" onClick={() => setFormat("written")}>Write a Testimonial <Icon name="arrow" /></button>
         <button type="button" className="button secondary" onClick={() => setFormat("video")}>Record a Video Testimonial <Icon name="arrow" /></button>
       </div>
-    </div>
+    ) : (
+      <div className="testimonial-invite">
+        <Icon name="people" />
+        <h3>Share Your Experience with Astronis Global</h3>
+        <p>We value your feedback. Share your experience with our team.</p>
+        <div className="button-row">
+          <button type="button" className="button" onClick={() => setFormat("written")}>Write a Testimonial <Icon name="arrow" /></button>
+          <button type="button" className="button secondary" onClick={() => setFormat("video")}>Record a Video Testimonial <Icon name="arrow" /></button>
+        </div>
+      </div>
+    )}
     {format && typeof document !== "undefined" && createPortal(<div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) setFormat(null); }}>
-      <section className={`${styles.dialog} ${format === "written" ? styles.writtenDialog : styles.videoDialog}`} role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title" tabIndex={-1} ref={modal}>
+      <section className={`public-form-dialog ${styles.dialog} ${format === "written" ? styles.writtenDialog : styles.videoDialog}`} role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title" tabIndex={-1} ref={modal}>
         <button type="button" className={styles.close} aria-label="Close testimonial form" onClick={() => setFormat(null)}>×</button>
         <div className={`${styles.form} ${format === "written" ? styles.writtenForm : styles.videoForm}`}>
           <h2 id="testimonial-modal-title">{format === "video" ? "Record a Video Testimonial" : "Write a Testimonial"}</h2>

@@ -2,6 +2,12 @@ import Image from "../_components/asset-image";
 import { TextLink } from "../_components/ui";
 import styles from "./professionals-page.module.css";
 
+export const founderRole = "Founder / Managing Partner / Global Head";
+
+export function isFounderRole(role: string) {
+  return role === founderRole;
+}
+
 export type ProfessionalRecord = {
   name: string;
   slug: string;
@@ -23,10 +29,10 @@ export const professionals: ProfessionalRecord[] = [
   {
     name: "Krishna Kumar Mishra",
     slug: "krishna-kumar-mishra",
-    image: "/Professionals/krishna_kumar_mishra.jpeg",
+    image: "/Professionals/krishna_kumar_mishra_full.png",
     code: "AG01",
     hierarchy: "Global Leadership",
-    role: "Founder / Managing Partner / Global Head",
+    role: founderRole,
     location: "Delhi, India",
     phones: ["011 4657 4455", "93116 64455"],
     email: "advisory@astronisglobal.com",
@@ -41,7 +47,7 @@ export const professionals: ProfessionalRecord[] = [
   {
     name: "KM Priti Pandey",
     slug: "priti-mishra",
-    image: "/Professionals/pritimishra.jpeg",
+    image: "/Professionals/pritimishra_full.png",
     code: "AG03",
     hierarchy: "Practice Leadership",
     role: "Managing Partner / Practice Head",
@@ -148,17 +154,17 @@ export default function Leadership({
     <div className={variant === "premium" ? styles.peopleGrid : "leadership-grid"}>
       {visibleProfessionals.map((p) => (
         <article className={variant === "premium" ? styles.personCard : "leader-card"} key={p.slug}>
-          <div className={variant === "premium" ? styles.portrait : "leader-avatar"}>
+          <div className={variant === "premium" ? styles.portrait : `leader-avatar ${p.slug === "k-n-mishra" ? styles.knPortrait : ""}`}>
             {p.image ? <Image
               src={p.image}
               alt={p.name}
               fill
-              sizes="(max-width: 760px) 35vw, 155px"
+              sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 31vw"
             /> : <span aria-hidden="true">{p.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</span>}
           </div>
           <div className={variant === "premium" ? styles.personBody : undefined}>
             <h3>{p.name}</h3>
-            <span className={variant === "premium" ? styles.role : "eyebrow"}>{p.role}</span>
+            <span className={`${variant === "premium" ? styles.role : "eyebrow"} ${isFounderRole(p.role) ? styles.founderRole : ""}`}>{p.role}</span>
             <p>{variant === "premium" ? p.description || p.expertise : p.expertise}</p>
             {variant === "premium" && <span className={styles.expertise}>{p.expertise}</span>}
             <TextLink href={"/professionals/" + p.slug}>View Profile</TextLink>

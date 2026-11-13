@@ -228,14 +228,14 @@ const professionals = [
     name: "Krishna Kumar Mishra",
     role: "Founder Partner",
     expertise: "Technology, Regulatory & Digital Advisory",
-    image: "/Professionals/krishna_kumar_mishra.jpeg",
+    image: "/Professionals/krishna_kumar_mishra_full.png",
     href: "/professionals/krishna-kumar-mishra",
   },
   {
     name: "Priti Mishra",
     role: "Partner",
     expertise: "Digital Strategy & Compliance",
-    image: "/Professionals/pritimishra.jpeg",
+    image: "/Professionals/pritimishra_full.png",
     href: "/professionals/priti-mishra",
   },
   {

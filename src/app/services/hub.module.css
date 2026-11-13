@@ -81,8 +81,8 @@
 .reasonGrid p { font-size: max(var(--font-size-min), 13px); margin:0; }
 .lead { max-width:680px; margin-bottom:35px; }
 .industryLinks { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--line); border-left:1px solid var(--line); }
-.industryLinks a { display:flex; align-items:center; justify-content:space-between; gap:15px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:20px; font-size: max(var(--font-size-min), 12px); }
-.industryLinks a:hover { background:var(--pale); color:var(--blue); }
+.industryLinks a { display:flex; align-items:center; justify-content:space-between; gap:15px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:20px; font-size: max(var(--font-size-min), 12px); transition:background-color .2s,color .2s,border-color .2s; }
+.industryLinks a:hover,.industryLinks a:focus-visible { background:#1688FF; border-color:#1688FF; color:#fff; }
 .insightsSection { background:linear-gradient(180deg,#fff,#f0f4fa); border-top:1px solid var(--line); }
 .insightsIntro { max-width:600px; margin:18px 0 0; font-size: max(var(--font-size-min), 14px); }
 .insightsSection .sectionHeading>.action { flex-shrink:0; }
@@ -210,4 +210,18 @@
   .ecosystem > .node:nth-of-type(8) { left:18%; top:28%; }
   .ecosystemCaption { bottom:-26px; }
   .heroGrid { gap:48px; }
+}
+
+@media(max-width:767px) {
+  .heroGrid { gap:20px; }
+  .ecosystem { max-width:360px; }
+}
+
+@media(max-width:639px) {
+  .ecosystem { max-width:280px; }
+}
+
+@media(min-width:761px) and (max-width:767px) {
+  .heroGrid { grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:8px; }
+  .breadcrumb { margin-bottom:18px; }
 }

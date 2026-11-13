@@ -6,10 +6,14 @@
 .form :global(section.section) { padding: 14px 0 24px; }
 .form :global(section.section > .container) { width: 100%; max-width: none; }
 .form :global(section.section .section-heading) { display: none; }
+.bannerActions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+.bannerActions :global(.button.secondary) { border-color: #fff; background: #fff; color: #0b2342; }
+.bannerActions :global(.button.secondary:hover) { background: #eaf1ff; border-color: #eaf1ff; color: #0751db; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .backdrop,.dialog { animation: none; } }
 @media (max-width: 640px) { .backdrop { padding: 8px; align-items: end; }.dialog { max-height: 94dvh; border-radius: 13px 13px 8px 8px; }.form { padding: 22px 14px 0; }.form :global(.form-grid) { grid-template-columns: 1fr; }.form :global(.form-grid .full) { grid-column: auto; } }
+@media (max-width: 640px) { .bannerActions { flex-direction: column; align-items: stretch; }.bannerActions :global(.button) { width: 100%; } }
 @media (min-width: 641px) {
   .writtenDialog { width: min(900px, 100%); max-height: calc(100dvh - 24px); }
   .writtenForm { padding: 16px 28px 14px; }
