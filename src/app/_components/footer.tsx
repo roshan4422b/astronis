@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "@/app/_components/asset-image";
 import Icon from "./icon";
 import SocialLinks from "./social-links";
+import CookieSettingsTrigger from "./cookie-settings-trigger";
 import { services } from "@/data/services";
 const groups = [
   {
@@ -138,6 +139,7 @@ export default function Footer() {
                 {t}
               </Link>
             ))}
+            <CookieSettingsTrigger>Cookie Settings</CookieSettingsTrigger>
           </div>
         </div>
       </footer>
