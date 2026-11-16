@@ -11,7 +11,7 @@ const columns = [
     links: [
       ["people", "Our Professionals", "Meet our team", "/professionals"],
       ["award", "Leadership Team", "Visionary leadership", "/professionals/leadership-team"],
-      ["building", "Corporate & Regulatory Professionals", "Company law, compliance and regulation", "/professionals/corporate-advisory"],
+      ["building", "Corporate & Regulatory Professionals", "Company law and regulation", "/professionals/corporate-advisory"],
       ["bank", "Business & Financial Advisors", "Finance, tax and strategic advisory", "/professionals/business-financial-advisors"],
       ["target", "Industry & Subject-Matter Experts", "Specialised sector expertise", "/professionals/industry-and-subject-matter-experts"],
     ],
