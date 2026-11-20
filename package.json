@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "node scripts/ensure-lightningcss-native.js",
     "test:admin-enquiries": "node --experimental-strip-types --test scripts/admin-enquiries.test.mjs",
     "test:verification": "node --experimental-strip-types --test scripts/form-verification.test.mjs",
     "test:form-apis": "node scripts/public-form-smoke.mjs"
@@ -32,6 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "lightningcss-win32-x64-msvc": "^1.32.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
