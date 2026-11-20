@@ -129,7 +129,7 @@ function fieldLabel(section: AdminEditableContentSection) {
   switch (section) {
     case "services": return { name: "Service Name", category: "Category", body: "Short Description", content: "Main Description" };
     case "industries": return { name: "Industry Name", category: "Category", body: "Short Description", content: "Main Description" };
-    case "professionals": return { name: "Name", category: "Designation", body: "Professional Biography", content: "Professional Biography" };
+    case "professionals": return { name: "Name", category: "Designation", body: "Short Description", content: "Professional Overview" };
     case "global-presence": return { name: "Jurisdiction Name", category: "Jurisdiction", body: "Short Description", content: "Main Content" };
     case "technology": return { name: "Page Name", category: "Category", body: "Short Description", content: "Main Content" };
   }
@@ -396,8 +396,8 @@ function ContentEditor({
             ) : null}
             {section === "professionals" ? (
               <label className="admin-field admin-content-full">
-                <span>Professional Biography</span>
-                <textarea rows={5} value={form.content} onChange={(event) => update("content", event.target.value)} />
+                <span>{labels.content}</span>
+                <textarea rows={8} value={form.content} onChange={(event) => update("content", event.target.value)} placeholder="Write the professional overview shown on the profile page." />
               </label>
             ) : null}
             <label className="admin-field admin-content-full">
