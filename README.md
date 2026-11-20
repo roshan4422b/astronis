@@ -45,13 +45,21 @@ Required environment variables (local `.env.local` or your hosting provider's en
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-# Server-only; required for OTP-verified testimonial persistence, private media upload, and signed playback.
+# Server-only; required for OTP-verified testimonial persistence, private media, and paid meeting bookings.
 SUPABASE_SERVICE_ROLE_KEY=
 APP_BASE_URL=
 
 # Optional email notifications for persisted enquiries
 RESEND_API_KEY=
 RESEND_FROM_EMAIL=
+
+# Razorpay Standard Checkout (start in Test Mode)
+RAZORPAY_MODE=test
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+RAZORPAY_WEBHOOK_SECRET=
+RAZORPAY_CONSULTATION_FEE_SUBUNITS=100000
+RAZORPAY_CURRENCY=INR
 
 # Optional delivery for testimonial media submissions
 TESTIMONIAL_WEBHOOK_URL=
@@ -65,7 +73,7 @@ Password recovery uses `http://localhost:3000` automatically during local develo
 ### Project and administrator bootstrap
 
 1. Create a Supabase project and configure its Auth email/password provider. Disable public sign-ups; administrators must be invited by an operator.
-2. Review and apply every missing migration in timestamp order, through `supabase/migrations/202611020001_testimonial_media_notifications.sql`. The latest migration extends the existing private asset bucket's media allowlist and size limit without changing its Storage RLS policies, revokes direct anonymous testimonial inserts so public submissions must pass through the OTP-verified server route, adds the moderation-email deduplication ledger, and exposes media references only for published testimonials.
+2. Review and apply every missing migration in timestamp order, through `supabase/migrations/202611200001_schedule_meeting_payments.sql`. The preceding testimonial migration adds the moderation-email ledger and approved-media projection; the final migration creates private booking and webhook-event tables for payment-verified consultations. Browser roles receive no access to payment or customer records.
 3. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to local and production environments. Add `SUPABASE_SERVICE_ROLE_KEY` only to server-side environments for OTP-verified testimonial persistence, media upload, and signed URL creation. Restart/redeploy the application after configuring them.
 4. Invite the first administrator using Supabase Auth's dashboard. After the invited user has accepted, obtain that user's Auth UUID and run this operator-only SQL:
 
@@ -118,6 +126,29 @@ The existing `/admin/enquiries` inbox exports genuine `.xlsx` workbooks through 
 All public enquiry, professional application, consultation, testimonial and subscription forms require a verified email OTP and a server-checked, short-lived, single-use proof before submission. A 6-digit one-time code is delivered with the existing Mailtrap transactional email API integration. Codes expire after five minutes, allow at most five incorrect attempts and have a 60-second resend cooldown. Global and professional enquiries, professional applications, consultations, and subscriptions also require a Cloudflare Turnstile token verified server-side. The testimonial form displays Turnstile but does not require its token; testimonial submissions remain protected by the one-time email proof.
 
 Configure `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and the matching server-only `TURNSTILE_SECRET_KEY` from the same Cloudflare Turnstile widget in the repository-root `.env.local`. Add the hostname you use (including `localhost` for local development) to that widget's allowed hostnames. Because Next.js embeds `NEXT_PUBLIC_*` values into the client bundle, restart the development server after changing the site key and rebuild/redeploy after changing it for production.
+
+### Schedule Meeting Razorpay payments
+
+The Schedule Meeting form keeps its existing fields, OTP/CAPTCHA checks, consent, and preferred date/time flow. The review step displays the consultation fee (default **₹1,000, inclusive of applicable taxes**) and opens Razorpay Web Standard Checkout. The server creates the order, validates the checkout signature, then queries Razorpay for the actual payment and order status before confirming the booking. Failed, cancelled, and pending attempts do not create a confirmed booking; the form retains the entered details for retries. Razorpay webhooks provide an additional verified, idempotent confirmation path.
+
+1. Apply `supabase/migrations/202611200001_schedule_meeting_payments.sql` to the intended Supabase project after checking its migration history. Configure `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`; the service-role key must remain server-only.
+2. In the Razorpay Dashboard, switch to **Test Mode** and create Test API keys. Set the server-only variables below in local `.env.local` and in the test deployment. `RAZORPAY_MODE=test` is the default and rejects a Live key prefix.
+
+   ```dotenv
+   RAZORPAY_MODE=test
+   RAZORPAY_KEY_ID=rzp_test_...
+   RAZORPAY_KEY_SECRET=...
+   RAZORPAY_WEBHOOK_SECRET=...
+   RAZORPAY_CONSULTATION_FEE_SUBUNITS=100000
+   RAZORPAY_CURRENCY=INR
+   ```
+
+   `RAZORPAY_CONSULTATION_FEE_SUBUNITS` is an integer in the currency's smallest unit (100000 paise = ₹1,000); `RAZORPAY_CURRENCY` defaults to `INR`. If you change currency, set the amount in that currency's smallest unit. Keep the Key Secret and webhook secret out of all `NEXT_PUBLIC_*` variables, source control, and client code. `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are optional existing server-side settings used for post-payment customer confirmation and team notification.
+3. Configure a Razorpay **Test Mode** webhook to the deployed endpoint `/api/schedule-meeting/webhook`, select `payment.captured` and `payment.failed`, and copy its webhook secret into `RAZORPAY_WEBHOOK_SECRET`. Webhook tests require a publicly reachable test/staging URL; Razorpay does not deliver webhooks directly to localhost. Use an approved staging endpoint or a supported tunnel, and keep the Dashboard webhook secret and environment secret matched.
+4. Enable automatic payment capture in Razorpay so successful transactions reach `captured`/`paid`; the application intentionally does not confirm merely authorized payments. Use Razorpay's Test Mode checkout methods and verify successful, declined/failed, cancelled, pending, and retry cases. Confirm in Supabase that only captured/paid transactions have `booking_status='confirmed'`, and that repeated verification or webhook delivery does not create duplicate bookings or email receipts. Test UPI, card and net-banking options available to the Test account.
+5. Before switching to real payments, complete Razorpay's current go-live review and test the deployed integration end-to-end. In the Razorpay Dashboard, switch to **Live Mode**, generate Live API keys, configure the Live webhook and its separate secret, then set `RAZORPAY_MODE=live`, `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` to the Live values, and `RAZORPAY_WEBHOOK_SECRET` to the Live webhook secret. Keep the amount/currency settings intentional, verify live capture and notifications with an authorized low-value transaction, and never reuse Test credentials or webhook secrets in Live Mode.
+
+The `/api/schedule-meeting` legacy request-only endpoint now returns `410 Gone`; use the Schedule Meeting form so a consultation cannot be confirmed without server-verified payment. Razorpay credentials, the Supabase migration, webhook delivery, and real/test transactions are deployment configuration and have not been exercised by this repository-only change.
 
 For local development and production, set the server-only `MAILTRAP_API_KEY`, `MAILTRAP_FROM_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and `EMAIL_OTP_SECRET` values. OTP sending and proof verification will fail closed if these are missing. Restart the local development server after changing `.env.local`.
 
