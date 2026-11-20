@@ -26,8 +26,9 @@
 .directory :global(.leader-card > div:last-child){display:flex;flex:1;flex-direction:column;align-items:flex-start;min-width:0;padding:18px}
 .directory :global(.leader-card h3){min-height:0;margin:0 0 7px;color:#102d50;font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:600;line-height:1.2}
 .directory :global(.leader-card .eyebrow){min-height:2.8em;color:#0759d9;font-size:12px;font-weight:650;letter-spacing:.02em;line-height:1.4;text-transform:none}
-.directory :global(.leader-card p){margin:10px 0 16px;color:#4a5f75;font-size:13px;line-height:1.55}
-.directory :global(.leader-card .text-link){display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:13px;border-top:1px solid #e4ebf3;color:#0759d9;font-size:15px;font-weight:700;text-decoration:none;transition:color .2s ease}
+.directory :global(.leader-card p){margin:10px 0 6px;color:#4a5f75;font-size:13px;line-height:1.55}
+.directory :global(.leader-card .text-link){display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding-top:9px;border-top:1px solid #e4ebf3;color:#0759d9;font-size:15px;font-weight:700;text-decoration:none;transition:color .2s ease}
+.directory :global(.leader-card .professionalLocation){margin:0;color:#526981;font-size:13px;line-height:1.4}
 .directory :global(.leader-card .text-link svg){width:17px;height:17px;transition:transform .2s ease}
 .directory :global(.leader-card .text-link:hover){color:#0345ad}
 .directory :global(.leader-card .text-link:focus-visible){outline:3px solid #4c9ad4;outline-offset:4px}

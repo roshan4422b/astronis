@@ -20,6 +20,7 @@ export default async function ProfessionalsPage() {
     name: String(item.data.title || ""),
     role: String(item.data.designation || ""),
     expertise: String(item.data.expertise || ""),
+    location: [item.data.state, item.data.country].filter((value): value is string => typeof value === "string" && Boolean(value.trim())).join(", "),
     description: String(item.data.description || item.data.content || ""),
     image: typeof item.data.featuredImage === "string" ? item.data.featuredImage : "",
   })).filter((item) => item.name);

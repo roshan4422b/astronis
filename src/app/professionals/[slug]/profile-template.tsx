@@ -75,10 +75,8 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
     worksFor: { "@type": "Organization", name: "Astronis Global", url: "https://www.astronisglobal.com" },
   };
   const sections = [
-    { id: "overview", label: "Overview", show: Boolean(person.description) },
-    { id: "expertise", label: "Expertise", show: areas.length > 0 },
-    { id: "education", label: "Education", show: qualifications.length > 0 },
-    { id: "credentials", label: "Credentials", show: Boolean(person.credentials || person.enrolment) },
+    { id: "overview", label: "Professional Overview", show: Boolean(person.description) },
+    { id: "credentials", label: "Credentials", show: true },
     { id: "services", label: "Services", show: relatedServices.length > 0 },
     { id: "related", label: "Related Professionals", show: relatedProfessionals.length > 0 },
   ].filter((section) => section.show);
@@ -91,15 +89,20 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
           <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><Link href="/professionals">Professionals</Link><span aria-hidden="true">/</span><span aria-current="page">{person.name}</span></nav>
           <span className={styles.kicker}>Astronis Global · Professional Profile</span>
           <h1 id="profile-name">{person.name}</h1>
-          <p className={styles.role}>{person.role}</p>
+          <div className={styles.profileIdentity}>
+            <p className={styles.role}>{person.role}</p>
+            {person.location && <p className={styles.profileLocation}><Icon name="pin" />{person.location}</p>}
+          </div>
           {qualifications.length > 0 && <p className={styles.qualificationLine}>{qualifications.join(" · ")}</p>}
-          <p className={styles.intro}>{person.description}</p>
+          <section className={`${styles.credentialPanel} ${styles.credentialCard}`} id="credentials">
+            <div><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2></div>
+            <p>{person.enrolment || "Credential details are not available."}</p>
+          </section>
           <div className={styles.expertiseTags} aria-label="Areas of expertise">{areas.slice(0, 4).map((area) => <span key={area}>{area}</span>)}</div>
           <div className={styles.profileActions}><Link className={styles.primaryButton} href={enquiry}>Discuss Your Requirements <Icon name="arrow" /></Link><a className={styles.secondaryButton} href="#overview">View Professional Details <span aria-hidden="true">↓</span></a></div>
         </div>
         <figure className={styles.portraitFrame}>
           {person.image ? <Image src={person.image} alt={`Portrait of ${person.name}`} fill sizes="(max-width: 760px) 100vw, 42vw" priority className={person.slug === "krishna-kumar-mishra" || person.slug === "priti-mishra" ? styles.fullPortrait : undefined} /> : <div className={styles.photoFallback} role="img" aria-label={`Portrait unavailable for ${person.name}`}>{person.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("")}</div>}
-          <figcaption><strong>{person.role}</strong>{person.location && <span><Icon name="pin" />{person.location}</span>}</figcaption>
         </figure>
       </section>
 
@@ -108,8 +111,6 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
       <div className={styles.contentGrid}>
         <div className={styles.mainContent}>
           {person.description && <section className={styles.contentSection} id="overview"><span className={styles.sectionEyebrow}>Profile</span><h2>Professional Overview</h2><p>{person.description}</p></section>}
-          {areas.length > 0 && <section className={styles.contentSection} id="expertise"><span className={styles.sectionEyebrow}>Practice focus</span><h2>Areas of Expertise</h2><div className={styles.expertiseGrid}>{areas.map((area, index) => <div className={styles.expertiseItem} key={`${area}-${index}`}><span className={styles.expertiseNumber}>{String(index + 1).padStart(2, "0")}</span><h3>{area}</h3></div>)}</div></section>}
-          {qualifications.length > 0 && <section className={styles.contentSection} id="education"><span className={styles.sectionEyebrow}>Academic background</span><h2>Education &amp; Qualifications</h2><ul className={styles.qualificationList}>{qualifications.map((qualification) => <li key={qualification}><Icon name="document" /><span>{qualification}</span></li>)}</ul></section>}
           {relatedServices.length > 0 && <section className={styles.contentSection} id="services"><span className={styles.sectionEyebrow}>Astronis capabilities</span><h2>Related Services</h2><div className={styles.serviceGrid}>{relatedServices.map((service) => <Link href={`/services/${service.slug}`} className={styles.serviceCard} key={service.slug}><span className={styles.serviceIcon}><Icon name={service.icon} /></span><span className={styles.serviceText}><strong>{service.title}</strong><span>{service.shortDescription}</span></span><Icon name="arrow" /></Link>)}</div></section>}
         </div>
 
@@ -122,7 +123,6 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
             {person.linkedinProfile && <div><dt>LinkedIn profile</dt><dd>{linkedinUrl ? <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">{person.linkedinProfile}</a> : person.linkedinProfile}</dd></div>}
             {person.twitterProfile && <div><dt>Twitter profile</dt><dd>{twitterUrl ? <a href={twitterUrl} target="_blank" rel="noopener noreferrer">{person.twitterProfile}</a> : person.twitterProfile}</dd></div>}
           </dl></section>
-          {(person.credentials || person.enrolment) && <section className={styles.credentialPanel} id="credentials"><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2>{person.credentials && <p>{person.credentials}</p>}{person.enrolment && <p>{person.enrolment}</p>}</section>}
           {(person.email || person.phones.length > 0) && <section className={styles.contactPanel}><h2>Start a Conversation</h2><p>Connect with Astronis Global about your legal, regulatory or business requirements.</p>{person.email && <a href={`mailto:${person.email}`}><Icon name="mail" />{person.email}</a>}{person.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, "")}`} key={phone}><Icon name="phone" />{phone}</a>)}<Link className={styles.primaryButton} href={enquiry}>Send an Enquiry <Icon name="arrow" /></Link></section>}
         </aside>
       </div>

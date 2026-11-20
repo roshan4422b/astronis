@@ -35,7 +35,8 @@ function toProfessionalRecord(
     code: textField(data, "code", source?.code),
     hierarchy: textField(data, "hierarchy", source?.hierarchy),
     role: textField(data, "designation", source?.role || "Professional"),
-    location: textField(data, "location", textField(data, "jurisdiction", source?.location)),
+    location: [textField(data, "state"), textField(data, "country")].filter(Boolean).join(", ")
+      || textField(data, "location", textField(data, "jurisdiction", source?.location)),
     phones: phoneNumbers(data, source?.phones ?? []),
     email: textField(data, "email", source?.email),
     linkedinProfile: textField(data, "linkedinProfile", source?.linkedinProfile),

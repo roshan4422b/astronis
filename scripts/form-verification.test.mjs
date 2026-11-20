@@ -356,12 +356,35 @@ test("keeps Turnstile optional and hides the unverified display-only widget", as
   const [globalEnquiryRoute, applicationRoute, meetingRoute] = await Promise.all([
     readFile(new URL("../src/app/api/global-enquiry/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/api/professional-application/route.ts", import.meta.url), "utf8"),
-    readFile(new URL("../src/app/api/schedule-meeting/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/order/route.ts", import.meta.url), "utf8"),
   ]);
   for (const route of [globalEnquiryRoute, applicationRoute, meetingRoute]) {
     assert.match(route, /consumeFormVerification\(/);
     assert.match(route, /verificationFailure\(/);
   }
+  const legacyMeetingRoute = await readFile(new URL("../src/app/api/schedule-meeting/route.ts", import.meta.url), "utf8");
+  assert.match(legacyMeetingRoute, /status: 410/);
+  assert.match(legacyMeetingRoute, /require verified online payment/);
+});
+
+test("requires server-created payment orders and verified payment before confirming consultation bookings", async () => {
+  const [orderRoute, verifyRoute, webhookRoute, modal, config] = await Promise.all([
+    readFile(new URL("../src/app/api/schedule-meeting/order/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/verify/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/webhook/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/_components/schedule-meeting-modal.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../next.config.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(orderRoute, /createRazorpayOrder\(config/);
+  assert.match(orderRoute, /await consumeFormVerification\(/);
+  assert.match(verifyRoute, /verifyRazorpayCheckoutSignature\(/);
+  assert.match(verifyRoute, /payment\.status === "captured" && order\.status === "paid"/);
+  assert.match(verifyRoute, /booking_status: "confirmed"/);
+  assert.match(webhookRoute, /verifyRazorpayWebhookSignature\(/);
+  assert.match(webhookRoute, /cms_meeting_payment_events/);
+  assert.match(modal, /Proceed to Payment/);
+  assert.match(modal, /Check Payment Status/);
+  assert.match(config, /https:\/\/checkout\.razorpay\.com/);
 });
 
 test("protects source-defined CMS testimonials and shared media from deletion", async () => {

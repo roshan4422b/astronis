@@ -123,6 +123,8 @@ function newRecord(section: AdminEditableContentSection): AdminEditableContentRe
     seoDescription: "",
     designation: "",
     expertise: "",
+    state: "",
+    country: "",
     education: "",
     enrolment: "",
     credentials: "",
@@ -138,7 +140,7 @@ function fieldLabel(section: AdminEditableContentSection) {
   switch (section) {
     case "services": return { name: "Service Name", category: "Category", body: "Short Description", content: "Main Description" };
     case "industries": return { name: "Industry Name", category: "Category", body: "Short Description", content: "Main Description" };
-    case "professionals": return { name: "Name", category: "Designation", body: "Professional Standing Credentials", content: "Professional Biography" };
+    case "professionals": return { name: "Name", category: "Designation", body: "Short Description", content: "Professional Overview" };
     case "global-presence": return { name: "Jurisdiction Name", category: "Jurisdiction", body: "Short Description", content: "Main Content" };
     case "technology": return { name: "Page Name", category: "Category", body: "Short Description", content: "Main Content" };
   }
@@ -305,6 +307,8 @@ function ContentEditor({
       seoDescription: form.seoDescription.trim(),
       designation: form.designation.trim(),
       expertise: form.expertise.trim(),
+      state: form.state.trim(),
+      country: form.country.trim(),
       education: form.education.trim(),
       enrolment: form.enrolment.trim(),
       credentials: form.credentials.trim(),
@@ -343,11 +347,23 @@ function ContentEditor({
       ) : (
         <form className="admin-content-form" onSubmit={submitAsSelectedStatus} noValidate>
           <div className="admin-content-form-grid">
-            <label className="admin-field">
+            <label className={`admin-field${section === "professionals" ? " admin-content-full" : ""}`}>
               <span>{labels.name} <i>*</i></span>
               <input autoFocus value={form.title} onChange={(event) => update("title", event.target.value)} aria-invalid={Boolean(errors.title)} aria-describedby={errors.title ? "content-title-error" : undefined} />
               {errors.title ? <span id="content-title-error">{required(errors.title)}</span> : null}
             </label>
+            {section === "professionals" ? (
+              <>
+                <label className="admin-field">
+                  <span>State</span>
+                  <input value={form.state} onChange={(event) => update("state", event.target.value)} />
+                </label>
+                <label className="admin-field">
+                  <span>Country</span>
+                  <input value={form.country} onChange={(event) => update("country", event.target.value)} />
+                </label>
+              </>
+            ) : null}
             <label className="admin-field">
               <span>Slug <i>*</i></span>
               <input value={form.slug} readOnly={initial.sourceDefined} onChange={(event) => { setSlugEdited(true); update("slug", event.target.value); }} aria-invalid={Boolean(errors.slug)} aria-describedby={errors.slug ? "content-slug-error" : undefined} />
@@ -437,9 +453,8 @@ function ContentEditor({
             ) : null}
             {section === "professionals" ? (
               <label className="admin-field admin-content-full">
-                <span>Professional Biography {!initial.sourceDefined ? <i>*</i> : null}</span>
-                <textarea rows={5} value={form.content} onChange={(event) => update("content", event.target.value)} aria-invalid={Boolean(errors.content)} aria-describedby={errors.content ? "content-biography-error" : undefined} />
-                {errors.content ? <span id="content-biography-error">{required(errors.content)}</span> : null}
+                <span>{labels.content}</span>
+                <textarea rows={8} value={form.content} onChange={(event) => update("content", event.target.value)} placeholder="Write the professional overview shown on the profile page." />
               </label>
             ) : null}
             <label className="admin-field admin-content-full">
