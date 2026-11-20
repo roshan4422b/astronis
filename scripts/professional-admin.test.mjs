@@ -295,8 +295,32 @@ test("professional credentials save in CMS data and render in the public Credent
   assert.match(editor, /credentials: ""/);
   assert.match(editor, /<span>\{labels\.body\}<\/span>\s*<textarea rows=\{3\} value=\{form\.credentials\} onChange=\{\(event\) => update\("credentials", event\.target\.value\)\}/);
   assert.match(editor, /credentials: form\.credentials\.trim\(\)/);
+  assert.doesNotMatch(editor, /<h3>Professional Overview<\/h3>/);
+  assert.match(editor, /<h3>Professional Standing Credentials<\/h3><p>\{record\.credentials \|\| "Not provided"\}<\/p>/);
   assert.match(state, /credentials: text\(row\.data\.credentials\)/);
   assert.match(profileRoute, /credentials: textField\(data, "credentials", source\?\.credentials\)/);
   assert.match(profileTemplate, /person\.credentials \|\| person\.enrolment/);
   assert.match(profileTemplate, /<h2>Credentials<\/h2>.*\{person\.credentials && <p>\{person\.credentials\}<\/p>/);
+});
+
+test("professional social profile URLs can be edited, saved, and linked safely", async () => {
+  const editor = await readFile(new URL("../src/app/admin/_components/admin-content-management.tsx", import.meta.url), "utf8");
+  const state = await readFile(new URL("../src/app/admin/_components/admin-state.tsx", import.meta.url), "utf8");
+  const sourceContent = await readFile(new URL("../src/lib/cms/source-content.ts", import.meta.url), "utf8");
+  const profileRoute = await readFile(new URL("../src/app/professionals/[slug]/page.tsx", import.meta.url), "utf8");
+  const profileTemplate = await readFile(new URL("../src/app/professionals/[slug]/profile-template.tsx", import.meta.url), "utf8");
+
+  assert.match(editor, /linkedinProfile: ""/);
+  assert.match(editor, /twitterProfile: ""/);
+  assert.match(editor, /value=\{form\.linkedinProfile\} onChange=\{\(event\) => update\("linkedinProfile", event\.target\.value\)\}/);
+  assert.match(editor, /value=\{form\.twitterProfile\} onChange=\{\(event\) => update\("twitterProfile", event\.target\.value\)\}/);
+  assert.match(editor, /linkedinProfile: form\.linkedinProfile\.trim\(\)/);
+  assert.match(editor, /twitterProfile: form\.twitterProfile\.trim\(\)/);
+  assert.match(editor, /!isHttpUrl\(value\) && value !== initial\[field\]\.trim\(\)/);
+  assert.match(state, /linkedinProfile: text\(row\.data\.linkedinProfile\), twitterProfile: text\(row\.data\.twitterProfile\)/);
+  assert.match(sourceContent, /linkedinProfile: person\.linkedinProfile,\s*twitterProfile: person\.twitterProfile/);
+  assert.match(profileRoute, /twitterProfile: textField\(data, "twitterProfile", source\?\.twitterProfile\)/);
+  assert.match(profileTemplate, /function safeProfileUrl/);
+  assert.match(profileTemplate, /\{linkedinUrl \? <a href=\{linkedinUrl\} target="_blank" rel="noopener noreferrer">/);
+  assert.match(profileTemplate, /\{twitterUrl \? <a href=\{twitterUrl\} target="_blank" rel="noopener noreferrer">/);
 });

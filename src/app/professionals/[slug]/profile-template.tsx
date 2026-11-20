@@ -20,6 +20,16 @@ function expertiseAreas(value: string) {
   return value.split(/,|\s+&\s+/).map((item) => item.trim()).filter(Boolean);
 }
 
+function safeProfileUrl(value?: string) {
+  if (!value) return "";
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
 function getRelatedServices(person: ProfessionalRecord) {
   const expertise = person.expertise.toLowerCase();
   const matchingSlugs = serviceMatches
@@ -53,6 +63,8 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
   const relatedServices = getRelatedServices(person);
   const relatedProfessionals = getRelatedProfessionals(person);
   const qualifications = person.education?.split(",").map((item) => item.trim()).filter(Boolean) ?? [];
+  const linkedinUrl = safeProfileUrl(person.linkedinProfile);
+  const twitterUrl = safeProfileUrl(person.twitterProfile);
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -107,7 +119,8 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
             {person.location && <div><dt>Location</dt><dd>{person.location}</dd></div>}
             {person.hierarchy && <div><dt>Practice group</dt><dd>{person.hierarchy}</dd></div>}
             {person.code && <div><dt>Professional code</dt><dd>{person.code}</dd></div>}
-            {person.linkedinProfile && <div><dt>LinkedIn profile</dt><dd>{person.linkedinProfile}</dd></div>}
+            {person.linkedinProfile && <div><dt>LinkedIn profile</dt><dd>{linkedinUrl ? <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">{person.linkedinProfile}</a> : person.linkedinProfile}</dd></div>}
+            {person.twitterProfile && <div><dt>Twitter profile</dt><dd>{twitterUrl ? <a href={twitterUrl} target="_blank" rel="noopener noreferrer">{person.twitterProfile}</a> : person.twitterProfile}</dd></div>}
           </dl></section>
           {(person.credentials || person.enrolment) && <section className={styles.credentialPanel} id="credentials"><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2>{person.credentials && <p>{person.credentials}</p>}{person.enrolment && <p>{person.enrolment}</p>}</section>}
           {(person.email || person.phones.length > 0) && <section className={styles.contactPanel}><h2>Start a Conversation</h2><p>Connect with Astronis Global about your legal, regulatory or business requirements.</p>{person.email && <a href={`mailto:${person.email}`}><Icon name="mail" />{person.email}</a>}{person.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, "")}`} key={phone}><Icon name="phone" />{phone}</a>)}<Link className={styles.primaryButton} href={enquiry}>Send an Enquiry <Icon name="arrow" /></Link></section>}

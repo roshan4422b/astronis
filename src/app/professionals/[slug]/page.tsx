@@ -39,6 +39,7 @@ function toProfessionalRecord(
     phones: phoneNumbers(data, source?.phones ?? []),
     email: textField(data, "email", source?.email),
     linkedinProfile: textField(data, "linkedinProfile", source?.linkedinProfile),
+    twitterProfile: textField(data, "twitterProfile", source?.twitterProfile),
     expertise: textField(data, "expertise", source?.expertise),
     description: textField(data, "content", textField(data, "description", source?.description)),
     education: textField(data, "education", source?.education),

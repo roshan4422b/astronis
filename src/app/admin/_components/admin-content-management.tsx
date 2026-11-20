@@ -98,6 +98,15 @@ function formatDate(value: string) {
   }).format(date);
 }
 
+function isHttpUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 function newRecord(section: AdminEditableContentSection): AdminEditableContentRecord {
   const slugBase = `new-${section}`;
   return {
@@ -117,6 +126,8 @@ function newRecord(section: AdminEditableContentSection): AdminEditableContentRe
     education: "",
     enrolment: "",
     credentials: "",
+    linkedinProfile: "",
+    twitterProfile: "",
     jurisdiction: "",
     imagePlaceholder: "",
     featuredImage: "",
@@ -218,7 +229,7 @@ function ContentEditor({
       ...(key === "title" && !slugEdited ? { slug: createSlug(String(value)) } : {}),
       ...(key === "title" ? { jurisdiction: section === "global-presence" ? String(value) : current.jurisdiction } : {}),
     }));
-    if (key === "title" || key === "slug" || key === "description" || key === "content" || key === "credentials" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction") {
+    if (key === "title" || key === "slug" || key === "description" || key === "content" || key === "credentials" || key === "linkedinProfile" || key === "twitterProfile" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction") {
       setErrors((current) => ({ ...current, [key]: "" }));
     }
   }
@@ -241,6 +252,14 @@ function ContentEditor({
     if (section === "professionals" && !form.designation.trim()) next.designation = "Enter a designation.";
     if (section === "professionals" && !form.expertise.trim()) next.expertise = "Enter an expertise area.";
     if (section === "professionals" && !form.content.trim() && !form.description.trim() && !initial.sourceDefined) next.content = "Enter a professional biography.";
+    if (section === "professionals") {
+      for (const [field, label] of [["linkedinProfile", "LinkedIn"], ["twitterProfile", "Twitter"]] as const) {
+        const value = form[field].trim();
+        if (value && !isHttpUrl(value) && value !== initial[field].trim()) {
+          next[field] = `Enter a valid http(s) ${label} URL.`;
+        }
+      }
+    }
     if (section === "global-presence" && !form.jurisdiction.trim()) next.jurisdiction = "Enter a jurisdiction.";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -289,6 +308,8 @@ function ContentEditor({
       education: form.education.trim(),
       enrolment: form.enrolment.trim(),
       credentials: form.credentials.trim(),
+      linkedinProfile: form.linkedinProfile.trim(),
+      twitterProfile: form.twitterProfile.trim(),
       jurisdiction: form.jurisdiction.trim(),
       imagePlaceholder: form.imagePlaceholder.trim(),
       status,
@@ -366,6 +387,16 @@ function ContentEditor({
                 <label className="admin-field">
                   <span>Location</span>
                   <input value={form.jurisdiction} onChange={(event) => update("jurisdiction", event.target.value)} />
+                </label>
+                <label className="admin-field">
+                  <span>LinkedIn Profile URL</span>
+                  <input type="url" value={form.linkedinProfile} onChange={(event) => update("linkedinProfile", event.target.value)} aria-invalid={Boolean(errors.linkedinProfile)} aria-describedby={errors.linkedinProfile ? "content-linkedin-error" : undefined} placeholder="https://www.linkedin.com/in/..." />
+                  {errors.linkedinProfile ? <span id="content-linkedin-error">{required(errors.linkedinProfile)}</span> : null}
+                </label>
+                <label className="admin-field">
+                  <span>Twitter Profile URL</span>
+                  <input type="url" value={form.twitterProfile} onChange={(event) => update("twitterProfile", event.target.value)} aria-invalid={Boolean(errors.twitterProfile)} aria-describedby={errors.twitterProfile ? "content-twitter-error" : undefined} placeholder="https://x.com/..." />
+                  {errors.twitterProfile ? <span id="content-twitter-error">{required(errors.twitterProfile)}</span> : null}
                 </label>
                 <label className="admin-field">
                   <span>Profile Image placeholder</span>
@@ -457,6 +488,8 @@ function ContentDetails({
     ...(record.expertise ? [["Expertise", record.expertise]] : []),
     ...(record.education ? [["Education", record.education]] : []),
     ...(record.enrolment ? [["Professional Enrolment", record.enrolment]] : []),
+    ...(record.linkedinProfile ? [["LinkedIn profile", record.linkedinProfile]] : []),
+    ...(record.twitterProfile ? [["Twitter profile", record.twitterProfile]] : []),
     ...(record.jurisdiction ? [[record.sectionType === "professionals" ? "Location" : "Jurisdiction", record.jurisdiction]] : []),
   ];
   return (
@@ -465,10 +498,7 @@ function ContentDetails({
         <div className="admin-content-detail-status"><StatusBadge status={record.status} /><span>{record.sourceDefined ? "Existing website content · source-backed" : "CMS-managed content"}</span></div>
         <dl>{details.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
         {record.sectionType === "professionals"
-          ? <>
-              {record.description ? <section><h3>Professional Overview</h3><p>{record.description}</p></section> : null}
-              {record.credentials ? <section><h3>Professional Standing Credentials</h3><p>{record.credentials}</p></section> : null}
-            </>
+          ? <section><h3>Professional Standing Credentials</h3><p>{record.credentials || "Not provided"}</p></section>
           : <section><h3>{fieldLabel(record.sectionType).body}</h3><p>{record.description}</p></section>}
         {record.content ? <section><h3>{fieldLabel(record.sectionType).content}</h3><p>{record.content}</p></section> : null}
         {record.seoTitle || record.seoDescription ? <section><h3>Search metadata</h3><p>{record.seoTitle || "No SEO title"}</p><p>{record.seoDescription || "No meta description"}</p></section> : null}
@@ -494,7 +524,7 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
     ? expertiseOptions
     : [...new Set(records.map((record) => record.category).filter(Boolean))];
   const filtered = records.filter((record) => {
-    const terms = [record.title, record.slug, record.description, record.credentials, record.category, record.designation, record.expertise, record.jurisdiction].join(" ").toLowerCase();
+    const terms = [record.title, record.slug, record.description, record.credentials, record.category, record.designation, record.expertise, record.linkedinProfile, record.twitterProfile, record.jurisdiction].join(" ").toLowerCase();
     return terms.includes(query.trim().toLowerCase())
       && (categoryFilter === "All categories" || (section === "professionals"
         ? getProfessionalExpertiseCategory(record.expertise, record.designation) === categoryFilter
