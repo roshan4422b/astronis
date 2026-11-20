@@ -1,4 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm ci --include=optional --os=linux --cpu=x64"
+  "installCommand": "npm cache clean --force && npm ci --include=optional --os=linux --cpu=x64"
 }
