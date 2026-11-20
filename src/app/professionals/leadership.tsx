@@ -123,7 +123,7 @@ export const professionals: ProfessionalRecord[] = [
       "Supports clients with licensing, business acquisitions, corporate due diligence, and BIS and ISI compliance.",
   },
 ];
-type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string; description?: string };
+type CmsProfessional = { slug: string; name: string; role: string; expertise: string; image?: string; description?: string; location?: string };
 type LeadershipProps = {
   limit?: number;
   cmsProfessionals?: CmsProfessional[];
@@ -165,6 +165,7 @@ export default function Leadership({
           <div className={variant === "premium" ? styles.personBody : undefined}>
             <h3>{p.name}</h3>
             <span className={`${variant === "premium" ? styles.role : "eyebrow"} ${isFounderRole(p.role) ? styles.founderRole : ""}`}>{p.role}</span>
+            {p.location && <small className={styles.professionalLocation}>{p.location}</small>}
             <p>{variant === "premium" ? p.description || p.expertise : p.expertise}</p>
             {variant === "premium" && <span className={styles.expertise}>{p.expertise}</span>}
             <TextLink href={"/professionals/" + p.slug}>View Profile</TextLink>

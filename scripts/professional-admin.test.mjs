@@ -15,7 +15,7 @@ test("professional expertise options contain only the five approved categories",
       "Regulatory Advisory (RA)",
       "Legal Advisory (LA)",
       "Business Advisory (BA)",
-      "Global Network & International (GN)",
+      "Global Network (GN)",
     ],
   );
   assert.deepEqual(professionalExpertiseOptions, [
@@ -23,7 +23,7 @@ test("professional expertise options contain only the five approved categories",
     "Regulatory Advisory (RA)",
     "Legal Advisory (LA)",
     "Business Advisory (BA)",
-    "Global Network & International (GN)",
+    "Global Network (GN)",
   ]);
 });
 

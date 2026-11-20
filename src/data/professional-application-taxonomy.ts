@@ -8,7 +8,7 @@ export const categories: TaxonomyOption[] = [
   { code: "RA", label: "Regulatory Advisory" },
   { code: "LA", label: "Legal Advisory" },
   { code: "BA", label: "Business Advisory" },
-  { code: "GN", label: "Global Network & International" },
+  { code: "GN", label: "Global Network" },
 ];
 
 export const professionalExpertiseOptions = categories.map(({ label, code }) => `${label} (${code})`);

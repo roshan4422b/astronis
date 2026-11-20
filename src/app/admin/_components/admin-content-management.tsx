@@ -117,6 +117,8 @@ function newRecord(section: AdminEditableContentSection): AdminEditableContentRe
     seoDescription: "",
     designation: "",
     expertise: "",
+    state: "",
+    country: "",
     education: "",
     enrolment: "",
     jurisdiction: "",
@@ -287,6 +289,8 @@ function ContentEditor({
       seoDescription: form.seoDescription.trim(),
       designation: form.designation.trim(),
       expertise: form.expertise.trim(),
+      state: form.state.trim(),
+      country: form.country.trim(),
       education: form.education.trim(),
       enrolment: form.enrolment.trim(),
       jurisdiction: form.jurisdiction.trim(),
@@ -319,11 +323,23 @@ function ContentEditor({
       ) : (
         <form className="admin-content-form" onSubmit={submitAsSelectedStatus} noValidate>
           <div className="admin-content-form-grid">
-            <label className="admin-field">
+            <label className={`admin-field${section === "professionals" ? " admin-content-full" : ""}`}>
               <span>{labels.name} <i>*</i></span>
               <input autoFocus value={form.title} onChange={(event) => update("title", event.target.value)} aria-invalid={Boolean(errors.title)} aria-describedby={errors.title ? "content-title-error" : undefined} />
               {errors.title ? <span id="content-title-error">{required(errors.title)}</span> : null}
             </label>
+            {section === "professionals" ? (
+              <>
+                <label className="admin-field">
+                  <span>State</span>
+                  <input value={form.state} onChange={(event) => update("state", event.target.value)} />
+                </label>
+                <label className="admin-field">
+                  <span>Country</span>
+                  <input value={form.country} onChange={(event) => update("country", event.target.value)} />
+                </label>
+              </>
+            ) : null}
             <label className="admin-field">
               <span>Slug <i>*</i></span>
               <input value={form.slug} readOnly={initial.sourceDefined} onChange={(event) => { setSlugEdited(true); update("slug", event.target.value); }} aria-invalid={Boolean(errors.slug)} aria-describedby={errors.slug ? "content-slug-error" : undefined} />
