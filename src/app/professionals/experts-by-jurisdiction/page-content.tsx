@@ -232,13 +232,13 @@ export default function ExpertsByJurisdiction() {
       <div className={`${styles.wrap} ${styles.enquiryGrid}`}>
         <div className={styles.enquiryCopy}><h2>Discuss Your Jurisdictional Requirement</h2><div className={styles.enquiryImage}><Image src="/international-network-hero.png" alt="International professionals coordinating cross-border matters" fill sizes="(max-width: 720px) 100vw, 40vw" /></div><a href="tel:+919311664455"><Icon name="phone" />+91 93116 64455</a><a href="mailto:advisory@astronisglobal.com"><Icon name="mail" />advisory@astronisglobal.com</a></div>
         <div className={styles.formPanel}><form className={styles.enquiryForm} onSubmit={submitEnquiry}>
-          <label>Name *<input name="name" autoComplete="name" minLength={2} required /></label><label>Organisation *<input name="organisation" autoComplete="organization" required /></label>
-          <label>Email *<input name="email" type="email" autoComplete="email" required /></label><label>Phone *<input name="phone" type="tel" minLength={7} required /></label>
-          <label>Jurisdiction *<select name="jurisdiction" required defaultValue=""><option value="" disabled>Select</option>{popularJurisdictions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label>Expertise Required<select name="expertise" defaultValue=""><option value="">Select</option>{expertiseOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label>Service Required<select name="service" defaultValue=""><option value="">Select</option>{serviceOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label>Industry<select name="industry" defaultValue=""><option value="">Select</option>{industryOptions.map(item => <option key={item}>{item}</option>)}</select></label>
-          <label className={styles.requirement}>Brief Description of Requirement *<textarea name="message" minLength={10} required /></label>
+          <label><span>Name *</span><input name="name" autoComplete="name" placeholder="Your full name" minLength={2} required /></label><label><span>Organisation *</span><input name="organisation" autoComplete="organization" placeholder="Company / organisation" required /></label>
+          <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@company.com" required /></label><label><span>Phone *</span><input name="phone" type="tel" placeholder="Your phone number" minLength={7} required /></label>
+          <label><span>Jurisdiction *</span><select name="jurisdiction" required defaultValue=""><option value="" disabled>Select</option>{popularJurisdictions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Expertise Required</span><select name="expertise" defaultValue=""><option value="">Select</option>{expertiseOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Service Required</span><select name="service" defaultValue=""><option value="">Select</option>{serviceOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Industry</span><select name="industry" defaultValue=""><option value="">Select</option>{industryOptions.map(item => <option key={item}>{item}</option>)}</select></label>
+          <label className={styles.requirement}><span>Brief Description of Requirement *</span><textarea name="message" placeholder="Tell us about your requirement" minLength={10} required /></label>
           <label className={styles.upload}>Upload Supporting Document<input name="upload" type="file" accept=".pdf,.doc,.docx" /></label>
           <small className={styles.uploadNote}>PDF, DOC, DOCX · Max 5 MB</small>
           <EnquiryAgreementCheckbox accepted={enquiryAgreementAccepted} error={enquiryAgreementError} errorId="jurisdiction-enquiry-agreement-error" onChange={(accepted) => { setEnquiryAgreementAccepted(accepted); setEnquiryAgreementError(""); }} onInvalid={() => setEnquiryAgreementError(enquiryAgreementMessage)} />

@@ -1,5 +1,8 @@
 import { industries, practices } from "@/content/site";
 import { professionals } from "@/app/professionals/leadership";
+import type { EnquiryStatus } from "@/lib/admin/enquiry-status";
+
+export type { EnquiryStatus } from "@/lib/admin/enquiry-status";
 
 export const insightsCategories = [
   "Articles & Resources",
@@ -30,7 +33,6 @@ export const demoInsights = [
   { title: "Demo: SEBI regulatory watch", category: "SEBI Updates", author: "Editorial team", updated: "12 Sep 2026", status: "Published" },
 ];
 
-export type EnquiryStatus = "New" | "In Progress" | "Responded" | "Closed";
 export type TestimonialApprovalStatus = "Pending" | "Approved" | "Rejected" | "Archived";
 export type TestimonialConsentStatus = "Granted" | "Not granted" | "Not Recorded" | "Withdrawn";
 

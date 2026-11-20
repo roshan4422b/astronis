@@ -6,6 +6,7 @@ import type { FormEvent, ReactNode } from "react";
 import type {
   EnquiryStatus,
 } from "../admin-data";
+import { enquiryStatuses, isEnquiryStatus } from "@/lib/admin/enquiry-status";
 import { useAdminState } from "./admin-state";
 import {
   PageHeading,
@@ -92,6 +93,7 @@ export function AdminEnquiryForm() {
     message: "",
     date: todayInputDate(),
     status: "New" as EnquiryStatus,
+    followUpDate: "",
     internalNotes: "",
   });
 
@@ -139,7 +141,7 @@ export function AdminEnquiryForm() {
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/admin/data", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        collection: "enquiries", status: form.status, data: {
+        collection: "enquiries", status: form.status, follow_up_date: form.status === "Follow-up" ? form.followUpDate || null : null, data: {
           name: normalized.name, email: normalized.email, phone: form.phone.trim(), subject: normalized.subject,
           message: normalized.message, date: dateAsIso(normalized.date), internalNotes: form.internalNotes.trim(),
           formType: "Admin entered",
@@ -151,7 +153,7 @@ export function AdminEnquiryForm() {
       setEnquiries((current) => [{
         id: row.id, name: row.name, email: row.email, phone: row.data?.phone || "", subject: row.subject,
         message: row.message, date: row.created_at, status: row.status, company: row.company || "",
-        formType: row.form_type, internalNotes: row.internal_notes,
+        formType: row.form_type, internalNotes: row.internal_notes, followUpDate: row.follow_up_date || "",
       }, ...current]);
       setFeedback("Enquiry saved.");
       router.push("/admin/enquiries");
@@ -198,14 +200,17 @@ export function AdminEnquiryForm() {
             <FormField id="enquiry-status" label="Enquiry Status">
               <select id="enquiry-status" value={form.status} onChange={(event) => {
                 const value = event.target.value;
-                if (value === "New" || value === "In Progress" || value === "Responded" || value === "Closed") update("status", value);
+                if (isEnquiryStatus(value)) {
+                  setDirty(true);
+                  setForm((current) => ({ ...current, status: value, followUpDate: value === "Follow-up" ? current.followUpDate : "" }));
+                }
               }}>
-                <option value="New">New</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Responded">Responded</option>
-                <option value="Closed">Closed</option>
+                {enquiryStatuses.map((status) => <option key={status} value={status}>{status}</option>)}
               </select>
             </FormField>
+            {form.status === "Follow-up" ? <FormField id="enquiry-follow-up-date" label="Follow-up Date">
+              <input id="enquiry-follow-up-date" type="date" value={form.followUpDate} onChange={(event) => update("followUpDate", event.target.value)} />
+            </FormField> : null}
             <FormField id="enquiry-notes" label="Internal Admin Notes">
               <textarea id="enquiry-notes" rows={3} value={form.internalNotes} onChange={(event) => update("internalNotes", event.target.value)} />
             </FormField>

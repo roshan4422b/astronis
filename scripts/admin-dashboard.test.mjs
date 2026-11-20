@@ -25,6 +25,8 @@ test("admin data loading reports API status instead of exposing JSON parser erro
   ]);
   assert.match(state, /readAdminApiResponse\(contentResponse, "\/api\/admin\/data\?collection=all"\)/);
   assert.match(state, /readAdminApiResponse\(enquiryResponse, "\/api\/admin\/data\?collection=enquiries"\)/);
+  assert.match(state, /const pathname = usePathname\(\);[\s\S]*?if \(pathname === "\/admin\/login"\) return;/);
+  assert.match(state, /router\.replace\("\/admin\/login"\)/);
   assert.match(state, /returned a non-JSON response \(HTTP \$\{response\.status\}, \$\{contentType\}\)/);
   assert.match(state, /Redirected to \$\{redirectedTo\}/);
   assert.match(route, /export async function GET\(request: Request\) \{\s*try \{/);

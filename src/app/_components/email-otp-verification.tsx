@@ -48,6 +48,7 @@ export default function EmailOtpVerification({
   const captchaRequiredForOtp = !captchaOptional && !captchaDisplayOnly;
   const updateCaptchaToken = useCallback((token: string) => {
     setCaptchaToken(token);
+    if (token) setStatus("");
     onCaptchaToken?.(token);
   }, [onCaptchaToken]);
 

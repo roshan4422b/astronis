@@ -18,6 +18,10 @@ const icons: Record<string, ReactNode> = {
   expand: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M9 4v16m3-7 3-3-3-3" /></>,
   more: <><circle cx="5" cy="12" r="1" /><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /></>,
   arrow: <><path d="M7 17 17 7M7 7h10v10" /></>,
+  arrowLeft: <><path d="M19 12H5M12 19l-7-7 7-7" /></>,
+  shieldCheck: <><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z" /><path d="m9 12 2 2 4-4" /></>,
+  chart: <><path d="M4 19V5M4 19h17" /><path d="m7 15 4-4 3 2 6-7" /></>,
+  layout: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M9 4v16M9 9h12" /></>,
   plus: <><path d="M12 5v14M5 12h14" /></>,
   file: <><path d="M7 3h8l4 4v14H7z" /><path d="M15 3v5h5M10 13h6M10 17h6" /></>,
   services: <><path d="M3 21V8l9-5 9 5v13M3 10h18M8 21v-6h8v6M8 10v2M12 10v2M16 10v2" /></>,
@@ -25,6 +29,10 @@ const icons: Record<string, ReactNode> = {
   people: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6" /></>,
   edit: <><path d="m15 5 4 4M4 20l4-.8L19.5 7.7a2.1 2.1 0 0 0-3-3L5 16.2 4 20Z" /></>,
   eye: <><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></>,
+  download: <><path d="M12 3v12m0 0 4-4m-4 4-4-4" /><path d="M5 17v4h14v-4" /></>,
+  printer: <><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v7H6zM18 12h.01" /></>,
+  trash: <><path d="M4 7h16M10 11v6m4-6v6M5 7l1 14h12l1-14M9 7V4h6v3" /></>,
+  whatsapp: <><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.1-4.3A8.5 8.5 0 1 1 20 11.5Z" /><path d="M8.2 7.5c.3 3.9 3.3 6.9 7.2 7.2l.8-1.4 2 .8-.3 2c-5.3.8-10.9-4.8-10.1-10.1l2-.3.8 2-1.4.8Z" /></>,
   filter: <><path d="M4 5h16M7 12h10m-7 7h4" /></>,
   calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></>,
   check: <><path d="m5 12 4 4L19 6" /></>,
@@ -41,10 +49,10 @@ export function AdminIcon({ name, size = 18 }: { name: string; size?: number }) 
   );
 }
 
-export function PageHeading({ title, description, action }: { title: string; description: string; action?: ReactNode }) {
+export function PageHeading({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
   return (
     <div className="admin-page-heading">
-      <div><div className="admin-eyebrow">ASTRONIS GLOBAL / ADMIN</div><h1>{title}</h1><p>{description}</p></div>
+      <div><div className="admin-eyebrow">ASTRONIS GLOBAL / ADMIN</div><h1>{title}</h1>{description ? <p>{description}</p> : null}</div>
       {action ? <div className="admin-heading-actions">{action}</div> : null}
     </div>
   );
@@ -55,10 +63,10 @@ export function StatusBadge({ status }: { status: string }) {
   return <span className={`admin-status admin-status-${tone}`}><span />{status}</span>;
 }
 
-export function StatCard({ label, value, change, icon, onClick }: { label: string; value: string; change: string; icon: string; onClick?: () => void }) {
+export function StatCard({ label, value, change, icon, onClick, pressed }: { label: string; value: string; change: string; icon: string; onClick?: () => void; pressed?: boolean }) {
   const content = <><div className="admin-stat-top"><span>{label}</span><span className="admin-stat-icon"><AdminIcon name={icon} size={19} /></span></div><strong>{value}</strong><small>{change}</small></>;
   return onClick
-    ? <button className="admin-stat-card admin-stat-card-action" type="button" onClick={onClick}>{content}</button>
+    ? <button className="admin-stat-card admin-stat-card-action" type="button" aria-pressed={pressed} onClick={onClick}>{content}</button>
     : <article className="admin-stat-card">{content}</article>;
 }
 

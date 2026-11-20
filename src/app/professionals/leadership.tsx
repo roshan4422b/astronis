@@ -23,6 +23,7 @@ export type ProfessionalRecord = {
   description: string;
   education?: string;
   enrolment?: string;
+  credentials?: string;
 };
 
 export const professionals: ProfessionalRecord[] = [

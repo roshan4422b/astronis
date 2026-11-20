@@ -48,7 +48,7 @@ export default function TestimonialInvite({ buttonsOnly = false }: { buttonsOnly
       </div>
     )}
     {format && typeof document !== "undefined" && createPortal(<div className={styles.backdrop} onMouseDown={(event) => { if (event.target === event.currentTarget) setFormat(null); }}>
-      <section className={`${styles.dialog} ${format === "written" ? styles.writtenDialog : styles.videoDialog}`} role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title" tabIndex={-1} ref={modal}>
+      <section className={`public-form-dialog ${styles.dialog} ${format === "written" ? styles.writtenDialog : styles.videoDialog}`} role="dialog" aria-modal="true" aria-labelledby="testimonial-modal-title" tabIndex={-1} ref={modal}>
         <button type="button" className={styles.close} aria-label="Close testimonial form" onClick={() => setFormat(null)}>×</button>
         <div className={`${styles.form} ${format === "written" ? styles.writtenForm : styles.videoForm}`}>
           <h2 id="testimonial-modal-title">{format === "video" ? "Record a Video Testimonial" : "Write a Testimonial"}</h2>

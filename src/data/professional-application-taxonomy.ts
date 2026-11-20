@@ -1,6 +1,7 @@
 export type CategoryCode = "CA" | "RA" | "LA" | "BA" | "GN";
 export type HierarchyCode = `AG-${string}` | `GN-${string}`;
 export type TaxonomyOption = { code: string; label: string; active?: boolean };
+export type HierarchyOption = TaxonomyOption & { code: HierarchyCode; value: string };
 export type PositionOption = TaxonomyOption & { category: CategoryCode; hierarchyCode: HierarchyCode; hierarchyLabel: string; dynamicCountry?: boolean; seniorReview?: boolean };
 
 export const categories: TaxonomyOption[] = [
@@ -59,7 +60,7 @@ const masterHierarchies: Record<string, string> = {
   "AG-04": "Director", "AG-05": "Principal", "AG-06": "Senior Advisory", "AG-07": "Management",
   "AG-08": "Professional / Specialist", "AG-09": "Associate Track", "AG-10": "Entry / Analyst Track",
   "AG-09P": "Associate Track - Principal", "AG-09S": "Associate Track - Senior", "AG-09A": "Associate Track",
-  "GN-01": "Global Network Leadership", "GN-02": "Director / Regional Leadership", "GN-03": "Country Leadership",
+  "GN-01": "Global Network Leadership", "GN-02": "Director", "GN-03": "Country Leadership",
   "GN-04": "International Advisory", "GN-05": "Independent Network",
 };
 
@@ -104,7 +105,7 @@ export const positions: PositionOption[] = [
   ...addPositions("LA", "AG-05", ["Principal Attorney"]),
   ...addPositions("LA", "AG-06", ["Senior Legal Advisor"]),
   ...addPositions("LA", "AG-08", ["Legal Advisor - Legal Metrology & FSSAI"]),
-  ...addPositions("LA", "AG-08", ["Counsel - Arbitration & ADR", "Counsel - Corporate & Commercial Litigation", "Counsel - Banking & Finance", "Counsel - Insolvency & Restructuring", "Counsel - Intellectual Property", "Counsel - Employment & Labour", "Counsel - Real Estate & RERA", "Counsel - Tax & GST Litigation", "Counsel - White Collar & Investigations", "Counsel - Competition & Regulatory Law", "Counsel - International & Cross-Border Matters"], { label: "Professional / Specialist" }),
+  ...addPositions("LA", "AG-08", ["Counsel - Arbitration & ADR", "Counsel - Corporate & Commercial Litigation", "Counsel - Banking & Finance", "Counsel - Insolvency & Restructuring", "Counsel - Intellectual Property", "Counsel - Employment & Labour", "Counsel - Real Estate & RERA", "Counsel - Tax & GST Litigation", "Counsel - White Collar & Investigations", "Counsel - Competition & Regulatory Law", "Counsel - International & Cross-Border Matters"], { label: "Counsel / Specialist" }),
   ...addPositions("LA", "AG-09P", ["Principal Associate"]),
   ...addPositions("LA", "AG-09S", ["Senior Associate"]),
   ...addPositions("LA", "AG-09A", ["Associate"]),
@@ -122,20 +123,28 @@ export const positions: PositionOption[] = [
 
   ...addPositions("GN", "GN-01", ["Head - Global Markets & Relationships"]),
   ...addPositions("GN", "GN-02", ["Director - International Business", "Director - Cross-Border Advisory"]),
-  ...addPositions("GN", "GN-02", ["Regional Director - Asia Pacific", "Regional Director - Middle East & Africa", "Regional Director - Europe", "Regional Director - Americas"], { label: "Director / Regional Leadership" }),
+  ...addPositions("GN", "GN-02", ["Regional Director - Asia Pacific", "Regional Director - Middle East & Africa", "Regional Director - Europe", "Regional Director - Americas"], { label: "Regional Leadership" }),
   ...addPositions("GN", "GN-03", ["Country Head - [Country]"]),
   ...addPositions("GN", "GN-04", ["International Business Advisor", "Cross-Border Advisor"]),
   ...addPositions("GN", "GN-05", ["Independent Country Advisor - Professional", "International Associate - [Country]"]),
 ];
 
-export function hierarchiesFor(category: CategoryCode): TaxonomyOption[] {
-  const unique = new Map<string, TaxonomyOption>();
-  for (const position of positions) if (position.category === category) unique.set(position.hierarchyCode, { code: position.hierarchyCode, label: position.hierarchyLabel });
+export function hierarchiesFor(category: CategoryCode): HierarchyOption[] {
+  const unique = new Map<string, HierarchyOption>();
+  for (const position of positions) {
+    if (position.category !== category) continue;
+    const value = `${position.hierarchyCode}::${position.hierarchyLabel}`;
+    unique.set(value, { code: position.hierarchyCode, label: position.hierarchyLabel, value });
+  }
   return [...unique.values()];
 }
 
 export function positionsFor(category: CategoryCode, hierarchy: string) {
-  return positions.filter((position) => position.active !== false && position.category === category && position.hierarchyCode === hierarchy);
+  const selectedHierarchy = hierarchiesFor(category).find((option) => option.value === hierarchy);
+  return positions.filter((position) => position.active !== false
+    && position.category === category
+    && position.hierarchyCode === (selectedHierarchy?.code ?? hierarchy)
+    && (!selectedHierarchy || position.hierarchyLabel === selectedHierarchy.label));
 }
 
 export type Specialisation = TaxonomyOption & { category: CategoryCode };
@@ -203,13 +212,8 @@ export function positionDisplayLabel(position: PositionOption, countryName?: str
   return position.dynamicCountry ? position.label.replace("[Country]", countryName || "Select a country") : position.label;
 }
 
-export function engagementOptions(category: CategoryCode, position?: PositionOption, internRecruitmentOpen = false) {
-  return engagementTypes.filter((item) => {
-    if (item.code === "ET-08") return internRecruitmentOpen;
-    if (item.code === "ET-05" || item.code === "ET-06") return category === "GN";
-    if (item.code === "ET-07") return category === "LA" && Boolean(position?.label.includes("Counsel"));
-    return true;
-  });
+export function engagementOptions(internRecruitmentOpen = false) {
+  return engagementTypes.filter((item) => item.code !== "ET-08" || internRecruitmentOpen);
 }
 
 export const subdivisionCountryCodes = new Set(["IN", "US", "CA", "AU", "BR", "MX", "AR", "JP", "CN", "DE", "ES", "FR", "IT", "GB", "RU", "ZA", "NG", "PK", "MY", "ID"]);

@@ -66,7 +66,7 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
     { id: "overview", label: "Overview", show: Boolean(person.description) },
     { id: "expertise", label: "Expertise", show: areas.length > 0 },
     { id: "education", label: "Education", show: qualifications.length > 0 },
-    { id: "credentials", label: "Credentials", show: Boolean(person.enrolment) },
+    { id: "credentials", label: "Credentials", show: Boolean(person.credentials || person.enrolment) },
     { id: "services", label: "Services", show: relatedServices.length > 0 },
     { id: "related", label: "Related Professionals", show: relatedProfessionals.length > 0 },
   ].filter((section) => section.show);
@@ -109,7 +109,7 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
             {person.code && <div><dt>Professional code</dt><dd>{person.code}</dd></div>}
             {person.linkedinProfile && <div><dt>LinkedIn profile</dt><dd>{person.linkedinProfile}</dd></div>}
           </dl></section>
-          {person.enrolment && <section className={styles.credentialPanel} id="credentials"><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2><p>{person.enrolment}</p></section>}
+          {(person.credentials || person.enrolment) && <section className={styles.credentialPanel} id="credentials"><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2>{person.credentials && <p>{person.credentials}</p>}{person.enrolment && <p>{person.enrolment}</p>}</section>}
           {(person.email || person.phones.length > 0) && <section className={styles.contactPanel}><h2>Start a Conversation</h2><p>Connect with Astronis Global about your legal, regulatory or business requirements.</p>{person.email && <a href={`mailto:${person.email}`}><Icon name="mail" />{person.email}</a>}{person.phones.map((phone) => <a href={`tel:${phone.replace(/\s/g, "")}`} key={phone}><Icon name="phone" />{phone}</a>)}<Link className={styles.primaryButton} href={enquiry}>Send an Enquiry <Icon name="arrow" /></Link></section>}
         </aside>
       </div>
