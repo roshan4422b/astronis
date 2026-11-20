@@ -60,7 +60,7 @@ function formatDemoDate(value: string) {
 }
 
 function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
-  const { enquiries, insights, testimonials } = useAdminState();
+  const { enquiries, insights, testimonials, contentRecords } = useAdminState();
   const [selectedSection, setSelectedSection] = useState<"enquiries" | "testimonials" | "insights" | null>(null);
   if (selectedSection) {
     return (
@@ -80,19 +80,15 @@ function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
   }
 
   return <>
-    <PageHeading title="Dashboard" description="A clear overview of your website content and engagement workspace." />
+    <PageHeading title="Dashboard" />
     <div className="admin-stat-grid">
-      <StatCard label="New enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Current CMS inbox" icon="inbox" onClick={() => setSelectedSection("enquiries")} />
+      <StatCard label="Team" value={String(contentRecords.filter((item) => item.sectionType === "professionals" && item.status === "Published").length)} change="Published professional profiles" icon="people" />
+      <StatCard label="Business" value={String(contentRecords.filter((item) => item.sectionType === "services" && item.status === "Published").length)} change="Published service pages" icon="services" />
+      <StatCard label="Financial" value={String(contentRecords.filter((item) => item.sectionType === "industries" && item.status === "Published" && /financial|financ|bank|nbfc/i.test(`${item.title} ${item.category}`)).length)} change="Published financial industry pages" icon="globe" />
+      <StatCard label="New Enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Current CMS inbox" icon="inbox" onClick={() => setSelectedSection("enquiries")} />
       <StatCard label="Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" onClick={() => setSelectedSection("testimonials")} />
-      <StatCard label="Published insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" onClick={() => setSelectedSection("insights")} />
+      <StatCard label="Published Insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" onClick={() => setSelectedSection("insights")} />
     </div>
-    <section className="admin-panel admin-quick-panel">
-      <div className="admin-panel-heading"><div><h2>Quick actions</h2><p>Shortcuts to common tasks</p></div></div>
-      <div className="admin-quick-actions">
-        <Link href="/admin/testimonials/new"><span><AdminIcon name="plus" /></span><span><strong>Add new testimonial</strong><small>Submit a testimonial for review</small></span><AdminIcon name="arrow" size={15} /></Link>
-        <Link href="/admin/enquiries"><span><AdminIcon name="inbox" /></span><span><strong>View enquiries</strong><small>Review current inbox</small></span><AdminIcon name="arrow" size={15} /></Link>
-      </div>
-    </section>
   </>;
 }
 

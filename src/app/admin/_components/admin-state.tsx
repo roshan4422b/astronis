@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import type { EnquiryStatus, TestimonialApprovalStatus, TestimonialConsentStatus } from "../admin-data";
 
@@ -29,6 +30,7 @@ export type AdminEnquiry = {
   subject: string;
   date: string;
   status: EnquiryStatus;
+  followUpDate?: string;
   company: string;
   formType: string;
   message: string;
@@ -99,6 +101,9 @@ export type AdminContentRecord = {
   country: string;
   education: string;
   enrolment: string;
+  credentials: string;
+  linkedinProfile: string;
+  twitterProfile: string;
   jurisdiction: string;
   imagePlaceholder: string;
 };
@@ -156,6 +161,7 @@ type EnquiryRow = {
   subject: string;
   created_at: string;
   status: EnquiryStatus;
+  follow_up_date?: string | null;
   company: string;
   form_type: string;
   message: string;
@@ -267,7 +273,10 @@ function setContentRecords(value: SetStateAction<AdminContentRecord[]>) {
 
 export function AdminStateProvider({ children }: { children: ReactNode }) {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const pathname = usePathname();
+  const router = useRouter();
   useEffect(() => {
+    if (pathname === "/admin/login") return;
     let active = true;
     const load = async () => {
       try {
@@ -314,7 +323,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         const enquiryRows: EnquiryRow[] = Array.isArray(enquiryPayload.records) ? enquiryPayload.records : [];
         const enquiries: AdminEnquiry[] = enquiryRows.map((row) => ({
           id: row.id, name: row.name, email: row.email, subject: row.subject, date: row.created_at,
-          status: row.status, company: row.company, formType: row.form_type, message: row.message,
+          status: row.status, followUpDate: row.follow_up_date || "", company: row.company, formType: row.form_type, message: row.message,
           phone: text(row.data.phone), internalNotes: row.internal_notes, data: row.data, updatedAt: row.updated_at ?? "",
         }));
         snapshot = {
@@ -332,7 +341,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         if (!active) return;
         const message = error instanceof Error ? error.message : "";
         if (/HTTP 401/.test(message) || /Authentication required/.test(message)) {
-          window.location.assign("/admin/login");
+          router.replace("/admin/login");
           return;
         }
         snapshot = {
@@ -346,7 +355,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
     };
     void load();
     return () => { active = false; };
-  }, []);
+  }, [pathname, router]);
   const value = useMemo(
     () => ({ ...state, setSidebarCollapsed, setFeedback, setInsights, setEnquiries, setTestimonials, setContentRecords }),
     [state],

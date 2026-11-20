@@ -19,10 +19,12 @@ export type ProfessionalRecord = {
   phones: string[];
   email: string;
   linkedinProfile?: string;
+  twitterProfile?: string;
   expertise: string;
   description: string;
   education?: string;
   enrolment?: string;
+  credentials?: string;
 };
 
 export const professionals: ProfessionalRecord[] = [

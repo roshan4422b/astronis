@@ -1,7 +1,6 @@
 "use client";
 
-import { createPortal } from "react-dom";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, FormEvent, ReactNode } from "react";
 import {
   getProfessionalExpertiseCategory,
@@ -23,9 +22,8 @@ import {
   SearchInput,
   StatusBadge,
 } from "./admin-ui";
-import styles from "./admin.module.css";
 
-const sectionConfig: Record<AdminEditableContentSection, { title: string; description: string; addLabel: string; search: string }> = {
+const sectionConfig: Record<AdminEditableContentSection, { title: string; description?: string; addLabel: string; search: string }> = {
   services: {
     title: "Services",
     description: "Review service categories and routes represented in the current project.",
@@ -40,7 +38,6 @@ const sectionConfig: Record<AdminEditableContentSection, { title: string; descri
   },
   professionals: {
     title: "Professionals",
-    description: "Manage professional profile content published from the CMS.",
     addLabel: "Add New Professional",
     search: "Search by name or expertise...",
   },
@@ -101,6 +98,15 @@ function formatDate(value: string) {
   }).format(date);
 }
 
+function isHttpUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 function newRecord(section: AdminEditableContentSection): AdminEditableContentRecord {
   const slugBase = `new-${section}`;
   return {
@@ -121,6 +127,9 @@ function newRecord(section: AdminEditableContentSection): AdminEditableContentRe
     country: "",
     education: "",
     enrolment: "",
+    credentials: "",
+    linkedinProfile: "",
+    twitterProfile: "",
     jurisdiction: "",
     imagePlaceholder: "",
     featuredImage: "",
@@ -148,7 +157,7 @@ function getColumns(section: AdminEditableContentSection) {
   switch (section) {
     case "services": return ["Service Name", "Category", "Description", "Last Updated", "Status", "Actions"];
     case "industries": return ["Industry Name", "Description", "Last Updated", "Status", "Actions"];
-    case "professionals": return ["Name", "Designation", "Expertise", "Jurisdiction", "Status", "Actions"];
+    case "professionals": return ["Name", "Designation", "Expertise", "Location", "Status", "Actions"];
     case "global-presence": return ["Jurisdiction", "Page URL", "Description", "Last Updated", "Status", "Actions"];
     case "technology": return ["Page Name", "Category", "Description", "Last Updated", "Status", "Actions"];
   }
@@ -222,7 +231,7 @@ function ContentEditor({
       ...(key === "title" && !slugEdited ? { slug: createSlug(String(value)) } : {}),
       ...(key === "title" ? { jurisdiction: section === "global-presence" ? String(value) : current.jurisdiction } : {}),
     }));
-    if (key === "title" || key === "slug" || key === "description" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction") {
+    if (key === "title" || key === "slug" || key === "description" || key === "content" || key === "credentials" || key === "linkedinProfile" || key === "twitterProfile" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction") {
       setErrors((current) => ({ ...current, [key]: "" }));
     }
   }
@@ -239,11 +248,20 @@ function ContentEditor({
     if (!normalizedSlug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalizedSlug)) {
       next.slug = "Enter a valid single-segment URL slug.";
     }
-    if (!form.description.trim() && !initial.sourceDefined) next.description = "Enter a short description.";
+    if (section !== "professionals" && !form.description.trim() && !initial.sourceDefined) next.description = "Enter a short description.";
     if (section === "services" && !form.category.trim()) next.category = "Enter a service category.";
     if (section === "technology" && !form.category.trim()) next.category = "Enter a page category.";
     if (section === "professionals" && !form.designation.trim()) next.designation = "Enter a designation.";
     if (section === "professionals" && !form.expertise.trim()) next.expertise = "Enter an expertise area.";
+    if (section === "professionals" && !form.content.trim() && !form.description.trim() && !initial.sourceDefined) next.content = "Enter a professional biography.";
+    if (section === "professionals") {
+      for (const [field, label] of [["linkedinProfile", "LinkedIn"], ["twitterProfile", "Twitter"]] as const) {
+        const value = form[field].trim();
+        if (value && !isHttpUrl(value) && value !== initial[field].trim()) {
+          next[field] = `Enter a valid http(s) ${label} URL.`;
+        }
+      }
+    }
     if (section === "global-presence" && !form.jurisdiction.trim()) next.jurisdiction = "Enter a jurisdiction.";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -293,6 +311,9 @@ function ContentEditor({
       country: form.country.trim(),
       education: form.education.trim(),
       enrolment: form.enrolment.trim(),
+      credentials: form.credentials.trim(),
+      linkedinProfile: form.linkedinProfile.trim(),
+      twitterProfile: form.twitterProfile.trim(),
       jurisdiction: form.jurisdiction.trim(),
       imagePlaceholder: form.imagePlaceholder.trim(),
       status,
@@ -316,7 +337,10 @@ function ContentEditor({
           <h3>{form.title || "Untitled content"}</h3>
           <small>{toPublicPath(section, form.slug || "new-page")}</small>
           <StatusBadge status={form.status} />
-          <p>{form.description || "Add a short description to preview this content."}</p>
+          <p>{section === "professionals"
+            ? form.content || "Add a professional biography to preview this content."
+            : form.description || "Add a short description to preview this content."}</p>
+          {section === "professionals" && form.credentials.trim() ? <section><h4>Professional Standing Credentials</h4><p>{form.credentials}</p></section> : null}
           {form.content ? <div>{form.content}</div> : null}
           <button className="admin-button admin-button-secondary" type="button" onClick={() => setPreview(false)}>Back to editor</button>
         </div>
@@ -377,8 +401,18 @@ function ContentEditor({
                   <input value={form.enrolment} onChange={(event) => update("enrolment", event.target.value)} />
                 </label>
                 <label className="admin-field">
-                  <span>Jurisdiction</span>
+                  <span>Location</span>
                   <input value={form.jurisdiction} onChange={(event) => update("jurisdiction", event.target.value)} />
+                </label>
+                <label className="admin-field">
+                  <span>LinkedIn Profile URL</span>
+                  <input type="url" value={form.linkedinProfile} onChange={(event) => update("linkedinProfile", event.target.value)} aria-invalid={Boolean(errors.linkedinProfile)} aria-describedby={errors.linkedinProfile ? "content-linkedin-error" : undefined} placeholder="https://www.linkedin.com/in/..." />
+                  {errors.linkedinProfile ? <span id="content-linkedin-error">{required(errors.linkedinProfile)}</span> : null}
+                </label>
+                <label className="admin-field">
+                  <span>Twitter Profile URL</span>
+                  <input type="url" value={form.twitterProfile} onChange={(event) => update("twitterProfile", event.target.value)} aria-invalid={Boolean(errors.twitterProfile)} aria-describedby={errors.twitterProfile ? "content-twitter-error" : undefined} placeholder="https://x.com/..." />
+                  {errors.twitterProfile ? <span id="content-twitter-error">{required(errors.twitterProfile)}</span> : null}
                 </label>
                 <label className="admin-field">
                   <span>Profile Image placeholder</span>
@@ -399,11 +433,18 @@ function ContentEditor({
                 {statusOptions.map((status) => <option key={status}>{status}</option>)}
               </select>
             </label>
-            <label className="admin-field admin-content-full">
-              <span>{labels.body} <i>*</i></span>
-              <textarea rows={3} value={form.description} onChange={(event) => update("description", event.target.value)} aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "content-description-error" : undefined} />
-              {errors.description ? <span id="content-description-error">{required(errors.description)}</span> : null}
-            </label>
+            {section === "professionals" ? (
+              <label className="admin-field admin-content-full">
+                <span>{labels.body}</span>
+                <textarea rows={3} value={form.credentials} onChange={(event) => update("credentials", event.target.value)} />
+              </label>
+            ) : (
+              <label className="admin-field admin-content-full">
+                <span>{labels.body} <i>*</i></span>
+                <textarea rows={3} value={form.description} onChange={(event) => update("description", event.target.value)} aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "content-description-error" : undefined} />
+                {errors.description ? <span id="content-description-error">{required(errors.description)}</span> : null}
+              </label>
+            )}
             {section !== "professionals" ? (
               <label className="admin-field admin-content-full">
                 <span>{labels.content}</span>
@@ -438,7 +479,7 @@ function ContentEditor({
             {initial.id ? <button className="admin-button admin-button-secondary" type="button" disabled={saving} onClick={() => save("Draft")}>Save as Draft</button> : null}
             <button className="admin-button" type="submit" disabled={saving}>{saving ? "Saving…" : initial.id ? "Save Changes" : "Save as Draft"}</button>
           </div>
-          <p className="admin-content-form-note">Changes are saved to the CMS. Published records are visible on supported public routes.</p>
+          {section !== "professionals" ? <p className="admin-content-form-note">Changes are saved to the CMS. Published records are visible on supported public routes.</p> : null}
         </form>
       )}
     </ContentDialog>
@@ -462,167 +503,23 @@ function ContentDetails({
     ...(record.expertise ? [["Expertise", record.expertise]] : []),
     ...(record.education ? [["Education", record.education]] : []),
     ...(record.enrolment ? [["Professional Enrolment", record.enrolment]] : []),
-    ...(record.jurisdiction ? [["Jurisdiction", record.jurisdiction]] : []),
+    ...(record.linkedinProfile ? [["LinkedIn profile", record.linkedinProfile]] : []),
+    ...(record.twitterProfile ? [["Twitter profile", record.twitterProfile]] : []),
+    ...(record.jurisdiction ? [[record.sectionType === "professionals" ? "Location" : "Jurisdiction", record.jurisdiction]] : []),
   ];
   return (
     <ContentDialog title={preview ? "Local preview" : record.title} onClose={onClose}>
       <div className="admin-content-details">
         <div className="admin-content-detail-status"><StatusBadge status={record.status} /><span>{record.sourceDefined ? "Existing website content · source-backed" : "CMS-managed content"}</span></div>
         <dl>{details.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
-        <section><h3>{fieldLabel(record.sectionType).body}</h3><p>{record.description}</p></section>
+        {record.sectionType === "professionals"
+          ? <section><h3>Professional Standing Credentials</h3><p>{record.credentials || "Not provided"}</p></section>
+          : <section><h3>{fieldLabel(record.sectionType).body}</h3><p>{record.description}</p></section>}
         {record.content ? <section><h3>{fieldLabel(record.sectionType).content}</h3><p>{record.content}</p></section> : null}
         {record.seoTitle || record.seoDescription ? <section><h3>Search metadata</h3><p>{record.seoTitle || "No SEO title"}</p><p>{record.seoDescription || "No meta description"}</p></section> : null}
         {record.imagePlaceholder ? <section><h3>Profile image</h3><p>{record.imagePlaceholder}</p></section> : null}
       </div>
     </ContentDialog>
-  );
-}
-
-function ProfessionalNamePreview({ record }: { record: AdminEditableContentRecord }) {
-  const [open, setOpen] = useState(false);
-  const [pinned, setPinned] = useState(false);
-  const [position, setPosition] = useState({ top: 12, left: 12 });
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const closeTimer = useRef<number | null>(null);
-
-  const clearCloseTimer = useCallback(() => {
-    if (closeTimer.current !== null) {
-      window.clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-  }, []);
-
-  const closePreview = useCallback(() => {
-    clearCloseTimer();
-    setOpen(false);
-    setPinned(false);
-  }, [clearCloseTimer]);
-
-  function showPreview(anchor: HTMLButtonElement, pin = false) {
-    clearCloseTimer();
-    triggerRef.current = anchor;
-    setOpen(true);
-    if (pin) setPinned(true);
-  }
-
-  function scheduleClose() {
-    clearCloseTimer();
-    if (pinned) return;
-    closeTimer.current = window.setTimeout(() => {
-      setOpen(false);
-      closeTimer.current = null;
-    }, 240);
-  }
-
-  useEffect(() => {
-    if (!open) return;
-    const updatePosition = () => {
-      const anchor = triggerRef.current;
-      if (!anchor) return;
-      const rect = anchor.getBoundingClientRect();
-      const panel = panelRef.current?.getBoundingClientRect();
-      const width = panel?.width || Math.min(380, window.innerWidth - 24);
-      const height = panel?.height || 300;
-      const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
-      const below = rect.bottom + 8;
-      const top = below + height <= window.innerHeight - 12
-        ? below
-        : Math.max(12, rect.top - height - 8);
-      setPosition({ top, left });
-    };
-    const frame = window.requestAnimationFrame(updatePosition);
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition, true);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition, true);
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open || !pinned) return;
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-      if (triggerRef.current?.contains(target) || panelRef.current?.contains(target)) return;
-      closePreview();
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closePreview();
-    };
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open, pinned, closePreview]);
-
-  useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
-
-  return (
-    <>
-      <button
-        className={`admin-cell-primary ${styles.enquiryNameTrigger}`}
-        type="button"
-        aria-haspopup="dialog"
-        aria-controls="admin-professional-hover-details"
-        aria-expanded={open}
-        onMouseEnter={(event) => showPreview(event.currentTarget)}
-        onMouseLeave={scheduleClose}
-        onFocus={(event) => showPreview(event.currentTarget)}
-        onBlur={(event) => {
-          if (event.relatedTarget instanceof Node && panelRef.current?.contains(event.relatedTarget)) return;
-          if (pinned) closePreview();
-          else scheduleClose();
-        }}
-        onClick={(event) => showPreview(event.currentTarget, true)}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") closePreview();
-        }}
-      >
-        {record.title}
-      </button>
-      {open && typeof document !== "undefined" ? createPortal(
-        <div
-          ref={panelRef}
-          className={styles.enquiryHoverCard}
-          id="admin-professional-hover-details"
-          role="dialog"
-          aria-label={`${record.title} professional details`}
-          style={{ top: position.top, left: position.left }}
-          onMouseEnter={clearCloseTimer}
-          onMouseLeave={scheduleClose}
-          onFocus={clearCloseTimer}
-          onBlur={(event) => {
-            if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
-              if (pinned) closePreview();
-              else scheduleClose();
-            }
-          }}
-        >
-          <div className={styles.enquiryHoverHeader}>
-            <strong>{record.title}</strong>
-            <button type="button" aria-label="Close professional details" onClick={closePreview}>×</button>
-          </div>
-          <dl className={styles.enquiryHoverDetails}>
-            {record.designation ? <div><dt>Designation</dt><dd>{record.designation}</dd></div> : null}
-            {record.expertise ? <div><dt>Expertise</dt><dd>{record.expertise}</dd></div> : null}
-            {record.jurisdiction ? <div><dt>Jurisdiction</dt><dd>{record.jurisdiction}</dd></div> : null}
-            {record.education ? <div><dt>Education</dt><dd>{record.education}</dd></div> : null}
-            {record.enrolment ? <div><dt>Professional enrolment</dt><dd>{record.enrolment}</dd></div> : null}
-            {record.status ? <div><dt>Status</dt><dd>{record.status}</dd></div> : null}
-            <div className={styles.enquiryHoverMessage}>
-              <dt>Profile</dt>
-              <dd>{record.description || record.content || "No profile description available."}</dd>
-            </div>
-          </dl>
-        </div>,
-        document.body,
-      ) : null}
-    </>
   );
 }
 
@@ -642,7 +539,7 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
     ? expertiseOptions
     : [...new Set(records.map((record) => record.category).filter(Boolean))];
   const filtered = records.filter((record) => {
-    const terms = [record.title, record.slug, record.description, record.category, record.designation, record.expertise, record.jurisdiction].join(" ").toLowerCase();
+    const terms = [record.title, record.slug, record.description, record.credentials, record.category, record.designation, record.expertise, record.linkedinProfile, record.twitterProfile, record.jurisdiction].join(" ").toLowerCase();
     return terms.includes(query.trim().toLowerCase())
       && (categoryFilter === "All categories" || (section === "professionals"
         ? getProfessionalExpertiseCategory(record.expertise, record.designation) === categoryFilter
@@ -705,9 +602,7 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
         <button type="button" aria-label={`Delete ${record.title}`} title="Delete CMS record" onClick={() => void deleteRecord(record)}><AdminIcon name="close" size={16} /></button>
       </div>
     );
-    const title = section === "professionals"
-      ? <ProfessionalNamePreview key="title" record={record} />
-      : <strong className="admin-cell-primary" key="title">{record.title}</strong>;
+    const title = <strong className="admin-cell-primary" key="title">{record.title}</strong>;
     const description = <span className="admin-excerpt" key="description">{record.description}</span>;
     const status = <StatusBadge key="status" status={record.status} />;
     const updated = formatDate(record.updated);

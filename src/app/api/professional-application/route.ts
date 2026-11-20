@@ -68,13 +68,13 @@ export async function POST(request: Request) {
   try { app = JSON.parse(raw) as Record<string, unknown>; } catch { return response("Application details are invalid.", 400); }
   const applicant = app.applicant as Record<string, unknown> | undefined;
   const categoryData = app.category as { code?: string } | undefined;
-  const hierarchyData = app.hierarchy as { code?: string } | undefined;
+  const hierarchyData = app.hierarchy as { code?: string; label?: string } | undefined;
   const positionData = app.position as { code?: string } | undefined;
   const categoryCode = categoryData?.code as CategoryCode;
   const hierarchyCode = hierarchyData?.code || "";
   const category = categories.find((item) => item.code === categoryCode);
-  const hierarchy = hierarchiesFor(categoryCode).find((item) => item.code === hierarchyCode);
-  const position = positionsFor(categoryCode, hierarchyCode).find((item) => item.code === positionData?.code);
+  const hierarchy = hierarchiesFor(categoryCode).find((item) => item.code === hierarchyCode && item.label === hierarchyData?.label);
+  const position = hierarchy ? positionsFor(categoryCode, hierarchy.value).find((item) => item.code === positionData?.code) : undefined;
   if (!category || !hierarchy || !position) return response("Select a valid category, hierarchy and position.", 400);
   if (!validText(applicant?.fullName, 120) || !validText(applicant?.email, 180) || !/^\S+@\S+\.\S+$/.test(String(applicant?.email))) return response("Enter a valid name and email address.", 400);
 
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
   const marketCountry = market?.countryCode ? countries.find((entry) => entry.code === market.countryCode) : undefined;
   if (categoryCode === "GN" && !marketCountry) return response("Select the market for this network application.", 400);
   const selectedEngagement = app.engagement as { code?: string } | undefined;
-  const engagement = engagementOptions(categoryCode, position, process.env.PROFESSIONAL_INTERN_RECRUITMENT_OPEN === "true").find((entry) => entry.code === selectedEngagement?.code);
+  const engagement = engagementOptions(process.env.PROFESSIONAL_INTERN_RECRUITMENT_OPEN === "true").find((entry) => entry.code === selectedEngagement?.code);
   if (!engagement) return response("Select a valid engagement type.", 400);
   const profileUrl = app.professionalProfileUrl;
   if (profileUrl !== undefined) {

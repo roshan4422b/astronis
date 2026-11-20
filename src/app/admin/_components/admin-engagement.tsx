@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent, ReactNode } from "react";
 import {
   AdminIcon,
   DataTable,
@@ -19,15 +18,19 @@ import {
 import { useAdminState } from "./admin-state";
 import type { AdminEnquiry, AdminTestimonial } from "./admin-state";
 import type { EnquiryStatus, TestimonialApprovalStatus } from "../admin-data";
+import { enquiryStatuses, isEnquiryStatus } from "@/lib/admin/enquiry-status";
 import styles from "./admin.module.css";
 import {
   TestimonialMediaFields,
   type TestimonialMediaValue,
 } from "./testimonial-media-fields";
 import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
-import { displayEnquiryLabel, getEnquiryPreviewPosition } from "@/lib/admin/enquiry-display";
+import { displayEnquiryLabel } from "@/lib/admin/enquiry-display";
+import { enquiryFilterDateValue } from "@/lib/admin/enquiry-date";
+import { createEnquiryReplyTemplate } from "@/lib/admin/enquiry-email";
 
-const pageSize = 5;
+const testimonialPageSize = 50;
+const enquiryPageSize = 50;
 
 function displayDate(value: string) {
   const date = new Date(value);
@@ -40,15 +43,6 @@ function displayDate(value: string) {
   }).format(date);
 }
 
-function displayDateTime(value: string) {
-  const date = new Date(value);
-  if (!value || Number.isNaN(date.getTime())) return "Date not available";
-  return new Intl.DateTimeFormat("en-GB", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
 type EnquiryApiRecord = {
   id: string;
   name: string | null;
@@ -56,6 +50,7 @@ type EnquiryApiRecord = {
   subject: string | null;
   created_at: string | null;
   status: string | null;
+  follow_up_date?: string | null;
   company: string | null;
   form_type: string | null;
   message: string | null;
@@ -73,7 +68,8 @@ function mapEnquiryRecord(record: EnquiryApiRecord): AdminEnquiry {
     email: record.email || "",
     subject: record.subject || "",
     date: record.created_at || "",
-    status: (record.status || "New") as EnquiryStatus,
+    status: isEnquiryStatus(record.status) ? record.status : "New",
+    followUpDate: record.follow_up_date || "",
     company: record.company || "",
     formType: record.form_type || "",
     message: record.message || "",
@@ -84,18 +80,17 @@ function mapEnquiryRecord(record: EnquiryApiRecord): AdminEnquiry {
   };
 }
 
-function enquiryAdditionalDetails(enquiry: AdminEnquiry) {
-  const omitted = new Set([
-    "name", "email", "phone", "company", "subject", "service", "message", "formtype",
-    "consent", "website", "captchaToken", "emailVerificationToken",
-  ]);
-  return Object.entries(enquiry.data || {}).filter(([key, value]) => {
-    if (omitted.has(key) || /token|secret|password/i.test(key)) return false;
-    return value !== null && value !== undefined && value !== "";
-  }).map(([key, value]) => ({
-    label: key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").replace(/^./, (letter) => letter.toUpperCase()),
-    value: typeof value === "string" ? value : JSON.stringify(value),
-  }));
+function enquiryDataText(enquiry: AdminEnquiry, ...keys: string[]) {
+  for (const key of keys) {
+    const value = enquiry.data?.[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "Not provided";
+}
+
+function whatsappUrl(value?: string) {
+  const phone = value?.replace(/\D/g, "") || "";
+  return phone ? `https://wa.me/${phone}` : "";
 }
 
 function safeVideoUrl(value: string) {
@@ -106,11 +101,6 @@ function safeVideoUrl(value: string) {
   } catch {
     return "";
   }
-}
-
-function dateInputValue(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
 }
 
 function AccessibleDialog({
@@ -199,19 +189,14 @@ export function EnquiryDetailsDialog({
   enquiry,
   onClose,
   onStatusChange,
-  onNotesChange,
-  onDelete,
 }: {
   enquiry: AdminEnquiry | undefined;
   onClose: () => void;
-  onStatusChange: (status: EnquiryStatus) => Promise<boolean>;
-  onNotesChange: (notes: string) => Promise<boolean>;
-  onDelete?: (id: string, name: string) => Promise<{ deleted: boolean; message?: string }>;
+  onStatusChange: (status: EnquiryStatus, followUpDate: string) => Promise<string | null>;
 }) {
   const [statusNotice, setStatusNotice] = useState("");
-  const [notes, setNotes] = useState(enquiry?.internalNotes || "");
-  const [savingNotes, setSavingNotes] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  const [followUpDate, setFollowUpDate] = useState(enquiry?.followUpDate || "");
+  const [savingStatus, setSavingStatus] = useState(false);
   const [details, setDetails] = useState<AdminEnquiry | undefined>(enquiry);
   const [detailsLoading, setDetailsLoading] = useState(Boolean(enquiry));
   const [detailsError, setDetailsError] = useState("");
@@ -227,7 +212,7 @@ export function EnquiryDetailsDialog({
         if (active) {
           const record = mapEnquiryRecord(result.record);
           setDetails(record);
-          setNotes(record.internalNotes || "");
+          setFollowUpDate(record.followUpDate || "");
         }
       })
       .catch((error: unknown) => {
@@ -250,71 +235,117 @@ export function EnquiryDetailsDialog({
     );
   }
 
-  const additionalDetails = enquiryAdditionalDetails(details);
+  async function saveStatus(status: EnquiryStatus, nextFollowUpDate: string) {
+    setSavingStatus(true);
+    const error = await onStatusChange(status, nextFollowUpDate);
+    if (!error) {
+      setDetails((current) => current ? { ...current, status, followUpDate: nextFollowUpDate } : current);
+      setFollowUpDate(nextFollowUpDate);
+    }
+    setStatusNotice(error || `Enquiry status saved as ${status}.`);
+    setSavingStatus(false);
+  }
+
   return (
     <AccessibleDialog title="Enquiry details" labelledBy="enquiry-dialog-title" onClose={onClose}>
       {detailsLoading ? <p role="status">Loading complete enquiry details…</p> : null}
       {detailsError ? <p className="admin-detail-note" role="status">{detailsError}</p> : null}
       <dl className="admin-detail-list">
-        <div><dt>Name</dt><dd>{details.name}</dd></div>
-        <div><dt>Email</dt><dd>{details.email}</dd></div>
-        <div><dt>Phone</dt><dd>{details.phone || "Not provided"}</dd></div>
-        <div><dt>Company</dt><dd>{details.company || "Not provided"}</dd></div>
-        <div><dt>Subject</dt><dd>{displayEnquiryLabel(details.subject)}</dd></div>
-        <div><dt>Received</dt><dd>{displayDateTime(details.date)}</dd></div>
-        <div><dt>Form type</dt><dd>{displayEnquiryLabel(details.formType)}</dd></div>
-        <div><dt>Current status</dt><dd><StatusBadge status={details.status} /></dd></div>
-        <div className="admin-detail-message"><dt>Message</dt><dd>{details.message || "No message provided."}</dd></div>
-        {details.internalNotes ? <div className="admin-detail-message"><dt>Internal notes</dt><dd>{details.internalNotes}</dd></div> : null}
-        {additionalDetails.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+        <div><dt>Name</dt><dd>{details.name || "Not provided"}</dd></div>
+        <div><dt>Email</dt><dd>{details.email || "Not provided"}</dd></div>
+        <div><dt>Mobile Number</dt><dd>{details.phone || "Not provided"}</dd></div>
+        <div><dt>Page Submitted</dt><dd>{enquiryDataText(details, "pageUrl", "pathname", "pageTitle")}</dd></div>
+        <div><dt>Date</dt><dd>{displayDate(details.date)}</dd></div>
+        <div><dt>Status</dt><dd><StatusBadge status={details.status} /></dd></div>
+        <div><dt>State</dt><dd>{enquiryDataText(details, "state")}</dd></div>
+        <div><dt>Country</dt><dd>{enquiryDataText(details, "country")}</dd></div>
       </dl>
-      <a className="admin-button admin-button-secondary" href={`/api/admin/enquiries/export?id=${encodeURIComponent(details.id)}`}>Download Excel</a>
       <label className="admin-field">
-        <span>Update enquiry status</span>
+        <span>Update status</span>
         <select
           aria-label={`Status for ${details.name}`}
           value={details.status}
+          disabled={savingStatus}
           onChange={(event) => {
             const status = event.target.value;
-            if (status === "New" || status === "In Progress" || status === "Responded" || status === "Closed") {
-              void onStatusChange(status).then((saved) => {
-                if (saved) setDetails((current) => current ? { ...current, status } : current);
-                setStatusNotice(saved ? `Enquiry status saved as ${status}.` : "Could not save the enquiry status.");
-              });
-            }
+            if (isEnquiryStatus(status)) void saveStatus(status, status === "Follow-up" ? followUpDate : "");
           }}
         >
-          <option value="New">New</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Responded">Responded</option>
-          <option value="Closed">Closed</option>
+          {enquiryStatuses.map((status) => <option key={status} value={status}>{status}</option>)}
         </select>
       </label>
-      <label className="admin-field">
-        <span>Internal notes</span>
-        <textarea rows={4} value={notes} maxLength={5000} onChange={(event) => setNotes(event.target.value)} />
-      </label>
-      <button className="admin-button admin-button-secondary" type="button" disabled={savingNotes} onClick={async () => {
-        setSavingNotes(true);
-        const saved = await onNotesChange(notes);
-        if (saved) setDetails((current) => current ? { ...current, internalNotes: notes } : current);
-        setStatusNotice(saved ? "Internal notes saved." : "Could not save internal notes.");
-        setSavingNotes(false);
-      }}>{savingNotes ? "Saving…" : "Save internal notes"}</button>
-      {onDelete ? (
+      {details.status === "Follow-up" ? <label className="admin-field">
+        <span>Follow-up Date</span>
+        <input
+          aria-label={`Follow-up date for ${details.name}`}
+          type="date"
+          value={followUpDate}
+          disabled={savingStatus}
+          onChange={(event) => setFollowUpDate(event.target.value)}
+        />
+      </label> : null}
+      {details.status === "Follow-up" ? <div className="admin-follow-up-date-actions">
         <button
-          className="admin-button admin-button-secondary admin-reject-action"
+          className="admin-button"
           type="button"
-          disabled={deleting}
-          onClick={async () => {
-            setDeleting(true);
-            const result = await onDelete(details.id, details.name);
-            if (!result.deleted) setStatusNotice(result.message || "Could not delete enquiry.");
-            setDeleting(false);
-          }}
-        >{deleting ? "Deleting…" : "Delete enquiry"}</button>
-      ) : null}
+          disabled={savingStatus || followUpDate === (details.followUpDate || "")}
+          onClick={() => { void saveStatus("Follow-up", followUpDate); }}
+        >{savingStatus ? "Saving..." : "Save Follow-up Date"}</button>
+      </div> : null}
       {statusNotice ? <p className="admin-detail-note" role="status">{statusNotice}</p> : null}
+    </AccessibleDialog>
+  );
+}
+
+function EnquiryEmailDialog({
+  enquiry,
+  onClose,
+  onSend,
+}: {
+  enquiry: AdminEnquiry;
+  onClose: () => void;
+  onSend: (subject: string, message: string) => Promise<string | null>;
+}) {
+  const template = createEnquiryReplyTemplate(enquiry.name, enquiry.subject);
+  const [subject, setSubject] = useState(template.subject);
+  const [message, setMessage] = useState(template.message);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [feedback, setFeedback] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setFeedback("");
+    const error = await onSend(subject, message);
+    if (error) setFeedback(error);
+    else {
+      setFeedback("Email sent successfully.");
+      setSent(true);
+    }
+    setSending(false);
+  }
+
+  return (
+    <AccessibleDialog title="Reply to enquiry" labelledBy="enquiry-email-dialog-title" onClose={onClose}>
+      <form className="admin-enquiry-email-form" onSubmit={(event) => { void submit(event); }}>
+        <p><strong>To:</strong> {enquiry.email}</p>
+        <label className="admin-field">
+          <span>Subject</span>
+          <input value={subject} maxLength={200} required disabled={sending} onChange={(event) => setSubject(event.target.value)} />
+        </label>
+        <label className="admin-field">
+          <span>Message</span>
+          <textarea value={message} maxLength={10000} rows={8} required disabled={sending} onChange={(event) => setMessage(event.target.value)} />
+        </label>
+        {feedback ? <p className="admin-detail-note" role="status">{feedback}</p> : null}
+        <div className="admin-enquiry-email-actions">
+          <button className="admin-button" type="submit" disabled={sending || sent || !subject.trim() || !message.trim()}>
+            {sending ? "Sending..." : sent ? "Email Sent" : "Send Email"}
+          </button>
+        </div>
+      </form>
     </AccessibleDialog>
   );
 }
@@ -322,193 +353,125 @@ export function EnquiryDetailsDialog({
 export function EnquiriesManagement() {
   const { enquiries, setEnquiries } = useAdminState();
   const [query, setQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All statuses");
+  const [statusFilter, setStatusFilter] = useState<"All statuses" | EnquiryStatus>("All statuses");
   const [dateFilter, setDateFilter] = useState("");
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [emailEnquiryId, setEmailEnquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const [deletingEnquiry, setDeletingEnquiry] = useState(false);
-  const triggerRef = useRef<HTMLElement | null>(null);
-  const previewAnchorRef = useRef<HTMLButtonElement | null>(null);
-  const previewPanelRef = useRef<HTMLDivElement | null>(null);
-  const previewCloseTimer = useRef<number | null>(null);
-  const previewCache = useRef(new Map<string, AdminEnquiry>());
-  const [preview, setPreview] = useState<{ id: string; loading: boolean; record?: AdminEnquiry; error?: string } | null>(null);
-  const [previewPinned, setPreviewPinned] = useState(false);
-  const [previewPosition, setPreviewPosition] = useState({ top: 12, left: 12 });
+  const [printing, setPrinting] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const filtered = enquiries.filter((enquiry) => {
     const search = query.trim().toLowerCase();
     return (!search || `${enquiry.name} ${enquiry.email} ${enquiry.subject}`.toLowerCase().includes(search))
       && (statusFilter === "All statuses" || enquiry.status === statusFilter)
-      && (!dateFilter || dateInputValue(enquiry.date) === dateFilter);
+      && (!dateFilter || enquiryFilterDateValue(enquiry, statusFilter) === dateFilter);
   });
-  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
-
-  const clearPreviewCloseTimer = useCallback(() => {
-    if (previewCloseTimer.current !== null) {
-      window.clearTimeout(previewCloseTimer.current);
-      previewCloseTimer.current = null;
-    }
-  }, []);
-
-  function loadPreview(id: string) {
-    const cached = previewCache.current.get(id);
-    if (cached) {
-      setPreview({ id, loading: false, record: cached });
-      return;
-    }
-    setPreview({ id, loading: true });
-    void fetch(`/api/admin/enquiries/${encodeURIComponent(id)}`, { cache: "no-store" })
-      .then(async (response) => {
-        const result = await response.json() as { record?: EnquiryApiRecord; error?: string };
-        if (!response.ok || !result.record) throw new Error(result.error || "Could not load enquiry details.");
-        const record = mapEnquiryRecord(result.record);
-        previewCache.current.set(id, record);
-        setPreview((current) => current?.id === id ? { id, loading: false, record } : current);
-      })
-      .catch((error: unknown) => {
-        setPreview((current) => current?.id === id
-          ? { id, loading: false, error: error instanceof Error ? error.message : "Could not load enquiry details." }
-          : current);
-      });
-  }
-
-  function openPreview(id: string, anchor: HTMLButtonElement, pin = false) {
-    clearPreviewCloseTimer();
-    previewAnchorRef.current = anchor;
-    if (pin) setPreviewPinned(true);
-    if (preview?.id !== id) loadPreview(id);
-  }
-
-  function schedulePreviewClose() {
-    clearPreviewCloseTimer();
-    if (previewPinned) return;
-    previewCloseTimer.current = window.setTimeout(() => {
-      setPreview(null);
-      previewCloseTimer.current = null;
-    }, 260);
-  }
-
-  const closePreview = useCallback(() => {
-    clearPreviewCloseTimer();
-    setPreview(null);
-    setPreviewPinned(false);
-  }, [clearPreviewCloseTimer]);
+  const pageCount = Math.max(1, Math.ceil(filtered.length / enquiryPageSize));
 
   useEffect(() => {
-    if (!preview) return;
-    const positionPreview = () => {
-      const anchor = previewAnchorRef.current;
-      if (!anchor) return;
-      const rect = anchor.getBoundingClientRect();
-      const panel = previewPanelRef.current;
-      const width = panel?.getBoundingClientRect().width || Math.min(380, window.innerWidth - 24);
-      const height = panel?.getBoundingClientRect().height || 300;
-      setPreviewPosition(getEnquiryPreviewPosition(
-        rect,
-        { width, height },
-        { width: window.innerWidth, height: window.innerHeight },
-      ));
-    };
-    const positionFrame = window.requestAnimationFrame(positionPreview);
-    window.addEventListener("resize", positionPreview);
-    window.addEventListener("scroll", positionPreview, true);
+    if (!printing) return;
+    const finishPrinting = () => setPrinting(false);
+    window.addEventListener("afterprint", finishPrinting);
+    const frame = window.requestAnimationFrame(() => window.print());
     return () => {
-      window.cancelAnimationFrame(positionFrame);
-      window.removeEventListener("resize", positionPreview);
-      window.removeEventListener("scroll", positionPreview, true);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("afterprint", finishPrinting);
     };
-  }, [preview]);
-
-  useEffect(() => {
-    if (!preview || !previewPinned) return;
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-      if (previewAnchorRef.current?.contains(target) || previewPanelRef.current?.contains(target)) return;
-      closePreview();
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closePreview();
-    };
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [preview, previewPinned, closePreview]);
-
-  useEffect(() => () => clearPreviewCloseTimer(), [clearPreviewCloseTimer]);
+  }, [printing]);
 
   function downloadEnquiryFile(url: string) {
     window.location.assign(url);
   }
 
-  const rows = filtered.slice((page - 1) * pageSize, page * pageSize).map((enquiry) => [
-    <button
-      className={`admin-cell-primary ${styles.enquiryNameTrigger}`}
-      key="name"
-      type="button"
-      aria-haspopup="dialog"
-      aria-controls="admin-enquiry-hover-details"
-      aria-expanded={preview?.id === enquiry.id}
-      onMouseEnter={(event) => openPreview(enquiry.id, event.currentTarget)}
-      onMouseLeave={schedulePreviewClose}
-      onFocus={(event) => openPreview(enquiry.id, event.currentTarget)}
-      onBlur={(event) => {
-        if (event.relatedTarget instanceof Node && previewPanelRef.current?.contains(event.relatedTarget)) return;
-        if (previewPinned) closePreview();
-        else schedulePreviewClose();
-      }}
-      onClick={(event) => openPreview(enquiry.id, event.currentTarget, true)}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") closePreview();
-      }}
-    >
-      {enquiry.name}
-    </button>,
-    <span className="admin-engagement-email" key="email">{enquiry.email}</span>,
-    displayEnquiryLabel(enquiry.subject),
-    displayDate(enquiry.date),
-    <StatusBadge key="status" status={enquiry.status} />,
-    <div className="admin-engagement-actions" key="actions">
-      <button
-        className="admin-text-action"
-        type="button"
-        onClick={(event) => {
-          triggerRef.current = event.currentTarget;
-          closePreview();
-          setSelectedId(enquiry.id);
-        }}
-      >View Details</button>
-      <button className="admin-text-action" type="button" onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?id=${encodeURIComponent(enquiry.id)}`)}>Download Excel</button>
-      <button
-        className="admin-text-action admin-reject-action"
-        type="button"
-        disabled={deletingEnquiry}
-        onClick={() => { void deleteEnquiry(enquiry.id, enquiry.name); }}
-      >Delete</button>
-    </div>,
-  ]);
+  const displayedEnquiries = printing ? filtered : filtered.slice((page - 1) * enquiryPageSize, page * enquiryPageSize);
+  const rows = displayedEnquiries.map((enquiry) => {
+    const whatsapp = whatsappUrl(enquiry.phone);
+    return [
+      <strong className="admin-cell-primary" key="name">{enquiry.name}</strong>,
+      <span className="admin-engagement-email" key="email">{enquiry.email}</span>,
+      displayEnquiryLabel(enquiry.subject),
+      displayDate(enquiry.date),
+      <StatusBadge key="status" status={enquiry.status} />,
+      <div className="admin-engagement-actions admin-enquiry-actions" key="actions">
+        <button
+          className="admin-icon-action"
+          type="button"
+          aria-label={`View details for ${enquiry.name}`}
+          title="View Details"
+          onClick={(event) => {
+            triggerRef.current = event.currentTarget;
+            setSelectedId(enquiry.id);
+          }}
+        ><AdminIcon name="eye" size={16} /></button>
+        <button
+          className="admin-icon-action"
+          type="button"
+          aria-label={`Download Excel for ${enquiry.name}`}
+          title="Download Excel"
+          onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?id=${encodeURIComponent(enquiry.id)}`)}
+        ><AdminIcon name="download" size={16} /></button>
+        <button
+          className="admin-icon-action admin-reject-action"
+          type="button"
+          aria-label={`Delete enquiry from ${enquiry.name}`}
+          title="Delete"
+          disabled={deletingEnquiry}
+          onClick={() => { void deleteEnquiry(enquiry.id, enquiry.name); }}
+        ><AdminIcon name="trash" size={16} /></button>
+        {enquiry.email ? <button className="admin-icon-action" type="button" aria-label={`Send email to ${enquiry.name}`} title="Send email" onClick={() => setEmailEnquiryId(enquiry.id)}><AdminIcon name="mail" size={16} /></button> : <button className="admin-icon-action" type="button" disabled aria-label="Email unavailable" title="Email unavailable"><AdminIcon name="mail" size={16} /></button>}
+        {whatsapp ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noreferrer" aria-label={`Contact ${enquiry.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a> : <button className="admin-icon-action" type="button" disabled aria-label="Mobile number unavailable" title="Mobile number unavailable"><AdminIcon name="whatsapp" size={16} /></button>}
+      </div>,
+    ];
+  });
   const selected = enquiries.find((enquiry) => enquiry.id === selectedId);
+  const selectedEmailEnquiry = enquiries.find((enquiry) => enquiry.id === emailEnquiryId);
 
   function closeDetails() {
     setSelectedId(null);
     window.requestAnimationFrame(() => triggerRef.current?.focus());
   }
 
-  async function updateEnquiry(id: string, values: { status?: EnquiryStatus; internalNotes?: string }) {
+  async function updateEnquiry(id: string, values: { status: EnquiryStatus; followUpDate: string }): Promise<string | null> {
     try {
-      const response = await fetch(`/api/admin/enquiries/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status: values.status, internal_notes: values.internalNotes }) });
+      const response = await fetch(`/api/admin/enquiries/${encodeURIComponent(id)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: values.status, follow_up_date: values.followUpDate || null }),
+      });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not save enquiry.");
-      setEnquiries((current) => current.map((item) => item.id === id ? { ...item, status: result.record.status, internalNotes: result.record.internal_notes } : item));
+      setEnquiries((current) => current.map((item) => item.id === id ? {
+        ...item,
+        status: result.record.status,
+        followUpDate: result.record.follow_up_date || "",
+      } : item));
       setNotice("Enquiry changes saved.");
-      return true;
+      return null;
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "Could not save enquiry.");
-      return false;
+      const message = error instanceof Error ? error.message : "Could not save enquiry.";
+      setNotice(message);
+      return message;
+    }
+  }
+
+  async function sendEnquiryEmail(id: string, subject: string, message: string): Promise<string | null> {
+    try {
+      const response = await fetch(`/api/admin/enquiries/${encodeURIComponent(id)}/email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, message }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Email could not be sent.");
+      const recipient = enquiries.find((item) => item.id === id)?.email || "";
+      setNotice(`Email sent to ${recipient}.`);
+      return null;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Email could not be sent.";
+      setNotice(errorMessage);
+      return errorMessage;
     }
   }
 
@@ -524,8 +487,6 @@ export function EnquiriesManagement() {
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "Could not delete enquiry.");
       setEnquiries((current) => current.filter((item) => item.id !== id));
-      previewCache.current.delete(id);
-      if (preview?.id === id) closePreview();
       setSelectedId((current) => current === id ? null : current);
       setNotice(`Enquiry from ${name} was deleted.`);
       window.requestAnimationFrame(() => {
@@ -547,8 +508,6 @@ export function EnquiriesManagement() {
     setDateFilter("");
     setPage(1);
   };
-  const hasActiveFilters = Boolean(query.trim() || statusFilter !== "All statuses" || dateFilter);
-  const previewRecord = preview?.record;
   const filteredExportParams = new URLSearchParams({
     scope: "filtered",
     search: query.trim(),
@@ -557,36 +516,44 @@ export function EnquiriesManagement() {
   });
 
   return (
-    <>
+    <div className={styles.enquiryPrintView}>
       <PageHeading
         title="Contact Enquiries"
-        description="Review and organise website enquiries in one place."
         action={
           <div className="admin-enquiry-export-actions">
-            {hasActiveFilters ? <button className="admin-button admin-button-secondary" type="button" title="Exports enquiries matching the current search, status, and date filters." onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?${filteredExportParams}`)}>Download Filtered</button> : null}
-            <button className="admin-button" type="button" title="Exports all enquiries, ignoring active filters." onClick={() => downloadEnquiryFile("/api/admin/enquiries/export?scope=all")}>Download Excel</button>
+            <button className="admin-button admin-button-secondary" type="button" title="Download enquiries matching the current status and filters." onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?${filteredExportParams}`)}><AdminIcon name="download" size={16} /> Download Excel</button>
+            <button className="admin-button admin-print-button" type="button" title="Print all enquiries matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
           </div>
         }
       />
       <div className="admin-stat-grid admin-engagement-stats">
-        <StatCard label="Total Enquiries" value={String(enquiries.length)} change="Stored enquiries" icon="inbox" />
-        <StatCard label="New Enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Status: New" icon="bell" />
-        <StatCard label="In Progress" value={String(enquiries.filter((item) => item.status === "In Progress").length)} change="Operational status" icon="drafts" />
-        <StatCard label="Responded" value={String(enquiries.filter((item) => item.status === "Responded").length)} change="Operational status" icon="check" />
+        <StatCard label="Total Enquiries" value={String(enquiries.length)} change="All statuses" icon="inbox" pressed={statusFilter === "All statuses"} onClick={() => { setStatusFilter("All statuses"); setPage(1); }} />
+        <StatCard label="New Enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Status: New" icon="bell" pressed={statusFilter === "New"} onClick={() => { setStatusFilter("New"); setPage(1); }} />
+        <StatCard label="In Progress" value={String(enquiries.filter((item) => item.status === "In Progress").length)} change="Operational status" icon="drafts" pressed={statusFilter === "In Progress"} onClick={() => { setStatusFilter("In Progress"); setPage(1); }} />
+        <StatCard label="Responded" value={String(enquiries.filter((item) => item.status === "Responded").length)} change="Operational status" icon="check" pressed={statusFilter === "Responded"} onClick={() => { setStatusFilter("Responded"); setPage(1); }} />
+        <StatCard label="Closed" value={String(enquiries.filter((item) => item.status === "Closed").length)} change="Operational status" icon="close" pressed={statusFilter === "Closed"} onClick={() => { setStatusFilter("Closed"); setPage(1); }} />
+        <StatCard label="Interested" value={String(enquiries.filter((item) => item.status === "Interested").length)} change="Lead status" icon="check" pressed={statusFilter === "Interested"} onClick={() => { setStatusFilter("Interested"); setPage(1); }} />
+        <StatCard label="Not Interested" value={String(enquiries.filter((item) => item.status === "Not Interested").length)} change="Lead status" icon="close" pressed={statusFilter === "Not Interested"} onClick={() => { setStatusFilter("Not Interested"); setPage(1); }} />
+        <StatCard label="Follow-up" value={String(enquiries.filter((item) => item.status === "Follow-up").length)} change="Needs follow-up" icon="calendar" pressed={statusFilter === "Follow-up"} onClick={() => { setStatusFilter("Follow-up"); setPage(1); }} />
       </div>
-      {notice ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{notice}</span><button type="button" onClick={() => setNotice("")}>Dismiss</button></div> : null}
+      <p className={styles.enquiryPrintSummary}>
+        {statusFilter === "All statuses" ? "Total Enquiries" : statusFilter} · {filtered.length} enquiries
+        {query.trim() ? ` · Search: ${query.trim()}` : ""}
+        {dateFilter ? ` · ${statusFilter === "Follow-up" ? "Follow-up Date" : "Received Date"}: ${dateFilter}` : ""}
+      </p>
+      {notice ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{notice}</span></div> : null}
       <section className="admin-panel admin-list-panel">
         <div className="admin-toolbar admin-engagement-toolbar">
           <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder="Search by name, email, or subject..." />
           <FilterDropdown
             label="Filter by enquiry status"
             value={statusFilter}
-            options={["All statuses", "New", "In Progress", "Responded", "Closed"]}
-            onChange={(value) => { setStatusFilter(value); setPage(1); }}
+            options={["All statuses", ...enquiryStatuses]}
+            onChange={(value) => { setStatusFilter(isEnquiryStatus(value) ? value : "All statuses"); setPage(1); }}
           />
           <label className="admin-date-filter">
-            <span className="admin-visually-hidden">Filter by received date</span>
-            <input aria-label="Filter by received date" type="date" value={dateFilter} onChange={(event) => { setDateFilter(event.target.value); setPage(1); }} />
+            <span className="admin-visually-hidden">{statusFilter === "Follow-up" ? "Filter by follow-up date" : "Filter by received date"}</span>
+            <input aria-label={statusFilter === "Follow-up" ? "Filter by follow-up date" : "Filter by received date"} type="date" value={dateFilter} onChange={(event) => { setDateFilter(event.target.value); setPage(1); }} />
           </label>
           {query || statusFilter !== "All statuses" || dateFilter
             ? <button type="button" className="admin-filter-reset" onClick={clearFilters}>Clear Filters</button>
@@ -598,7 +565,7 @@ export function EnquiriesManagement() {
           emptyMessage="No enquiries match these filters."
         />
         <div className="admin-table-footer">
-          <span>Showing {filtered.length ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, filtered.length)} of {filtered.length} enquiries</span>
+          <span>Showing {filtered.length ? (page - 1) * enquiryPageSize + 1 : 0}–{Math.min(page * enquiryPageSize, filtered.length)} of {filtered.length} enquiries</span>
           <Pagination page={page} pageCount={pageCount} onChange={setPage} />
         </div>
       </section>
@@ -607,67 +574,18 @@ export function EnquiriesManagement() {
           key={selectedId}
           enquiry={selected}
           onClose={closeDetails}
-          onStatusChange={(status) => updateEnquiry(selectedId, { status })}
-          onNotesChange={(internalNotes) => updateEnquiry(selectedId, { internalNotes })}
-          onDelete={deleteEnquiry}
+          onStatusChange={(status, followUpDate) => updateEnquiry(selectedId, { status, followUpDate })}
         />
       ) : null}
-      {preview && typeof document !== "undefined" ? createPortal(
-        <div
-          ref={previewPanelRef}
-          className={styles.enquiryHoverCard}
-          id="admin-enquiry-hover-details"
-          role="dialog"
-          aria-label="Enquiry quick details"
-          aria-live="polite"
-          style={{ top: previewPosition.top, left: previewPosition.left }}
-          onMouseEnter={clearPreviewCloseTimer}
-          onMouseLeave={schedulePreviewClose}
-          onFocus={clearPreviewCloseTimer}
-          onBlur={(event) => {
-            if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) {
-              if (previewPinned) closePreview();
-              else schedulePreviewClose();
-            }
-          }}
-        >
-          <div className={styles.enquiryHoverHeader}>
-            <strong>Enquiry</strong>
-            <button type="button" aria-label="Close enquiry details" onClick={closePreview}>×</button>
-          </div>
-          {preview.loading ? <p className={styles.enquiryHoverState} role="status">Loading enquiry details…</p> : null}
-          {preview.error ? (
-            <div className={styles.enquiryHoverState} role="alert">
-              <p>{preview.error}</p>
-              <button type="button" onClick={() => loadPreview(preview.id)}>Try again</button>
-            </div>
-          ) : null}
-          {!preview.loading && !preview.error && !preview.record ? <p className={styles.enquiryHoverState}>No enquiry details are available.</p> : null}
-          {previewRecord ? (
-            <>
-              <dl className={styles.enquiryHoverDetails}>
-                <div><dt>Name</dt><dd>{previewRecord.name || "Not provided"}</dd></div>
-                <div><dt>Email</dt><dd>{previewRecord.email || "Not provided"}</dd></div>
-                <div><dt>Phone</dt><dd>{previewRecord.phone || "Not provided"}</dd></div>
-                <div><dt>Company</dt><dd>{previewRecord.company || "Not provided"}</dd></div>
-                <div><dt>Subject</dt><dd>{displayEnquiryLabel(previewRecord.subject)}</dd></div>
-                <div><dt>Form type</dt><dd>{displayEnquiryLabel(previewRecord.formType)}</dd></div>
-                <div><dt>Received</dt><dd>{displayDateTime(previewRecord.date)}</dd></div>
-                <div><dt>Status</dt><dd>{previewRecord.status}</dd></div>
-                <div className={styles.enquiryHoverMessage}><dt>Message</dt><dd>{previewRecord.message || "No message provided."}</dd></div>
-                {previewRecord.internalNotes ? <div className={styles.enquiryHoverMessage}><dt>Internal notes</dt><dd>{previewRecord.internalNotes}</dd></div> : null}
-                {enquiryAdditionalDetails(previewRecord).map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
-              </dl>
-              <div className={styles.enquiryHoverActions}>
-                <button type="button" onClick={() => { closePreview(); setSelectedId(previewRecord.id); }}>Open details</button>
-                <button type="button" onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?id=${encodeURIComponent(previewRecord.id)}`)}>Download Excel</button>
-              </div>
-            </>
-          ) : null}
-        </div>,
-        document.body,
+      {selectedEmailEnquiry ? (
+        <EnquiryEmailDialog
+          key={selectedEmailEnquiry.id}
+          enquiry={selectedEmailEnquiry}
+          onClose={() => setEmailEnquiryId(null)}
+          onSend={(subject, message) => sendEnquiryEmail(selectedEmailEnquiry.id, subject, message)}
+        />
       ) : null}
-    </>
+    </div>
   );
 }
 
@@ -678,6 +596,7 @@ export function TestimonialsManagement() {
   const [typeFilter, setTypeFilter] = useState("All testimonial types");
   const [consentFilter, setConsentFilter] = useState("All consent statuses");
   const [page, setPage] = useState(1);
+  const [printing, setPrinting] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState(false);
   const [savingTestimonial, setSavingTestimonial] = useState(false);
@@ -698,6 +617,16 @@ export function TestimonialsManagement() {
   const [notice, setNotice] = useState("");
   const [videoPlaybackError, setVideoPlaybackError] = useState<{ id: string; message: string } | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!printing) return;
+    const finishPrinting = () => setPrinting(false);
+    window.addEventListener("afterprint", finishPrinting);
+    const frame = window.requestAnimationFrame(() => window.print());
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("afterprint", finishPrinting);
+    };
+  }, [printing]);
   const filtered = testimonials.filter((testimonial) => {
     const search = query.trim().toLowerCase();
     const hasImage = Boolean(testimonial.imagePath || testimonial.imageUrl);
@@ -711,8 +640,9 @@ export function TestimonialsManagement() {
         (typeFilter === "Image / media" && hasImage))
       && (consentFilter === "All consent statuses" || testimonial.consentStatus === consentFilter);
   });
-  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const rows = filtered.slice((page - 1) * pageSize, page * pageSize).map((testimonial) => [
+  const pageCount = Math.max(1, Math.ceil(filtered.length / testimonialPageSize));
+  const displayedTestimonials = printing ? filtered : filtered.slice((page - 1) * testimonialPageSize, page * testimonialPageSize);
+  const rows = displayedTestimonials.map((testimonial) => [
     <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
     <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
     <span key="type">{testimonial.format === "video" ? "Video" : "Text"}{testimonial.imagePath || testimonial.imageUrl ? " · Image" : ""}</span>,
@@ -721,45 +651,10 @@ export function TestimonialsManagement() {
     <StatusBadge key="consent" status={testimonial.consentStatus} />,
     <StatusBadge key="approval" status={testimonial.approvalStatus === "Approved" ? "Published" : testimonial.approvalStatus} />,
     <div className="admin-engagement-actions" key="actions">
-      <button type="button" className="admin-text-action" onClick={(event) => {
+      <button type="button" className="admin-icon-action" aria-label={`View details for ${testimonial.name}`} title="View Details" onClick={(event) => {
         triggerRef.current = event.currentTarget;
         setSelectedId(testimonial.id);
-      }}>View Details</button>
-      <button type="button" className="admin-text-action" onClick={(event) => {
-        triggerRef.current = event.currentTarget;
-        setTestimonialEdit({
-          name: testimonial.name,
-          email: testimonial.email || "",
-          phone: testimonial.phone || "",
-          title: testimonial.title || "",
-          company: testimonial.company || "",
-          designation: testimonial.designation || "",
-          service: testimonial.service || "",
-          text: testimonial.text,
-          internalNotes: testimonial.internalNotes || "",
-          format: testimonial.format === "video" ? "video" : "written",
-          photoPublicationConsent: testimonial.photoPublicationConsent === true,
-          imagePath: testimonial.imagePath || "",
-          imageUrl: testimonial.imageUrl || "",
-          videoPath: testimonial.videoPath || "",
-          videoUrl: testimonial.videoUrl || "",
-          videoSource: testimonial.videoSource || (testimonial.videoUrl ? "url" : ""),
-        });
-        setEditingTestimonial(true);
-        setSelectedId(testimonial.id);
-      }}>Edit</button>
-      {!testimonial.sourceDefined ? (
-        <button type="button" className="admin-text-action admin-reject-action" onClick={(event) => {
-          triggerRef.current = event.currentTarget;
-          setPendingDeleteId(testimonial.id);
-        }} aria-label={`Delete ${testimonial.name}`}>Delete</button>
-      ) : null}
-      {testimonial.approvalStatus === "Pending" ? (
-        <>
-          <button type="button" className="admin-text-action" disabled={testimonial.consentStatus !== "Granted" || !testimonial.identityPublicationConsent} title={testimonial.consentStatus !== "Granted" ? "Publication consent is required." : "Identity publication consent is required."} onClick={(event) => { triggerRef.current = event.currentTarget; updateApproval(testimonial, "Approved"); }} aria-label={`Approve ${testimonial.name}`}>Approve</button>
-          <button type="button" className="admin-text-action admin-reject-action" onClick={(event) => { triggerRef.current = event.currentTarget; updateApproval(testimonial, "Rejected"); }} aria-label={`Reject ${testimonial.name}`}>Reject</button>
-        </>
-      ) : null}
+      }}><AdminIcon name="eye" size={16} /></button>
     </div>,
   ]);
   const selected = testimonials.find((testimonial) => testimonial.id === selectedId);
@@ -962,25 +857,54 @@ export function TestimonialsManagement() {
     setPage(1);
   };
 
+  const testimonialExportParams = new URLSearchParams({
+    scope: "filtered",
+    status: approvalFilter === "All approval statuses" ? "" : approvalFilter,
+    search: query.trim(),
+    type: typeFilter === "All testimonial types" ? "" : typeFilter,
+    consent: consentFilter === "All consent statuses" ? "" : consentFilter,
+  });
+  function downloadTestimonialFile() {
+    const link = document.createElement("a");
+    link.href = `/api/admin/testimonials/export?${testimonialExportParams}`;
+    link.download = "";
+    link.hidden = true;
+    document.body.append(link);
+    link.click();
+    link.remove();
+  }
+
   const counts = {
+    total: testimonials.length,
     pending: testimonials.filter((item) => item.approvalStatus === "Pending").length,
     published: testimonials.filter((item) => item.approvalStatus === "Approved").length,
     rejected: testimonials.filter((item) => item.approvalStatus === "Rejected").length,
   };
 
   return (
-    <>
+    <div className={styles.testimonialPrintView}>
       <PageHeading
         title="Testimonials"
-        description="Review and manage testimonial submissions before they are considered for publication."
-        action={<Link className="admin-button" href="/admin/testimonials/new"><AdminIcon name="plus" size={16} />Add New Testimonial</Link>}
+        action={
+          <div className="admin-testimonial-export-actions">
+            <button className="admin-button admin-button-secondary" type="button" title="Download testimonials matching the current status and filters." onClick={downloadTestimonialFile}><AdminIcon name="download" size={16} /> Download Excel</button>
+            <button className="admin-button admin-button-secondary" type="button" title="Print testimonials matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
+            <Link className="admin-button" href="/admin/testimonials/new"><AdminIcon name="plus" size={16} />Add New Testimonial</Link>
+          </div>
+        }
       />
       <div className="admin-stat-grid admin-engagement-stats">
-        <StatCard label="Total Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" />
-        <StatCard label="Pending Review" value={String(counts.pending)} change="Awaiting moderation" icon="drafts" />
-        <StatCard label="Published" value={String(counts.published)} change="Visible where consent allows" icon="check" />
-        <StatCard label="Rejected" value={String(counts.rejected)} change="Moderation status" icon="close" />
+        <StatCard label="Total Testimonials" value={String(counts.total)} change="Stored submissions" icon="quote" pressed={approvalFilter === "All approval statuses"} onClick={() => { setApprovalFilter("All approval statuses"); setPage(1); }} />
+        <StatCard label="Pending Review" value={String(counts.pending)} change="Awaiting moderation" icon="drafts" pressed={approvalFilter === "Pending"} onClick={() => { setApprovalFilter("Pending"); setPage(1); }} />
+        <StatCard label="Published" value={String(counts.published)} change="Visible where consent allows" icon="check" pressed={approvalFilter === "Published"} onClick={() => { setApprovalFilter("Published"); setPage(1); }} />
+        <StatCard label="Rejected" value={String(counts.rejected)} change="Moderation status" icon="close" pressed={approvalFilter === "Rejected"} onClick={() => { setApprovalFilter("Rejected"); setPage(1); }} />
       </div>
+      <p className={styles.testimonialPrintSummary}>
+        {approvalFilter === "All approval statuses" ? "Total Testimonials" : approvalFilter === "Pending" ? "Pending Review" : approvalFilter} · {filtered.length} testimonials
+        {query.trim() ? ` · Search: ${query.trim()}` : ""}
+        {typeFilter !== "All testimonial types" ? ` · Type: ${typeFilter}` : ""}
+        {consentFilter !== "All consent statuses" ? ` · Consent: ${consentFilter}` : ""}
+      </p>
       {notice ? <div className="admin-insight-feedback" role="status" aria-live="polite"><span>{notice}</span><button type="button" onClick={() => setNotice("")}>Dismiss</button></div> : null}
       <section className="admin-panel admin-list-panel">
         <div className="admin-toolbar admin-engagement-toolbar">
@@ -1013,7 +937,7 @@ export function TestimonialsManagement() {
           emptyMessage="No testimonials match these filters."
         />
         <div className="admin-table-footer">
-          <span>Showing {filtered.length ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, filtered.length)} of {filtered.length} testimonials</span>
+          <span>Showing {filtered.length ? (page - 1) * testimonialPageSize + 1 : 0}–{Math.min(page * testimonialPageSize, filtered.length)} of {filtered.length} testimonials</span>
           <Pagination page={page} pageCount={pageCount} onChange={setPage} />
         </div>
       </section>
@@ -1222,6 +1146,6 @@ export function TestimonialsManagement() {
           </div>
         </AccessibleDialog>
       ) : null}
-    </>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import fixWebmDuration from "fix-webm-duration";
 import { practices } from "@/content/site";
 import Icon from "../_components/icon";
 import EmailOtpVerification from "../_components/email-otp-verification";
@@ -22,6 +23,9 @@ export default function TestimonialForm({
     [emailVerified, setEmailVerified] = useState(false),
     [formValid, setFormValid] = useState(false),
     [recording, setRecording] = useState(false),
+    [cameraStarting, setCameraStarting] = useState(false),
+    [recordDialogOpen, setRecordDialogOpen] = useState(false),
+    [recordingSeconds, setRecordingSeconds] = useState(0),
     [video, setVideo] = useState<Blob | null>(null),
     [recorded, setRecorded] = useState(false),
     [preview, setPreview] = useState(""),
@@ -33,6 +37,8 @@ export default function TestimonialForm({
   const recorder = useRef<MediaRecorder | null>(null),
     stream = useRef<MediaStream | null>(null),
     live = useRef<HTMLVideoElement>(null),
+    recordDialog = useRef<HTMLDialogElement>(null),
+    recordingStartedAt = useRef(0),
     formElement = useRef<HTMLFormElement>(null),
     photoInput = useRef<HTMLInputElement>(null),
     videoInput = useRef<HTMLInputElement>(null),
@@ -57,6 +63,19 @@ export default function TestimonialForm({
       form.removeEventListener("reset", updateValidityAfterReset);
     };
   }, [format, photoSelected, testimonialText, video]);
+  useEffect(() => {
+    const dialog = recordDialog.current;
+    if (!dialog) return;
+    if (recordDialogOpen && !dialog.open) dialog.showModal();
+    if (!recordDialogOpen && dialog.open) dialog.close();
+  }, [recordDialogOpen]);
+  useEffect(() => {
+    if (!recording) return;
+    const timer = window.setInterval(() => {
+      setRecordingSeconds(Math.floor((performance.now() - recordingStartedAt.current) / 1000));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [recording]);
   useEffect(
     () => () => {
       recordingAttempt.current += 1;
@@ -72,6 +91,9 @@ export default function TestimonialForm({
   );
   async function start() {
     setStatus("");
+    setRecordDialogOpen(true);
+    setCameraStarting(true);
+    setRecordingSeconds(0);
     const attempt = ++recordingAttempt.current;
     try {
       if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
@@ -102,9 +124,13 @@ export default function TestimonialForm({
       r.ondataavailable = (e) => {
         if (e.data.size) chunks.push(e.data);
       };
-      r.onstop = () => {
-        const blob = new Blob(chunks, { type: r.mimeType });
+      r.onstop = async () => {
+        const elapsed = Math.max(1, performance.now() - recordingStartedAt.current);
+        const firstChunkType = chunks[0] instanceof Blob ? chunks[0].type : "";
+        let blob = new Blob(chunks, { type: r.mimeType || firstChunkType });
         setRecording(false);
+        setCameraStarting(false);
+        setRecordingSeconds(Math.ceil(elapsed / 1000));
         stream.current?.getTracks().forEach((t) => t.stop());
         if (live.current) live.current.srcObject = null;
         if (discardRecording.current) {
@@ -115,20 +141,35 @@ export default function TestimonialForm({
           setStatus("The recording format is unsupported or the video exceeds 20 MB. Please record again or choose an MP4, MOV or WebM file.");
           return;
         }
+        if (blob.type.split(";")[0] === "video/webm") {
+          try {
+            blob = await fixWebmDuration(blob, elapsed);
+          } catch {
+            setStatus("The recording could not be prepared for preview. Please record again or upload an existing video.");
+            return;
+          }
+        }
+        if (blob.size > testimonialVideoMaxBytes) {
+          setStatus("The recording exceeds 20 MB. Please record a shorter video or choose an existing video.");
+          return;
+        }
         setVideo(blob);
         setRecorded(true);
         setVideoName("Recorded video");
         setPreview(URL.createObjectURL(blob));
       };
-      r.start();
+      recordingStartedAt.current = performance.now();
+      r.start(1000);
       setRecording(true);
+      setCameraStarting(false);
       if (live.current) {
         live.current.srcObject = stream.current;
-        await live.current.play();
+        await live.current.play().catch(() => undefined);
       }
     } catch (error) {
       if (recorder.current?.state === "recording") recorder.current.stop();
       setRecording(false);
+      setCameraStarting(false);
       stream.current?.getTracks().forEach((t) => t.stop());
       setStatus(
         error instanceof Error && error.message === "unsupported"
@@ -137,6 +178,17 @@ export default function TestimonialForm({
       );
     }
   }
+  function dismissRecorder() {
+    if (cameraStarting) recordingAttempt.current += 1;
+    if (recorder.current?.state === "recording") {
+      discardRecording.current = true;
+      recorder.current.stop();
+    }
+    stream.current?.getTracks().forEach((track) => track.stop());
+    setCameraStarting(false);
+    setRecording(false);
+    setRecordDialogOpen(false);
+  }
   function changeFormat(next: string) {
     if (next === format) return;
     recordingAttempt.current += 1;
@@ -144,6 +196,8 @@ export default function TestimonialForm({
     if (recorder.current?.state === "recording") recorder.current.stop();
     else stream.current?.getTracks().forEach((t) => t.stop());
     setFormat(next);
+    setRecordDialogOpen(false);
+    setCameraStarting(false);
     setVideo(null);
     setRecorded(false);
     setPreview("");
@@ -358,45 +412,24 @@ export default function TestimonialForm({
                     onChange={(event) => setTestimonialText(event.target.value)}
                   />
                 </label>
-                <div className="record-controls">
-                  <button
-                    type="button"
-                    className="button"
-                    disabled={recording}
-                    onClick={start}
-                  >
-                    <Icon name="play" />
-                    {recorded ? "Record Again" : "Record Video Testimonial"}
-                  </button>
-                  {recording && (
-                    <button
-                      type="button"
-                      className="button secondary"
-                      onClick={() => recorder.current?.stop()}
-                    >
-                      Stop Recording
-                    </button>
-                  )}
-                </div>
-                <video
-                  className="video-preview"
-                  ref={live}
-                  muted
-                  playsInline
-                  autoPlay
-                  hidden={!recording}
-                  aria-label="Live camera preview"
-                />
-                {preview && !recording && (
+                <button
+                  type="button"
+                  className="button"
+                  onClick={start}
+                >
+                  <Icon name="play" />
+                  {recorded ? "Record Again" : "Record Video Testimonial"}
+                </button>
+                {preview && !recording && !recordDialogOpen && (
                   <video
-                    className="video-preview"
+                    className={styles.videoPreview}
                     src={preview}
                     controls
                     playsInline
                     aria-label={recorded ? "Preview your recorded video testimonial" : "Preview the selected video testimonial"}
                   />
                 )}
-                {preview && !recording && (
+                {preview && !recording && !recordDialogOpen && (
                   <button type="button" className="button secondary" onClick={() => {
                     setVideo(null);
                     setRecorded(false);
@@ -514,7 +547,7 @@ export default function TestimonialForm({
             </label>
           </div>
           <EmailOtpVerification captchaDisplayOnly onVerificationChange={setEmailVerified} />
-          <button className="button" type="submit" disabled={busy || recording || !emailVerified || !formValid}>
+          <button className="button" type="submit" disabled={busy || recording || cameraStarting || !emailVerified || !formValid}>
             {busy ? "Submitting…" : "Submit for Review"}
             <Icon name="arrow" />
           </button>
@@ -527,6 +560,90 @@ export default function TestimonialForm({
             </div>
           )}
         </form>
+        <dialog
+          ref={recordDialog}
+          className={styles.recordDialog}
+          aria-labelledby="record-dialog-title"
+          onCancel={(event) => {
+            event.preventDefault();
+            dismissRecorder();
+          }}
+          onClose={() => setRecordDialogOpen(false)}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) dismissRecorder();
+          }}
+        >
+          <div className={styles.recordDialogContent}>
+            <header className={styles.recordDialogHeader}>
+              <h2 id="record-dialog-title">Record Video Testimonial</h2>
+              <button type="button" className="button secondary" onClick={dismissRecorder}>
+                Close
+              </button>
+            </header>
+            {recording ? (
+              <p className={styles.recordingStatus} aria-live="polite">
+                <span /> Recording {Math.floor(recordingSeconds / 60)}:{String(recordingSeconds % 60).padStart(2, "0")}
+              </p>
+            ) : null}
+            <video
+              className={styles.videoPreview}
+              ref={live}
+              muted
+              playsInline
+              autoPlay
+              hidden={!recording}
+              aria-label="Live camera preview"
+            />
+            {preview && !recording ? (
+              <video
+                key={preview}
+                className={styles.videoPreview}
+                src={preview}
+                controls
+                playsInline
+                preload="metadata"
+                aria-label="Preview your recorded video testimonial"
+              />
+            ) : null}
+            {cameraStarting ? <p role="status">Connecting to your camera and microphone…</p> : null}
+            {!cameraStarting && !recording && !preview ? (
+              <p>Allow camera and microphone access to record your testimonial.</p>
+            ) : null}
+            {status ? <p className={styles.recordingError} role="alert">{status}</p> : null}
+            <div className={styles.recordDialogActions}>
+              {recording ? (
+                <button type="button" className="button" onClick={() => recorder.current?.stop()}>
+                  Stop Recording
+                </button>
+              ) : null}
+              {preview && !recording ? (
+                <>
+                  <button type="button" className="button" onClick={() => setRecordDialogOpen(false)}>
+                    Use This Video
+                  </button>
+                  <button type="button" className="button secondary" onClick={start}>
+                    Record Again
+                  </button>
+                  <button type="button" className="button secondary" onClick={() => {
+                    setVideo(null);
+                    setRecorded(false);
+                    setPreview("");
+                    setVideoName("");
+                    if (videoInput.current) videoInput.current.value = "";
+                    setRecordDialogOpen(false);
+                  }}>
+                    Discard Video
+                  </button>
+                </>
+              ) : null}
+              {!cameraStarting && !recording && !preview ? (
+                <button type="button" className="button" onClick={start}>
+                  Try Again
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </dialog>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "node scripts/ensure-lightningcss-native.js",
     "test:admin-enquiries": "node --experimental-strip-types --test scripts/admin-enquiries.test.mjs",
     "test:verification": "node --experimental-strip-types --test scripts/form-verification.test.mjs",
     "test:form-apis": "node scripts/public-form-smoke.mjs"
@@ -19,6 +20,7 @@
     "@supabase/supabase-js": "^2.118.0",
     "country-telephone-data": "^0.6.3",
     "exceljs": "^4.4.0",
+    "fix-webm-duration": "^1.0.6",
     "mailtrap": "^5.0.0",
     "next": "16.3.4",
     "react": "19.2.8",
@@ -33,6 +35,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "lightningcss-win32-x64-msvc": "^1.32.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
