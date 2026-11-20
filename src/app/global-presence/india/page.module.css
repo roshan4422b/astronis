@@ -132,8 +132,12 @@
 .secondaryButton svg { width: 15px; height: 15px; }
 
 .heroNote {
-  align-self: flex-start;
-  margin: 6px 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  height: 220px;
+  margin: 0 0 0 auto;
   padding-left: 12px;
   border-left: 1px solid rgba(255, 255, 255, 0.7);
   color: rgba(255, 255, 255, 0.92);
@@ -142,6 +146,7 @@
   letter-spacing: 1.2px;
   line-height: 1.65;
   text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 .heroNote span { display: block; width: 25px; height: 1px; margin: 12px 0; background: rgba(255, 255, 255, 0.7); }
@@ -249,8 +254,8 @@
 .industries > .textLink { margin-top: 11px; }
 .corridorList { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-top: 13px; }
 .corridorList a { display: grid; justify-items: center; gap: 5px; color: #354c60; font-size: max(var(--font-size-min), 9px); text-align: center; }
-.flagCircle { position: relative; display: block; width: 36px; height: 36px; overflow: hidden; border: 1px solid #d1dce5; border-radius: 50%; background: #fff; }
-.flagCircle img { object-fit: cover; }
+.flagCircle { position: relative; display: block; width: 36px; height: 36px; overflow: hidden; border: 1px solid #d1dce5; border-radius: 999px; background: transparent; }
+.flagCircle img { object-fit: cover; object-position: center; }
 
 .industryGrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-top: 11px; }
 .industryTile { min-width: 0; color: #334a5d; font-size: max(var(--font-size-min), 9px); line-height: 1.25; }
@@ -260,14 +265,14 @@
 
 .journey { padding: 35px 0 36px; color: #fff; background: #062952; }
 .journey > .container { display: grid; grid-template-columns: 1fr 2.8fr; align-items: center; gap: 28px; }
-.journey .eyebrow { color: #d3e1ef; }
-.journeyIntro h2 { margin-top: 5px; color: #fff; font-size: max(var(--font-size-min), clamp(25px, 2.5vw, 33px)); font-weight: 500; }
+.journey .eyebrow { color: #ffffff !important; }
+.journeyIntro h2 { margin-top: 5px; color: #ffffff !important; font-size: max(var(--font-size-min), clamp(25px, 2.5vw, 33px)); font-weight: 500; }
 .journeySteps { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
 .journeySteps::before { position: absolute; top: 14px; right: 5%; left: 5%; height: 1px; content: ""; background: #8ba7c1; }
 .journeySteps li { position: relative; display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
-.journeyNumber { display: grid; width: 29px; height: 29px; place-items: center; margin-bottom: 4px; border: 1px solid #dbe7f2; border-radius: 50%; color: #082b53; background: #fff; font-size: max(var(--font-size-min), 10px); font-weight: 700; }
-.journeySteps strong { color: #fff; font-family: Georgia, serif; font-size: max(var(--font-size-min), 11px); line-height: 1.2; }
-.journeySteps small { max-width: 110px; color: #c3d5e5; font-size: max(var(--font-size-min), 9px); line-height: 1.3; }
+.journeyNumber { display: grid; width: 29px; height: 29px; place-items: center; margin-bottom: 4px; border: 1px solid #dbe7f2; border-radius: 50%; color: #082b53 !important; background: #fff; font-size: max(var(--font-size-min), 10px); font-weight: 700; }
+.journeySteps strong { color: #fff !important; font-family: Georgia, serif; font-size: max(var(--font-size-min), 11px); line-height: 1.2; }
+.journeySteps small { max-width: 110px; color: #fff !important; font-size: max(var(--font-size-min), 9px); line-height: 1.3; }
 
 .professionalSection { padding: 34px 0; }
 .professionalSection > .container { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 2.4fr) minmax(0, 1fr); align-items: center; gap: 20px; }
@@ -313,11 +318,11 @@
 .jurisdictionGrid { display: grid; flex: 1; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: space-between; gap: 7px; margin-bottom: 10px; }
 .jurisdictions > .textLink { margin-top: auto; padding-top: 8px; }
 .jurisdictionGrid a { display: flex; min-width: 0; flex-direction: column; gap: 4px; color: #384e61; font-size: max(var(--font-size-min), 12px); }
-.jurisdictionGrid a > span { position: relative; display: block; aspect-ratio: 1.9; overflow: hidden; background: #e4edf4; }
-.jurisdictionGrid img { object-fit: cover; }
+.jurisdictionGrid a > span { position: relative; display: block; aspect-ratio: 1; overflow: hidden; border-radius: 50%; background: transparent; }
+.jurisdictionGrid img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 @media (min-width: 1101px) {
   .jurisdictionGrid a { min-height: 100px; }
-  .jurisdictionGrid a > span { aspect-ratio: 1.55; }
+  .jurisdictionGrid a > span { aspect-ratio: 1; }
 }
 .faqs { grid-column: 1 / -1; }
 .faqList { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; align-content: start; margin: 9px 0 8px; border-top: 1px solid #dfe7ed; }
@@ -510,7 +515,7 @@
 .discovery.wideStack .articleCard > strong { padding-inline: 11px; font-size: max(var(--font-size-min), 17px); }
 .discovery.wideStack .jurisdictionGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 12px; }
 .discovery.wideStack .jurisdictionGrid a { gap: 7px; font-size: max(var(--font-size-min), 15px); }
-.discovery.wideStack .jurisdictionGrid a > span { min-height: 140px; aspect-ratio: 1.9; }
+.discovery.wideStack .jurisdictionGrid a > span { min-height: 140px; aspect-ratio: 1; }
 .discovery.wideStack .faqList { margin-top: 14px; }
 
 @media (max-width: 1100px) {
@@ -532,7 +537,7 @@
   .discovery.wideStack .articleImage { min-height: 150px; }
   .discovery.wideStack .articleCard > strong { font-size: max(var(--font-size-min), 15px); }
   .discovery.wideStack .jurisdictionGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .discovery.wideStack .jurisdictionGrid a > span { min-height: 110px; }
+  .discovery.wideStack .jurisdictionGrid a > span { min-height: 110px; aspect-ratio: 1; }
 }
 
 @media (max-width: 420px) {
@@ -546,5 +551,5 @@
   .discovery.wideStack .articleGrid { grid-template-columns: 1fr; }
   .discovery.wideStack .articleCard { display: block; }
   .discovery.wideStack .articleImage { min-height: 130px; aspect-ratio: 1.65; }
-  .discovery.wideStack .jurisdictionGrid a > span { min-height: 88px; }
+  .discovery.wideStack .jurisdictionGrid a > span { min-height: 88px; aspect-ratio: 1; }
 }

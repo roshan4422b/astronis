@@ -3609,8 +3609,9 @@
   padding-top: 7px;
 }
 
-@media (max-width: 620px) {
-  .loginRoot :global(.admin-login-card) {
-    padding: 14px 18px 12px;
-  }
+.loginRoot .loginFrame {
+  width: 100%;
+  min-height: 100%;
+  max-height: none;
+  overflow: visible;
 }

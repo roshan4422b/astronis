@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Header from "./_components/header";
 import Footer from "./_components/footer";
 import PageTransition from "./_components/page-transition";
+import CookieConsentManager from "./_components/cookie-consent";
 import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.astronisglobal.com"),
@@ -32,6 +33,7 @@ export default function RootLayout({
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <CookieConsentManager />
       </body>
     </html>
   );

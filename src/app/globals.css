@@ -2529,6 +2529,19 @@ textarea::placeholder {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  align-items: center;
+}
+.footer-cookie-settings {
+  border: 0;
+  background: transparent;
+  color: #c4d5ed;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+.footer-cookie-settings:hover {
+  color: white;
 }
 .floating-contact {
   position: fixed;
@@ -5642,8 +5655,8 @@ main section[class*="faq"] [class*="faqLayout"] > div:first-child > a:focus-visi
 ) :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a, .breadcrumb, .eyebrow) {
   color: #fff !important;
 }
-#main-content .global-presence-route-scope [class*="__journeyStep"] :is(h1, h2, h3, h4, h5, h6, p, li, small, span, time, strong, em, label, dt, dd, blockquote, figcaption, a) {
-  color: #111 !important;
+#main-content .global-presence-route-scope [class*="__journeyStep"] :is(h1, h2, h3, h4, h5, h6, p, li, small, time, strong, em, label, dt, dd, blockquote, figcaption, a) {
+  color: #fff !important;
 }
 .global-presence-route-scope [class*="__journeyNumber"] {
   color: #082b53 !important;
