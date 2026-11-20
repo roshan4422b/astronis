@@ -12,6 +12,7 @@ export type EnquiryExportRecord = {
   message: string | null;
   form_type: string | null;
   status: string | null;
+  follow_up_date?: string | null;
   internal_notes: string | null;
   data: Record<string, unknown> | null;
   created_at: string | null;
@@ -74,6 +75,7 @@ export async function writeEnquiryWorkbook(
     { header: "Internal Notes", key: "internalNotes", width: 50 },
     { header: "Additional Stored Details (JSON)", key: "additionalDetails", width: 70 },
     { header: "Last Updated", key: "updatedAt", width: 25 },
+    { header: "Follow-up Date", key: "followUpDate", width: 20 },
   ];
   const header = worksheet.getRow(1);
   header.height = 24;
@@ -98,9 +100,11 @@ export async function writeEnquiryWorkbook(
       internalNotes: text(enquiry.internal_notes),
       additionalDetails: JSON.stringify(data),
       updatedAt: excelDate(enquiry.updated_at),
+      followUpDate: excelDate(enquiry.follow_up_date ?? null),
     });
     row.getCell(8).numFmt = "dd mmm yyyy hh:mm";
     row.getCell(13).numFmt = "dd mmm yyyy hh:mm";
+    row.getCell(14).numFmt = "dd mmm yyyy";
     row.alignment = { vertical: "top", wrapText: true };
     row.commit();
   }

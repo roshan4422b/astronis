@@ -11,7 +11,10 @@ const {
   paginateEnquiries,
   writeEnquiryWorkbook,
 } = await import("../src/lib/admin/enquiry-export.ts");
-const { displayEnquiryLabel, getEnquiryPreviewPosition } = await import("../src/lib/admin/enquiry-display.ts");
+const { displayEnquiryLabel } = await import("../src/lib/admin/enquiry-display.ts");
+const { enquiryDateKey, enquiryFilterDateValue, enquiryUtcDayRange } = await import("../src/lib/admin/enquiry-date.ts");
+const { createEnquiryReplyTemplate } = await import("../src/lib/admin/enquiry-email.ts");
+const { enquiryStatuses, enquiryUpdateSchemaMessage, isValidFollowUpDate } = await import("../src/lib/admin/enquiry-status.ts");
 
 function makeEnquiry(id, extra = {}) {
   return {
@@ -98,51 +101,103 @@ test("exports a single record workbook and uses safe date-based filenames", asyn
   assert.equal(enquiryExportFilename(undefined, new Date("2026-11-02T23:00:00.000Z")), "astronis-enquiries-2026-11-02.xlsx");
 });
 
-test("applies admin enquiry label and keeps hover details within the viewport", () => {
+test("exports a saved follow-up date as a date cell", async () => {
+  const bytes = await workbookBytes((async function* () {
+    yield makeEnquiry("follow-up", { status: "Follow-up", follow_up_date: "2026-11-18" });
+  })());
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(bytes);
+  const cell = workbook.getWorksheet("Enquiries")?.getRow(2).getCell(14);
+  assert.equal(cell?.value?.toISOString(), "2026-11-18T00:00:00.000Z");
+  assert.match(cell?.numFmt || "", /dd mmm yyyy/);
+});
+
+test("applies admin enquiry label formatting", () => {
   assert.equal(displayEnquiryLabel("New Website Enquiry"), "Enquiry");
   assert.equal(displayEnquiryLabel("New Website Enquiry | Home"), "Enquiry | Home");
   assert.equal(displayEnquiryLabel(""), "Enquiry");
   assert.equal(displayEnquiryLabel("Website Enquiry | Home"), "Website Enquiry | Home");
-  assert.deepEqual(
-    getEnquiryPreviewPosition(
-      { left: 950, top: 740, bottom: 770 },
-      { width: 380, height: 360 },
-      { width: 1024, height: 768 },
-    ),
-    { left: 632, top: 372 },
-  );
-  assert.deepEqual(
-    getEnquiryPreviewPosition(
-      { left: 0, top: 20, bottom: 45 },
-      { width: 380, height: 300 },
-      { width: 1024, height: 768 },
-    ),
-    { left: 12, top: 53 },
-  );
 });
 
-test("keeps all and filtered exports separate and protects export/detail APIs with admin authorization", async () => {
-  const [management, exportRoute, detailRoute] = await Promise.all([
+test("validates follow-up status options and calendar dates", () => {
+  assert.deepEqual(enquiryStatuses, ["New", "In Progress", "Responded", "Closed", "Interested", "Not Interested", "Follow-up"]);
+  assert.equal(isValidFollowUpDate("2028-02-29"), true);
+  assert.equal(isValidFollowUpDate("2027-02-29"), false);
+  assert.equal(isValidFollowUpDate("2026-2-03"), false);
+});
+
+test("identifies database migrations required for enquiry status updates", () => {
+  const message = "The enquiry database needs the latest migration before this status can be saved.";
+  assert.equal(enquiryUpdateSchemaMessage("PGRST204", "follow_up_date column missing", "Responded"), message);
+  assert.equal(enquiryUpdateSchemaMessage("23514", "status check constraint failed", "Interested"), message);
+  assert.equal(enquiryUpdateSchemaMessage("23514", "status check constraint failed", "Responded"), null);
+});
+
+test("matches received dates and export filters using the same UTC day boundaries", () => {
+  assert.equal(enquiryDateKey("2026-10-28T23:59:59.999Z"), "2026-10-28");
+  assert.equal(enquiryFilterDateValue({ date: "2026-10-28T23:59:59.999Z", followUpDate: "2026-11-21" }, "Follow-up"), "2026-11-21");
+  assert.equal(enquiryFilterDateValue({ date: "2026-10-28T23:59:59.999Z", followUpDate: "2026-11-21" }, "All statuses"), "2026-10-28");
+  assert.equal(enquiryFilterDateValue({ date: "2026-10-28T23:59:59.999Z" }, "Follow-up"), "");
+  assert.equal(enquiryDateKey("invalid"), "");
+  assert.deepEqual(enquiryUtcDayRange("2028-02-29"), {
+    start: "2028-02-29T00:00:00.000Z",
+    end: "2028-03-01T00:00:00.000Z",
+  });
+  assert.equal(enquiryUtcDayRange("2027-02-29"), null);
+});
+
+test("creates an editable email reply acknowledging the enquiry", () => {
+  const reply = createEnquiryReplyTemplate("Ankit Yadav", "Website enquiry");
+  assert.equal(reply.subject, "Regarding your enquiry: Website enquiry");
+  assert.match(reply.message, /Dear Ankit Yadav,/);
+  assert.match(reply.message, /We have received your enquiry regarding "Website enquiry"/);
+});
+
+test("filters, prints and exports enquiry views and protects admin APIs", async () => {
+  const [management, exportRoute, detailRoute, emailRoute, migration] = await Promise.all([
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/api/admin/enquiries/export/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/api/admin/enquiries/[id]/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/enquiries/[id]/email/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/202611200001_enquiry_followup_statuses.sql", import.meta.url), "utf8"),
   ]);
   const styles = await readFile(new URL("../src/app/admin/_components/admin.module.css", import.meta.url), "utf8");
+  const enquiryManagement = management.slice(
+    management.indexOf("export function EnquiriesManagement()"),
+    management.indexOf("export function TestimonialsManagement()"),
+  );
   assert.doesNotMatch(management, /Add New Enquiry/);
+  assert.doesNotMatch(management, /Review and organise website enquiries in one place/);
+  assert.match(management, /const enquiryPageSize = 50/);
+  assert.match(management, /Send email to \$\{enquiry\.name\}/);
+  assert.match(management, /\/email`/);
+  assert.match(management, /Send Email/);
+  assert.doesNotMatch(management, /mailto:\$\{enquiry\.email\}/);
+  assert.match(management, /https:\/\/wa\.me\/\$\{phone\}/);
+  assert.match(enquiryManagement, /columns=\{\["Name", "Email", "Subject", "Received Date", "Status", "Actions"\]\}/);
+  assert.match(enquiryManagement, /admin-enquiry-actions/);
+  assert.doesNotMatch(enquiryManagement, />Dismiss</);
   assert.match(management, /Download Excel/);
-  assert.match(management, /ignoring active filters/);
+  assert.match(management, /window\.print\(\)/);
+  assert.match(management, /pressed=\{statusFilter === "New"\}/);
+  for (const status of ["Closed", "Interested", "Not Interested", "Follow-up"]) {
+    assert.match(enquiryManagement, new RegExp(`label="${status}"[\\s\\S]*?pressed=\\{statusFilter === "${status}"\\}[\\s\\S]*?setStatusFilter\\("${status}"\\)`));
+  }
+  assert.match(management, /statusFilter === "All statuses" \|\| enquiry\.status === statusFilter/);
   assert.match(management, /scope: "filtered"/);
-  assert.match(management, /scope=all/);
   assert.match(management, /export\?id=/);
-  assert.match(management, /onMouseEnter=/);
-  assert.match(management, /onFocus=/);
-  assert.match(management, /onClick=\{\(event\) => openPreview/);
-  assert.match(management, /createPortal\(/);
-  assert.match(management, /Delete enquiry/);
+  assert.doesNotMatch(management, /openPreview|createPortal|onMouseEnter=\{\(event\) => openPreview/);
+  assert.match(management, /View details for \$\{enquiry\.name\}/);
+  assert.match(management, /Download Excel for \$\{enquiry\.name\}/);
+  assert.match(management, /Delete enquiry from \$\{enquiry\.name\}/);
+  assert.match(management, /Follow-up Date/);
+  assert.match(management, /Save Follow-up Date/);
+  assert.match(management, /Page Submitted/);
   assert.match(management, /Permanently delete the enquiry/);
   assert.match(management, /method: "DELETE"/);
   assert.match(styles, /\.root :global\(\.admin-engagement-actions\)[\s\S]*?flex-wrap: nowrap;[\s\S]*?gap: 8px;/);
-  for (const route of [exportRoute, detailRoute]) {
+  assert.match(styles, /@media print/);
+  for (const route of [exportRoute, detailRoute, emailRoute]) {
     const auth = route.indexOf("await getAuthorizedAdmin()");
     const databaseQuery = route.indexOf('.from("cms_enquiries")');
     assert.ok(auth >= 0);
@@ -151,13 +206,24 @@ test("keeps all and filtered exports separate and protects export/detail APIs wi
   }
   assert.match(exportRoute, /paginateEnquiries/);
   assert.match(exportRoute, /matchesEnquirySearch/);
+  assert.match(exportRoute, /enquiryStatuses/);
   assert.match(exportRoute, /\.range\(offset, offset \+ pageSize - 1\)/);
   assert.match(exportRoute, /\.eq\("status", status\)/);
-  assert.match(exportRoute, /\.gte\("created_at", start\.toISOString\(\)\)\.lt\("created_at", end\.toISOString\(\)\)/);
+  assert.match(exportRoute, /enquiryUtcDayRange\(date\)/);
+  assert.match(exportRoute, /\.gte\("created_at", dateRange\.start\)\.lt\("created_at", dateRange\.end\)/);
+  assert.match(exportRoute, /status === "Follow-up"[\s\S]*?\.eq\("follow_up_date", date\)/);
   const deleteRoute = detailRoute.slice(detailRoute.indexOf("export async function DELETE"));
   assert.match(deleteRoute, /await getAuthorizedAdmin\(\)/);
   assert.match(deleteRoute, /\.from\("cms_enquiries"\)\s*\.delete\(\)/);
   assert.match(deleteRoute, /if \(!auth\.user \|\| !auth\.supabase\)/);
+  assert.match(detailRoute, /isValidFollowUpDate/);
+  assert.match(detailRoute, /follow_up_date/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(enquiry\.email, subject, message\)/);
+  assert.match(emailRoute, /\.select\("id, name, email"\)/);
+  assert.match(emailRoute, /isSameOriginRequest/);
+  assert.doesNotMatch(emailRoute, /body\.to|body\.email/);
+  assert.match(migration, /follow_up_date date/);
+  assert.match(migration, /'Interested', 'Not Interested', 'Follow-up'/);
 });
 
 test("matches the existing enquiry search fields without including unrelated fields", () => {

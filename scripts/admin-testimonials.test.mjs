@@ -1,0 +1,95 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { test } from "node:test";
+import ExcelJS from "exceljs";
+
+const {
+  mapTestimonialExportRecord,
+  matchesTestimonialExportFilters,
+  testimonialExportFilename,
+  writeTestimonialWorkbook,
+} = await import("../src/lib/admin/testimonial-export.ts");
+
+test("filters testimonial statuses and other active filters", () => {
+  const pending = mapTestimonialExportRecord({
+    id: "pending-1",
+    status: "pending",
+    created_at: "2026-11-20T10:00:00.000Z",
+    data: {
+      name: "Example Contributor",
+      email: "example@example.test",
+      company: "Example Company",
+      text: "A useful testimonial",
+      format: "video",
+      videoPath: "testimonials/video.mp4",
+      consent: true,
+      identityPublicationConsent: true,
+    },
+  });
+  const published = mapTestimonialExportRecord({
+    id: "published-1",
+    status: "published",
+    created_at: "2026-11-19T10:00:00.000Z",
+    data: { name: "Another Contributor", text: "Another useful testimonial" },
+  });
+
+  assert.equal(pending.approvalStatus, "Pending");
+  assert.equal(pending.consentStatus, "Granted");
+  assert.equal(matchesTestimonialExportFilters(pending, { status: "Pending", type: "Video testimonials", consent: "Granted" }), true);
+  assert.equal(matchesTestimonialExportFilters(pending, { status: "Published" }), false);
+  assert.equal(published.approvalStatus, "Approved");
+  assert.equal(matchesTestimonialExportFilters(published, { status: "Published", search: "another contributor" }), true);
+});
+
+test("writes a styled workbook with testimonial status and safely stored text", async () => {
+  const testimonial = mapTestimonialExportRecord({
+    id: "record-1",
+    status: "rejected",
+    created_at: "2026-11-20T10:00:00.000Z",
+    data: {
+      name: "=HYPERLINK(\"https://example.test\")",
+      text: "A testimonial",
+      moderationReason: "Needs review",
+    },
+  });
+  const workbookBytes = await writeTestimonialWorkbook([testimonial]);
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(Buffer.from(workbookBytes));
+  const sheet = workbook.getWorksheet("Testimonials");
+  assert.ok(sheet);
+  assert.equal(sheet.getRow(1).getCell(1).value, "Testimonial ID");
+  assert.equal(sheet.getRow(1).getCell(1).font?.bold, true);
+  assert.equal(sheet.getRow(2).getCell(2).value, "'=HYPERLINK(\"https://example.test\")");
+  assert.equal(sheet.getRow(2).getCell(12).value, "Rejected");
+  assert.equal(sheet.getRow(2).getCell(16).value, "Needs review");
+  assert.equal(testimonialExportFilename(new Date("2026-11-20T23:00:00.000Z")), "astronis-testimonials-2026-11-20.xlsx");
+});
+
+test("wires testimonial cards, exports, print filters, actions, and 50-row pagination", async () => {
+  const [component, route] = await Promise.all([
+    readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/testimonials/export/route.ts", import.meta.url), "utf8"),
+  ]);
+  const testimonials = component.slice(
+    component.indexOf("export function TestimonialsManagement()"),
+  );
+  assert.doesNotMatch(testimonials, /Review and manage testimonial submissions before they are considered for publication/);
+  assert.match(component, /const testimonialPageSize = 50/);
+  assert.match(testimonials, /displayedTestimonials = printing \? filtered : filtered\.slice/);
+  for (const [label, filter] of [
+    ["Total Testimonials", "All approval statuses"],
+    ["Pending Review", "Pending"],
+    ["Published", "Published"],
+    ["Rejected", "Rejected"],
+  ]) {
+    assert.match(testimonials, new RegExp(`label="${label}"[\\s\\S]*?setApprovalFilter\\("${filter}"\\)`));
+  }
+  assert.match(testimonials, /Download Excel/);
+  assert.match(testimonials, /setPrinting\(true\)/);
+  assert.match(testimonials, /scope: "filtered"/);
+  assert.match(testimonials, /admin-icon-action[^]*?View Details/);
+  assert.match(route, /await getAuthorizedAdmin\(\)/);
+  assert.match(route, /matchesTestimonialExportFilters/);
+  assert.match(route, /\.range\(offset, offset \+ pageSize - 1\)/);
+  assert.match(route, /Content-Disposition/);
+});

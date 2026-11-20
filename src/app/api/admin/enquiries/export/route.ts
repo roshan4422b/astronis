@@ -8,17 +8,12 @@ import {
   paginateEnquiries,
   writeEnquiryWorkbook,
 } from "@/lib/admin/enquiry-export";
+import { enquiryStatuses } from "@/lib/admin/enquiry-status";
+import { enquiryUtcDayRange } from "@/lib/admin/enquiry-date";
 
 export const runtime = "nodejs";
 
 const workbookContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-const statuses = new Set(["New", "In Progress", "Responded", "Closed"]);
-
-function isValidDate(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const date = new Date(`${value}T00:00:00.000Z`);
-  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
-}
 
 function downloadHeaders(filename: string) {
   return {
@@ -45,8 +40,9 @@ export async function GET(request: Request) {
   const status = scope === "filtered" ? params.get("status") || "" : "";
   const date = scope === "filtered" ? params.get("date") || "" : "";
   const search = scope === "filtered" ? (params.get("search") || "").trim().slice(0, 200) : "";
-  if (status && !statuses.has(status)) return NextResponse.json({ error: "Invalid enquiry status filter." }, { status: 400 });
-  if (date && !isValidDate(date)) return NextResponse.json({ error: "Invalid enquiry date filter." }, { status: 400 });
+  if (status && !enquiryStatuses.some((enquiryStatus) => enquiryStatus === status)) return NextResponse.json({ error: "Invalid enquiry status filter." }, { status: 400 });
+  const dateRange = date ? enquiryUtcDayRange(date) : null;
+  if (date && !dateRange) return NextResponse.json({ error: "Invalid enquiry date filter." }, { status: 400 });
 
   const fetchPage = async (offset: number, pageSize: number) => {
     let query = auth.supabase
@@ -56,11 +52,10 @@ export async function GET(request: Request) {
       .order("id", { ascending: false });
     if (id) query = query.eq("id", id);
     if (status) query = query.eq("status", status);
-    if (date) {
-      const start = new Date(`${date}T00:00:00.000Z`);
-      const end = new Date(start);
-      end.setUTCDate(end.getUTCDate() + 1);
-      query = query.gte("created_at", start.toISOString()).lt("created_at", end.toISOString());
+    if (dateRange) {
+      query = status === "Follow-up"
+        ? query.eq("follow_up_date", date)
+        : query.gte("created_at", dateRange.start).lt("created_at", dateRange.end);
     }
     const { data, error } = await query.range(offset, offset + pageSize - 1);
     if (error) throw error;
