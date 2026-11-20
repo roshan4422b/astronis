@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isEnquiryStatus, isValidFollowUpDate } from "@/lib/admin/enquiry-status";
 import { revalidatePath } from "next/cache";
 import { getAuthorizedAdmin } from "@/lib/supabase/server";
 import { getSourceContentRecords } from "@/lib/cms/source-content";
@@ -206,14 +207,23 @@ export async function POST(request: Request) {
     const name = typeof data.name === "string" ? data.name.trim().slice(0, 120) : "";
     const email = typeof data.email === "string" ? data.email.trim().slice(0, 254) : "";
     if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return errorResponse("A valid name and email are required.", 400);
-    const status = typeof body.status === "string" && ["New", "In Progress", "Responded", "Closed"].includes(body.status) ? body.status : "New";
+    const status = body.status === undefined ? "New" : body.status;
+    if (!isEnquiryStatus(status)) return errorResponse("Invalid enquiry status.", 400);
+    const followUpDate = body.follow_up_date;
+    if (
+      followUpDate !== undefined &&
+      followUpDate !== null &&
+      (typeof followUpDate !== "string" || !isValidFollowUpDate(followUpDate))
+    ) return errorResponse("Follow-up date must be a valid calendar date.", 400);
+    if (status !== "Follow-up" && followUpDate) return errorResponse("A follow-up date can only be saved for Follow-up status.", 400);
     const createdAt = typeof data.date === "string" && !Number.isNaN(Date.parse(data.date)) ? new Date(data.date).toISOString() : undefined;
     const { data: row, error } = await auth.supabase.from("cms_enquiries").insert({
       name, email, company: typeof data.company === "string" ? data.company.slice(0, 200) : "",
       subject: typeof data.subject === "string" ? data.subject.slice(0, 300) : "",
       message: typeof data.message === "string" ? data.message.slice(0, 5000) : "",
       form_type: typeof data.formType === "string" ? data.formType.slice(0, 80) : "admin",
-      status, internal_notes: typeof data.internalNotes === "string" ? data.internalNotes.slice(0, 5000) : "",
+      status, follow_up_date: status === "Follow-up" && typeof followUpDate === "string" ? followUpDate : null,
+      internal_notes: typeof data.internalNotes === "string" ? data.internalNotes.slice(0, 5000) : "",
       data: { phone: typeof data.phone === "string" ? data.phone.slice(0, 80) : "" },
       ...(createdAt ? { created_at: createdAt } : {}),
     }).select("*").single();

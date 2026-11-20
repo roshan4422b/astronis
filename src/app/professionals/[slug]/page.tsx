@@ -43,6 +43,7 @@ function toProfessionalRecord(
     description: textField(data, "content", textField(data, "description", source?.description)),
     education: textField(data, "education", source?.education),
     enrolment: textField(data, "enrolment", source?.enrolment),
+    credentials: textField(data, "credentials", source?.credentials),
   };
 }
 

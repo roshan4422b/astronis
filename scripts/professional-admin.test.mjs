@@ -276,13 +276,27 @@ test("professional editor and category filter share the approved expertise optio
   assert.match(source, /getProfessionalExpertiseCategory\(record\.expertise, record\.designation\) \|\| "Not specified"/);
 });
 
-test("professional names open accessible profile details on hover, focus, and click", async () => {
+test("professional admin uses Location labels without a heading description or hover details", async () => {
   const source = await readFile(new URL("../src/app/admin/_components/admin-content-management.tsx", import.meta.url), "utf8");
-  assert.match(source, /function ProfessionalNamePreview/);
-  assert.match(source, /onMouseEnter=\{\(event\) => showPreview/);
-  assert.match(source, /onFocus=\{\(event\) => showPreview/);
-  assert.match(source, /onClick=\{\(event\) => showPreview/);
-  assert.match(source, /createPortal\(/);
-  assert.match(source, /record\.description \|\| record\.content/);
-  assert.match(source, /Professional enrolment/);
+  assert.doesNotMatch(source, /Manage professional profile content published from the CMS\./);
+  assert.match(source, /case "professionals": return \["Name", "Designation", "Expertise", "Location", "Status", "Actions"\]/);
+  assert.match(source, /<span>Location<\/span>/);
+  assert.match(source, /record\.sectionType === "professionals" \? "Location" : "Jurisdiction"/);
+  assert.match(source, /section !== "professionals" \? <p className="admin-content-form-note">Changes are saved to the CMS\./);
+  assert.doesNotMatch(source, /function ProfessionalNamePreview|admin-professional-hover-details|createPortal\(|onMouseEnter=/);
+});
+
+test("professional credentials save in CMS data and render in the public Credentials panel", async () => {
+  const editor = await readFile(new URL("../src/app/admin/_components/admin-content-management.tsx", import.meta.url), "utf8");
+  const state = await readFile(new URL("../src/app/admin/_components/admin-state.tsx", import.meta.url), "utf8");
+  const profileRoute = await readFile(new URL("../src/app/professionals/[slug]/page.tsx", import.meta.url), "utf8");
+  const profileTemplate = await readFile(new URL("../src/app/professionals/[slug]/profile-template.tsx", import.meta.url), "utf8");
+
+  assert.match(editor, /credentials: ""/);
+  assert.match(editor, /<span>\{labels\.body\}<\/span>\s*<textarea rows=\{3\} value=\{form\.credentials\} onChange=\{\(event\) => update\("credentials", event\.target\.value\)\}/);
+  assert.match(editor, /credentials: form\.credentials\.trim\(\)/);
+  assert.match(state, /credentials: text\(row\.data\.credentials\)/);
+  assert.match(profileRoute, /credentials: textField\(data, "credentials", source\?\.credentials\)/);
+  assert.match(profileTemplate, /person\.credentials \|\| person\.enrolment/);
+  assert.match(profileTemplate, /<h2>Credentials<\/h2>.*\{person\.credentials && <p>\{person\.credentials\}<\/p>/);
 });
