@@ -100,6 +100,8 @@ export type AdminContentRecord = {
   education: string;
   enrolment: string;
   credentials: string;
+  linkedinProfile: string;
+  twitterProfile: string;
   jurisdiction: string;
   imagePlaceholder: string;
 };
@@ -287,7 +289,7 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
         const toStatus = (status: string) => status === "published" ? "Published" : status === "archived" ? "Archived" : "Draft";
         const validCollections: AdminContentSection[] = ["pages", "services", "industries", "professionals", "global-presence", "technology"];
         const contentRecords: AdminContentRecord[] = contentRows.filter((row) => validCollections.includes(row.collection as AdminContentSection))
-          .map((row) => ({ ...row.data, id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, sectionType: row.collection as AdminContentSection, title: text(row.data.title), slug: row.slug, sourcePath: text(row.data.sourcePath), category: text(row.data.category), status: toStatus(row.status), updated: row.updated_at ?? "", description: text(row.data.description), content: text(row.data.content), seoTitle: text(row.data.seoTitle), seoDescription: text(row.data.seoDescription), featuredImage: text(row.data.featuredImage), designation: text(row.data.designation), expertise: text(row.data.expertise), education: text(row.data.education), enrolment: text(row.data.enrolment), credentials: text(row.data.credentials), jurisdiction: text(row.data.jurisdiction), imagePlaceholder: text(row.data.imagePlaceholder) }));
+          .map((row) => ({ ...row.data, id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, sectionType: row.collection as AdminContentSection, title: text(row.data.title), slug: row.slug, sourcePath: text(row.data.sourcePath), category: text(row.data.category), status: toStatus(row.status), updated: row.updated_at ?? "", description: text(row.data.description), content: text(row.data.content), seoTitle: text(row.data.seoTitle), seoDescription: text(row.data.seoDescription), featuredImage: text(row.data.featuredImage), designation: text(row.data.designation), expertise: text(row.data.expertise), education: text(row.data.education), enrolment: text(row.data.enrolment), credentials: text(row.data.credentials), linkedinProfile: text(row.data.linkedinProfile), twitterProfile: text(row.data.twitterProfile), jurisdiction: text(row.data.jurisdiction), imagePlaceholder: text(row.data.imagePlaceholder) }));
         const insights: AdminInsight[] = contentRows.filter((row) => row.collection === "insights").map((row) => ({
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, title: text(row.data.title), slug: row.slug, category: text(row.data.category), description: text(row.data.description),
           content: text(row.data.content), author: text(row.data.author), status: toStatus(row.status), updatedAt: row.updated_at ?? "",

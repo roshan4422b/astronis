@@ -202,6 +202,8 @@ export function getSourceContentRecords(collection?: string): SourceContentRecor
         featuredImage: person.image,
         education: person.education,
         enrolment: person.enrolment,
+        linkedinProfile: person.linkedinProfile,
+        twitterProfile: person.twitterProfile,
         sourcePath: `/professionals/${person.slug}`,
       }),
     );

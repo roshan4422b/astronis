@@ -27,6 +27,7 @@ const icons: Record<string, ReactNode> = {
   services: <><path d="M3 21V8l9-5 9 5v13M3 10h18M8 21v-6h8v6M8 10v2M12 10v2M16 10v2" /></>,
   drafts: <><path d="M4 5h16M4 12h11M4 19h8" /><circle cx="19" cy="17" r="3" /></>,
   people: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6" /></>,
+  user: <><circle cx="12" cy="8" r="4" /><path d="M5 21v-2a7 7 0 0 1 14 0v2" /></>,
   edit: <><path d="m15 5 4 4M4 20l4-.8L19.5 7.7a2.1 2.1 0 0 0-3-3L5 16.2 4 20Z" /></>,
   eye: <><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></>,
   download: <><path d="M12 3v12m0 0 4-4m-4 4-4-4" /><path d="M5 17v4h14v-4" /></>,

@@ -522,7 +522,7 @@ export function EnquiriesManagement() {
         action={
           <div className="admin-enquiry-export-actions">
             <button className="admin-button admin-button-secondary" type="button" title="Download enquiries matching the current status and filters." onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?${filteredExportParams}`)}><AdminIcon name="download" size={16} /> Download Excel</button>
-            <button className="admin-button" type="button" title="Print all enquiries matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
+            <button className="admin-button admin-print-button" type="button" title="Print all enquiries matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
           </div>
         }
       />
