@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function BankingAdvisoryPage() {
   const heroImage = getServiceChildHeroImage("banking-advisory", "banking-insolvency-restructuring-advisory")
-    ?? "/services/banking-nbfc-and-financial-services-advisory.webp";
+    ?? "/images/services/banking-nbfc-and-financial-services-advisory.webp";
   const services = [
     ["building", "Banking Regulatory & Compliance Advisory", "Advise on applicable banking laws, directions and regulatory correspondence."],
     ["document", "Corporate Lending & Credit Facility Advisory", "Support term sheets, facility documents and lending arrangements."],
