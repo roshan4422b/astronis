@@ -54,15 +54,20 @@ export function getPublicRazorpayConfig() {
   const keyId = process.env.RAZORPAY_KEY_ID?.trim() || "";
   const keySecret = process.env.RAZORPAY_KEY_SECRET?.trim() || "";
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim() || "";
-  const expectedPrefix = mode === "test" ? "rzp_test_" : mode === "live" ? "rzp_live_" : "";
+  const expectedPrefix = mode === "test"
+    ? "rzp_test_"
+    : mode === "live" && process.env.RAZORPAY_LIVE_PAYMENTS_ENABLED === "true"
+      ? "rzp_live_"
+      : "";
   const amount = configuredAmount();
   const currency = configuredCurrency();
+  const configured = Boolean(expectedPrefix && keyId.startsWith(expectedPrefix) && keySecret && webhookSecret);
 
   return {
     amount,
     currency,
-    keyId: keyId || null,
-    configured: Boolean(expectedPrefix && keyId.startsWith(expectedPrefix) && keySecret && webhookSecret),
+    keyId: configured ? keyId : null,
+    configured,
   };
 }
 

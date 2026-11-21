@@ -881,7 +881,7 @@ export const sectorServiceDetailConfigs: ServiceDetailConfig[] = [
     finalHeading: "Build a dependable foundation for digital growth",
     finalDescription: "Align your digital model, user terms, technology contracts and compliance considerations as your product evolves.",
     finalAction: "Request Digital Business Advisory",
-    image: "/images/services/technology-transactions.webp",
+    image: "/Technology&Digital/Banner-Technology & Digital.png",
   }),
   createSectorDetail({
     categorySlug: sectorCategory,
@@ -1076,7 +1076,7 @@ export const sectorServiceDetailConfigs: ServiceDetailConfig[] = [
     finalHeading: "Navigate telecom operations with a clear regulatory and commercial plan",
     finalDescription: "Coordinate service applicability, infrastructure contracts, customer processes and regulatory actions for your telecom business.",
     finalAction: "Request Telecommunications Advisory",
-    image: "/images/services/technology-transactions.webp",
+    image: "/Telecommunications & Digital Infrastructure .png",
   }),
   createSectorDetail({
     categorySlug: sectorCategory,
@@ -1141,7 +1141,7 @@ export const sectorServiceDetailConfigs: ServiceDetailConfig[] = [
     finalHeading: "Move automotive projects forward with coordinated sector support",
     finalDescription: "Align product requirements, supplier contracts, technology partnerships and market-entry actions across the automotive value chain.",
     finalAction: "Request Automotive Advisory",
-    image: "/images/services/technology-transactions.webp",
+    image: "/Automotive & Mobility .png",
   }),
   createSectorDetail({
     categorySlug: sectorCategory,
