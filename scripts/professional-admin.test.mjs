@@ -247,7 +247,7 @@ test("professional expertise options contain only the five approved categories",
       "Regulatory Advisory (RA)",
       "Legal Advisory (LA)",
       "Business Advisory (BA)",
-      "Global Network & International (GN)",
+      "Global Network (GN)",
     ],
   );
   assert.deepEqual(professionalExpertiseOptions, [
@@ -255,7 +255,7 @@ test("professional expertise options contain only the five approved categories",
     "Regulatory Advisory (RA)",
     "Legal Advisory (LA)",
     "Business Advisory (BA)",
-    "Global Network & International (GN)",
+    "Global Network (GN)",
   ]);
 });
 
@@ -291,7 +291,8 @@ test("professional admin uses Location labels without a heading description or h
   assert.match(source, /section === "professionals" \? \(/);
   assert.match(source, /title="Preview locally"/);
   assert.match(sourceContent, /jurisdiction: person\.location,\s*email: person\.email,\s*phone,/);
-  assert.match(state, /email: text\(row\.data\.email\), phone: text\(row\.data\.phone\)/);
+  assert.match(state, /email: text\(row\.data\.email\)/);
+  assert.match(state, /phone: text\(row\.data\.phone\)/);
   assert.match(dataRoute, /row\.collection === "professionals" && sourceRecord\s*\?\s*\{ \.\.\.row, data: \{ \.\.\.sourceRecord\.data, \.\.\.row\.data \} \}/);
   assert.match(source, /section !== "professionals" \? <p className="admin-content-form-note">Changes are saved to the CMS\./);
   assert.doesNotMatch(source, /function ProfessionalNamePreview|admin-professional-hover-details|createPortal\(|onMouseEnter=/);
@@ -311,7 +312,7 @@ test("professional credentials save in CMS data and render in the public Credent
   assert.match(state, /credentials: text\(row\.data\.credentials\)/);
   assert.match(profileRoute, /credentials: textField\(data, "credentials", source\?\.credentials\)/);
   assert.match(profileTemplate, /person\.credentials \|\| person\.enrolment/);
-  assert.match(profileTemplate, /<h2>Credentials<\/h2>.*\{person\.credentials && <p>\{person\.credentials\}<\/p>/);
+  assert.match(profileTemplate, /<h2>Credentials<\/h2>[\s\S]*?<p>\{person\.credentials \|\| person\.enrolment \|\| "Credential details are not available\."\}<\/p>/);
 });
 
 test("professional social profile URLs can be edited, saved, and linked safely", async () => {
@@ -328,7 +329,8 @@ test("professional social profile URLs can be edited, saved, and linked safely",
   assert.match(editor, /linkedinProfile: form\.linkedinProfile\.trim\(\)/);
   assert.match(editor, /twitterProfile: form\.twitterProfile\.trim\(\)/);
   assert.match(editor, /!isHttpUrl\(value\) && value !== initial\[field\]\.trim\(\)/);
-  assert.match(state, /linkedinProfile: text\(row\.data\.linkedinProfile\), twitterProfile: text\(row\.data\.twitterProfile\)/);
+  assert.match(state, /linkedinProfile: text\(row\.data\.linkedinProfile\)/);
+  assert.match(state, /twitterProfile: text\(row\.data\.twitterProfile\)/);
   assert.match(sourceContent, /linkedinProfile: person\.linkedinProfile,\s*twitterProfile: person\.twitterProfile/);
   assert.match(profileRoute, /twitterProfile: textField\(data, "twitterProfile", source\?\.twitterProfile\)/);
   assert.match(profileTemplate, /function safeProfileUrl/);

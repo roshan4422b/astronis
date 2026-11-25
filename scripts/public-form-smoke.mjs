@@ -186,6 +186,12 @@ for (const [label, path, options] of directSubmissions) {
   const response = await fetch(new URL(path, baseUrl), options);
   const result = await response.json();
   const rejectionMessage = result.message?.toLowerCase() || "";
+  if (label === "schedule meeting") {
+    if (response.status !== 410 || !rejectionMessage.includes("require verified online payment")) {
+      throw new Error(`Legacy schedule-meeting endpoint did not require payment (HTTP ${response.status}).`);
+    }
+    continue;
+  }
   const rejectedForVerification =
     rejectionMessage.includes("captcha")
     || rejectionMessage.includes("verify this email address")
@@ -210,5 +216,5 @@ if (!honeypotResponse.ok || honeypotResult.success !== true) {
 
 console.log(`Passed: ${formPages.length} public form pages render verification controls.`);
 console.log("Passed: professional application page renders.");
-console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected without email verification, and enquiry rejects are not CAPTCHA-related.`);
+console.log(`Passed: ${directSubmissions.length} direct submission API requests are rejected without required verification or payment, and enquiry rejects are not CAPTCHA-related.`);
 console.log("Passed: filled enquiry honeypot receives a success response without being processed.");

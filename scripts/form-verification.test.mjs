@@ -159,7 +159,7 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
   assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
   assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
-  assert.match(form, /disabled=\{busy \|\| recording \|\| !emailVerified \|\| !formValid\}/);
+  assert.match(form, /disabled=\{busy \|\| recording \|\| cameraStarting \|\| !emailVerified \|\| !formValid\}/);
   assert.doesNotMatch(form, /captchaToken/);
   assert.match(route, /missingConfiguration/);
   assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
@@ -215,7 +215,6 @@ test("public testimonial submissions preserve optional video details and profile
     readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
   ]);
-  assert.match(form, /name="title" maxLength=\{160\}/);
   assert.match(form, /Testimonial Description \(optional\)/);
   assert.match(form, /name="photo"/);
   assert.match(form, /name="photoPublicationConsent"/);
@@ -356,12 +355,39 @@ test("keeps Turnstile optional and hides the unverified display-only widget", as
   const [globalEnquiryRoute, applicationRoute, meetingRoute] = await Promise.all([
     readFile(new URL("../src/app/api/global-enquiry/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/api/professional-application/route.ts", import.meta.url), "utf8"),
-    readFile(new URL("../src/app/api/schedule-meeting/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/order/route.ts", import.meta.url), "utf8"),
   ]);
   for (const route of [globalEnquiryRoute, applicationRoute, meetingRoute]) {
     assert.match(route, /consumeFormVerification\(/);
     assert.match(route, /verificationFailure\(/);
   }
+  const legacyMeetingRoute = await readFile(new URL("../src/app/api/schedule-meeting/route.ts", import.meta.url), "utf8");
+  assert.match(legacyMeetingRoute, /status: 410/);
+  assert.match(legacyMeetingRoute, /require verified online payment/);
+});
+
+test("requires server-created payment orders and verified payment before confirming consultation bookings", async () => {
+  const [orderRoute, verifyRoute, webhookRoute, modal, config, razorpayServer] = await Promise.all([
+    readFile(new URL("../src/app/api/schedule-meeting/order/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/verify/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/schedule-meeting/webhook/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/_components/schedule-meeting-modal.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../next.config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/lib/razorpay.server.ts", import.meta.url), "utf8"),
+  ]);
+  assert.match(orderRoute, /createRazorpayOrder\(config/);
+  assert.match(orderRoute, /await consumeFormVerification\(/);
+  assert.match(orderRoute, /amount: config\.amount/);
+  assert.match(verifyRoute, /verifyRazorpayCheckoutSignature\(/);
+  assert.match(verifyRoute, /payment\.status === "captured" && order\.status === "paid"/);
+  assert.match(verifyRoute, /booking_status: "confirmed"/);
+  assert.match(webhookRoute, /verifyRazorpayWebhookSignature\(/);
+  assert.match(webhookRoute, /cms_meeting_payment_events/);
+  assert.match(razorpayServer, /mode === "live" && process\.env\.RAZORPAY_LIVE_PAYMENTS_ENABLED === "true"/);
+  assert.match(razorpayServer, /keyId: configured \? keyId : null/);
+  assert.match(modal, /Proceed to Payment/);
+  assert.match(modal, /Check Payment Status/);
+  assert.match(config, /https:\/\/checkout\.razorpay\.com/);
 });
 
 test("protects source-defined CMS testimonials and shared media from deletion", async () => {

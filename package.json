@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "node scripts/ensure-lightningcss-native.js",
     "test:admin-enquiries": "node --experimental-strip-types --test scripts/admin-enquiries.test.mjs",
     "test:verification": "node --experimental-strip-types --test scripts/form-verification.test.mjs",
     "test:form-apis": "node scripts/public-form-smoke.mjs"
