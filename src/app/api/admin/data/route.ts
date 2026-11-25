@@ -68,6 +68,14 @@ function publicPageData(data: Record<string, unknown>) {
   return Object.fromEntries(Object.entries(data).filter(([key]) => pageDataFields.has(key)));
 }
 
+function isValidOptionalEmail(value: unknown) {
+  if (value === undefined || value === null) return true;
+  if (typeof value !== "string") return false;
+  if (!value.trim()) return true;
+  const email = value.trim();
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 async function hydrateTestimonialMedia<T extends { collection?: string; data?: Record<string, unknown> }>(
   supabase: NonNullable<Awaited<ReturnType<typeof getAuthorizedAdmin>>["supabase"]>,
   record: T,
@@ -147,7 +155,16 @@ export async function GET(request: Request) {
   for (const row of getSourceContentRecords(collection === "all" ? undefined : collection)) {
     merged.set(`${row.collection}:${row.slug}`, row);
   }
-  for (const row of data ?? []) merged.set(`${row.collection}:${row.slug}`, row);
+  for (const row of data ?? []) {
+    const key = `${row.collection}:${row.slug}`;
+    const sourceRecord = merged.get(key);
+    merged.set(
+      key,
+      row.collection === "professionals" && sourceRecord
+        ? { ...row, data: { ...sourceRecord.data, ...row.data } }
+        : row,
+    );
+  }
   const records = [...merged.values()].filter((row) => !status || row.status === status);
   const hydratedRecords = await Promise.all(records.map((record) => hydrateTestimonialMedia(auth.supabase!, record)));
   const testimonialRows = hydratedRecords.filter((record) => record.collection === "testimonials");
@@ -337,6 +354,9 @@ export async function PATCH(request: Request) {
         sourceDefined: true,
       };
     const status = typeof updates.status === "string" ? updates.status : sourceRecord.status;
+    if (sourceRecord.collection === "testimonials" && !isValidOptionalEmail(sourceData.email)) {
+      return errorResponse("Enter a valid contributor email address.", 400);
+    }
     if (sourceRecord.collection === "testimonials" &&
       status === "published" &&
       (sourceData.consent !== true || sourceData.identityPublicationConsent !== true)) {
@@ -405,7 +425,8 @@ export async function PATCH(request: Request) {
         (imagePath && !isTestimonialMediaPath(imagePath)) ||
         (imagePath && !photoPublicationConsent) ||
         (videoPath && !isTestimonialMediaPath(videoPath)) ||
-        (submittedData.videoUrl !== undefined && videoUrl && !isSupportedTestimonialVideoUrl(videoUrl))
+        (submittedData.videoUrl !== undefined && videoUrl && !isSupportedTestimonialVideoUrl(videoUrl)) ||
+        !isValidOptionalEmail(data.email)
       ) {
         return errorResponse("A testimonial requires valid content and supported media.", 400);
       }

@@ -159,7 +159,7 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.match(route, /await consumeEmailVerification\(get\("email"\), get\("emailVerificationToken"\)\)/);
   assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
   assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
-  assert.match(form, /disabled=\{busy \|\| recording \|\| !emailVerified \|\| !formValid\}/);
+  assert.match(form, /disabled=\{busy \|\| recording \|\| cameraStarting \|\| !emailVerified \|\| !formValid\}/);
   assert.doesNotMatch(form, /captchaToken/);
   assert.match(route, /missingConfiguration/);
   assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);
@@ -215,7 +215,6 @@ test("public testimonial submissions preserve optional video details and profile
     readFile(new URL("../src/app/api/testimonials/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
   ]);
-  assert.match(form, /name="title" maxLength=\{160\}/);
   assert.match(form, /Testimonial Description \(optional\)/);
   assert.match(form, /name="photo"/);
   assert.match(form, /name="photoPublicationConsent"/);

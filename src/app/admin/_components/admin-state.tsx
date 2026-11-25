@@ -106,6 +106,8 @@ export type AdminContentRecord = {
   twitterProfile: string;
   jurisdiction: string;
   imagePlaceholder: string;
+  email: string;
+  phone: string;
 };
 
 export type AdminEditableContentRecord = Omit<AdminContentRecord, "sectionType"> & {
@@ -319,6 +321,8 @@ export function AdminStateProvider({ children }: { children: ReactNode }) {
             twitterProfile: text(row.data.twitterProfile),
             jurisdiction: text(row.data.jurisdiction),
             imagePlaceholder: text(row.data.imagePlaceholder),
+            email: text(row.data.email),
+            phone: text(row.data.phone),
           }));
         const insights: AdminInsight[] = contentRows.filter((row) => row.collection === "insights").map((row) => ({
           id: row.id, sourceDefined: row.source_defined === true || row.data.sourceDefined === true, title: text(row.data.title), slug: row.slug, category: text(row.data.category), description: text(row.data.description),

@@ -28,9 +28,32 @@ import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
 import { displayEnquiryLabel } from "@/lib/admin/enquiry-display";
 import { enquiryFilterDateValue } from "@/lib/admin/enquiry-date";
 import { createEnquiryReplyTemplate } from "@/lib/admin/enquiry-email";
+import { getWhatsAppUrl } from "@/lib/admin/whatsapp";
 
 const testimonialPageSize = 50;
 const enquiryPageSize = 50;
+type TestimonialApprovalCardFilter = "All approval statuses" | "Pending" | "Published" | "Rejected";
+const testimonialApprovalCardFilters: TestimonialApprovalCardFilter[] = [
+  "All approval statuses",
+  "Pending",
+  "Published",
+  "Rejected",
+];
+const testimonialApprovalCardMeta: Record<TestimonialApprovalCardFilter, { label: string; change: string; icon: string }> = {
+  "All approval statuses": { label: "Total Testimonials", change: "Stored submissions", icon: "quote" },
+  Pending: { label: "Pending Review", change: "Awaiting moderation", icon: "drafts" },
+  Published: { label: "Published", change: "Visible where consent allows", icon: "check" },
+  Rejected: { label: "Rejected", change: "Moderation status", icon: "close" },
+};
+const enquiryStatusCardMeta: Record<EnquiryStatus, { label: string; change: string; icon: string }> = {
+  New: { label: "New Enquiries", change: "Status: New", icon: "bell" },
+  "In Progress": { label: "In Progress", change: "Operational status", icon: "drafts" },
+  Responded: { label: "Responded", change: "Operational status", icon: "check" },
+  Closed: { label: "Closed", change: "Operational status", icon: "close" },
+  Interested: { label: "Interested", change: "Lead status", icon: "check" },
+  "Not Interested": { label: "Not Interested", change: "Lead status", icon: "close" },
+  "Follow-up": { label: "Follow-up", change: "Needs follow-up", icon: "calendar" },
+};
 
 function displayDate(value: string) {
   const date = new Date(value);
@@ -41,6 +64,11 @@ function displayDate(value: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(date);
+}
+
+function hasValidContactEmail(value?: string) {
+  const email = value?.trim() || "";
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 type EnquiryApiRecord = {
@@ -86,11 +114,6 @@ function enquiryDataText(enquiry: AdminEnquiry, ...keys: string[]) {
     if (typeof value === "string" && value.trim()) return value.trim();
   }
   return "Not provided";
-}
-
-function whatsappUrl(value?: string) {
-  const phone = value?.replace(/\D/g, "") || "";
-  return phone ? `https://wa.me/${phone}` : "";
 }
 
 function safeVideoUrl(value: string) {
@@ -200,7 +223,12 @@ export function EnquiryDetailsDialog({
   const [details, setDetails] = useState<AdminEnquiry | undefined>(enquiry);
   const [detailsLoading, setDetailsLoading] = useState(Boolean(enquiry));
   const [detailsError, setDetailsError] = useState("");
+  const statusNoticeTimer = useRef<number | null>(null);
   const enquiryId = enquiry?.id;
+
+  useEffect(() => () => {
+    if (statusNoticeTimer.current !== null) window.clearTimeout(statusNoticeTimer.current);
+  }, []);
 
   useEffect(() => {
     if (!enquiryId) return;
@@ -242,7 +270,13 @@ export function EnquiryDetailsDialog({
       setDetails((current) => current ? { ...current, status, followUpDate: nextFollowUpDate } : current);
       setFollowUpDate(nextFollowUpDate);
     }
-    setStatusNotice(error || `Enquiry status saved as ${status}.`);
+    const message = error || `Enquiry status saved as ${status}.`;
+    if (statusNoticeTimer.current !== null) window.clearTimeout(statusNoticeTimer.current);
+    setStatusNotice(message);
+    statusNoticeTimer.current = error ? null : window.setTimeout(() => {
+      setStatusNotice((current) => current === message ? "" : current);
+      statusNoticeTimer.current = null;
+    }, 3000);
     setSavingStatus(false);
   }
 
@@ -297,18 +331,27 @@ export function EnquiryDetailsDialog({
   );
 }
 
-function EnquiryEmailDialog({
-  enquiry,
+function AdminEmailDialog({
+  title,
+  labelledBy,
+  recipientName,
+  recipientEmail,
+  initialSubject,
+  initialMessage,
   onClose,
   onSend,
 }: {
-  enquiry: AdminEnquiry;
+  title: string;
+  labelledBy: string;
+  recipientName: string;
+  recipientEmail: string;
+  initialSubject: string;
+  initialMessage: string;
   onClose: () => void;
   onSend: (subject: string, message: string) => Promise<string | null>;
 }) {
-  const template = createEnquiryReplyTemplate(enquiry.name, enquiry.subject);
-  const [subject, setSubject] = useState(template.subject);
-  const [message, setMessage] = useState(template.message);
+  const [subject, setSubject] = useState(initialSubject);
+  const [message, setMessage] = useState(initialMessage);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -328,9 +371,9 @@ function EnquiryEmailDialog({
   }
 
   return (
-    <AccessibleDialog title="Reply to enquiry" labelledBy="enquiry-email-dialog-title" onClose={onClose}>
+    <AccessibleDialog title={title} labelledBy={labelledBy} onClose={onClose}>
       <form className="admin-enquiry-email-form" onSubmit={(event) => { void submit(event); }}>
-        <p><strong>To:</strong> {enquiry.email}</p>
+        <p><strong>To:</strong> {recipientName} · {recipientEmail}</p>
         <label className="admin-field">
           <span>Subject</span>
           <input value={subject} maxLength={200} required disabled={sending} onChange={(event) => setSubject(event.target.value)} />
@@ -350,15 +393,66 @@ function EnquiryEmailDialog({
   );
 }
 
+function EnquiryEmailDialog({
+  enquiry,
+  onClose,
+  onSend,
+}: {
+  enquiry: AdminEnquiry;
+  onClose: () => void;
+  onSend: (subject: string, message: string) => Promise<string | null>;
+}) {
+  const template = createEnquiryReplyTemplate(enquiry.name, enquiry.subject);
+  return (
+    <AdminEmailDialog
+      title="Reply to enquiry"
+      labelledBy="enquiry-email-dialog-title"
+      recipientName={enquiry.name}
+      recipientEmail={enquiry.email}
+      initialSubject={template.subject}
+      initialMessage={template.message}
+      onClose={onClose}
+      onSend={onSend}
+    />
+  );
+}
+
+function TestimonialEmailDialog({
+  testimonial,
+  onClose,
+  onSend,
+}: {
+  testimonial: AdminTestimonial;
+  onClose: () => void;
+  onSend: (subject: string, message: string) => Promise<string | null>;
+}) {
+  const recipientName = testimonial.name.trim() || "Contributor";
+  return (
+    <AdminEmailDialog
+      title="Email testimonial contributor"
+      labelledBy="testimonial-email-dialog-title"
+      recipientName={recipientName}
+      recipientEmail={testimonial.email || ""}
+      initialSubject="Regarding your testimonial submission"
+      initialMessage={`Hello ${recipientName},\n\nWe are contacting you regarding your testimonial submission. Please reply to this email if you have any questions.\n\nRegards,\nAstronis Global`}
+      onClose={onClose}
+      onSend={onSend}
+    />
+  );
+}
+
 export function EnquiriesManagement() {
   const { enquiries, setEnquiries } = useAdminState();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All statuses" | EnquiryStatus>("All statuses");
+  const [selectedStatusCard, setSelectedStatusCard] = useState<"All statuses" | EnquiryStatus | null>(null);
+  const [cardsCollapsed, setCardsCollapsed] = useState(false);
   const [dateFilter, setDateFilter] = useState("");
   const [page, setPage] = useState(1);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [emailEnquiryId, setEmailEnquiryId] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
+  const noticeTimer = useRef<number | null>(null);
   const [deletingEnquiry, setDeletingEnquiry] = useState(false);
   const [printing, setPrinting] = useState(false);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
@@ -369,6 +463,10 @@ export function EnquiriesManagement() {
       && (!dateFilter || enquiryFilterDateValue(enquiry, statusFilter) === dateFilter);
   });
   const pageCount = Math.max(1, Math.ceil(filtered.length / enquiryPageSize));
+
+  useEffect(() => () => {
+    if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current);
+  }, []);
 
   useEffect(() => {
     if (!printing) return;
@@ -385,9 +483,36 @@ export function EnquiriesManagement() {
     window.location.assign(url);
   }
 
+  function showNotice(message: string, autoDismiss = false) {
+    if (noticeTimer.current !== null) window.clearTimeout(noticeTimer.current);
+    noticeTimer.current = null;
+    setNotice(message);
+    if (autoDismiss) {
+      noticeTimer.current = window.setTimeout(() => {
+        setNotice((current) => current === message ? "" : current);
+        noticeTimer.current = null;
+      }, 3000);
+    }
+  }
+
+  function selectStatusCard(status: "All statuses" | EnquiryStatus) {
+    setSelectedStatusCard(status);
+    setStatusFilter(status);
+    setPage(1);
+  }
+
+  function showAllStatusCards() {
+    setSelectedStatusCard(null);
+    setStatusFilter("All statuses");
+    setQuery("");
+    setDateFilter("");
+    setPage(1);
+    setCardsCollapsed(false);
+  }
+
   const displayedEnquiries = printing ? filtered : filtered.slice((page - 1) * enquiryPageSize, page * enquiryPageSize);
   const rows = displayedEnquiries.map((enquiry) => {
-    const whatsapp = whatsappUrl(enquiry.phone);
+    const whatsapp = getWhatsAppUrl(enquiry.phone);
     return [
       <strong className="admin-cell-primary" key="name">{enquiry.name}</strong>,
       <span className="admin-engagement-email" key="email">{enquiry.email}</span>,
@@ -421,7 +546,7 @@ export function EnquiriesManagement() {
           onClick={() => { void deleteEnquiry(enquiry.id, enquiry.name); }}
         ><AdminIcon name="trash" size={16} /></button>
         {enquiry.email ? <button className="admin-icon-action" type="button" aria-label={`Send email to ${enquiry.name}`} title="Send email" onClick={() => setEmailEnquiryId(enquiry.id)}><AdminIcon name="mail" size={16} /></button> : <button className="admin-icon-action" type="button" disabled aria-label="Email unavailable" title="Email unavailable"><AdminIcon name="mail" size={16} /></button>}
-        {whatsapp ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noreferrer" aria-label={`Contact ${enquiry.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a> : <button className="admin-icon-action" type="button" disabled aria-label="Mobile number unavailable" title="Mobile number unavailable"><AdminIcon name="whatsapp" size={16} /></button>}
+        {whatsapp ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noreferrer" aria-label={`Contact ${enquiry.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a> : <button className="admin-icon-action" type="button" disabled aria-label="WhatsApp unavailable; add a valid number with country code" title="WhatsApp requires a valid number with country code"><AdminIcon name="whatsapp" size={16} /></button>}
       </div>,
     ];
   });
@@ -447,7 +572,7 @@ export function EnquiriesManagement() {
         status: result.record.status,
         followUpDate: result.record.follow_up_date || "",
       } : item));
-      setNotice("Enquiry changes saved.");
+      showNotice("Enquiry changes saved.", true);
       return null;
     } catch (error) {
       const message = error instanceof Error ? error.message : "Could not save enquiry.";
@@ -505,6 +630,7 @@ export function EnquiriesManagement() {
   const clearFilters = () => {
     setQuery("");
     setStatusFilter("All statuses");
+    setSelectedStatusCard(null);
     setDateFilter("");
     setPage(1);
   };
@@ -526,15 +652,46 @@ export function EnquiriesManagement() {
           </div>
         }
       />
-      <div className="admin-stat-grid admin-engagement-stats">
-        <StatCard label="Total Enquiries" value={String(enquiries.length)} change="All statuses" icon="inbox" pressed={statusFilter === "All statuses"} onClick={() => { setStatusFilter("All statuses"); setPage(1); }} />
-        <StatCard label="New Enquiries" value={String(enquiries.filter((item) => item.status === "New").length)} change="Status: New" icon="bell" pressed={statusFilter === "New"} onClick={() => { setStatusFilter("New"); setPage(1); }} />
-        <StatCard label="In Progress" value={String(enquiries.filter((item) => item.status === "In Progress").length)} change="Operational status" icon="drafts" pressed={statusFilter === "In Progress"} onClick={() => { setStatusFilter("In Progress"); setPage(1); }} />
-        <StatCard label="Responded" value={String(enquiries.filter((item) => item.status === "Responded").length)} change="Operational status" icon="check" pressed={statusFilter === "Responded"} onClick={() => { setStatusFilter("Responded"); setPage(1); }} />
-        <StatCard label="Closed" value={String(enquiries.filter((item) => item.status === "Closed").length)} change="Operational status" icon="close" pressed={statusFilter === "Closed"} onClick={() => { setStatusFilter("Closed"); setPage(1); }} />
-        <StatCard label="Interested" value={String(enquiries.filter((item) => item.status === "Interested").length)} change="Lead status" icon="check" pressed={statusFilter === "Interested"} onClick={() => { setStatusFilter("Interested"); setPage(1); }} />
-        <StatCard label="Not Interested" value={String(enquiries.filter((item) => item.status === "Not Interested").length)} change="Lead status" icon="close" pressed={statusFilter === "Not Interested"} onClick={() => { setStatusFilter("Not Interested"); setPage(1); }} />
-        <StatCard label="Follow-up" value={String(enquiries.filter((item) => item.status === "Follow-up").length)} change="Needs follow-up" icon="calendar" pressed={statusFilter === "Follow-up"} onClick={() => { setStatusFilter("Follow-up"); setPage(1); }} />
+      <div className="admin-enquiry-card-controls">
+        {selectedStatusCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllStatusCards}>Show all cards</button> : null}
+        <button
+          className="admin-button admin-button-secondary"
+          type="button"
+          aria-expanded={!cardsCollapsed}
+          aria-controls="admin-enquiry-status-cards"
+          onClick={() => setCardsCollapsed((current) => !current)}
+        >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
+      </div>
+      <div
+        id="admin-enquiry-status-cards"
+        className={`admin-stat-grid admin-engagement-stats${selectedStatusCard !== null ? " admin-engagement-stats-selected" : ""}`}
+        hidden={cardsCollapsed}
+      >
+        {selectedStatusCard === null || selectedStatusCard === "All statuses" ? (
+          <StatCard
+            label="Total Enquiries"
+            value={String(enquiries.length)}
+            change="All statuses"
+            icon="inbox"
+            pressed={selectedStatusCard === "All statuses" || (selectedStatusCard === null && statusFilter === "All statuses")}
+            onClick={() => selectStatusCard("All statuses")}
+          />
+        ) : null}
+        {enquiryStatuses.map((status) => {
+          if (selectedStatusCard !== null && selectedStatusCard !== status) return null;
+          const card = enquiryStatusCardMeta[status];
+          return (
+            <StatCard
+              key={status}
+              label={card.label}
+              value={String(enquiries.filter((item) => item.status === status).length)}
+              change={card.change}
+              icon={card.icon}
+              pressed={selectedStatusCard === status || (selectedStatusCard === null && statusFilter === status)}
+              onClick={() => selectStatusCard(status)}
+            />
+          );
+        })}
       </div>
       <p className={styles.enquiryPrintSummary}>
         {statusFilter === "All statuses" ? "Total Enquiries" : statusFilter} · {filtered.length} enquiries
@@ -549,7 +706,7 @@ export function EnquiriesManagement() {
             label="Filter by enquiry status"
             value={statusFilter}
             options={["All statuses", ...enquiryStatuses]}
-            onChange={(value) => { setStatusFilter(isEnquiryStatus(value) ? value : "All statuses"); setPage(1); }}
+            onChange={(value) => { setStatusFilter(isEnquiryStatus(value) ? value : "All statuses"); setSelectedStatusCard(null); setPage(1); }}
           />
           <label className="admin-date-filter">
             <span className="admin-visually-hidden">{statusFilter === "Follow-up" ? "Filter by follow-up date" : "Filter by received date"}</span>
@@ -593,11 +750,14 @@ export function TestimonialsManagement() {
   const { testimonials, setTestimonials } = useAdminState();
   const [query, setQuery] = useState("");
   const [approvalFilter, setApprovalFilter] = useState("All approval statuses");
+  const [selectedApprovalCard, setSelectedApprovalCard] = useState<TestimonialApprovalCardFilter | null>(null);
+  const [cardsCollapsed, setCardsCollapsed] = useState(false);
   const [typeFilter, setTypeFilter] = useState("All testimonial types");
   const [consentFilter, setConsentFilter] = useState("All consent statuses");
   const [page, setPage] = useState(1);
   const [printing, setPrinting] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [emailTestimonialId, setEmailTestimonialId] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState(false);
   const [savingTestimonial, setSavingTestimonial] = useState(false);
   const [uploadingTestimonialMedia, setUploadingTestimonialMedia] = useState(false);
@@ -642,22 +802,33 @@ export function TestimonialsManagement() {
   });
   const pageCount = Math.max(1, Math.ceil(filtered.length / testimonialPageSize));
   const displayedTestimonials = printing ? filtered : filtered.slice((page - 1) * testimonialPageSize, page * testimonialPageSize);
-  const rows = displayedTestimonials.map((testimonial) => [
-    <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
-    <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
-    <span key="type">{testimonial.format === "video" ? "Video" : "Text"}{testimonial.imagePath || testimonial.imageUrl ? " · Image" : ""}</span>,
-    <span key="rating" aria-label={`${testimonial.rating ?? 5} out of 5 stars`}>{"★".repeat(testimonial.rating ?? 5)}</span>,
-    displayDate(testimonial.date),
-    <StatusBadge key="consent" status={testimonial.consentStatus} />,
-    <StatusBadge key="approval" status={testimonial.approvalStatus === "Approved" ? "Published" : testimonial.approvalStatus} />,
-    <div className="admin-engagement-actions" key="actions">
-      <button type="button" className="admin-icon-action" aria-label={`View details for ${testimonial.name}`} title="View Details" onClick={(event) => {
-        triggerRef.current = event.currentTarget;
-        setSelectedId(testimonial.id);
-      }}><AdminIcon name="eye" size={16} /></button>
-    </div>,
-  ]);
+  const rows = displayedTestimonials.map((testimonial) => {
+    const whatsapp = getWhatsAppUrl(testimonial.phone);
+    const hasEmail = hasValidContactEmail(testimonial.email);
+    return [
+      <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
+      <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
+      <span key="type">{testimonial.format === "video" ? "Video" : "Text"}{testimonial.imagePath || testimonial.imageUrl ? " · Image" : ""}</span>,
+      <span key="rating" aria-label={`${testimonial.rating ?? 5} out of 5 stars`}>{"★".repeat(testimonial.rating ?? 5)}</span>,
+      displayDate(testimonial.date),
+      <StatusBadge key="consent" status={testimonial.consentStatus} />,
+      <StatusBadge key="approval" status={testimonial.approvalStatus === "Approved" ? "Published" : testimonial.approvalStatus} />,
+      <div className="admin-engagement-actions" key="actions">
+        <button type="button" className="admin-icon-action" aria-label={`View details for ${testimonial.name}`} title="View Details" onClick={(event) => {
+          triggerRef.current = event.currentTarget;
+          setSelectedId(testimonial.id);
+        }}><AdminIcon name="eye" size={16} /></button>
+        {hasEmail
+          ? <button type="button" className="admin-icon-action" aria-label={`Send email to ${testimonial.name}`} title="Send email" onClick={() => setEmailTestimonialId(testimonial.id)}><AdminIcon name="mail" size={16} /></button>
+          : <button type="button" className="admin-icon-action" disabled aria-label="Email unavailable; add a valid email in testimonial details" title="Add a valid email address in testimonial details to enable email"><AdminIcon name="mail" size={16} /></button>}
+        {whatsapp
+          ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noreferrer" aria-label={`Contact ${testimonial.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a>
+          : <button className="admin-icon-action" type="button" disabled aria-label="WhatsApp unavailable; add an international number in testimonial details" title="Add a valid number with country code in testimonial details to enable WhatsApp"><AdminIcon name="whatsapp" size={16} /></button>}
+      </div>,
+    ];
+  });
   const selected = testimonials.find((testimonial) => testimonial.id === selectedId);
+  const selectedEmailTestimonial = testimonials.find((testimonial) => testimonial.id === emailTestimonialId);
   const selectedVideoUrl = selected?.videoPath
     ? `/api/admin/testimonials/${encodeURIComponent(selected.id)}/video`
     : selected?.videoUrl
@@ -669,6 +840,22 @@ export function TestimonialsManagement() {
   const deleteTarget = pendingDeleteId
     ? testimonials.find((testimonial) => testimonial.id === pendingDeleteId)
     : undefined;
+
+  function selectApprovalCard(filter: TestimonialApprovalCardFilter) {
+    setSelectedApprovalCard(filter);
+    setApprovalFilter(filter);
+    setPage(1);
+  }
+
+  function showAllApprovalCards() {
+    setSelectedApprovalCard(null);
+    setApprovalFilter("All approval statuses");
+    setTypeFilter("All testimonial types");
+    setConsentFilter("All consent statuses");
+    setQuery("");
+    setPage(1);
+    setCardsCollapsed(false);
+  }
 
   function closeDetails() {
     setSelectedId(null);
@@ -722,7 +909,7 @@ export function TestimonialsManagement() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Testimonial could not be saved.");
       const saved = result.record;
-      setTestimonials((current) => current.map((item) => item.id === saved.id ? {
+      setTestimonials((current) => current.map((item) => item.id === selected.id || item.id === saved.id ? {
         ...item,
         ...saved.data,
         id: saved.id,
@@ -736,6 +923,7 @@ export function TestimonialsManagement() {
         identityPublicationConsent: saved.data.identityPublicationConsent === true,
         approvalStatus: saved.status === "published" || saved.status === "approved" ? "Approved" : saved.status === "rejected" ? "Rejected" : saved.status === "archived" ? "Archived" : "Pending",
       } : item));
+      setSelectedId(saved.id);
       setEditingTestimonial(false);
       setNotice("Testimonial changes saved.");
     } catch (error) {
@@ -823,6 +1011,25 @@ export function TestimonialsManagement() {
     }
   }
 
+  async function sendTestimonialEmail(id: string, subject: string, message: string): Promise<string | null> {
+    try {
+      const response = await fetch(`/api/admin/testimonials/${encodeURIComponent(id)}/email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, message }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Email could not be sent.");
+      const recipient = testimonials.find((item) => item.id === id)?.email || "";
+      setNotice(`Email sent to ${recipient}.`);
+      return null;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Email could not be sent.";
+      setNotice(errorMessage);
+      return errorMessage;
+    }
+  }
+
   async function confirmTestimonialDelete() {
     if (deletingTestimonialRef.current || !pendingDeleteId) return;
     const targetRecord = testimonials.find((item) => item.id === pendingDeleteId);
@@ -851,6 +1058,7 @@ export function TestimonialsManagement() {
 
   const clearFilters = () => {
     setQuery("");
+    setSelectedApprovalCard(null);
     setApprovalFilter("All approval statuses");
     setTypeFilter("All testimonial types");
     setConsentFilter("All consent statuses");
@@ -880,6 +1088,12 @@ export function TestimonialsManagement() {
     published: testimonials.filter((item) => item.approvalStatus === "Approved").length,
     rejected: testimonials.filter((item) => item.approvalStatus === "Rejected").length,
   };
+  const approvalCounts: Record<TestimonialApprovalCardFilter, number> = {
+    "All approval statuses": counts.total,
+    Pending: counts.pending,
+    Published: counts.published,
+    Rejected: counts.rejected,
+  };
 
   return (
     <div className={styles.testimonialPrintView}>
@@ -893,11 +1107,36 @@ export function TestimonialsManagement() {
           </div>
         }
       />
-      <div className="admin-stat-grid admin-engagement-stats">
-        <StatCard label="Total Testimonials" value={String(counts.total)} change="Stored submissions" icon="quote" pressed={approvalFilter === "All approval statuses"} onClick={() => { setApprovalFilter("All approval statuses"); setPage(1); }} />
-        <StatCard label="Pending Review" value={String(counts.pending)} change="Awaiting moderation" icon="drafts" pressed={approvalFilter === "Pending"} onClick={() => { setApprovalFilter("Pending"); setPage(1); }} />
-        <StatCard label="Published" value={String(counts.published)} change="Visible where consent allows" icon="check" pressed={approvalFilter === "Published"} onClick={() => { setApprovalFilter("Published"); setPage(1); }} />
-        <StatCard label="Rejected" value={String(counts.rejected)} change="Moderation status" icon="close" pressed={approvalFilter === "Rejected"} onClick={() => { setApprovalFilter("Rejected"); setPage(1); }} />
+      <div className="admin-testimonial-card-controls">
+        {selectedApprovalCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllApprovalCards}>Show all cards</button> : null}
+        <button
+          className="admin-button admin-button-secondary"
+          type="button"
+          aria-expanded={!cardsCollapsed}
+          aria-controls="admin-testimonial-status-cards"
+          onClick={() => setCardsCollapsed((current) => !current)}
+        >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
+      </div>
+      <div
+        id="admin-testimonial-status-cards"
+        className={`admin-stat-grid admin-engagement-stats${selectedApprovalCard !== null ? " admin-engagement-stats-selected" : ""}`}
+        hidden={cardsCollapsed}
+      >
+        {testimonialApprovalCardFilters.map((filter) => {
+          if (selectedApprovalCard !== null && selectedApprovalCard !== filter) return null;
+          const card = testimonialApprovalCardMeta[filter];
+          return (
+            <StatCard
+              key={filter}
+              label={card.label}
+              value={String(approvalCounts[filter])}
+              change={card.change}
+              icon={card.icon}
+              pressed={selectedApprovalCard === filter || (selectedApprovalCard === null && approvalFilter === filter)}
+              onClick={() => selectApprovalCard(filter)}
+            />
+          );
+        })}
       </div>
       <p className={styles.testimonialPrintSummary}>
         {approvalFilter === "All approval statuses" ? "Total Testimonials" : approvalFilter === "Pending" ? "Pending Review" : approvalFilter} · {filtered.length} testimonials
@@ -913,7 +1152,7 @@ export function TestimonialsManagement() {
             label="Filter by publication status"
             value={approvalFilter}
             options={["All approval statuses", "Pending", "Published", "Rejected", "Archived"]}
-            onChange={(value) => { setApprovalFilter(value); setPage(1); }}
+            onChange={(value) => { setApprovalFilter(value); setSelectedApprovalCard(null); setPage(1); }}
           />
           <FilterDropdown
             label="Filter by testimonial type or media"
@@ -949,7 +1188,7 @@ export function TestimonialsManagement() {
                 <div className="admin-engagement-fields">
                   <label className="admin-field"><span>Contributor Name <i>*</i></span><input value={testimonialEdit.name} onChange={(event) => setTestimonialEdit((current) => ({ ...current, name: event.target.value }))} /></label>
                   <label className="admin-field"><span>Email Address</span><input type="email" value={testimonialEdit.email} onChange={(event) => setTestimonialEdit((current) => ({ ...current, email: event.target.value }))} /></label>
-                  <label className="admin-field"><span>Phone</span><input type="tel" value={testimonialEdit.phone} onChange={(event) => setTestimonialEdit((current) => ({ ...current, phone: event.target.value }))} /></label>
+                  <label className="admin-field"><span>Phone / WhatsApp (include country code)</span><input type="tel" placeholder="+91 98765 43210" value={testimonialEdit.phone} onChange={(event) => setTestimonialEdit((current) => ({ ...current, phone: event.target.value }))} /></label>
                   <label className="admin-field"><span>Testimonial Title</span><input value={testimonialEdit.title} onChange={(event) => setTestimonialEdit((current) => ({ ...current, title: event.target.value }))} /></label>
                   <label className="admin-field"><span>Company</span><input value={testimonialEdit.company} onChange={(event) => setTestimonialEdit((current) => ({ ...current, company: event.target.value }))} /></label>
                   <label className="admin-field"><span>Designation</span><input value={testimonialEdit.designation} onChange={(event) => setTestimonialEdit((current) => ({ ...current, designation: event.target.value }))} /></label>
@@ -983,8 +1222,8 @@ export function TestimonialsManagement() {
                 <>
               <dl className="admin-detail-list">
                 <div><dt>Name</dt><dd>{selected.name}</dd></div>
-                {selected.email ? <div><dt>Email</dt><dd>{selected.email}</dd></div> : null}
-                {selected.phone ? <div><dt>Phone</dt><dd>{selected.phone}</dd></div> : null}
+                <div><dt>Email</dt><dd>{selected.email || "Not provided"}</dd></div>
+                <div><dt>Phone</dt><dd>{selected.phone || "Not provided"}</dd></div>
                 {selected.title ? <div><dt>Title</dt><dd>{selected.title}</dd></div> : null}
                 {selected.company ? <div><dt>Company</dt><dd>{selected.company}</dd></div> : null}
                 {selected.designation ? <div><dt>Designation</dt><dd>{selected.designation}</dd></div> : null}
@@ -1145,6 +1384,14 @@ export function TestimonialsManagement() {
             <button type="button" className="admin-button admin-button-secondary admin-reject-button" disabled={!deleteTarget || deletingTestimonial} onClick={() => void confirmTestimonialDelete()}>{deletingTestimonial ? "Deleting…" : "Delete Permanently"}</button>
           </div>
         </AccessibleDialog>
+      ) : null}
+      {selectedEmailTestimonial ? (
+        <TestimonialEmailDialog
+          key={selectedEmailTestimonial.id}
+          testimonial={selectedEmailTestimonial}
+          onClose={() => setEmailTestimonialId(null)}
+          onSend={(subject, message) => sendTestimonialEmail(selectedEmailTestimonial.id, subject, message)}
+        />
       ) : null}
     </div>
   );

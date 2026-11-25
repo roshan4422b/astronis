@@ -191,11 +191,18 @@ export function getSourceContentRecords(collection?: string): SourceContentRecor
   }
 
   for (const person of professionals) {
+    const mobilePhone = person.phones.find((phone) => /^\d{10}$/.test(phone.replace(/\D/g, "")));
+    const phone = mobilePhone && person.location.trim().endsWith(", India")
+      ? `+91${mobilePhone.replace(/\D/g, "")}`
+      : "";
     records.push(
       record("professionals", person.slug, {
         title: person.name,
         category: person.role,
         designation: person.role,
+        jurisdiction: person.location,
+        email: person.email,
+        phone,
         expertise: person.expertise,
         description: person.description,
         content: person.description,

@@ -359,7 +359,7 @@ export default function TestimonialForm({
                 type="tel"
                 maxLength={30}
                 autoComplete="tel"
-                placeholder="Your phone number"
+                placeholder="Include country code, e.g. +91 98765 43210"
               />
             </label>
             <label>

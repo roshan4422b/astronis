@@ -1,6 +1,41 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { getEnquiryTrend, getPublishedInsightCategories } from "../src/app/admin/_components/admin-dashboard-analytics.ts";
+
+test("dashboard analytics count enquiries in the last six calendar months", () => {
+  const trend = getEnquiryTrend([
+    { date: "2026-05-31T23:59:59.000Z" },
+    { date: "2026-06-01T00:00:00.000Z" },
+    { date: "2026-06-18T10:00:00.000Z" },
+    { date: "2026-11-25T10:00:00.000Z" },
+    { date: "2026-12-01T00:00:00.000Z" },
+    { date: "invalid date" },
+  ], new Date("2026-11-25T12:00:00.000Z"));
+
+  assert.deepEqual(trend.map(({ label, year, count }) => ({ label, year, count })), [
+    { label: "Jun", year: 2026, count: 2 },
+    { label: "Jul", year: 2026, count: 0 },
+    { label: "Aug", year: 2026, count: 0 },
+    { label: "Sep", year: 2026, count: 0 },
+    { label: "Oct", year: 2026, count: 0 },
+    { label: "Nov", year: 2026, count: 1 },
+  ]);
+});
+
+test("published insight categories exclude drafts and sort by live record count", () => {
+  assert.deepEqual(getPublishedInsightCategories([
+    { category: "Legal Updates", status: "Published" },
+    { category: "Legal Updates", status: "Published" },
+    { category: "Articles & Resources", status: "Published" },
+    { category: "Legal Updates", status: "Draft" },
+    { category: " ", status: "Published" },
+  ]), [
+    { category: "Legal Updates", count: 2 },
+    { category: "Articles & Resources", count: 1 },
+    { category: "Uncategorised", count: 1 },
+  ]);
+});
 
 test("dashboard metric cards open only their selected management section", async () => {
   const [workspace, ui] = await Promise.all([

@@ -96,7 +96,7 @@ export default function ProfessionalProfileTemplate({ person }: { person: Profes
           {qualifications.length > 0 && <p className={styles.qualificationLine}>{qualifications.join(" · ")}</p>}
           <section className={`${styles.credentialPanel} ${styles.credentialCard}`} id="credentials">
             <div><span className={styles.sectionEyebrow}>Professional standing</span><h2>Credentials</h2></div>
-            <p>{person.enrolment || "Credential details are not available."}</p>
+            <p>{person.credentials || person.enrolment || "Credential details are not available."}</p>
           </section>
           <div className={styles.expertiseTags} aria-label="Areas of expertise">{areas.slice(0, 4).map((area) => <span key={area}>{area}</span>)}</div>
           <div className={styles.profileActions}><Link className={styles.primaryButton} href={enquiry}>Discuss Your Requirements <Icon name="arrow" /></Link><a className={styles.secondaryButton} href="#overview">View Professional Details <span aria-hidden="true">↓</span></a></div>
