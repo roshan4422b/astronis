@@ -6,6 +6,7 @@ import {
   getProfessionalExpertiseCategory,
   professionalExpertiseOptions,
 } from "@/data/professional-application-taxonomy";
+import { getWhatsAppUrl } from "@/lib/admin/whatsapp";
 import {
   serviceRows,
   technologyPages,
@@ -107,6 +108,17 @@ function isHttpUrl(value: string) {
   }
 }
 
+function isValidContactEmail(value: string) {
+  return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function contactEmailHref(value: string) {
+  const email = value.trim();
+  if (!isValidContactEmail(email)) return "";
+  const [localPart, domain] = email.split("@");
+  return `mailto:${encodeURIComponent(localPart)}@${encodeURIComponent(domain)}`;
+}
+
 function newRecord(section: AdminEditableContentSection): AdminEditableContentRecord {
   const slugBase = `new-${section}`;
   return {
@@ -131,6 +143,8 @@ function newRecord(section: AdminEditableContentSection): AdminEditableContentRe
     jurisdiction: "",
     imagePlaceholder: "",
     featuredImage: "",
+    email: "",
+    phone: "",
   };
 }
 
@@ -229,7 +243,7 @@ function ContentEditor({
       ...(key === "title" && !slugEdited ? { slug: createSlug(String(value)) } : {}),
       ...(key === "title" ? { jurisdiction: section === "global-presence" ? String(value) : current.jurisdiction } : {}),
     }));
-    if (key === "title" || key === "slug" || key === "description" || key === "content" || key === "credentials" || key === "linkedinProfile" || key === "twitterProfile" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction") {
+    if (key === "title" || key === "slug" || key === "description" || key === "content" || key === "credentials" || key === "linkedinProfile" || key === "twitterProfile" || key === "category" || key === "designation" || key === "expertise" || key === "jurisdiction" || key === "email") {
       setErrors((current) => ({ ...current, [key]: "" }));
     }
   }
@@ -253,6 +267,7 @@ function ContentEditor({
     if (section === "professionals" && !form.expertise.trim()) next.expertise = "Enter an expertise area.";
     if (section === "professionals" && !form.content.trim() && !form.description.trim() && !initial.sourceDefined) next.content = "Enter a professional biography.";
     if (section === "professionals") {
+      if (form.email.trim() && !isValidContactEmail(form.email.trim())) next.email = "Enter a valid email address.";
       for (const [field, label] of [["linkedinProfile", "LinkedIn"], ["twitterProfile", "Twitter"]] as const) {
         const value = form[field].trim();
         if (value && !isHttpUrl(value) && value !== initial[field].trim()) {
@@ -312,6 +327,8 @@ function ContentEditor({
       twitterProfile: form.twitterProfile.trim(),
       jurisdiction: form.jurisdiction.trim(),
       imagePlaceholder: form.imagePlaceholder.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
       status,
       updated: new Date().toISOString().slice(0, 10),
     });
@@ -387,6 +404,15 @@ function ContentEditor({
                 <label className="admin-field">
                   <span>Location</span>
                   <input value={form.jurisdiction} onChange={(event) => update("jurisdiction", event.target.value)} />
+                </label>
+                <label className="admin-field">
+                  <span>Email</span>
+                  <input type="email" autoComplete="email" maxLength={254} value={form.email} onChange={(event) => update("email", event.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "content-email-error" : undefined} />
+                  {errors.email ? <span id="content-email-error">{required(errors.email)}</span> : null}
+                </label>
+                <label className="admin-field">
+                  <span>Phone / WhatsApp (include country code)</span>
+                  <input type="tel" autoComplete="tel" maxLength={30} placeholder="+91 98765 43210" value={form.phone} onChange={(event) => update("phone", event.target.value)} />
                 </label>
                 <label className="admin-field">
                   <span>LinkedIn Profile URL</span>
@@ -490,6 +516,8 @@ function ContentDetails({
     ...(record.enrolment ? [["Professional Enrolment", record.enrolment]] : []),
     ...(record.linkedinProfile ? [["LinkedIn profile", record.linkedinProfile]] : []),
     ...(record.twitterProfile ? [["Twitter profile", record.twitterProfile]] : []),
+    ...(record.email ? [["Email", record.email]] : []),
+    ...(record.phone ? [["Phone / WhatsApp", record.phone]] : []),
     ...(record.jurisdiction ? [[record.sectionType === "professionals" ? "Location" : "Jurisdiction", record.jurisdiction]] : []),
   ];
   return (
@@ -579,10 +607,23 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
   }
 
   const rows = pageRows.map((record) => {
+    const emailHref = contactEmailHref(record.email);
+    const whatsappHref = getWhatsAppUrl(record.phone);
     const actions = (
       <div className="admin-row-actions" key="actions">
         <button type="button" aria-label={`View ${record.title}`} title="View CMS details" onClick={() => setSelected({ record, preview: false })}><AdminIcon name="eye" size={16} /></button>
-        <button type="button" aria-label={`Preview ${record.title}`} title="Preview locally" onClick={() => setSelected({ record, preview: true })}><AdminIcon name="file" size={16} /></button>
+        {section === "professionals" ? (
+          <>
+            {emailHref
+              ? <a href={emailHref} aria-label={`Email ${record.title}`} title="Email"><AdminIcon name="mail" size={16} /></a>
+              : <button type="button" disabled aria-label="Email unavailable" title="Add a valid email in the professional details"><AdminIcon name="mail" size={16} /></button>}
+            {whatsappHref
+              ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={`Contact ${record.title} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a>
+              : <button type="button" disabled aria-label="WhatsApp unavailable" title="Add an international phone number with country code"><AdminIcon name="whatsapp" size={16} /></button>}
+          </>
+        ) : (
+          <button type="button" aria-label={`Preview ${record.title}`} title="Preview locally" onClick={() => setSelected({ record, preview: true })}><AdminIcon name="file" size={16} /></button>
+        )}
         <button type="button" aria-label={`Edit ${record.title}`} title="Edit CMS record" onClick={() => setEditing(record)}><AdminIcon name="edit" size={16} /></button>
         <button type="button" aria-label={`Delete ${record.title}`} title="Delete CMS record" onClick={() => void deleteRecord(record)}><AdminIcon name="close" size={16} /></button>
       </div>

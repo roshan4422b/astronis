@@ -278,10 +278,21 @@ test("professional editor and category filter share the approved expertise optio
 
 test("professional admin uses Location labels without a heading description or hover details", async () => {
   const source = await readFile(new URL("../src/app/admin/_components/admin-content-management.tsx", import.meta.url), "utf8");
+  const sourceContent = await readFile(new URL("../src/lib/cms/source-content.ts", import.meta.url), "utf8");
+  const state = await readFile(new URL("../src/app/admin/_components/admin-state.tsx", import.meta.url), "utf8");
+  const dataRoute = await readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8");
   assert.doesNotMatch(source, /Manage professional profile content published from the CMS\./);
   assert.match(source, /case "professionals": return \["Name", "Designation", "Expertise", "Location", "Status", "Actions"\]/);
   assert.match(source, /<span>Location<\/span>/);
   assert.match(source, /record\.sectionType === "professionals" \? "Location" : "Jurisdiction"/);
+  assert.match(source, /getWhatsAppUrl\(record\.phone\)/);
+  assert.match(source, /contactEmailHref\(record\.email\)/);
+  assert.match(source, /mailto:\$\{encodeURIComponent\(localPart\)\}@\$\{encodeURIComponent\(domain\)\}/);
+  assert.match(source, /section === "professionals" \? \(/);
+  assert.match(source, /title="Preview locally"/);
+  assert.match(sourceContent, /jurisdiction: person\.location,\s*email: person\.email,\s*phone,/);
+  assert.match(state, /email: text\(row\.data\.email\), phone: text\(row\.data\.phone\)/);
+  assert.match(dataRoute, /row\.collection === "professionals" && sourceRecord\s*\?\s*\{ \.\.\.row, data: \{ \.\.\.sourceRecord\.data, \.\.\.row\.data \} \}/);
   assert.match(source, /section !== "professionals" \? <p className="admin-content-form-note">Changes are saved to the CMS\./);
   assert.doesNotMatch(source, /function ProfessionalNamePreview|admin-professional-hover-details|createPortal\(|onMouseEnter=/);
 });

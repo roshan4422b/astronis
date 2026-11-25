@@ -9,6 +9,15 @@ const {
   testimonialExportFilename,
   writeTestimonialWorkbook,
 } = await import("../src/lib/admin/testimonial-export.ts");
+const { getWhatsAppUrl } = await import("../src/lib/admin/whatsapp.ts");
+
+test("builds WhatsApp links only for valid international numbers", () => {
+  assert.equal(getWhatsAppUrl("+91 (98765) 43210"), "https://wa.me/919876543210");
+  assert.equal(getWhatsAppUrl("0044 20 7946 0958"), "https://wa.me/442079460958");
+  assert.equal(getWhatsAppUrl("9876543210"), "");
+  assert.equal(getWhatsAppUrl("+1 23"), "");
+  assert.equal(getWhatsAppUrl("+91 abc 9876543210"), "");
+});
 
 test("filters testimonial statuses and other active filters", () => {
   const pending = mapTestimonialExportRecord({
@@ -66,9 +75,11 @@ test("writes a styled workbook with testimonial status and safely stored text", 
 });
 
 test("wires testimonial cards, exports, print filters, actions, and 50-row pagination", async () => {
-  const [component, route] = await Promise.all([
+  const [component, route, emailRoute, adminDataRoute] = await Promise.all([
     readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/api/admin/testimonials/export/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/testimonials/[id]/email/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8"),
   ]);
   const testimonials = component.slice(
     component.indexOf("export function TestimonialsManagement()"),
@@ -76,20 +87,29 @@ test("wires testimonial cards, exports, print filters, actions, and 50-row pagin
   assert.doesNotMatch(testimonials, /Review and manage testimonial submissions before they are considered for publication/);
   assert.match(component, /const testimonialPageSize = 50/);
   assert.match(testimonials, /displayedTestimonials = printing \? filtered : filtered\.slice/);
-  for (const [label, filter] of [
-    ["Total Testimonials", "All approval statuses"],
-    ["Pending Review", "Pending"],
-    ["Published", "Published"],
-    ["Rejected", "Rejected"],
-  ]) {
-    assert.match(testimonials, new RegExp(`label="${label}"[\\s\\S]*?setApprovalFilter\\("${filter}"\\)`));
-  }
+  assert.match(testimonials, /selectedApprovalCard !== null/);
+  assert.match(testimonials, /Show all cards/);
+  assert.match(testimonials, /cardsCollapsed \? "Show cards" : "Hide cards"/);
+  assert.match(testimonials, /testimonialApprovalCardFilters\.map\(\(filter\) =>/);
+  assert.match(testimonials, /onClick=\{\(\) => selectApprovalCard\(filter\)\}/);
   assert.match(testimonials, /Download Excel/);
   assert.match(testimonials, /setPrinting\(true\)/);
   assert.match(testimonials, /scope: "filtered"/);
-  assert.match(testimonials, /admin-icon-action[^]*?View Details/);
+  assert.match(testimonials, /Send email to \$\{testimonial\.name\}/);
+  assert.match(testimonials, /Contact \$\{testimonial\.name\} on WhatsApp/);
+  assert.match(testimonials, /getWhatsAppUrl\(testimonial\.phone\)/);
+  assert.match(testimonials, /hasValidContactEmail\(testimonial\.email\)/);
+  assert.match(testimonials, /setSelectedId\(saved\.id\)/);
+  assert.match(testimonials, /item\.id === selected\.id \|\| item\.id === saved\.id/);
+  assert.match(adminDataRoute, /!isValidOptionalEmail\(sourceData\.email\)/);
+  assert.match(adminDataRoute, /!isValidOptionalEmail\(data\.email\)/);
+  assert.match(testimonials, /TestimonialEmailDialog/);
+  assert.match(testimonials, /\/api\/admin\/testimonials\/\$\{encodeURIComponent\(id\)\}\/email/);
   assert.match(route, /await getAuthorizedAdmin\(\)/);
   assert.match(route, /matchesTestimonialExportFilters/);
   assert.match(route, /\.range\(offset, offset \+ pageSize - 1\)/);
   assert.match(route, /Content-Disposition/);
+  assert.match(emailRoute, /isSameOriginRequest\(request\)/);
+  assert.match(emailRoute, /\.eq\("collection", "testimonials"\)/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message\)/);
 });

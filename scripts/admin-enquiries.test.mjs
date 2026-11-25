@@ -173,16 +173,19 @@ test("filters, prints and exports enquiry views and protects admin APIs", async 
   assert.match(management, /\/email`/);
   assert.match(management, /Send Email/);
   assert.doesNotMatch(management, /mailto:\$\{enquiry\.email\}/);
-  assert.match(management, /https:\/\/wa\.me\/\$\{phone\}/);
+  assert.match(management, /getWhatsAppUrl\(enquiry\.phone\)/);
   assert.match(enquiryManagement, /columns=\{\["Name", "Email", "Subject", "Received Date", "Status", "Actions"\]\}/);
   assert.match(enquiryManagement, /admin-enquiry-actions/);
   assert.doesNotMatch(enquiryManagement, />Dismiss</);
   assert.match(management, /Download Excel/);
   assert.match(management, /window\.print\(\)/);
-  assert.match(management, /pressed=\{statusFilter === "New"\}/);
-  for (const status of ["Closed", "Interested", "Not Interested", "Follow-up"]) {
-    assert.match(enquiryManagement, new RegExp(`label="${status}"[\\s\\S]*?pressed=\\{statusFilter === "${status}"\\}[\\s\\S]*?setStatusFilter\\("${status}"\\)`));
-  }
+  assert.match(enquiryManagement, /pressed=\{selectedStatusCard === status \|\| \(selectedStatusCard === null && statusFilter === status\)\}/);
+  assert.match(enquiryManagement, /selectedStatusCard !== null/);
+  assert.match(enquiryManagement, /Show all cards/);
+  assert.match(enquiryManagement, /cardsCollapsed \? "Show cards" : "Hide cards"/);
+  assert.match(enquiryManagement, /onClick=\{\(\) => selectStatusCard\(status\)\}/);
+  assert.match(enquiryManagement, /window\.setTimeout\([\s\S]*?3000/);
+  assert.match(management, /Enquiry status saved as \$\{status\}\./);
   assert.match(management, /statusFilter === "All statuses" \|\| enquiry\.status === statusFilter/);
   assert.match(management, /scope: "filtered"/);
   assert.match(management, /export\?id=/);

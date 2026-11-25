@@ -846,6 +846,242 @@
     font-size: 16px;
   }
 
+  .root .content :global(.admin-dashboard-charts) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .root .content :global(.admin-chart-card) {
+    min-width: 0;
+    padding: 18px 20px 16px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 12px;
+    background: #2874e8;
+    box-shadow: 0 8px 22px rgba(23, 73, 145, .16);
+  }
+
+  .root .content :global(.admin-chart-heading) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .root .content :global(.admin-chart-heading h2) {
+    margin: 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 650;
+  }
+
+  .root .content :global(.admin-chart-heading p),
+  .root .content :global(.admin-chart-footnote) {
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, .88);
+    font-size: 15px;
+  }
+
+  .root .content :global(.admin-chart-heading > strong) {
+    flex: 0 0 auto;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 650;
+    text-align: right;
+  }
+
+  .root .content :global(.admin-chart-heading > strong span) {
+    display: block;
+    margin-top: 2px;
+    color: rgba(255, 255, 255, .88);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .root .content :global(.admin-trend-svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .root .content :global(.admin-chart-gridline) {
+    stroke: rgba(255, 255, 255, .26);
+    stroke-dasharray: 4 5;
+    stroke-width: 1;
+  }
+
+  .root .content :global(.admin-chart-axis-label),
+  .root .content :global(.admin-chart-month-label) {
+    fill: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    opacity: .95;
+  }
+
+  .root .content :global(.admin-chart-area) {
+    fill: url("#admin-enquiry-gradient");
+    opacity: .12;
+  }
+
+  .root .content :global(.admin-chart-line) {
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+  }
+
+  .root .content :global(.admin-chart-point) {
+    fill: #2874e8;
+    stroke: #fff;
+    stroke-width: 3.5;
+  }
+
+  .root .content :global(.admin-category-chart) {
+    display: grid;
+    gap: 18px;
+    padding-top: 5px;
+  }
+
+  .root .content :global(.admin-category-chart-row) {
+    min-width: 0;
+  }
+
+  .root .content :global(.admin-category-chart-label) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .root .content :global(.admin-category-chart-label span) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+  }
+
+  .root .content :global(.admin-category-chart-label strong) {
+    flex: 0 0 auto;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  .root .content :global(.admin-category-chart-track) {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, .25);
+  }
+
+  .root .content :global(.admin-category-chart-track span) {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #fff;
+  }
+
+  .root .content :global(.admin-chart-footnote) {
+    margin-top: 0;
+  }
+
+  .root .content :global(.admin-chart-empty) {
+    display: grid;
+    min-height: 190px;
+    place-items: center;
+    margin: 0;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .root .content :global(.admin-enquiry-status-summary) {
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, .25);
+  }
+
+  .root .content :global(.admin-enquiry-status-heading) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .root .content :global(.admin-enquiry-status-heading h3) {
+    margin: 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 650;
+  }
+
+  .root .content :global(.admin-enquiry-status-heading p) {
+    margin: 3px 0 0;
+    color: rgba(255, 255, 255, .84);
+    font-size: 13px;
+  }
+
+  .root .content :global(.admin-enquiry-status-heading > strong) {
+    flex: 0 0 auto;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 650;
+    text-align: right;
+  }
+
+  .root .content :global(.admin-enquiry-status-heading > strong span) {
+    color: rgba(255, 255, 255, .88);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .root .content :global(.admin-enquiry-status-list) {
+    display: grid;
+    gap: 11px;
+  }
+
+  .root .content :global(.admin-enquiry-status-label) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 5px;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .root .content :global(.admin-enquiry-status-label span) {
+    color: #fff;
+  }
+
+  .root .content :global(.admin-enquiry-status-label strong) {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 650;
+  }
+
+  .root .content :global(.admin-enquiry-status-track) {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, .25);
+  }
+
+  .root .content :global(.admin-enquiry-status-track span) {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #fff;
+  }
+
   :global(.admin-dashboard-grid) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(260px, .65fr);
@@ -2196,12 +2432,24 @@
   :global(.admin-dashboard-grid) {
     grid-template-columns: 1fr;
   }
+  .root .content :global(.admin-dashboard-charts) {
+    grid-template-columns: 1fr;
+  }
   :global(.admin-quick-panel) {
     grid-column: 1;
     grid-row: auto;
   }
   :global(.admin-form-layout) {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .root .content :global(.admin-chart-card) {
+    padding: 15px 13px 13px;
+  }
+  .root .content :global(.admin-chart-heading > strong) {
+    font-size: 21px;
   }
 }
 
@@ -2910,6 +3158,23 @@
   gap: 16px;
 }
 
+.root :global(.admin-enquiry-card-controls),
+.root :global(.admin-testimonial-card-controls) {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.root :global(.admin-engagement-stats.admin-engagement-stats-selected) {
+  grid-template-columns: minmax(0, 360px);
+}
+
+.root :global(.admin-engagement-stats[hidden]) {
+  display: none;
+}
+
 .root :global(.admin-engagement-stats) :global(.admin-stat-card) {
   width: 100%;
   min-width: 0;
@@ -3456,6 +3721,7 @@
 
   .enquiryPrintView :global(.admin-heading-actions),
   .enquiryPrintView :global(.admin-stat-grid),
+  .enquiryPrintView :global(.admin-enquiry-card-controls),
   .enquiryPrintView :global(.admin-engagement-toolbar),
   .enquiryPrintView :global(.admin-table-footer),
   .enquiryPrintView :global(.admin-insight-feedback) {
@@ -3502,6 +3768,7 @@
 
   .testimonialPrintView :global(.admin-heading-actions),
   .testimonialPrintView :global(.admin-stat-grid),
+  .testimonialPrintView :global(.admin-testimonial-card-controls),
   .testimonialPrintView :global(.admin-engagement-toolbar),
   .testimonialPrintView :global(.admin-table-footer),
   .testimonialPrintView :global(.admin-insight-feedback) {

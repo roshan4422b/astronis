@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { enquiryStatuses } from "@/lib/admin/enquiry-status";
 import { insightsCategories } from "../admin-data";
 import { EnquiriesManagement, TestimonialsManagement } from "./admin-engagement";
+import { getEnquiryTrend, getPublishedInsightCategories } from "./admin-dashboard-analytics";
 import AdminContentManagement from "./admin-content-management";
 import {
   AdminIcon,
@@ -59,6 +61,101 @@ function formatDemoDate(value: string) {
   return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
 }
 
+function DashboardCharts({ enquiries, insights }: { enquiries: { date: string; status: string }[]; insights: { category: string; status: string }[] }) {
+  const enquiryTrend = getEnquiryTrend(enquiries);
+  const publishedCategories = getPublishedInsightCategories(insights);
+  const chartWidth = 720;
+  const chartHeight = 220;
+  const chartLeft = 42;
+  const chartRight = 700;
+  const chartTop = 18;
+  const chartBottom = 174;
+  const maxEnquiries = Math.max(1, ...enquiryTrend.map((month) => month.count));
+  const yAxisFractions = maxEnquiries > 1 ? [0, 0.5, 1] : [0, 1];
+  const points = enquiryTrend.map((month, index) => ({
+    ...month,
+    x: chartLeft + index * ((chartRight - chartLeft) / (enquiryTrend.length - 1)),
+    y: chartBottom - (month.count / maxEnquiries) * (chartBottom - chartTop),
+  }));
+  const line = points.map((point) => `${point.x},${point.y}`).join(" ");
+  const area = `${chartLeft},${chartBottom} ${line} ${chartRight},${chartBottom}`;
+  const totalRecentEnquiries = enquiryTrend.reduce((total, month) => total + month.count, 0);
+  const publishedTotal = publishedCategories.reduce((total, item) => total + item.count, 0);
+  const maxCategoryCount = Math.max(1, ...publishedCategories.map((item) => item.count));
+  const firstMonth = enquiryTrend[0];
+  const lastMonth = enquiryTrend[enquiryTrend.length - 1];
+  const dateRange = `${firstMonth.label}${firstMonth.year !== lastMonth.year ? ` ${firstMonth.year}` : ""}–${lastMonth.label} ${lastMonth.year}`;
+
+  return (
+    <section className="admin-dashboard-charts" aria-label="Dashboard analytics">
+      <article className="admin-chart-card">
+        <header className="admin-chart-heading">
+          <div><h2>Enquiry activity</h2><p>Saved website enquiries · {dateRange}</p></div>
+          <strong>{totalRecentEnquiries}<span> last 6 months</span></strong>
+        </header>
+        <div className="admin-trend-chart">
+          <svg className="admin-trend-svg" viewBox={`0 0 ${chartWidth} ${chartHeight}`} role="img" aria-labelledby="enquiry-chart-title enquiry-chart-description">
+            <title id="enquiry-chart-title">Monthly enquiry activity</title>
+            <desc id="enquiry-chart-description">Enquiry totals for each of the last six calendar months, based on saved enquiry dates.</desc>
+            <defs><linearGradient id="admin-enquiry-gradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#fff" /><stop offset="100%" stopColor="#fff" stopOpacity="0" /></linearGradient></defs>
+            {yAxisFractions.map((fraction) => {
+              const y = chartBottom - fraction * (chartBottom - chartTop);
+              const value = Math.round(maxEnquiries * fraction);
+              return <g key={fraction}><line className="admin-chart-gridline" x1={chartLeft} x2={chartRight} y1={y} y2={y} /><text className="admin-chart-axis-label" x={chartLeft - 12} y={y + 4} textAnchor="end">{value}</text></g>;
+            })}
+            <polygon className="admin-chart-area" points={area} />
+            <polyline className="admin-chart-line" points={line} />
+            {points.map((point) => (
+              <g key={`${point.year}-${point.month}`}>
+                <circle className="admin-chart-point" cx={point.x} cy={point.y} r={4}><title>{`${point.label} ${point.year}: ${point.count} ${point.count === 1 ? "enquiry" : "enquiries"}`}</title></circle>
+                <text className="admin-chart-month-label" x={point.x} y={chartHeight - 12} textAnchor="middle">{point.label}</text>
+              </g>
+            ))}
+          </svg>
+        </div>
+        <section className="admin-enquiry-status-summary" aria-label="All saved enquiries by status">
+          <header className="admin-enquiry-status-heading">
+            <div><h3>Enquiries by status</h3><p>All saved enquiries</p></div>
+            <strong>{enquiries.length}<span> total</span></strong>
+          </header>
+          <div className="admin-enquiry-status-list">
+            {enquiryStatuses.map((status) => {
+              const count = enquiries.filter((enquiry) => enquiry.status === status).length;
+              const share = enquiries.length ? (count / enquiries.length) * 100 : 0;
+              return (
+                <div className="admin-enquiry-status-row" key={status}>
+                  <div className="admin-enquiry-status-label"><span>{status}</span><strong>{count}</strong></div>
+                  <div className="admin-enquiry-status-track" aria-hidden="true"><span style={{ width: `${share}%` }} /></div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </article>
+
+      <article className="admin-chart-card">
+        <header className="admin-chart-heading">
+          <div><h2>Published insights</h2><p>Live articles by category</p></div>
+          <strong>{publishedTotal}<span> published</span></strong>
+        </header>
+        {publishedCategories.length ? (
+          <div className="admin-category-chart" role="list" aria-label="Published insights by category">
+            {publishedCategories.slice(0, 6).map(({ category, count }) => (
+              <div className="admin-category-chart-row" role="listitem" key={category}>
+                <div className="admin-category-chart-label"><span>{category}</span><strong>{count}</strong></div>
+                <div className="admin-category-chart-track" aria-hidden="true"><span style={{ width: `${(count / maxCategoryCount) * 100}%` }} /></div>
+              </div>
+            ))}
+            {publishedCategories.length > 6 ? <p className="admin-chart-footnote">Showing the 6 most active categories</p> : null}
+          </div>
+        ) : (
+          <p className="admin-chart-empty">Published insights will appear here when available.</p>
+        )}
+      </article>
+    </section>
+  );
+}
+
 function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
   const { enquiries, insights, testimonials, contentRecords } = useAdminState();
   const [selectedSection, setSelectedSection] = useState<"enquiries" | "testimonials" | "insights" | null>(null);
@@ -89,6 +186,7 @@ function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
       <StatCard label="Testimonials" value={String(testimonials.length)} change="Stored submissions" icon="quote" onClick={() => setSelectedSection("testimonials")} />
       <StatCard label="Published Insights" value={String(insights.filter((item) => item.status === "Published").length)} change="Live CMS articles" icon="insights" onClick={() => setSelectedSection("insights")} />
     </div>
+    <DashboardCharts enquiries={enquiries} insights={insights} />
   </>;
 }
 
