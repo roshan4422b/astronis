@@ -115,6 +115,7 @@ test("exports a saved follow-up date as a date cell", async () => {
 test("applies admin enquiry label formatting", () => {
   assert.equal(displayEnquiryLabel("New Website Enquiry"), "Enquiry");
   assert.equal(displayEnquiryLabel("New Website Enquiry | Home"), "Enquiry | Home");
+  assert.equal(displayEnquiryLabel("New Technology Enquiry | Digital Business Solutions"), "Enquiry | Digital");
   assert.equal(displayEnquiryLabel(""), "Enquiry");
   assert.equal(displayEnquiryLabel("Website Enquiry | Home"), "Website Enquiry | Home");
 });
@@ -183,6 +184,12 @@ test("filters, prints and exports enquiry views and protects admin APIs", async 
   assert.match(enquiryManagement, /selectedStatusCard !== null/);
   assert.match(enquiryManagement, /Show all cards/);
   assert.match(enquiryManagement, /cardsCollapsed \? "Show cards" : "Hide cards"/);
+  const enquiryHeadingActions = enquiryManagement.slice(
+    enquiryManagement.indexOf('title="Contact Enquiries"'),
+    enquiryManagement.indexOf('id="admin-enquiry-status-cards"'),
+  );
+  assert.match(enquiryHeadingActions, /Download Excel[\s\S]*Print[\s\S]*Hide cards/);
+  assert.doesNotMatch(enquiryManagement, /className="admin-enquiry-card-controls"/);
   assert.match(enquiryManagement, /onClick=\{\(\) => selectStatusCard\(status\)\}/);
   assert.match(enquiryManagement, /window\.setTimeout\([\s\S]*?3000/);
   assert.match(management, /Enquiry status saved as \$\{status\}\./);
@@ -221,7 +228,8 @@ test("filters, prints and exports enquiry views and protects admin APIs", async 
   assert.match(deleteRoute, /if \(!auth\.user \|\| !auth\.supabase\)/);
   assert.match(detailRoute, /isValidFollowUpDate/);
   assert.match(detailRoute, /follow_up_date/);
-  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(enquiry\.email, subject, message\)/);
+  assert.match(emailRoute, /parseAdminEmailAttachments\(form\)/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(enquiry\.email, subject, message, attachmentResult\.attachments\)/);
   assert.match(emailRoute, /\.select\("id, name, email"\)/);
   assert.match(emailRoute, /isSameOriginRequest/);
   assert.doesNotMatch(emailRoute, /body\.to|body\.email/);

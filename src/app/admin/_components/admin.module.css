@@ -3171,15 +3171,6 @@
   gap: 16px;
 }
 
-.root :global(.admin-enquiry-card-controls),
-.root :global(.admin-testimonial-card-controls) {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
 .root :global(.admin-engagement-stats.admin-engagement-stats-selected) {
   grid-template-columns: minmax(0, 360px);
 }
@@ -3246,7 +3237,40 @@
 
 .root :global(.admin-enquiry-email-actions) {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: flex-end;
+}
+
+.root :global(.admin-email-attachment-list) {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.root :global(.admin-email-attachment-list li) {
+  align-items: center;
+  background: #f7f9fc;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 8px 10px;
+}
+
+.root :global(.admin-email-attachment-list li span) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.root :global(.admin-email-attachment-list .admin-button) {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 6px 10px;
 }
 
 .root :global(.admin-enquiry-export-actions) {
@@ -3270,6 +3294,19 @@
 
 .root :global(.admin-testimonial-export-actions .admin-button) {
   white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .root :global(.admin-enquiry-export-actions),
+  .root :global(.admin-testimonial-export-actions) {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+.root :global(.admin-enquiry-export-actions .admin-button),
+.root :global(.admin-testimonial-export-actions .admin-button) {
+  width: auto;
 }
 
 .enquiryPrintSummary {
@@ -3734,7 +3771,6 @@
 
   .enquiryPrintView :global(.admin-heading-actions),
   .enquiryPrintView :global(.admin-stat-grid),
-  .enquiryPrintView :global(.admin-enquiry-card-controls),
   .enquiryPrintView :global(.admin-engagement-toolbar),
   .enquiryPrintView :global(.admin-table-footer),
   .enquiryPrintView :global(.admin-insight-feedback) {
@@ -3781,7 +3817,6 @@
 
   .testimonialPrintView :global(.admin-heading-actions),
   .testimonialPrintView :global(.admin-stat-grid),
-  .testimonialPrintView :global(.admin-testimonial-card-controls),
   .testimonialPrintView :global(.admin-engagement-toolbar),
   .testimonialPrintView :global(.admin-table-footer),
   .testimonialPrintView :global(.admin-insight-feedback) {

@@ -23,7 +23,10 @@ export default function TestimonialForm({
     [emailVerified, setEmailVerified] = useState(false),
     [formValid, setFormValid] = useState(false),
     [recording, setRecording] = useState(false),
+    [recordingPaused, setRecordingPaused] = useState(false),
     [cameraStarting, setCameraStarting] = useState(false),
+    [cameraReady, setCameraReady] = useState(false),
+    [preparingRecording, setPreparingRecording] = useState(false),
     [recordDialogOpen, setRecordDialogOpen] = useState(false),
     [recordingSeconds, setRecordingSeconds] = useState(0),
     [video, setVideo] = useState<Blob | null>(null),
@@ -39,6 +42,7 @@ export default function TestimonialForm({
     live = useRef<HTMLVideoElement>(null),
     recordDialog = useRef<HTMLDialogElement>(null),
     recordingStartedAt = useRef(0),
+    recordingElapsedBeforePause = useRef(0),
     formElement = useRef<HTMLFormElement>(null),
     photoInput = useRef<HTMLInputElement>(null),
     videoInput = useRef<HTMLInputElement>(null),
@@ -70,12 +74,23 @@ export default function TestimonialForm({
     if (!recordDialogOpen && dialog.open) dialog.close();
   }, [recordDialogOpen]);
   useEffect(() => {
-    if (!recording) return;
+    const videoElement = live.current;
+    const cameraStream = stream.current;
+    if (!recordDialogOpen || !cameraReady || !videoElement || !cameraStream) return;
+    videoElement.srcObject = cameraStream;
+    void videoElement.play().catch(() => undefined);
+    return () => {
+      if (videoElement.srcObject === cameraStream) videoElement.srcObject = null;
+    };
+  }, [recordDialogOpen, cameraReady]);
+  useEffect(() => {
+    if (!recording || recordingPaused) return;
     const timer = window.setInterval(() => {
-      setRecordingSeconds(Math.floor((performance.now() - recordingStartedAt.current) / 1000));
+      const currentSegment = recordingStartedAt.current ? performance.now() - recordingStartedAt.current : 0;
+      setRecordingSeconds(Math.floor((recordingElapsedBeforePause.current + currentSegment) / 1000));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [recording]);
+  }, [recording, recordingPaused]);
   useEffect(
     () => () => {
       recordingAttempt.current += 1;
@@ -89,12 +104,19 @@ export default function TestimonialForm({
     },
     [preview],
   );
-  async function start() {
+  async function openRecorder() {
     setStatus("");
     setRecordDialogOpen(true);
     setCameraStarting(true);
+    setCameraReady(false);
+    setRecording(false);
+    setRecordingPaused(false);
+    setPreparingRecording(false);
     setRecordingSeconds(0);
+    recordingElapsedBeforePause.current = 0;
     const attempt = ++recordingAttempt.current;
+    stream.current?.getTracks().forEach((track) => track.stop());
+    stream.current = null;
     try {
       if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
         throw new Error("unsupported");
@@ -113,6 +135,33 @@ export default function TestimonialForm({
         return;
       }
       stream.current = cameraStream;
+      setCameraReady(true);
+      setCameraStarting(false);
+    } catch (error) {
+      if (attempt !== recordingAttempt.current) return;
+      stream.current?.getTracks().forEach((track) => track.stop());
+      stream.current = null;
+      setCameraReady(false);
+      setCameraStarting(false);
+      setStatus(
+        error instanceof Error && error.message === "unsupported"
+          ? "This browser does not support video recording. You can upload an MP4, MOV or WebM video instead."
+          : "Camera or microphone access is unavailable. You can upload an existing video instead.",
+      );
+    }
+  }
+  function startRecording() {
+    const cameraStream = stream.current;
+    if (!cameraStream) {
+      setStatus("Camera or microphone access is unavailable. Try opening the recorder again.");
+      return;
+    }
+    setStatus("");
+    setRecordingSeconds(0);
+    recordingElapsedBeforePause.current = 0;
+    discardRecording.current = false;
+    const attempt = recordingAttempt.current;
+    try {
       const preferredType = [
         "video/webm;codecs=vp9,opus",
         "video/webm;codecs=vp8,opus",
@@ -125,79 +174,125 @@ export default function TestimonialForm({
         if (e.data.size) chunks.push(e.data);
       };
       r.onstop = async () => {
-        const elapsed = Math.max(1, performance.now() - recordingStartedAt.current);
+        const activeSegment = recordingStartedAt.current ? performance.now() - recordingStartedAt.current : 0;
+        const elapsed = Math.max(1, recordingElapsedBeforePause.current + activeSegment);
+        recordingStartedAt.current = 0;
         const firstChunkType = chunks[0] instanceof Blob ? chunks[0].type : "";
         let blob = new Blob(chunks, { type: r.mimeType || firstChunkType });
         setRecording(false);
+        setRecordingPaused(false);
         setCameraStarting(false);
         setRecordingSeconds(Math.ceil(elapsed / 1000));
+        setPreparingRecording(true);
         stream.current?.getTracks().forEach((t) => t.stop());
+        stream.current = null;
         if (live.current) live.current.srcObject = null;
-        if (discardRecording.current) {
+        setCameraReady(false);
+        if (discardRecording.current || attempt !== recordingAttempt.current) {
           discardRecording.current = false;
+          setPreparingRecording(false);
           return;
         }
         if (!testimonialVideoTypes.has(blob.type.split(";")[0]) || !blob.size || blob.size > testimonialVideoMaxBytes) {
           setStatus("The recording format is unsupported or the video exceeds 20 MB. Please record again or choose an MP4, MOV or WebM file.");
+          setPreparingRecording(false);
           return;
         }
         if (blob.type.split(";")[0] === "video/webm") {
           try {
             blob = await fixWebmDuration(blob, elapsed);
           } catch {
-            setStatus("The recording could not be prepared for preview. Please record again or upload an existing video.");
+            if (attempt === recordingAttempt.current) {
+              setStatus("The recording could not be prepared for preview. Please record again or upload an existing video.");
+            }
+            setPreparingRecording(false);
             return;
           }
         }
+        if (attempt !== recordingAttempt.current || discardRecording.current) {
+          discardRecording.current = false;
+          setPreparingRecording(false);
+          return;
+        }
         if (blob.size > testimonialVideoMaxBytes) {
           setStatus("The recording exceeds 20 MB. Please record a shorter video or choose an existing video.");
+          setPreparingRecording(false);
           return;
         }
         setVideo(blob);
         setRecorded(true);
         setVideoName("Recorded video");
         setPreview(URL.createObjectURL(blob));
+        setPreparingRecording(false);
       };
       recordingStartedAt.current = performance.now();
       r.start(1000);
       setRecording(true);
+      setRecordingPaused(false);
       setCameraStarting(false);
-      if (live.current) {
-        live.current.srcObject = stream.current;
-        await live.current.play().catch(() => undefined);
+    } catch {
+      const activeRecorder = recorder.current;
+      if (activeRecorder?.state === "recording" || activeRecorder?.state === "paused") {
+        discardRecording.current = true;
+        activeRecorder.stop();
       }
-    } catch (error) {
-      if (recorder.current?.state === "recording") recorder.current.stop();
       setRecording(false);
+      setRecordingPaused(false);
       setCameraStarting(false);
       stream.current?.getTracks().forEach((t) => t.stop());
-      setStatus(
-        error instanceof Error && error.message === "unsupported"
-          ? "This browser does not support video recording. You can upload an MP4, MOV or WebM video instead."
-          : "Camera or microphone access is unavailable. You can upload an existing video instead.",
-      );
+      stream.current = null;
+      setCameraReady(false);
+      setPreparingRecording(false);
+      recordingStartedAt.current = 0;
+      setStatus("Video recording could not be started. Please try again or upload an existing video.");
     }
   }
+  function pauseRecording() {
+    const currentRecorder = recorder.current;
+    if (currentRecorder?.state !== "recording") return;
+    recordingElapsedBeforePause.current += performance.now() - recordingStartedAt.current;
+    recordingStartedAt.current = 0;
+    currentRecorder.pause();
+    setRecordingSeconds(Math.floor(recordingElapsedBeforePause.current / 1000));
+    setRecordingPaused(true);
+  }
+  function resumeRecording() {
+    const currentRecorder = recorder.current;
+    if (currentRecorder?.state !== "paused") return;
+    currentRecorder.resume();
+    recordingStartedAt.current = performance.now();
+    setRecordingPaused(false);
+  }
+  function stopRecording() {
+    const currentRecorder = recorder.current;
+    if (currentRecorder?.state === "recording" || currentRecorder?.state === "paused") currentRecorder.stop();
+  }
   function dismissRecorder() {
-    if (cameraStarting) recordingAttempt.current += 1;
-    if (recorder.current?.state === "recording") {
+    recordingAttempt.current += 1;
+    if (recorder.current?.state === "recording" || recorder.current?.state === "paused") {
       discardRecording.current = true;
       recorder.current.stop();
     }
     stream.current?.getTracks().forEach((track) => track.stop());
+    stream.current = null;
     setCameraStarting(false);
+    setCameraReady(false);
     setRecording(false);
+    setRecordingPaused(false);
+    setPreparingRecording(false);
     setRecordDialogOpen(false);
   }
   function changeFormat(next: string) {
     if (next === format) return;
     recordingAttempt.current += 1;
-    if (recorder.current?.state === "recording") discardRecording.current = true;
-    if (recorder.current?.state === "recording") recorder.current.stop();
+    if (recorder.current?.state === "recording" || recorder.current?.state === "paused") discardRecording.current = true;
+    if (recorder.current?.state === "recording" || recorder.current?.state === "paused") recorder.current.stop();
     else stream.current?.getTracks().forEach((t) => t.stop());
+    stream.current = null;
     setFormat(next);
     setRecordDialogOpen(false);
     setCameraStarting(false);
+    setCameraReady(false);
     setVideo(null);
     setRecorded(false);
     setPreview("");
@@ -415,7 +510,7 @@ export default function TestimonialForm({
                 <button
                   type="button"
                   className="button"
-                  onClick={start}
+                  onClick={openRecorder}
                 >
                   <Icon name="play" />
                   {recorded ? "Record Again" : "Record Video Testimonial"}
@@ -582,7 +677,8 @@ export default function TestimonialForm({
             </header>
             {recording ? (
               <p className={styles.recordingStatus} aria-live="polite">
-                <span /> Recording {Math.floor(recordingSeconds / 60)}:{String(recordingSeconds % 60).padStart(2, "0")}
+                <span className={recordingPaused ? styles.recordingPaused : undefined} />
+                {recordingPaused ? "Paused" : "Recording"} {Math.floor(recordingSeconds / 60)}:{String(recordingSeconds % 60).padStart(2, "0")}
               </p>
             ) : null}
             <video
@@ -591,7 +687,7 @@ export default function TestimonialForm({
               muted
               playsInline
               autoPlay
-              hidden={!recording}
+              hidden={!cameraReady && !recording}
               aria-label="Live camera preview"
             />
             {preview && !recording ? (
@@ -606,13 +702,29 @@ export default function TestimonialForm({
               />
             ) : null}
             {cameraStarting ? <p role="status">Connecting to your camera and microphone…</p> : null}
-            {!cameraStarting && !recording && !preview ? (
+            {preparingRecording ? <p role="status">Preparing your recording for preview…</p> : null}
+            {!cameraStarting && !cameraReady && !recording && !preview && !status ? (
               <p>Allow camera and microphone access to record your testimonial.</p>
             ) : null}
             {status ? <p className={styles.recordingError} role="alert">{status}</p> : null}
             <div className={styles.recordDialogActions}>
+              {cameraReady && !recording && !preparingRecording ? (
+                <button type="button" className="button" onClick={startRecording}>
+                  Start Recording
+                </button>
+              ) : null}
+              {recording && !recordingPaused ? (
+                <button type="button" className="button secondary" onClick={pauseRecording}>
+                  Pause Recording
+                </button>
+              ) : null}
+              {recording && recordingPaused ? (
+                <button type="button" className="button" onClick={resumeRecording}>
+                  Resume Recording
+                </button>
+              ) : null}
               {recording ? (
-                <button type="button" className="button" onClick={() => recorder.current?.stop()}>
+                <button type="button" className="button secondary" onClick={stopRecording}>
                   Stop Recording
                 </button>
               ) : null}
@@ -621,7 +733,7 @@ export default function TestimonialForm({
                   <button type="button" className="button" onClick={() => setRecordDialogOpen(false)}>
                     Use This Video
                   </button>
-                  <button type="button" className="button secondary" onClick={start}>
+                  <button type="button" className="button secondary" onClick={openRecorder}>
                     Record Again
                   </button>
                   <button type="button" className="button secondary" onClick={() => {
@@ -636,8 +748,8 @@ export default function TestimonialForm({
                   </button>
                 </>
               ) : null}
-              {!cameraStarting && !recording && !preview ? (
-                <button type="button" className="button" onClick={start}>
+              {!cameraStarting && !cameraReady && !recording && !preview && !preparingRecording ? (
+                <button type="button" className="button" onClick={openRecorder}>
                   Try Again
                 </button>
               ) : null}

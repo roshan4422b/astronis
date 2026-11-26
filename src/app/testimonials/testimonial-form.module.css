@@ -72,6 +72,10 @@
   background: #d82c3b;
 }
 
+.recordingStatus .recordingPaused {
+  background: #d28b19;
+}
+
 .recordingError {
   margin: 0;
   color: #b42332;

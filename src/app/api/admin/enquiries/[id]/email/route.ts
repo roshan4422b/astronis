@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { isValidVerificationEmail, sendMailtrapTransactionalEmail } from "@/lib/form-verification.server";
 import { getAuthorizedAdmin } from "@/lib/supabase/server";
 import { isSameOriginRequest } from "@/lib/request-origin";
+import { adminEmailAttachmentMaxRequestBytes } from "@/lib/admin/email-attachments";
+import { parseAdminEmailAttachments } from "@/lib/admin/email-attachments.server";
 
 export const runtime = "nodejs";
 
@@ -14,11 +16,19 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   const { id } = await context.params;
   if (!id.trim() || id.length > 200) return NextResponse.json({ error: "Invalid enquiry ID." }, { status: 400 });
 
-  let body: { subject?: unknown; message?: unknown };
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON." }, { status: 400 }); }
-  const subject = typeof body.subject === "string" ? body.subject.replace(/[\r\n]+/g, " ").trim().slice(0, 200) : "";
-  const message = typeof body.message === "string" ? body.message.trim().slice(0, 10000) : "";
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && Number(contentLength) > adminEmailAttachmentMaxRequestBytes) {
+    return NextResponse.json({ error: "Attachments must total 4 MB or less." }, { status: 413 });
+  }
+  let form: FormData;
+  try { form = await request.formData(); } catch { return NextResponse.json({ error: "Invalid email form data." }, { status: 400 }); }
+  const subjectValue = form.get("subject");
+  const messageValue = form.get("message");
+  const subject = typeof subjectValue === "string" ? subjectValue.replace(/[\r\n]+/g, " ").trim().slice(0, 200) : "";
+  const message = typeof messageValue === "string" ? messageValue.trim().slice(0, 10000) : "";
   if (!subject || !message) return NextResponse.json({ error: "Enter an email subject and message." }, { status: 400 });
+  const attachmentResult = await parseAdminEmailAttachments(form);
+  if (!attachmentResult.ok) return NextResponse.json({ error: attachmentResult.error }, { status: 400 });
 
   const { data: enquiry, error: enquiryError } = await auth.supabase
     .from("cms_enquiries")
@@ -35,7 +45,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   }
 
   try {
-    await sendMailtrapTransactionalEmail(enquiry.email, subject, message);
+    await sendMailtrapTransactionalEmail(enquiry.email, subject, message, attachmentResult.attachments);
   } catch (error) {
     const configurationError = error instanceof Error && error.message.startsWith("Required server configuration is missing:");
     console.error("[admin-enquiry-email] Delivery failed.", {
