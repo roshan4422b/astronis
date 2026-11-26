@@ -12,8 +12,13 @@ const {
 const { getWhatsAppUrl } = await import("../src/lib/admin/whatsapp.ts");
 
 test("builds WhatsApp links only for valid international numbers", () => {
-  assert.equal(getWhatsAppUrl("+91 (98765) 43210"), "https://wa.me/919876543210");
-  assert.equal(getWhatsAppUrl("0044 20 7946 0958"), "https://wa.me/442079460958");
+  assert.equal(getWhatsAppUrl("+91 (98765) 43210"), "https://api.whatsapp.com/send?phone=919876543210");
+  assert.equal(getWhatsAppUrl("0044 20 7946 0958"), "https://api.whatsapp.com/send?phone=442079460958");
+  assert.equal(getWhatsAppUrl("91 98765 43210"), "https://api.whatsapp.com/send?phone=919876543210");
+  assert.equal(
+    getWhatsAppUrl("+91 98765 43210", "Hello there"),
+    "https://api.whatsapp.com/send?phone=919876543210&text=Hello+there",
+  );
   assert.equal(getWhatsAppUrl("9876543210"), "");
   assert.equal(getWhatsAppUrl("+1 23"), "");
   assert.equal(getWhatsAppUrl("+91 abc 9876543210"), "");
@@ -97,19 +102,26 @@ test("wires testimonial cards, exports, print filters, actions, and 50-row pagin
   assert.match(testimonials, /scope: "filtered"/);
   assert.match(testimonials, /Send email to \$\{testimonial\.name\}/);
   assert.match(testimonials, /Contact \$\{testimonial\.name\} on WhatsApp/);
-  assert.match(testimonials, /getWhatsAppUrl\(testimonial\.phone\)/);
-  assert.match(testimonials, /hasValidContactEmail\(testimonial\.email\)/);
+  assert.match(testimonials, /onClick=\{\(\) => setEmailTestimonialId\(testimonial\.id\)\}/);
+  assert.match(testimonials, /WhatsApp unavailable for \$\{testimonial\.name\}/);
+  assert.doesNotMatch(testimonials, /openTestimonialContactEditor/);
+  assert.match(testimonials, /getWhatsAppUrl\(\s*testimonial\.phone,/);
+  assert.match(component, /recipientEmailEditable/);
+  assert.match(component, /body: JSON\.stringify\(\{ recipientEmail, subject, message \}\)/);
   assert.match(testimonials, /setSelectedId\(saved\.id\)/);
   assert.match(testimonials, /item\.id === selected\.id \|\| item\.id === saved\.id/);
   assert.match(adminDataRoute, /!isValidOptionalEmail\(sourceData\.email\)/);
   assert.match(adminDataRoute, /!isValidOptionalEmail\(data\.email\)/);
   assert.match(testimonials, /TestimonialEmailDialog/);
+  assert.match(component, /Open in email app/);
   assert.match(testimonials, /\/api\/admin\/testimonials\/\$\{encodeURIComponent\(id\)\}\/email/);
   assert.match(route, /await getAuthorizedAdmin\(\)/);
   assert.match(route, /matchesTestimonialExportFilters/);
   assert.match(route, /\.range\(offset, offset \+ pageSize - 1\)/);
   assert.match(route, /Content-Disposition/);
   assert.match(emailRoute, /isSameOriginRequest\(request\)/);
+  assert.match(emailRoute, /getSourceContentRecords\("testimonials"\)/);
+  assert.match(emailRoute, /payload\.recipientEmail/);
   assert.match(emailRoute, /\.eq\("collection", "testimonials"\)/);
   assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message\)/);
 });

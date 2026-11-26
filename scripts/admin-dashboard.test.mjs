@@ -38,9 +38,10 @@ test("published insight categories exclude drafts and sort by live record count"
 });
 
 test("dashboard metric cards open only their selected management section", async () => {
-  const [workspace, ui] = await Promise.all([
+  const [workspace, ui, styles] = await Promise.all([
     readFile(new URL("../src/app/admin/_components/admin-workspace.tsx", import.meta.url), "utf8"),
     readFile(new URL("../src/app/admin/_components/admin-ui.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../src/app/admin/_components/admin.module.css", import.meta.url), "utf8"),
   ]);
   assert.match(workspace, /selectedSection === "enquiries"\s*\?\s*<EnquiriesManagement \/>/);
   assert.match(workspace, /selectedSection === "testimonials"\s*\?\s*<TestimonialsManagement \/>/);
@@ -51,6 +52,9 @@ test("dashboard metric cards open only their selected management section", async
   assert.match(workspace, /onClick=\{\(\) => setSelectedSection\("enquiries"\)\}/);
   assert.match(workspace, /onClick=\{\(\) => setSelectedSection\("testimonials"\)\}/);
   assert.match(workspace, /onClick=\{\(\) => setSelectedSection\("insights"\)\}/);
+  assert.match(workspace, /className="admin-stat-grid admin-dashboard-stat-grid"/);
+  assert.match(styles, /@media \(max-width: 620px\)[\s\S]*?admin-dashboard-stat-grid[\s\S]*?grid-template-columns: minmax\(0, 1fr\)/);
+  assert.match(styles, /admin-dashboard-stat-grid > \.admin-stat-card[\s\S]*?aspect-ratio: auto/);
 });
 
 test("admin data loading reports API status instead of exposing JSON parser errors", async () => {

@@ -2489,6 +2489,15 @@
     margin-top: 7px;
     font-size: 19px;
   }
+  :global(.admin-dashboard-stat-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :global(.admin-dashboard-stat-grid > .admin-stat-card) {
+    width: 100%;
+    min-width: 0;
+    min-height: 132px;
+    aspect-ratio: auto;
+  }
   :global(.admin-toolbar) {
     align-items: stretch;
     flex-wrap: wrap;
@@ -2996,6 +3005,10 @@
   .root :global(.admin-stat-card) {
     min-height: 140px;
     aspect-ratio: 1.35 / 1;
+  }
+  .root :global(.admin-dashboard-stat-grid > .admin-stat-card) {
+    min-height: 132px;
+    aspect-ratio: auto;
   }
 }
 
