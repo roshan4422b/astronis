@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isValidVerificationEmail, sendMailtrapTransactionalEmail } from "@/lib/form-verification.server";
+import { getSourceContentRecords } from "@/lib/cms/source-content";
 import { isSameOriginRequest } from "@/lib/request-origin";
 import { getAuthorizedAdmin } from "@/lib/supabase/server";
 
@@ -16,7 +17,9 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   if (!auth.user || !auth.supabase) return NextResponse.json({ error: "Authentication required." }, { status: 401 });
 
   const { id } = await context.params;
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+  const isPersistedId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+  const sourceTestimonial = getSourceContentRecords("testimonials").find((record) => record.id === id);
+  if (!isPersistedId && !sourceTestimonial) {
     return NextResponse.json({ error: "Invalid testimonial id." }, { status: 400 });
   }
 
@@ -31,21 +34,58 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   const message = typeof payload.message === "string" ? payload.message.trim().slice(0, 10000) : "";
   if (!subject || !message) return NextResponse.json({ error: "Enter an email subject and message." }, { status: 400 });
 
-  const { data: testimonial, error: testimonialError } = await auth.supabase
-    .from("cms_content")
-    .select("id, collection, data")
-    .eq("id", id)
-    .eq("collection", "testimonials")
-    .maybeSingle();
-  if (testimonialError) {
-    console.error("[admin-testimonial-email] Could not load recipient.", { code: testimonialError.code || "unknown" });
-    return NextResponse.json({ error: "Could not load the testimonial recipient." }, { status: 500 });
+  let testimonialData: Record<string, unknown>;
+  if (isPersistedId) {
+    const { data: testimonial, error: testimonialError } = await auth.supabase
+      .from("cms_content")
+      .select("id, collection, data")
+      .eq("id", id)
+      .eq("collection", "testimonials")
+      .maybeSingle();
+    if (testimonialError) {
+      console.error("[admin-testimonial-email] Could not load recipient.", { code: testimonialError.code || "unknown" });
+      return NextResponse.json({ error: "Could not load the testimonial recipient." }, { status: 500 });
+    }
+    if (!testimonial) return NextResponse.json({ error: "Testimonial not found." }, { status: 404 });
+    testimonialData = isRecord(testimonial.data) ? testimonial.data : {};
+  } else {
+    testimonialData = { ...sourceTestimonial!.data };
   }
-  if (!testimonial) return NextResponse.json({ error: "Testimonial not found." }, { status: 404 });
-  const data = isRecord(testimonial.data) ? testimonial.data : {};
-  const email = typeof data.email === "string" ? data.email.trim() : "";
+
+  const storedEmail = typeof testimonialData.email === "string" ? testimonialData.email.trim() : "";
+  const requestedEmail = typeof payload.recipientEmail === "string" ? payload.recipientEmail.trim().slice(0, 254) : "";
+  const email = requestedEmail || storedEmail;
   if (!isValidVerificationEmail(email)) {
     return NextResponse.json({ error: "This testimonial does not have a valid email address." }, { status: 422 });
+  }
+
+  if (email !== storedEmail) {
+    if (isPersistedId) {
+      const { error: updateError } = await auth.supabase
+        .from("cms_content")
+        .update({ data: { ...testimonialData, email } })
+        .eq("id", id)
+        .eq("collection", "testimonials");
+      if (updateError) {
+        console.error("[admin-testimonial-email] Could not save recipient email.", { code: updateError.code || "unknown" });
+        return NextResponse.json({ error: "Could not save the testimonial email address." }, { status: 500 });
+      }
+    } else {
+      const { error: upsertError } = await auth.supabase
+        .from("cms_content")
+        .upsert({
+          collection: "testimonials",
+          slug: sourceTestimonial!.slug,
+          status: sourceTestimonial!.status,
+          data: { ...testimonialData, email, sourceDefined: true },
+          metadata: sourceTestimonial!.metadata,
+          created_by: auth.user.id,
+        }, { onConflict: "collection,slug" });
+      if (upsertError) {
+        console.error("[admin-testimonial-email] Could not save source recipient email.", { code: upsertError.code || "unknown" });
+        return NextResponse.json({ error: "Could not save the testimonial email address." }, { status: 500 });
+      }
+    }
   }
 
   try {

@@ -178,7 +178,7 @@ function Dashboard({ onNotice }: { onNotice: (message: string) => void }) {
 
   return <>
     <PageHeading title="Dashboard" />
-    <div className="admin-stat-grid">
+    <div className="admin-stat-grid admin-dashboard-stat-grid">
       <StatCard label="Team" value={String(contentRecords.filter((item) => item.sectionType === "professionals" && item.status === "Published").length)} change="Published professional profiles" icon="people" />
       <StatCard label="Business" value={String(contentRecords.filter((item) => item.sectionType === "services" && item.status === "Published").length)} change="Published service pages" icon="services" />
       <StatCard label="Financial" value={String(contentRecords.filter((item) => item.sectionType === "industries" && item.status === "Published" && /financial|financ|bank|nbfc/i.test(`${item.title} ${item.category}`)).length)} change="Published financial industry pages" icon="globe" />

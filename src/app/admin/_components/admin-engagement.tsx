@@ -66,11 +66,6 @@ function displayDate(value: string) {
   }).format(date);
 }
 
-function hasValidContactEmail(value?: string) {
-  const email = value?.trim() || "";
-  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 type EnquiryApiRecord = {
   id: string;
   name: string | null;
@@ -331,13 +326,14 @@ export function EnquiryDetailsDialog({
   );
 }
 
-function AdminEmailDialog({
+export function AdminEmailDialog({
   title,
   labelledBy,
   recipientName,
   recipientEmail,
   initialSubject,
   initialMessage,
+  recipientEmailEditable = false,
   onClose,
   onSend,
 }: {
@@ -347,11 +343,13 @@ function AdminEmailDialog({
   recipientEmail: string;
   initialSubject: string;
   initialMessage: string;
+  recipientEmailEditable?: boolean;
   onClose: () => void;
-  onSend: (subject: string, message: string) => Promise<string | null>;
+  onSend: (subject: string, message: string, recipientEmail?: string) => Promise<string | null>;
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState(initialMessage);
+  const [email, setEmail] = useState(recipientEmail);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -361,19 +359,31 @@ function AdminEmailDialog({
     if (sending) return;
     setSending(true);
     setFeedback("");
-    const error = await onSend(subject, message);
-    if (error) setFeedback(error);
-    else {
-      setFeedback("Email sent successfully.");
-      setSent(true);
+    try {
+      const error = await onSend(subject, message, email.trim());
+      if (error) setFeedback(error);
+      else {
+        setFeedback("Email sent successfully.");
+        setSent(true);
+      }
+    } catch (error) {
+      setFeedback(error instanceof Error ? error.message : "Email could not be sent.");
+    } finally {
+      setSending(false);
     }
-    setSending(false);
   }
+
+  const emailAppHref = `mailto:${email.trim()}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
 
   return (
     <AccessibleDialog title={title} labelledBy={labelledBy} onClose={onClose}>
       <form className="admin-enquiry-email-form" onSubmit={(event) => { void submit(event); }}>
-        <p><strong>To:</strong> {recipientName} · {recipientEmail}</p>
+        {recipientEmailEditable ? (
+          <label className="admin-field">
+            <span>Recipient email</span>
+            <input type="email" autoComplete="email" required maxLength={254} value={email} disabled={sending} onChange={(event) => setEmail(event.target.value)} />
+          </label>
+        ) : <p><strong>To:</strong> {recipientName} · {recipientEmail}</p>}
         <label className="admin-field">
           <span>Subject</span>
           <input value={subject} maxLength={200} required disabled={sending} onChange={(event) => setSubject(event.target.value)} />
@@ -384,6 +394,7 @@ function AdminEmailDialog({
         </label>
         {feedback ? <p className="admin-detail-note" role="status">{feedback}</p> : null}
         <div className="admin-enquiry-email-actions">
+          <a className="admin-button admin-button-secondary" href={emailAppHref}>Open in email app</a>
           <button className="admin-button" type="submit" disabled={sending || sent || !subject.trim() || !message.trim()}>
             {sending ? "Sending..." : sent ? "Email Sent" : "Send Email"}
           </button>
@@ -424,7 +435,7 @@ function TestimonialEmailDialog({
 }: {
   testimonial: AdminTestimonial;
   onClose: () => void;
-  onSend: (subject: string, message: string) => Promise<string | null>;
+  onSend: (subject: string, message: string, recipientEmail: string) => Promise<string | null>;
 }) {
   const recipientName = testimonial.name.trim() || "Contributor";
   return (
@@ -433,10 +444,11 @@ function TestimonialEmailDialog({
       labelledBy="testimonial-email-dialog-title"
       recipientName={recipientName}
       recipientEmail={testimonial.email || ""}
+      recipientEmailEditable
       initialSubject="Regarding your testimonial submission"
       initialMessage={`Hello ${recipientName},\n\nWe are contacting you regarding your testimonial submission. Please reply to this email if you have any questions.\n\nRegards,\nAstronis Global`}
       onClose={onClose}
-      onSend={onSend}
+      onSend={(subject, message, recipientEmail) => onSend(subject, message, recipientEmail || "")}
     />
   );
 }
@@ -777,6 +789,26 @@ export function TestimonialsManagement() {
   const [notice, setNotice] = useState("");
   const [videoPlaybackError, setVideoPlaybackError] = useState<{ id: string; message: string } | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  function prepareTestimonialEdit(testimonial: AdminTestimonial) {
+    setTestimonialEdit({
+      name: testimonial.name,
+      email: testimonial.email || "",
+      phone: testimonial.phone || "",
+      title: testimonial.title || "",
+      company: testimonial.company || "",
+      designation: testimonial.designation || "",
+      service: testimonial.service || "",
+      text: testimonial.text,
+      internalNotes: testimonial.internalNotes || "",
+      format: testimonial.format === "video" ? "video" : "written",
+      photoPublicationConsent: testimonial.photoPublicationConsent === true,
+      imagePath: testimonial.imagePath || "",
+      imageUrl: testimonial.imageUrl || "",
+      videoPath: testimonial.videoPath || "",
+      videoUrl: testimonial.videoUrl || "",
+      videoSource: testimonial.videoSource || (testimonial.videoUrl ? "url" : ""),
+    });
+  }
   useEffect(() => {
     if (!printing) return;
     const finishPrinting = () => setPrinting(false);
@@ -803,8 +835,10 @@ export function TestimonialsManagement() {
   const pageCount = Math.max(1, Math.ceil(filtered.length / testimonialPageSize));
   const displayedTestimonials = printing ? filtered : filtered.slice((page - 1) * testimonialPageSize, page * testimonialPageSize);
   const rows = displayedTestimonials.map((testimonial) => {
-    const whatsapp = getWhatsAppUrl(testimonial.phone);
-    const hasEmail = hasValidContactEmail(testimonial.email);
+    const whatsapp = getWhatsAppUrl(
+      testimonial.phone,
+      `Hello ${testimonial.name.trim() || "there"}, we are contacting you regarding your testimonial submission. Regards, Astronis Global`,
+    );
     return [
       <strong className="admin-cell-primary" key="name">{testimonial.name}</strong>,
       <span className="admin-excerpt" key="excerpt">{testimonial.excerpt}</span>,
@@ -818,12 +852,10 @@ export function TestimonialsManagement() {
           triggerRef.current = event.currentTarget;
           setSelectedId(testimonial.id);
         }}><AdminIcon name="eye" size={16} /></button>
-        {hasEmail
-          ? <button type="button" className="admin-icon-action" aria-label={`Send email to ${testimonial.name}`} title="Send email" onClick={() => setEmailTestimonialId(testimonial.id)}><AdminIcon name="mail" size={16} /></button>
-          : <button type="button" className="admin-icon-action" disabled aria-label="Email unavailable; add a valid email in testimonial details" title="Add a valid email address in testimonial details to enable email"><AdminIcon name="mail" size={16} /></button>}
+        <button type="button" className="admin-icon-action" aria-label={`Send email to ${testimonial.name}`} title="Send email" onClick={() => setEmailTestimonialId(testimonial.id)}><AdminIcon name="mail" size={16} /></button>
         {whatsapp
-          ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noreferrer" aria-label={`Contact ${testimonial.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a>
-          : <button className="admin-icon-action" type="button" disabled aria-label="WhatsApp unavailable; add an international number in testimonial details" title="Add a valid number with country code in testimonial details to enable WhatsApp"><AdminIcon name="whatsapp" size={16} /></button>}
+          ? <a className="admin-icon-action" href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label={`Contact ${testimonial.name} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a>
+          : <button className="admin-icon-action" type="button" aria-label={`WhatsApp unavailable for ${testimonial.name}`} title="Add a valid number with country code in testimonial details" onClick={() => setNotice(`Add a valid WhatsApp number with country code to ${testimonial.name}'s details first.`)}><AdminIcon name="whatsapp" size={16} /></button>}
       </div>,
     ];
   });
@@ -1011,17 +1043,17 @@ export function TestimonialsManagement() {
     }
   }
 
-  async function sendTestimonialEmail(id: string, subject: string, message: string): Promise<string | null> {
+  async function sendTestimonialEmail(id: string, subject: string, message: string, recipientEmail: string): Promise<string | null> {
     try {
       const response = await fetch(`/api/admin/testimonials/${encodeURIComponent(id)}/email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, message }),
+        body: JSON.stringify({ recipientEmail, subject, message }),
       });
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "Email could not be sent.");
-      const recipient = testimonials.find((item) => item.id === id)?.email || "";
-      setNotice(`Email sent to ${recipient}.`);
+      setTestimonials((current) => current.map((item) => item.id === id ? { ...item, email: recipientEmail } : item));
+      setNotice(`Email sent to ${recipientEmail}.`);
       return null;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Email could not be sent.";
@@ -1274,16 +1306,7 @@ export function TestimonialsManagement() {
               </dl>
               <div className="admin-moderation-actions">
                 <button type="button" className="admin-button admin-button-secondary" onClick={() => {
-                  setTestimonialEdit({
-                    name: selected.name, email: selected.email || "", phone: selected.phone || "", title: selected.title || "",
-                    company: selected.company || "", designation: selected.designation || "",
-                    service: selected.service || "", text: selected.text, internalNotes: selected.internalNotes || "",
-                    format: selected.format === "video" ? "video" : "written",
-                    photoPublicationConsent: selected.photoPublicationConsent === true,
-                    imagePath: selected.imagePath || "", imageUrl: selected.imageUrl || "",
-                    videoPath: selected.videoPath || "", videoUrl: selected.videoUrl || "",
-                    videoSource: selected.videoSource || (selected.videoUrl ? "url" : ""),
-                  });
+                  prepareTestimonialEdit(selected);
                   setEditingTestimonial(true);
                 }}>Edit Testimonial</button>
                 {!selected.sourceDefined ? (
@@ -1390,7 +1413,7 @@ export function TestimonialsManagement() {
           key={selectedEmailTestimonial.id}
           testimonial={selectedEmailTestimonial}
           onClose={() => setEmailTestimonialId(null)}
-          onSend={(subject, message) => sendTestimonialEmail(selectedEmailTestimonial.id, subject, message)}
+          onSend={(subject, message, recipientEmail) => sendTestimonialEmail(selectedEmailTestimonial.id, subject, message, recipientEmail)}
         />
       ) : null}
     </div>

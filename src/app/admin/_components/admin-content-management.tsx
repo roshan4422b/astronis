@@ -7,6 +7,7 @@ import {
   professionalExpertiseOptions,
 } from "@/data/professional-application-taxonomy";
 import { getWhatsAppUrl } from "@/lib/admin/whatsapp";
+import { AdminEmailDialog } from "./admin-engagement";
 import {
   serviceRows,
   technologyPages,
@@ -110,13 +111,6 @@ function isHttpUrl(value: string) {
 
 function isValidContactEmail(value: string) {
   return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function contactEmailHref(value: string) {
-  const email = value.trim();
-  if (!isValidContactEmail(email)) return "";
-  const [localPart, domain] = email.split("@");
-  return `mailto:${encodeURIComponent(localPart)}@${encodeURIComponent(domain)}`;
 }
 
 function newRecord(section: AdminEditableContentSection): AdminEditableContentRecord {
@@ -562,6 +556,7 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
   const [editing, setEditing] = useState<AdminEditableContentRecord | null>(null);
   const [adding, setAdding] = useState(false);
   const [selected, setSelected] = useState<{ record: AdminEditableContentRecord; preview: boolean } | null>(null);
+  const [emailRecord, setEmailRecord] = useState<AdminEditableContentRecord | null>(null);
   const pageSize = 6;
   const categories = section === "professionals"
     ? expertiseOptions
@@ -621,16 +616,38 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
     }
   }
 
+  async function sendProfessionalEmail(subject: string, message: string): Promise<string | null> {
+    if (!emailRecord) return "The selected professional is no longer available.";
+    try {
+      const response = await fetch(`/api/admin/professionals/${encodeURIComponent(emailRecord.id)}/email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, message }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error || "Email could not be sent.");
+      setFeedback(`Email sent to ${emailRecord.email}.`);
+      return null;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Email could not be sent.";
+      setFeedback(errorMessage);
+      return errorMessage;
+    }
+  }
+
   const rows = pageRows.map((record) => {
-    const emailHref = contactEmailHref(record.email);
-    const whatsappHref = getWhatsAppUrl(record.phone);
+    const hasEmail = isValidContactEmail(record.email.trim());
+    const whatsappHref = getWhatsAppUrl(
+      record.phone,
+      `Hello ${record.title}, I would like to connect with you. Regards, Astronis Global`,
+    );
     const actions = (
       <div className="admin-row-actions" key="actions">
         <button type="button" aria-label={`View ${record.title}`} title="View CMS details" onClick={() => setSelected({ record, preview: false })}><AdminIcon name="eye" size={16} /></button>
         {section === "professionals" ? (
           <>
-            {emailHref
-              ? <a href={emailHref} aria-label={`Email ${record.title}`} title="Email"><AdminIcon name="mail" size={16} /></a>
+            {hasEmail
+              ? <button type="button" aria-label={`Email ${record.title}`} title="Email" onClick={() => setEmailRecord(record)}><AdminIcon name="mail" size={16} /></button>
               : <button type="button" disabled aria-label="Email unavailable" title="Add a valid email in the professional details"><AdminIcon name="mail" size={16} /></button>}
             {whatsappHref
               ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={`Contact ${record.title} on WhatsApp`} title="WhatsApp"><AdminIcon name="whatsapp" size={16} /></a>
@@ -682,6 +699,18 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
       {adding ? <ContentEditor key={`${section}-new`} section={section} initial={newRecord(section)} onCancel={() => setAdding(false)} onSave={saveRecord} /> : null}
       {editing ? <ContentEditor key={editing.id} section={section} initial={editing} onCancel={() => setEditing(null)} onSave={saveRecord} /> : null}
       {selected ? <ContentDetails record={selected.record} preview={selected.preview} onClose={() => setSelected(null)} /> : null}
+      {emailRecord ? (
+        <AdminEmailDialog
+          title="Email professional"
+          labelledBy="professional-email-dialog-title"
+          recipientName={emailRecord.title}
+          recipientEmail={emailRecord.email}
+          initialSubject="Regarding your professional profile"
+          initialMessage={`Hello ${emailRecord.title},\n\nI am reaching out regarding your professional profile. Please reply to this email if you have any questions.\n\nRegards,\nAstronis Global`}
+          onClose={() => setEmailRecord(null)}
+          onSend={sendProfessionalEmail}
+        />
+      ) : null}
     </>
   );
 }

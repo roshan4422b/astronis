@@ -278,6 +278,8 @@ test("professional editor and category filter share the approved expertise optio
 
 test("professional admin uses Location labels without a heading description or hover details", async () => {
   const source = await readFile(new URL("../src/app/admin/_components/admin-content-management.tsx", import.meta.url), "utf8");
+  const engagement = await readFile(new URL("../src/app/admin/_components/admin-engagement.tsx", import.meta.url), "utf8");
+  const emailRoute = await readFile(new URL("../src/app/api/admin/professionals/[id]/email/route.ts", import.meta.url), "utf8");
   const sourceContent = await readFile(new URL("../src/lib/cms/source-content.ts", import.meta.url), "utf8");
   const state = await readFile(new URL("../src/app/admin/_components/admin-state.tsx", import.meta.url), "utf8");
   const dataRoute = await readFile(new URL("../src/app/api/admin/data/route.ts", import.meta.url), "utf8");
@@ -285,9 +287,14 @@ test("professional admin uses Location labels without a heading description or h
   assert.match(source, /case "professionals": return \["Name", "Designation", "Expertise", "Location", "Status", "Actions"\]/);
   assert.match(source, /<span>Location<\/span>/);
   assert.match(source, /record\.sectionType === "professionals" \? "Location" : "Jurisdiction"/);
-  assert.match(source, /getWhatsAppUrl\(record\.phone\)/);
-  assert.match(source, /contactEmailHref\(record\.email\)/);
-  assert.match(source, /mailto:\$\{encodeURIComponent\(localPart\)\}@\$\{encodeURIComponent\(domain\)\}/);
+  assert.match(source, /getWhatsAppUrl\(\s*record\.phone,/);
+  assert.match(source, /setEmailRecord\(record\)/);
+  assert.match(source, /\/api\/admin\/professionals\/\$\{encodeURIComponent\(emailRecord\.id\)\}\/email/);
+  assert.match(source, /<AdminEmailDialog/);
+  assert.match(engagement, /export function AdminEmailDialog/);
+  assert.match(emailRoute, /getAuthorizedAdmin\(\)/);
+  assert.match(emailRoute, /getSourceContentRecords\("professionals"\)/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message\)/);
   assert.match(source, /section === "professionals" \? \(/);
   assert.match(source, /title="Preview locally"/);
   assert.match(sourceContent, /jurisdiction: person\.location,\s*email: person\.email,\s*phone,/);
