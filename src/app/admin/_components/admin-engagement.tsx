@@ -28,6 +28,10 @@ import { isSupportedTestimonialVideoUrl } from "@/lib/testimonial-media";
 import { displayEnquiryLabel } from "@/lib/admin/enquiry-display";
 import { enquiryFilterDateValue } from "@/lib/admin/enquiry-date";
 import { createEnquiryReplyTemplate } from "@/lib/admin/enquiry-email";
+import {
+  adminEmailAttachmentAccept,
+  validateAdminEmailAttachmentSelection,
+} from "@/lib/admin/email-attachments";
 import { getWhatsAppUrl } from "@/lib/admin/whatsapp";
 
 const testimonialPageSize = 50;
@@ -345,11 +349,13 @@ export function AdminEmailDialog({
   initialMessage: string;
   recipientEmailEditable?: boolean;
   onClose: () => void;
-  onSend: (subject: string, message: string, recipientEmail?: string) => Promise<string | null>;
+  onSend: (subject: string, message: string, recipientEmail: string, attachments: File[]) => Promise<string | null>;
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState(initialMessage);
   const [email, setEmail] = useState(recipientEmail);
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachmentError, setAttachmentError] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -360,7 +366,7 @@ export function AdminEmailDialog({
     setSending(true);
     setFeedback("");
     try {
-      const error = await onSend(subject, message, email.trim());
+      const error = await onSend(subject, message, email.trim(), attachments);
       if (error) setFeedback(error);
       else {
         setFeedback("Email sent successfully.");
@@ -392,10 +398,53 @@ export function AdminEmailDialog({
           <span>Message</span>
           <textarea value={message} maxLength={10000} rows={8} required disabled={sending} onChange={(event) => setMessage(event.target.value)} />
         </label>
+        <label className="admin-field">
+          <span>Attachments (PDF, JPG/JPEG, DOC, or DOCX; up to 5 files, 4 MB total)</span>
+          <input
+            type="file"
+            accept={adminEmailAttachmentAccept}
+            multiple
+            disabled={sending || sent}
+            aria-describedby={attachmentError ? "admin-email-attachment-error" : "admin-email-attachment-help"}
+            onChange={(event) => {
+              const selectedFiles = Array.from(event.currentTarget.files || []);
+              event.currentTarget.value = "";
+              const error = validateAdminEmailAttachmentSelection(selectedFiles);
+              if (error) {
+                setAttachments([]);
+                setAttachmentError(error);
+                return;
+              }
+              setAttachments(selectedFiles);
+              setAttachmentError("");
+            }}
+          />
+          {attachmentError
+            ? <small id="admin-email-attachment-error" className="admin-field-error" role="alert">{attachmentError}</small>
+            : <small id="admin-email-attachment-help" className="admin-detail-note">Files are validated before sending; attachments are sent with the Send Email button.</small>}
+        </label>
+        {attachments.length ? (
+          <ul className="admin-email-attachment-list" aria-label="Selected attachments">
+            {attachments.map((file, index) => (
+              <li key={`${file.name}-${file.lastModified}-${index}`}>
+                <span>{file.name} ({Math.max(1, Math.ceil(file.size / 1024))} KB)</span>
+                <button
+                  type="button"
+                  className="admin-button admin-button-secondary"
+                  aria-label={`Remove ${file.name}`}
+                  disabled={sending || sent}
+                  onClick={() => setAttachments((current) => current.filter((_, fileIndex) => fileIndex !== index))}
+                >Remove</button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {feedback ? <p className="admin-detail-note" role="status">{feedback}</p> : null}
         <div className="admin-enquiry-email-actions">
-          <a className="admin-button admin-button-secondary" href={emailAppHref}>Open in email app</a>
-          <button className="admin-button" type="submit" disabled={sending || sent || !subject.trim() || !message.trim()}>
+          {attachments.length
+            ? <button className="admin-button admin-button-secondary" type="button" disabled title="Use Send Email to include attachments.">Open in email app</button>
+            : <a className="admin-button admin-button-secondary" href={emailAppHref}>Open in email app</a>}
+          <button className="admin-button" type="submit" disabled={sending || sent || Boolean(attachmentError) || !subject.trim() || !message.trim()}>
             {sending ? "Sending..." : sent ? "Email Sent" : "Send Email"}
           </button>
         </div>
@@ -411,7 +460,7 @@ function EnquiryEmailDialog({
 }: {
   enquiry: AdminEnquiry;
   onClose: () => void;
-  onSend: (subject: string, message: string) => Promise<string | null>;
+  onSend: (subject: string, message: string, attachments: File[]) => Promise<string | null>;
 }) {
   const template = createEnquiryReplyTemplate(enquiry.name, enquiry.subject);
   return (
@@ -423,7 +472,7 @@ function EnquiryEmailDialog({
       initialSubject={template.subject}
       initialMessage={template.message}
       onClose={onClose}
-      onSend={onSend}
+      onSend={(subject, message, _recipientEmail, attachments) => onSend(subject, message, attachments)}
     />
   );
 }
@@ -435,7 +484,7 @@ function TestimonialEmailDialog({
 }: {
   testimonial: AdminTestimonial;
   onClose: () => void;
-  onSend: (subject: string, message: string, recipientEmail: string) => Promise<string | null>;
+  onSend: (subject: string, message: string, recipientEmail: string, attachments: File[]) => Promise<string | null>;
 }) {
   const recipientName = testimonial.name.trim() || "Contributor";
   return (
@@ -448,7 +497,7 @@ function TestimonialEmailDialog({
       initialSubject="Regarding your testimonial submission"
       initialMessage={`Hello ${recipientName},\n\nWe are contacting you regarding your testimonial submission. Please reply to this email if you have any questions.\n\nRegards,\nAstronis Global`}
       onClose={onClose}
-      onSend={(subject, message, recipientEmail) => onSend(subject, message, recipientEmail || "")}
+      onSend={(subject, message, recipientEmail, attachments) => onSend(subject, message, recipientEmail || "", attachments)}
     />
   );
 }
@@ -593,12 +642,15 @@ export function EnquiriesManagement() {
     }
   }
 
-  async function sendEnquiryEmail(id: string, subject: string, message: string): Promise<string | null> {
+  async function sendEnquiryEmail(id: string, subject: string, message: string, attachments: File[]): Promise<string | null> {
     try {
+      const formData = new FormData();
+      formData.set("subject", subject);
+      formData.set("message", message);
+      attachments.forEach((file) => formData.append("attachments", file, file.name));
       const response = await fetch(`/api/admin/enquiries/${encodeURIComponent(id)}/email`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, message }),
+        body: formData,
       });
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "Email could not be sent.");
@@ -661,19 +713,17 @@ export function EnquiriesManagement() {
           <div className="admin-enquiry-export-actions">
             <button className="admin-button admin-button-secondary" type="button" title="Download enquiries matching the current status and filters." onClick={() => downloadEnquiryFile(`/api/admin/enquiries/export?${filteredExportParams}`)}><AdminIcon name="download" size={16} /> Download Excel</button>
             <button className="admin-button admin-print-button" type="button" title="Print all enquiries matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
+            {selectedStatusCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllStatusCards}>Show all cards</button> : null}
+            <button
+              className="admin-button admin-button-secondary"
+              type="button"
+              aria-expanded={!cardsCollapsed}
+              aria-controls="admin-enquiry-status-cards"
+              onClick={() => setCardsCollapsed((current) => !current)}
+            >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
           </div>
         }
       />
-      <div className="admin-enquiry-card-controls">
-        {selectedStatusCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllStatusCards}>Show all cards</button> : null}
-        <button
-          className="admin-button admin-button-secondary"
-          type="button"
-          aria-expanded={!cardsCollapsed}
-          aria-controls="admin-enquiry-status-cards"
-          onClick={() => setCardsCollapsed((current) => !current)}
-        >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
-      </div>
       <div
         id="admin-enquiry-status-cards"
         className={`admin-stat-grid admin-engagement-stats${selectedStatusCard !== null ? " admin-engagement-stats-selected" : ""}`}
@@ -751,7 +801,7 @@ export function EnquiriesManagement() {
           key={selectedEmailEnquiry.id}
           enquiry={selectedEmailEnquiry}
           onClose={() => setEmailEnquiryId(null)}
-          onSend={(subject, message) => sendEnquiryEmail(selectedEmailEnquiry.id, subject, message)}
+          onSend={(subject, message, attachments) => sendEnquiryEmail(selectedEmailEnquiry.id, subject, message, attachments)}
         />
       ) : null}
     </div>
@@ -1043,12 +1093,16 @@ export function TestimonialsManagement() {
     }
   }
 
-  async function sendTestimonialEmail(id: string, subject: string, message: string, recipientEmail: string): Promise<string | null> {
+  async function sendTestimonialEmail(id: string, subject: string, message: string, recipientEmail: string, attachments: File[]): Promise<string | null> {
     try {
+      const formData = new FormData();
+      formData.set("recipientEmail", recipientEmail);
+      formData.set("subject", subject);
+      formData.set("message", message);
+      attachments.forEach((file) => formData.append("attachments", file, file.name));
       const response = await fetch(`/api/admin/testimonials/${encodeURIComponent(id)}/email`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipientEmail, subject, message }),
+        body: formData,
       });
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "Email could not be sent.");
@@ -1136,19 +1190,17 @@ export function TestimonialsManagement() {
             <button className="admin-button admin-button-secondary" type="button" title="Download testimonials matching the current status and filters." onClick={downloadTestimonialFile}><AdminIcon name="download" size={16} /> Download Excel</button>
             <button className="admin-button admin-button-secondary" type="button" title="Print testimonials matching the current status and filters." onClick={() => setPrinting(true)}><AdminIcon name="printer" size={16} /> Print</button>
             <Link className="admin-button" href="/admin/testimonials/new"><AdminIcon name="plus" size={16} />Add New Testimonial</Link>
+            {selectedApprovalCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllApprovalCards}>Show all cards</button> : null}
+            <button
+              className="admin-button admin-button-secondary"
+              type="button"
+              aria-expanded={!cardsCollapsed}
+              aria-controls="admin-testimonial-status-cards"
+              onClick={() => setCardsCollapsed((current) => !current)}
+            >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
           </div>
         }
       />
-      <div className="admin-testimonial-card-controls">
-        {selectedApprovalCard !== null ? <button className="admin-button admin-button-secondary" type="button" onClick={showAllApprovalCards}>Show all cards</button> : null}
-        <button
-          className="admin-button admin-button-secondary"
-          type="button"
-          aria-expanded={!cardsCollapsed}
-          aria-controls="admin-testimonial-status-cards"
-          onClick={() => setCardsCollapsed((current) => !current)}
-        >{cardsCollapsed ? "Show cards" : "Hide cards"}</button>
-      </div>
       <div
         id="admin-testimonial-status-cards"
         className={`admin-stat-grid admin-engagement-stats${selectedApprovalCard !== null ? " admin-engagement-stats-selected" : ""}`}
@@ -1413,7 +1465,7 @@ export function TestimonialsManagement() {
           key={selectedEmailTestimonial.id}
           testimonial={selectedEmailTestimonial}
           onClose={() => setEmailTestimonialId(null)}
-          onSend={(subject, message, recipientEmail) => sendTestimonialEmail(selectedEmailTestimonial.id, subject, message, recipientEmail)}
+          onSend={(subject, message, recipientEmail, attachments) => sendTestimonialEmail(selectedEmailTestimonial.id, subject, message, recipientEmail, attachments)}
         />
       ) : null}
     </div>

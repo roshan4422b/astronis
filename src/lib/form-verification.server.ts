@@ -1,5 +1,6 @@
 import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { MailtrapClient } from "mailtrap";
+import type { Attachment } from "mailtrap";
 
 const OTP_TTL_SECONDS = 300;
 const OTP_COOLDOWN_SECONDS = 60;
@@ -238,7 +239,7 @@ export function isValidVerificationEmail(email: string) {
   return email.length <= 254 && emailPattern.test(email);
 }
 
-export async function sendMailtrapTransactionalEmail(email: string, subject: string, text: string) {
+export async function sendMailtrapTransactionalEmail(email: string, subject: string, text: string, attachments: Attachment[] = []) {
   const apiKey = process.env.MAILTRAP_API_KEY?.trim();
   const from = process.env.MAILTRAP_FROM_EMAIL?.trim();
   if (!apiKey || !from) {
@@ -254,6 +255,7 @@ export async function sendMailtrapTransactionalEmail(email: string, subject: str
     to: [{ email }],
     subject,
     text,
+    ...(attachments.length ? { attachments } : {}),
   });
 }
 

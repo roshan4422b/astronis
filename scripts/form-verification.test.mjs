@@ -160,6 +160,14 @@ test("public testimonial persistence is OTP-gated and unavailable to anonymous d
   assert.doesNotMatch(route, /consumeFormVerification|captchaToken/);
   assert.match(form, /<EmailOtpVerification captchaDisplayOnly onVerificationChange=\{setEmailVerified\} \/>/);
   assert.match(form, /disabled=\{busy \|\| recording \|\| cameraStarting \|\| !emailVerified \|\| !formValid\}/);
+  assert.match(form, /async function openRecorder\(\)/);
+  assert.match(form, /function startRecording\(\)/);
+  assert.match(form, /Start Recording/);
+  assert.match(form, /Pause Recording/);
+  assert.match(form, /Resume Recording/);
+  assert.match(form, /Stop Recording/);
+  const recorderOpening = form.slice(form.indexOf("async function openRecorder()"), form.indexOf("function startRecording()"));
+  assert.doesNotMatch(recorderOpening, /\.start\(/);
   assert.doesNotMatch(form, /captchaToken/);
   assert.match(route, /missingConfiguration/);
   assert.match(route, /"NEXT_PUBLIC_SUPABASE_URL"/);

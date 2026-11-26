@@ -3,6 +3,8 @@ import { isValidVerificationEmail, sendMailtrapTransactionalEmail } from "@/lib/
 import { getSourceContentRecords } from "@/lib/cms/source-content";
 import { isSameOriginRequest } from "@/lib/request-origin";
 import { getAuthorizedAdmin } from "@/lib/supabase/server";
+import { adminEmailAttachmentMaxRequestBytes } from "@/lib/admin/email-attachments";
+import { parseAdminEmailAttachments } from "@/lib/admin/email-attachments.server";
 
 export const runtime = "nodejs";
 
@@ -23,16 +25,24 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     return NextResponse.json({ error: "Invalid testimonial id." }, { status: 400 });
   }
 
-  let payload: unknown;
-  try {
-    payload = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && Number(contentLength) > adminEmailAttachmentMaxRequestBytes) {
+    return NextResponse.json({ error: "Attachments must total 4 MB or less." }, { status: 413 });
   }
-  if (!isRecord(payload)) return NextResponse.json({ error: "Invalid email details." }, { status: 400 });
-  const subject = typeof payload.subject === "string" ? payload.subject.replace(/[\r\n]+/g, " ").trim().slice(0, 200) : "";
-  const message = typeof payload.message === "string" ? payload.message.trim().slice(0, 10000) : "";
+  let form: FormData;
+  try {
+    form = await request.formData();
+  } catch {
+    return NextResponse.json({ error: "Invalid email form data." }, { status: 400 });
+  }
+  const subjectValue = form.get("subject");
+  const messageValue = form.get("message");
+  const recipientEmailValue = form.get("recipientEmail");
+  const subject = typeof subjectValue === "string" ? subjectValue.replace(/[\r\n]+/g, " ").trim().slice(0, 200) : "";
+  const message = typeof messageValue === "string" ? messageValue.trim().slice(0, 10000) : "";
   if (!subject || !message) return NextResponse.json({ error: "Enter an email subject and message." }, { status: 400 });
+  const attachmentResult = await parseAdminEmailAttachments(form);
+  if (!attachmentResult.ok) return NextResponse.json({ error: attachmentResult.error }, { status: 400 });
 
   let testimonialData: Record<string, unknown>;
   if (isPersistedId) {
@@ -53,7 +63,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   }
 
   const storedEmail = typeof testimonialData.email === "string" ? testimonialData.email.trim() : "";
-  const requestedEmail = typeof payload.recipientEmail === "string" ? payload.recipientEmail.trim().slice(0, 254) : "";
+  const requestedEmail = typeof recipientEmailValue === "string" ? recipientEmailValue.trim().slice(0, 254) : "";
   const email = requestedEmail || storedEmail;
   if (!isValidVerificationEmail(email)) {
     return NextResponse.json({ error: "This testimonial does not have a valid email address." }, { status: 422 });
@@ -89,7 +99,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   }
 
   try {
-    await sendMailtrapTransactionalEmail(email, subject, message);
+    await sendMailtrapTransactionalEmail(email, subject, message, attachmentResult.attachments);
   } catch (error) {
     const configurationError = error instanceof Error && error.message.startsWith("Required server configuration is missing:");
     console.error("[admin-testimonial-email] Delivery failed.", {

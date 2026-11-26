@@ -294,7 +294,8 @@ test("professional admin uses Location labels without a heading description or h
   assert.match(engagement, /export function AdminEmailDialog/);
   assert.match(emailRoute, /getAuthorizedAdmin\(\)/);
   assert.match(emailRoute, /getSourceContentRecords\("professionals"\)/);
-  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message\)/);
+  assert.match(emailRoute, /parseAdminEmailAttachments\(form\)/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message, attachmentResult\.attachments\)/);
   assert.match(source, /section === "professionals" \? \(/);
   assert.match(source, /title="Preview locally"/);
   assert.match(sourceContent, /jurisdiction: person\.location,\s*email: person\.email,\s*phone,/);

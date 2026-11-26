@@ -95,6 +95,12 @@ test("wires testimonial cards, exports, print filters, actions, and 50-row pagin
   assert.match(testimonials, /selectedApprovalCard !== null/);
   assert.match(testimonials, /Show all cards/);
   assert.match(testimonials, /cardsCollapsed \? "Show cards" : "Hide cards"/);
+  const testimonialHeadingActions = testimonials.slice(
+    testimonials.indexOf('title="Testimonials"'),
+    testimonials.indexOf('id="admin-testimonial-status-cards"'),
+  );
+  assert.match(testimonialHeadingActions, /Download Excel[\s\S]*Print[\s\S]*Hide cards/);
+  assert.doesNotMatch(testimonials, /className="admin-testimonial-card-controls"/);
   assert.match(testimonials, /testimonialApprovalCardFilters\.map\(\(filter\) =>/);
   assert.match(testimonials, /onClick=\{\(\) => selectApprovalCard\(filter\)\}/);
   assert.match(testimonials, /Download Excel/);
@@ -107,7 +113,7 @@ test("wires testimonial cards, exports, print filters, actions, and 50-row pagin
   assert.doesNotMatch(testimonials, /openTestimonialContactEditor/);
   assert.match(testimonials, /getWhatsAppUrl\(\s*testimonial\.phone,/);
   assert.match(component, /recipientEmailEditable/);
-  assert.match(component, /body: JSON\.stringify\(\{ recipientEmail, subject, message \}\)/);
+  assert.match(component, /body: formData/);
   assert.match(testimonials, /setSelectedId\(saved\.id\)/);
   assert.match(testimonials, /item\.id === selected\.id \|\| item\.id === saved\.id/);
   assert.match(adminDataRoute, /!isValidOptionalEmail\(sourceData\.email\)/);
@@ -121,7 +127,8 @@ test("wires testimonial cards, exports, print filters, actions, and 50-row pagin
   assert.match(route, /Content-Disposition/);
   assert.match(emailRoute, /isSameOriginRequest\(request\)/);
   assert.match(emailRoute, /getSourceContentRecords\("testimonials"\)/);
-  assert.match(emailRoute, /payload\.recipientEmail/);
+  assert.match(emailRoute, /recipientEmailValue/);
   assert.match(emailRoute, /\.eq\("collection", "testimonials"\)/);
-  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message\)/);
+  assert.match(emailRoute, /parseAdminEmailAttachments\(form\)/);
+  assert.match(emailRoute, /sendMailtrapTransactionalEmail\(email, subject, message, attachmentResult\.attachments\)/);
 });

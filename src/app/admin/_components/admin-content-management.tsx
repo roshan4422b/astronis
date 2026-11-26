@@ -616,13 +616,16 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
     }
   }
 
-  async function sendProfessionalEmail(subject: string, message: string): Promise<string | null> {
+  async function sendProfessionalEmail(_subject: string, _message: string, _recipientEmail: string, attachments: File[]): Promise<string | null> {
     if (!emailRecord) return "The selected professional is no longer available.";
     try {
+      const formData = new FormData();
+      formData.set("subject", _subject);
+      formData.set("message", _message);
+      attachments.forEach((file) => formData.append("attachments", file, file.name));
       const response = await fetch(`/api/admin/professionals/${encodeURIComponent(emailRecord.id)}/email`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subject, message }),
+        body: formData,
       });
       const result = await response.json() as { error?: string };
       if (!response.ok) throw new Error(result.error || "Email could not be sent.");
