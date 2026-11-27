@@ -14,6 +14,9 @@ import {
 } from "../admin-data";
 import type { AdminContentRecord, AdminEditableContentRecord, AdminEditableContentSection, AdminContentStatus } from "./admin-state";
 import { useAdminState } from "./admin-state";
+import ProfessionalApplicationForm from "@/app/professionals/submit-profile/professional-application-form";
+import applicationStyles from "@/app/professionals/submit-profile/professional-application.module.css";
+import type { ProfessionalApplicationConfig } from "@/app/professionals/submit-profile/professional-application-config";
 import {
   AdminIcon,
   DataTable,
@@ -111,37 +114,6 @@ function isHttpUrl(value: string) {
 
 function isValidContactEmail(value: string) {
   return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
-function newRecord(section: AdminEditableContentSection): AdminEditableContentRecord {
-  const slugBase = `new-${section}`;
-  return {
-    id: "",
-    sectionType: section,
-    title: "",
-    slug: slugBase,
-    category: "",
-    status: "Draft",
-    updated: new Date().toISOString().slice(0, 10),
-    description: "",
-    content: "",
-    seoTitle: "",
-    seoDescription: "",
-    designation: "",
-    expertise: "",
-    state: "",
-    country: "",
-    education: "",
-    enrolment: "",
-    credentials: "",
-    linkedinProfile: "",
-    twitterProfile: "",
-    jurisdiction: "",
-    imagePlaceholder: "",
-    featuredImage: "",
-    email: "",
-    phone: "",
-  };
 }
 
 function fieldLabel(section: AdminEditableContentSection) {
@@ -545,7 +517,13 @@ function ContentDetails({
   );
 }
 
-export default function AdminContentManagement({ section }: { section: AdminEditableContentSection }) {
+export default function AdminContentManagement({
+  section,
+  professionalApplicationConfig,
+}: {
+  section: AdminEditableContentSection;
+  professionalApplicationConfig?: ProfessionalApplicationConfig;
+}) {
   const { contentRecords, setContentRecords, setFeedback } = useAdminState();
   const config = sectionConfig[section];
   const records = useMemo(() => contentRecords.filter((record): record is AdminEditableContentRecord => record.sectionType === section), [contentRecords, section]);
@@ -554,10 +532,20 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
   const [statusFilter, setStatusFilter] = useState("All statuses");
   const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<AdminEditableContentRecord | null>(null);
-  const [adding, setAdding] = useState(false);
+  const [applicationFormOpen, setApplicationFormOpen] = useState(false);
   const [selected, setSelected] = useState<{ record: AdminEditableContentRecord; preview: boolean } | null>(null);
   const [emailRecord, setEmailRecord] = useState<AdminEditableContentRecord | null>(null);
   const pageSize = 6;
+
+  useEffect(() => {
+    if (!applicationFormOpen) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setApplicationFormOpen(false);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [applicationFormOpen]);
+
   const categories = section === "professionals"
     ? expertiseOptions
     : [...new Set(records.map((record) => record.category).filter(Boolean))];
@@ -593,7 +581,6 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
       setContentRecords((current) => current.some((item) => item.id === persisted.id)
         ? current.map((item) => item.id === persisted.id ? persisted : item)
         : [persisted, ...current]);
-      setAdding(false);
       setEditing(null);
       setFeedback(`${record.title} was saved as ${persisted.status}.`);
       return true;
@@ -679,7 +666,13 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
 
   return (
     <>
-      <PageHeading title={config.title} description={config.description} />
+      <PageHeading
+        title={config.title}
+        description={config.description}
+        action={section === "professionals" && professionalApplicationConfig ? (
+          <button type="button" className="admin-button" onClick={() => setApplicationFormOpen(true)}>{config.addLabel}</button>
+        ) : undefined}
+      />
       <section className="admin-panel admin-list-panel">
         <div className="admin-toolbar">
           <SearchInput value={query} onChange={(value) => { setQuery(value); setPage(1); }} placeholder={config.search} />
@@ -699,7 +692,27 @@ export default function AdminContentManagement({ section }: { section: AdminEdit
           <Pagination page={page} pageCount={pageCount} onChange={setPage} />
         </div>
       </section>
-      {adding ? <ContentEditor key={`${section}-new`} section={section} initial={newRecord(section)} onCancel={() => setAdding(false)} onSave={saveRecord} /> : null}
+      {applicationFormOpen && professionalApplicationConfig ? (
+        <div className="admin-modal-backdrop admin-professional-application-backdrop" role="presentation">
+          <section className="admin-professional-application-dialog" role="dialog" aria-modal="true" aria-labelledby="admin-professional-application-title">
+            <div className="admin-professional-application-heading">
+              <h2 id="admin-professional-application-title">Add New Professional</h2>
+              <button type="button" className="admin-icon-action" aria-label="Close application form" onClick={() => setApplicationFormOpen(false)}>
+                <AdminIcon name="close" />
+              </button>
+            </div>
+            <div className="admin-professional-application-content">
+              <div className={applicationStyles.page}>
+                <ProfessionalApplicationForm
+                  {...professionalApplicationConfig}
+                  successHref="/admin/professionals"
+                  successLabel="Return to admin professionals"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+      ) : null}
       {editing ? <ContentEditor key={editing.id} section={section} initial={editing} onCancel={() => setEditing(null)} onSave={saveRecord} /> : null}
       {selected ? <ContentDetails record={selected.record} preview={selected.preview} onClose={() => setSelected(null)} /> : null}
       {emailRecord ? (

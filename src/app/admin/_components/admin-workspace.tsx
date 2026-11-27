@@ -22,6 +22,7 @@ import {
 import { useAdminState } from "./admin-state";
 import SeoManagement from "./seo-management";
 import AdminSettings from "./admin-settings";
+import type { ProfessionalApplicationConfig } from "@/app/professionals/submit-profile/professional-application-config";
 
 type Section = "dashboard" | "services" | "industries" | "professionals" | "insights" | "global-presence" | "technology" | "enquiries" | "testimonials" | "seo" | "settings";
 type RecordRow = { id?: string; sourceDefined?: boolean; title: string; category?: string; section?: string; status?: string; updated?: string; slug?: string; description?: string; content?: string; author?: string; designation?: string; expertise?: string; date?: string; name?: string; email?: string; subject?: string; excerpt?: string; publicationDate?: string; publicationDateValue?: string; seoTitle?: string; seoDescription?: string };
@@ -299,7 +300,13 @@ function CollectionPage({ section, onNotice }: { section: Exclude<Section, "dash
   </>;
 }
 
-export default function AdminWorkspace({ section }: { section: Section }) {
+export default function AdminWorkspace({
+  section,
+  professionalApplicationConfig,
+}: {
+  section: Section;
+  professionalApplicationConfig?: ProfessionalApplicationConfig;
+}) {
   const { feedback, setFeedback, loadState, loadError, loadWarning } = useAdminState();
   const renderContent = () => {
     if (section === "dashboard") return <Dashboard onNotice={setFeedback} />;
@@ -308,7 +315,7 @@ export default function AdminWorkspace({ section }: { section: Section }) {
     if (section === "seo") return <SeoManagement />;
     if (section === "settings") return <AdminSettings />;
     if (section === "services" || section === "industries" || section === "professionals" || section === "global-presence" || section === "technology") {
-      return <AdminContentManagement section={section} />;
+      return <AdminContentManagement section={section} professionalApplicationConfig={professionalApplicationConfig} />;
     }
     return <CollectionPage section={section} onNotice={setFeedback} />;
   };
