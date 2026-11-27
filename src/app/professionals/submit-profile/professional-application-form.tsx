@@ -38,7 +38,17 @@ function listLabel(options: { code: string; label: string }[], codes: string[]) 
 function text(value: string) { return value.trim(); }
 function emailIsValid(value: string) { return /^\S+@\S+\.\S+$/.test(value); }
 
-export default function ProfessionalApplicationForm({ maxFileBytes, internRecruitmentOpen }: { maxFileBytes: number; internRecruitmentOpen: boolean }) {
+export default function ProfessionalApplicationForm({
+  maxFileBytes,
+  internRecruitmentOpen,
+  successHref = "/professionals",
+  successLabel = "Return to Professionals",
+}: {
+  maxFileBytes: number;
+  internRecruitmentOpen: boolean;
+  successHref?: string;
+  successLabel?: string;
+}) {
   const [answers, setAnswers] = useState<Answers>(initialAnswers);
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -268,7 +278,7 @@ export default function ProfessionalApplicationForm({ maxFileBytes, internRecrui
   const label = (key: keyof Answers, message: string) => errors[key] ? { "aria-invalid": true as const, "aria-describedby": `${key}-error`, title: message } : {};
   const countryOptions = <datalist id={countriesListId}>{countries.map((country) => <option key={country.code} value={country.label}>{country.region}</option>)}</datalist>;
 
-  if (successReference) return <section className={styles.successPanel} role="status" aria-labelledby="application-received"><span className={styles.successIcon}><Icon name="check" /></span><span className={styles.eyebrow}>Application received</span><h2 id="application-received">Thank you for sharing your profile.</h2><p>Your application has been received for review. This submission does not constitute an offer, appointment or professional designation.</p><div className={styles.reference}>Application reference <strong>{successReference}</strong></div><Link href="/professionals">Return to Professionals <Icon name="arrow" /></Link></section>;
+  if (successReference) return <section className={styles.successPanel} role="status" aria-labelledby="application-received"><span className={styles.successIcon}><Icon name="check" /></span><span className={styles.eyebrow}>Application received</span><h2 id="application-received">Thank you for sharing your profile.</h2><p>Your application has been received for review. This submission does not constitute an offer, appointment or professional designation.</p><div className={styles.reference}>Application reference <strong>{successReference}</strong></div><Link href={successHref}>{successLabel} <Icon name="arrow" /></Link></section>;
 
   return <section className={styles.formShell} aria-labelledby="form-step-title">
     <div className={styles.formIntro}><span className={styles.eyebrow}>Professional application</span><h2>Share your profile for consideration</h2><p>Choose the pathway that best reflects your experience. The team will review your information and determine any suitable next steps.</p><div className={styles.guidanceCard}><Icon name="shield" /><p>Applicant-selected classifications are for review only. Any role or relationship is subject to assessment, verification and formal written confirmation.</p></div></div>
